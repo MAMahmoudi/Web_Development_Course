@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+    <link rel="stylesheet" href="SRC/CSS/Styles.css">
+    <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Events, and Geometry.</title>
+</head>
+
+<body>
+    <main>
+        <h1 class="Title">Events, and Geometry.</h1>
+        <section id="Events">
+            <h3 class="Sub_Section_Title">I. Events</h3>
+            <div class="Definitions">
+                <p>
+                    Client-side JavaScript programs use an asynchronous event-driven programming
+                    model. In this style of programming, the web browser generates an event whenever
+                    something interesting happens to the document or browser or to some element or
+                    object associated with it. <br><br>
+                    You can register one or more functions to be invoked when
+                    events of that type occur.
+                </p>
+                <ul>
+                    <li><b>event type:</b> This string specifies what kind of event occurred ("mousemove","keydown").
+                        Because the
+                        type of an event is just a string, it's sometimes called an event name.</li>
+                    <li><b>event target:</b> This is the object on which the event occurred or with which the event is
+                        associated.
+                    </li>
+                    <li><b>event handler, or event listener:</b>
+                        This function handles or responds to an event. Applications register their event
+                        handler functions with the web browser, specifying an event type and an event
+                        target. When an event of the specified type occurs on the specified target, the
+                        browser invokes the handler function. When event handlers are invoked for an
+                        object, we say that the browser has “fired,” “triggered,” or “dispatched” the event.</li>
+                </ul>
+
+            </div>
+            <h1 class="Section_Title">Registering Event Handlers</h1>
+            <div class="Definitions">
+                <p>
+                    There are two basic ways to register event handlers. The first, from the early days of
+                    the web, is to set a property on the object or document element that is the event target.
+                    The second (newer and more general) technique is to pass the handler to the
+                    addEventListener() method of the object or element. <br><br>
+                    <b>Setting event handler properties</b><br><br>
+                    The simplest way to register an event handler is by setting a property of the event target
+                    to the desired event handler function. By convention, event handler properties
+                    have names that consist of the word “on” followed by the event name: onclick,
+                    onchange, onload, onmouseover, and so on. Note that these property names are case
+                    sensitive and are written in all lowercase. <br><br>
+
+                    The shortcoming of event handler properties is that they are designed around the
+                    assumption that event targets will have at most one handler for each type of event. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        Properties.onclick = function (event) {<br>
+                        let H1 = document.createElement("h1"); <br>
+                        H1.innerHTML = "You clicked on Properties";<br>
+                        Properties_Result.appendChild(H1); <br>
+                        }; <br><br>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <button type="button" id="Properties" class="Try_It_Btn">Properties</button>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    <b>Setting event handler attributes</b><br><br>
+                    The event handler properties of document elements can also be defined directly in
+                    the HTML file as attributes on the corresponding HTML tag. <br><br>
+                    When defining an event handler as an HTML attribute, the attribute value should be
+                    a string of JavaScript code. That code should be the body of the event handler function,
+                    not a complete function declaration. <br><br>
+                    If an HTML event handler attribute contains multiple JavaScript statements, you
+                    must remember to separate those statements with semicolons or break the attribute
+                    value across multiple lines. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">HTML</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;button
+                        onclick=" <br>
+                        Attributes_Result.appendChild(H2); <br>
+                        "&gt;Attributes&lt;/button&gt;
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Attributes_Result">
+                    <button type="button" id="Attributes" class="Try_It_Btn"
+                        onclick="Attributes_Result.appendChild(H2.cloneNode(true));">Attributes</button>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    <b>addEventListener()</b>
+                    Any object that can be an event target—this includes the Window and Document
+                    objects and all document Elements—defines a method named addEventListener()
+                    that you can use to register an event handler for that target. addEventListener()
+                    takes three arguments. The first is the event type for which the handler is being registered.
+                    The event type (or name) is a string that does not include the “on” prefix used
+                    when setting event handler properties. The second argument to addEventListener()
+                    is the function that should be invoked when the specified type of event occurs. The
+                    third argument is optional. <br><br>
+
+                    Calling addEventListener() with “click” as its first argument does not affect the
+                    value of the onclick property. <br><br>
+                    More importantly, you can
+                    call addEventListener() multiple times to register more than one handler function
+                    for the same event type on the same object. When an event occurs on an object, all of
+                    the handlers registered for that type of event are invoked in the order in which they
+                    were registered. Invoking addEventListener() more than once on the same object
+                    with the same arguments has no effect—the handler function remains registered only
+                    once, and the repeated invocation does not alter the order in which handlers are
+                    invoked. <br><br>
+                    addEventListener() is paired with a removeEventListener() method that expects
+                    the same two arguments (plus an optional third) but removes an event handler function
+                    from an object rather than adding it. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        Add_Event.addEventListener("click", function (event) { <br>
+                        let H1 = document.createElement("h1"); <br>
+                        H1.innerHTML = "You clicked on Add Event"; <br>
+                        Add_Event_Result.appendChild(H1);<br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Add_Event_Result">
+                    <button type="button" id="Add_Event" class="Try_It_Btn">Add Event</button>
+                </div>
+            </div>
+            <p class="Description_Big">You can find more information about events <a
+                    href="https://developer.mozilla.org/en-US/docs/Web/API/Event">here.</a></p>
+        </section>
+        <section id="Geometry">
+            <h3 class="Sub_Section_Title">II. Document Geometry</h3>
+            <h1 class="Section_Title">1. Document Coordinates and Viewport Coordinates</h1>
+            <div class="Definitions">
+                <p>
+                    The position of a document element is measured in CSS pixels, with the x coordinate
+                    increasing to the right and the y coordinate increasing as we go down. There are two
+                    different points we can use as the coordinate system origin, however: the x and y
+                    coordinates of an element can be relative to the top-left corner of the document or
+                    relative to the top-left corner of the viewport in which the document is displayed. <br><br>
+                    Note that viewport coordinates are sometimes called "window coordinates". <br><br>
+                    If the document is smaller than the viewport, or if it has not been scrolled, the upperleft
+                    corner of the document is in the upper-left corner of the viewport and the document
+                    and viewport coordinate systems are the same. In general, however, to convert
+                    between the two coordinate systems, we must add or subtract the scroll offsets. <br><br>
+                </p>
+            </div>
+            <h1 class="Section_Title">2. Querying the Geometry of an Element</h1>
+            <div class="Definitions">
+                <p>
+                    You can determine the size (including CSS border and padding, but not the margin)
+                    and position (in viewport coordinates) of an element by calling its getBoundingClien
+                    tRect() method. It takes no arguments and returns an object with properties left,
+                    right, top, bottom, width, and height. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        let H1 = document.createElement("h1"); <br>
+                        H1.innerHTML = <br>
+                        "top :" + Localize_Me.getBoundingClientRect().top + <br>
+                        "left :" + Localize_Me.getBoundingClientRect().left + <br>
+                        "right :" + Localize_Me.getBoundingClientRect().right + <br>
+                        "bottom :" + Localize_Me.getBoundingClientRect().bottom + <br>
+                        "width :" + Localize_Me.getBoundingClientRect().width + <br>
+                        "height :" + Localize_Me.getBoundingClientRect().height; <br>
+                        Localize_Me_Result.appendChild(H1);
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Localize_Me_Result">
+                    <button type="button" id="Localize_Me" class="Try_It_Btn">Localize</button>
+                </div>
+            </div>
+            <!--
+            <div class="Definitions">
+                <p>
+                    Block elements, such as images, paragraphs, and &lt;div&gt; elements are always rectangular
+                    when laid out by the browser. Inline elements, such as &lt;span&gt;, &lt;code&gt;, and &lt;b&gt;
+                    elements, however, may span multiple lines and may therefore consist of multiple rectangles.
+                    <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        let H1 = document.createElement("h1"); <br>
+                        H1.innerHTML = <br>
+                        "top :" + Localize_Me.getBoundingClientRect().top + <br>
+                        "left :" + Localize_Me.getBoundingClientRect().left + <br>
+                        "right :" + Localize_Me.getBoundingClientRect().right + <br>
+                        "bottom :" + Localize_Me.getBoundingClientRect().bottom + <br>
+                        "width :" + Localize_Me.getBoundingClientRect().width + <br>
+                        "height :" + Localize_Me.getBoundingClientRect().height; <br>
+                        Localize_Me_Result.appendChild(H1);
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Localize_B_Result">
+                    <b id="Localize_B">
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus, molestias
+                        corporis quibusdam libero, maiores vero odit quasi sapiente nobis quis autem dolores omnis
+                        voluptate, laboriosam consequuntur nulla doloremque reprehenderit rerum.
+                    </b>
+                </div>
+            </div>-->
+            <h1 class="Section_Title">3. Determining the Element at a Point</h1>
+            <div class="Definitions">
+                <p>
+                    If you want to determine which element is at a given location in the viewport. You can determine
+                    this with the elementFromPoint() method of the Document object. Call this method
+                    with the x and y coordinates of a point (using viewport coordinates, not document
+                    coordinates: the clientX and clientY coordinates of a mouse event work, for example).
+                    elementFromPoint() returns an Element object that is at the specified position.
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        Btn_1_2_3_Result.addEventListener("mouseover", function (event) { <br>
+                        H3.innerHTML = document.elementFromPoint(event.clientX, event.clientY).id; <br>
+                        Btn_1_2_3_Result.appendChild(H3); <br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Btn_1_2_3_Result">
+                    <div id="Blue Btn" class="Color_Div Blue"></div>
+                    <div id="Red Btn" class="Color_Div Red"></div>
+                    <div id="Green Btn" class="Color_Div Green"></div>
+                </div>
+            </div>
+            <h1 class="Section_Title">4. Scrolling</h1>
+            <div class="Definitions">
+                <p>
+                    The scrollTo() method of the Window object takes the x and y coordinates of a
+                    point (in document coordinates) and sets these as the scrollbar offsets. That is, it
+                    scrolls the window so that the specified point is in the upper-left corner of the viewport.
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        Top.addEventListener("click", function (event) { <br>
+                        window.scrollTo(0, 0); <br>
+                        }); <br><br>
+
+                        Bottom.addEventListener("click", function (event) { <br>
+                        let documentHeight = document.documentElement.offsetHeight; <br>
+                        let viewportHeight = window.innerHeight; <br>
+                        window.scrollTo(0, documentHeight - viewportHeight);<br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Scrolling_Result">
+                    <button type="button" id="Top" class="Try_It_Btn">To top</button>
+                    <button type="button" id="Bottom" class="Try_It_Btn">To bottom</button>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    The scrollBy() method of the Window is similar to scrollTo(), but its arguments
+                    are relative and are added to the current scroll position. <br><br>
+                    If you want to scroll smoothly with scrollTo() or scrollBy(), pass a single object
+                    argument instead of two numbers with behavior: "smooth" property. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+
+                        Smooth_Top.addEventListener("click", function (event) { <br>
+                        setInterval(() => { <br>
+                        if (window.scrollY > 2000) <br>
+                        window.scrollBy({ left: 0, top: -500, behavior: "smooth" }); <br>
+                        }, 1000); <br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Scrolling_Result">
+                    <button type="button" id="Smooth_Top" class="Try_It_Btn">Smooth top</button>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    Often, instead of scrolling to a numeric location in a document, we just want to scroll
+                    so that a certain element in the document is visible. You can do this with the scrol
+                    lIntoView() method on the desired HTML element. This method ensures that the
+                    element on which it is invoked is visible in the viewport. By default, it tries to put the top edge
+                    of the element at or near the top of the viewport. If false is passed as the
+                    only argument, it tries to put the bottom edge of the element at the bottom of the
+                    viewport. The browser will also scroll the viewport horizontally as needed to make
+                    the element visible.
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        To_Attributes.addEventListener("click", function (event) { <br>
+                        Attributes.scrollIntoView(); <br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Scrolling_Result">
+                    <button type="button" id="To_Attributes" class="Try_It_Btn">To Attributes</button>
+                </div>
+            </div>
+            <h1 class="Section_Title">5. Summary</h1>
+            <div class="Definitions">
+                <p>
+                    For browser windows, the viewport size is given by the window.innerWidth and win
+                    dow.innerHeight properties. <br><br>
+                    You can call getBoundingClientRect() on docu
+                    ment.documentElement to get the width and height of the document, or you can use
+                    the offsetWidth and offsetHeight properties of document.documentElement. The
+                    scroll offsets of the document within its viewport are available as window.scrollX
+                    and window.scrollY. These are read-only properties. <br><br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        Document_Rect.addEventListener("click", function (event) { <br>
+                        let H1 = document.createElement("h1"); <br>
+                        H1.innerHTML =<br>
+                        "width :" +
+                        document.documentElement.getBoundingClientRect().width +<br>
+                        "height :" +
+                        document.documentElement.getBoundingClientRect().height +<br>
+                        "offsetWidth :" +
+                        document.documentElement.offsetWidth +<br>
+                        "offsetHeight :" +
+                        document.documentElement.offsetHeight;<br>
+                        Document_Rect_Result.appendChild(H1);<br>
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Document_Rect_Result">
+                    <button type="button" id="Document_Rect" class="Try_It_Btn">Document</button>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    Every Element object defines the following three groups of properties:
+                </p>
+                <ul>
+                    <li><b>offsetWidth and offsetHeight</b> properties of an element return its on-screen
+                        size in CSS pixels. The returned sizes include the element border and padding but not
+                        margins.
+                    </li>
+                    <li><b>offsetLeft and offsetTop</b> properties return the x and y coordinates of
+                        the element.
+                    </li>
+                    <li><b>offsetParent</b> property specifies which element the
+                        properties are relative to. These offset properties are all read-only.
+                    </li>
+                    <li><b>clientWidth and clientHeight</b> are like offsetWidth and offsetHeight except that
+                        they do not include the border size—only the content area and its padding.
+                    </li>
+                    <li><b>clientLeft and clientTop</b> properties return the horizontal and
+                        vertical distance between the outside of an element's padding and the outside of its
+                        border.
+                    </li>
+                    <li><b>scrollWidth and scrollHeight</b> return the size of an element's content area plus its
+                        padding plus any overflowing content. When the content fits within the content area
+                        without overflow, these properties are the same as clientWidth and clientHeight. But when there
+                        is overflow, they include the overflowing content and return values
+                        larger than clientWidth and clientHeight.
+                    </li>
+                    <li><b>scrollLeft and scrollTop</b> give the scroll offset of the element content within the
+                        element's viewport.</li>
+                </ul>
+                All the other properties described here, are read-only except scrollLeft and scrollTop are writable
+                properties
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+
+                        Element_Rect.addEventListener("click", function (event) {
+                        let H1 = document.createElement("h1");
+                        H1.innerHTML =
+                        "offsetWidth :" +
+                        Element_Rect.offsetWidth +
+                        <br>
+                        "offsetHeight :" +
+                        Element_Rect.offsetHeight +
+                        <br>
+                        "offsetLeft :" +
+                        Element_Rect.offsetLeft +
+                        <br>
+                        "offsetTop :" +
+                        Element_Rect.offsetTop +
+                        <br>
+                        "offsetParent :" +
+                        Element_Rect.offsetParent +
+                        <br>
+                        "clientWidth :" +
+                        Element_Rect.clientWidth +
+                        <br>
+                        "clientHeight :" +
+                        Element_Rect.clientHeight +
+                        <br>
+                        "clientLeft :" +
+                        Element_Rect.clientLeft +
+                        <br>
+                        "clientTop :" +
+                        Element_Rect.clientTop +
+                        <br>
+                        "scrollWidth :" +
+                        Element_Rect.scrollWidth +
+                        <br>
+                        "scrollHeight :" +
+                        Element_Rect.scrollHeight +
+                        <br>
+                        "scrollLeft :" +
+                        Element_Rect.scrollLeft +
+                        <br>
+                        "scrollTop :" +
+                        Element_Rect.scrollTop;
+                        console.log(Element_Rect.offsetParent);
+                        Element_Rect_Result.appendChild(H1);
+                        });
+                    </font> <br><br>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Element_Rect_Result">
+                    <button type="button" id="Element_Rect" class="Try_It_Btn">Element</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="Inter_Pages">
+        <a href="DOM.html" class="Arrow">
+            <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+            <h1>DOM</h1>
+        </a>
+        <a href="React_JS.html" class="Arrow">
+            <h1>React</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+        </a>
+    </footer>
+    <script src="SRC/JS/Script.js" type="module"></script>
+    <script src="SRC/JS/DOM_Events.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+    <title>Lab 1: Installation</title>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1 class="Title">Lab 1: Installation</h1>
+        <h2 class="Section_Title">Download</h2>
+        <h3 class="description">
+          To download XAMPP, go to the following website: <br /><br />
+          <a href="https://www.apachefriends.org/"
+            >https://www.apachefriends.org/</a
+          ><br /><br />
+          Download the version of XAMPP for your operating system.
+        </h3>
+        <img
+          class="Big_Image"
+          src="SRC/IMAGES/Lab_1/XAMPP_Download.png"
+          alt="XAMPP_Download"
+        />
+        <h2 class="Section_Title">Windows</h2>
+        <ol>
+          <li class="description">
+            <p>
+              Get into your downloaded directory and execute the installer file.
+              You will see a Welcome Screen. Click Next button to continue.
+            </p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_1.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>
+              Select/unselect the components based on your preference. But I
+              will advise you to leave the recommended ticks. Click Next button
+              to continue.
+            </p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_2.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>
+              The installation directory is C:\xampp by default. You can choose
+              another directory. But it is preferable to leave it as it is.
+              Click Next button to continue.
+            </p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_3.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>
+              Choose your preferred language. Click Next button to continue.
+            </p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_4.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>Now click Next button to start the installation.</p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_5.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>Just wait!!</p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_6.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+          <li class="description">
+            <p>Done. Click the Finish button to close the installer.</p>
+            <img
+              class="Small_Image"
+              src="SRC/IMAGES/Lab_1/XAMPP_Installation_7.png"
+              alt="XAMPP_Download"
+            />
+          </li>
+        </ol>
+        <h2 class="Section_Title">Linux</h2>
+        <ol>
+          <li class="description">
+            <p>Get into the ~/Downloads/ or your downloaded directory:</p>
+            <div class="Definitions HTML_demo">cd ~/Downloads/</div>
+          </li>
+          <li class="description">
+            <p>
+              Now, make the above-downloaded file executable by changing the
+              execution bits into -rwxr-xr-x:
+            </p>
+            <div class="Definitions HTML_demo">
+              sudo chmod 755 xampp-linux-x64-7.4.29-1-installer.run
+            </div>
+          </li>
+          <li class="description">
+            <p>Now, execute that installer file:</p>
+            <div class="Definitions HTML_demo">
+              sudo ./xampp-linux-x64-7.4.29-1-installer.run
+            </div>
+          </li>
+          <li class="description">
+            <p>
+              You will go through the same installation process as windows.
+              Except that the installation directory in Xampp is /opt/lampp/ or
+              /opt/xampp/.
+            </p>
+          </li>
+          <li class="description">
+            <p>
+              To start Xampp in Linux, execute the /opt/lampp/lampp start
+              command:
+            </p>
+            <div class="Definitions HTML_demo">
+              [user@computer ~]$ sudo /opt/lampp/lampp start <br />
+              [sudo] password for user: <br />
+              Starting XAMPP for Linux 8.1.6-0... <br />
+              XAMPP: Starting Apache...ok. <br />
+              XAMPP: Starting MySQL...ok. <br />
+              XAMPP: Starting ProFTPD...ok.
+            </div>
+            <p>
+              If the above command does not work, try executing /opt/lampp/xampp
+              start because in some versions of xampp, words lampp and xampp are
+              interchanged.
+            </p>
+          </li>
+        </ol>
+        <h4 class="description">
+          To confirm if xampp started and everything worked fine, open up your
+          favorite web browser and go to the website
+          <a href="http://localhost">http://localhost.</a> You should see the
+          XAMPP welcome page.
+        </h4>
+      </section>
+      <section>
+        <h1 class="Title">Homework: Requirements specification</h1>
+        <h4 class="description">
+          The goal of this Lab is to make you think about the specifications of
+          the website you are going to create in this course.<br /><br />
+          These specifications will give you a clear view about the structure of
+          the website, the information it will provide, and the users it will
+          target.<br /><br />
+        </h4>
+        <div class="Definitions HTML_demo">
+          <h1 class="opening_tag">Instructions:</h1>
+          <p class="Instructions">
+            For this lab homework, you will need to create a README file for the
+            website you are going to create in this course. The README file
+            should contain the sections shown below. <br /><br />
+            The README file should be uploaded to your GitHub repository.
+            <br /><br />
+            You can download a sample README file in the following link:
+            <a href="SRC/Download/README.md" download
+              >Download a README file sample</a
+            >
+          </p>
+        </div>
+
+        <ol>
+          <li type="I">
+            <h2>Who is this website for?</h2>
+            <ol>
+              <li class="Section_Title">
+                <h3>Tergeted individuals:</h3>
+                <h4>What is the age range of your target audience?</h4>
+                <h4>
+                  Will your site appeal to more women or men? What is the mix?
+                </h4>
+                <h4>Which country do your visitors live in?</h4>
+                <h4>Do they live in urban or rural areas?</h4>
+                <h4>What is the average income of visitors?</h4>
+                <h4>What level of education do they have?</h4>
+                <h4>What is their occupation?</h4>
+                <h4>How many hours do they work per week?</h4>
+                <h4>How often do they use the web?</h4>
+                <h4>What kind of device do they use to access the web?</h4>
+              </li>
+              <li class="Section_Title">
+                <h3>Tergeted companies:</h3>
+                <h4>What is the size of the company or relevant department?</h4>
+                <h4>
+                  What is the position of people in the company who visit your
+                  site?
+                </h4>
+                <h4>
+                  Will visitors be using the site for themselves or for someone
+                  else?
+                </h4>
+                <h4>How large is the budget they control?</h4>
+              </li>
+            </ol>
+          </li>
+          <li type="I">
+            <h2>Why people visit this website?</h2>
+            <ol>
+              <li class="Section_Title">
+                <h3>Key motivations:</h3>
+                <h4>
+                  Are they looking for general entertainment or do they need to
+                  achieve a specific goal?
+                </h4>
+                <h4>
+                  If there is a specific goal, is it a personal or professional
+                  one?
+                </h4>
+                <h4>
+                  Do they see spending time on this activity as essential or a
+                  luxury?
+                </h4>
+              </li>
+              <li class="Section_Title">
+                <h3>Specific goals:</h3>
+                <h4>
+                  Do they want general information / research (such as
+                  background on a topic / company), or are they after something
+                  specific (such as a particular fact or information on a
+                  product)?
+                </h4>
+                <h4>
+                  Are they already familiar with the service or product you
+                  offer or need to be introduced to it?
+                </h4>
+                <h4>
+                  Are they looking for time sensitive information, such as the
+                  latest news or updates on a particular topic?
+                </h4>
+                <h4>
+                  Do they want to discover information about a specific product
+                  or service to help them decide whether to buy it or not?
+                </h4>
+                <h4>
+                  Do they need to contact you? If so, can they visit in person
+                  (which might require opening hours and a map)? Or might they
+                  need email or telephone contact details?
+                </h4>
+              </li>
+            </ol>
+          </li>
+          <li type="I">
+            <h2>What visitors are trying to achieve?</h2>
+            <ol>
+              <li class="Section_Title">
+                <h3>Key tasks and motivations:</h3>
+              </li>
+              <li class="Section_Title">
+                <h3>List of reasons why people visit the website:</h3>
+              </li>
+            </ol>
+          </li>
+          <li type="I">
+            <h2>What information visitors need to acheive their goals?</h2>
+            <ol>
+              <li class="description">
+                <h4>
+                  Will visitors be familiar with your subject area / brand or do
+                  you need to introduce yourself?
+                </h4>
+                <h4>
+                  Will they be familiar with the product / service / information
+                  you are covering or do they need background information on it?
+                </h4>
+                <h4>
+                  What are the most important features of what you are offering?
+                </h4>
+                <h4>
+                  What is special about what you offer that differentiates you
+                  from other sites that offer something similar?
+                </h4>
+                <h4>
+                  Once people have achieved the goal that sent them to your
+                  site, are there common questions people ask about this subject
+                  area?
+                </h4>
+              </li>
+            </ol>
+          </li>
+          <li type="I">
+            <h2>How often will people visit the website?</h2>
+          </li>
+          <li type="I">
+            <h2>Site maps:</h2>
+          </li>
+        </ol>
+        <img
+          class="Big_Image"
+          src="SRC/IMAGES/Lab_1/Site_maps.png"
+          alt="Site_maps"
+        />
+      </section>
+      <a class="Title" href="SRC/Download/README.md" download
+        >Download a README file sample</a
+      >
+    </main>
+
+    <script src="SRC/JS/Script.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" type="text/css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" type="text/css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" type="text/css" />
+  <link rel="stylesheet" href="SRC/CSS/CSS_Layout.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>CSS Layout</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">The box model</h1>
+    <section id="Box_Model_Section">
+      <div class="Definitions">
+        <p>
+          In the default box model, when you set the width or height of an element, you are specifying the width or
+          height of its content; any padding, border, and margins are then added to that width. <br><br>
+          We can adjust the box model behavior with its box sizing property.
+        </p>
+        <ul>
+          <li><b>box-sizing: content-box (by default)</b> any height or width you specify only sets the size of the
+            content box.</li>
+          <li><b>box-sizing: border-box</b> the height and width properties set the combined size of the content,
+            padding, and border.</li>
+        </ul>
+      </div>
+      <div class="Box_Model">
+        <h3>Top</h3>
+        <div class="Middle">
+          <h3>
+            <font>&lt;</font>-----------Left-----------<font>&gt;</font>
+          </h3>
+          <div class="Margin">
+            <h3>Margin</h3>
+            <div class="Border">
+              <h3>Border</h3>
+              <div class="Padding">
+                <h3>Padding</h3>
+                <div class="Content">
+                  <h3>Content</h3>
+                  <h4 class="Width_Label">
+                    <font>&lt;</font>-----------Width-----------<font>&gt;</font>
+                  </h4>
+                  <h4 class="Height_Label">
+                    <font>&lt;</font>-----------Height-----------<font>&gt;</font>
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>
+            <font>&lt;</font>-----------Right-----------<font>&gt;</font>
+          </h3>
+        </div>
+        <h3>Bottom</h3>
+      </div>
+    </section>
+    <section id="Float">
+      <h1 class="Title">CSS layouts</h1>
+      <h1 class="Section_Title">Float</h1>
+      <div class="Definitions">
+        <p>
+          Floats are the oldest method for laying out a web. <br />
+          A float pulls an element (often an image) to one side of its
+          container, allowing the document flow to wrap around it. <br />
+          If you float multiple elements in the same direction, they will
+          stack alongside one anothe <br />
+          Floats are still the only way to move an image to the side of the
+          page and allow text to wrap around it.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;img class="Float_Img" src="SRC/IMAGES/Oran.jpg" /&gt;</font><br>
+          <font color="blue">&lt; p &gt;</font><br>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus rem ad aliquid vero, cumque eligendi quasi
+          impedit ipsam quos voluptas aperiam reiciendis placeat, cum recusandae sapiente. Ullam iure laudantium modi!
+          <br>
+          <font color="blue">&lt;/p &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Float_Img</font>
+          {<br>
+          <font color="green">float:</font> left;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div>
+            <figure class="featured MediaImage">
+              <img src="SRC/IMAGES/Oran.jpg" alt="Oran" width="150px" height="100px" />
+              <figcaption>Oran</figcaption>
+            </figure>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero
+              labore vel temporibus quia fuga quod, voluptatem totam quidem
+              pariatur velit earum voluptates, iusto porro, natus sapiente
+              repudiandae? Impedit, libero delectus. Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Deserunt reiciendis cumque nam
+              consequatur illum veritatis doloribus aspernatur. Cupiditate
+              perferendis, porro quod distinctio veritatis vitae fugiat odit
+              explicabo, exercitationem alias aut. Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit.
+            </p>
+          </div>
+          <div class="Media clearfix">
+            <figure class="featured MediaImage2">
+              <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+              <figcaption>Algiers</figcaption>
+            </figure>
+            <figure class="featured MediaImage2">
+              <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+              <figcaption>Tlemcen</figcaption>
+            </figure>
+            <div class="MediaBody">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Minima, perspiciatis labore consequuntur tenetur velit numquam
+                odit doloribus dolor mollitia laborum facere optio aperiam
+                magnam, unde vel dolores accusamus. Nihil, harum?. Lorem ipsum
+                dolor sit amet, consectetur adipisicing elit. Minima,
+                perspiciatis labore consequuntur tenetur velit numquam odit
+                doloribus dolor mollitia laborum facere optio aperiam magnam,
+                unde vel dolores accusamus. Nihil, harum? Lorem ipsum dolor sit
+                amet, consectetur adipisicing elit.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="FlexBox">
+      <h2 class="Section_Title">FlexBox</h2>
+      <div class="Definitions">
+        <p>
+          Flexbox—formally Flexible Box Layout—is a new method for laying out
+          elements on the page It introduces 12 new properties to CSS,
+          including some shorthand properties. <br><br>
+          Flexbox begins with the familiar display property. Applying display: flex to an element
+          turns it into a flex container, and its direct children turn into
+          flex items. <br><br>
+          By default, flex items align side by side, left to
+          right, all in one row. The flex container fills the available width
+          like a block element, but the flex items may not necessarily fill
+          the width of their flex container. <br><br>
+          The flex items are all the same
+          height, determined naturally by their contents. You can also use
+          display: inline-flex.
+        </p>
+      </div>
+      <h2>Flex direction</h2>
+      <div class="Definitions">
+        <p>
+          This specifies the direction of the main axis. The cross axis will
+          be perpendicular to the main axis.
+        </p>
+        <div class="Content">
+          <h2 class="Width_Label">
+            <font>&lt;</font>-----------Main axis-----------<font>&gt;</font>
+          </h2>
+          <h2 class="Height_Label">
+            <font>&lt;</font>------Cross axis------<font>&gt;</font>
+          </h2>
+        </div>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">flex-direction:</font> row; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container">
+            <h3>flex-direction: row (default)</h3>
+            <div class="Flex_Sub_Container">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>flex-direction: row-reverse</h3>
+            <div class="Flex_Sub_Container Row_Reverse">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">flex-direction:</font> column; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container Close_Column Row">
+            <div class="Display_Flex Column">
+              <div class="Flex_Sub_Container Column">
+                <h4>flex-direction: column</h4>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <div class="Flex_Sub_Container Column_Reverse">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+                <h4>flex-direction: column-reverse</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>Flex wrap</h2>
+      <div class="Definitions">
+        <p>
+          This specifies whether flex items will wrap on to a new row inside
+          the flex container (or on to a new column if flex-direction is
+          column or column-reverse). <br />
+          Also flex-flow is a shorthand for flex-direction flex-wrap
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">flex-wrap:</font> nowrap; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container Column">
+            <div class="Display_Flex Column_Reverse">
+              <div class="Flex_Sub_Container Flex_No_Wrap">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+              </div>
+              <h3>flex-wrap: nowrap</h3>
+            </div>
+            <div class="Display_Flex Column_Reverse">
+              <div class="Flex_Sub_Container Flex_Wrap">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+              </div>
+              <h3>flex-wrap: wrap</h3>
+            </div>
+            <div class="Display_Flex Column_Reverse">
+              <div class="Flex_Sub_Container Flex_Wrap_Reverse">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Tlemcen</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Taghit</figcaption>
+                  </figure>
+                </div>
+              </div>
+              <h3>flex-wrap: wrap-reverse</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>justify-content</h2>
+      <div class="Definitions">
+        <p>Controls how items are positioned along the main axis.</p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">justify-content:</font> flex-start; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container Column">
+            <h3>justify-content: flex-start</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Flex_Start">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>justify-content: flex-end</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Flex_End">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>justify-content: center</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Center">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>justify-content: space-between</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Space_Between">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>justify-content: space-around</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Space_Around">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+            <h3>justify-content: space-evenly</h3>
+            <div class="Flex_Sub_Container_No_Justify Justify_Space_Evenly">
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Oran</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Algiers</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Tlemcen</figcaption>
+                </figure>
+              </div>
+              <div>
+                <figure class="featured MediaImage">
+                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
+                  <figcaption>Taghit</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>align-items</h2>
+      <div class="Definitions">
+        <p>Controls how items are positioned along the cross axis.</p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">align-items:</font> flex-start; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container Column">
+            <div class="Display_Flex Column">
+              <div class="Display_Flex Column">
+                <h3>align-items: flex-start</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row Align_Flex_Start Height">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column">
+                <h3>align-items: flex-end</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row Align_Flex_End Height">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column">
+                <h3>align-items: center</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row Align_Center Height">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <div class="Display_Flex Column">
+                <h3>align-items: stretch</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
+                  <div class="Align_Stretch">
+                    <figure class="featured MediaImage ">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div class="Align_Stretch">
+                    <figure class="featured MediaImage">
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column">
+                <h3>align-items: baseline</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row Align_Baseline Height">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>align-content</h2>
+      <div class="Definitions">
+        <p>
+          If flex-wrap is enabled, this controls the spacing of the flex rows
+          along the cross axis. If items don't wrap, this property is ignored.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;div&gt;</font>
+          <font color="blue">&lt;/div&gt;</font><br>
+          <font color="blue">&lt;/div&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Flex_Container</font>
+          { <br>
+          <font color="green">display:</font> flex; <br>
+          <font color="green">align-content:</font> flex-start; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container Column">
+            <div class="Display_Flex Column">
+              <div class="Display_Flex Column">
+                <h3>align-content: flex-start</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
+                  <div class="Content_Flex_Start">
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column">
+                <h3>align-content: flex-end</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
+                  <div class="Content_Flex_End">
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div class="Content_Flex_End">
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column">
+                <h3>align-content: center</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row Content_Center Height">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Close_Column">
+              <div class="Display_Flex Column">
+                <h3>align-content: stretch</h3>
+                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
+                  <div class="Content_Flex_Stretch">
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div class="Content_Flex_Stretch">
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--
+            <div class="Display_Flex Close_Column">
+              <div class="Display_Flex Column Big_Height">
+                <h3>align-content: space-between</h3>
+                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Between ">
+                  <div>
+                    <figure class="featured MediaImage ">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage ">
+                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Tlemcen</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column Big_Height">
+                <h3>align-content: space-evenly</h3>
+                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Evenly ">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage ">
+                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Tlemcen</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+              <div class="Display_Flex Column Big_Height">
+                <h3>align-content: space-around</h3>
+                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Around ">
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Oran</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage">
+                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                      <figcaption>Algiers</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <figure class="featured MediaImage ">
+                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" width="150px" height="100px" />
+                      <figcaption>Tlemcen</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+            </div>-->
+          </div>
+        </div>
+      </div>
+      <!--
+      <h2>align-self</h2>
+      <div class="Definitions">
+        <p>
+          Controls how the item is aligned on the cross axis. This will
+          override the container's align-items value for specific item(s).
+          Ignored if the item has an auto margin set on the cross axis.
+        </p>
+      </div>
+      <div class="card">
+        <div class="HTML_demo">
+          <h2 class="opening_tag">HTML</h2>
+        </div>
+        <div class="HTML_demo">
+          <h2 class="opening_tag">CSS</h2>
+        </div>
+      </div>
+      <div class="Definitions">
+        <h2 class="opening_tag">Result</h2>
+        <div class="Flex_Container Column">
+          <div class="Display_Flex Row">
+            <div class="Display_Flex Column">
+              <h3>align-self: auto</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_Auto Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <h3>align-self: self-end</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_End Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <h3>align-self: center</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_Center Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="Display_Flex Row">
+            <div class="Display_Flex Column">
+              <h3>align-self: start</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_Start Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <h3>align-self: stretch</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_Stretch Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="Display_Flex Column">
+              <h3>align-self: baseline</h3>
+              <div class="Flex_Sub_Container_No_Align_Item Row Self_Baseline Height">
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Oran</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <figure class="featured MediaImage">
+                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                    <figcaption>Algiers</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ***********************-->
+      <h1>Order</h1>
+      <div class="Definitions">
+        <p>
+          order An integer that moves a flex item to a specific position among
+          its siblings, disregarding source order. Initially, all flex items
+          have an order of 0. Specifying a value of -1 to one item will move
+          it to the beginning of the list, and a value of 1 will move it to
+          the end. You can specify order values for each item to rearrange
+          them however you wish. The numbers don't necessarily need to be
+          consecutive.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; img class="Order_3" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" / &gt;</font>
+          <font color="blue">&lt; img class="Order_4" src="SRC/IMAGES/Oran.jpg" alt="Oran" / &gt;</font>
+          <font color="blue">&lt; img class="Order_1" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" / &gt;</font>
+          <font color="blue">&lt; img class="Order_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine"/ &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Order_1</font>
+          { <br>
+          <font color="green">order:</font> 1; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Flex_Container">
+            Below is a flex container.
+            <div class="Flex_Sub_Container">
+              <div class="Order_4">
+                <img class="MediaImage Image_2" src="SRC/IMAGES/Oran.jpg" alt="Oran" />
+              </div>
+              <div class="Order_1">
+                <img class="MediaImage Image_2" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" />
+              </div>
+              <div class="Order_3">
+                <img class="MediaImage Image_2" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" />
+              </div>
+              <div class="Order_2">
+                <img class="MediaImage Image_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="Grid">
+      <h2 class="Section_Title">Grid</h2>
+      <div class="Definitions">
+        <p>
+          Grid lets you define a two-dimensional layout of columns and rows
+          and then place elements within the grid. An element with display:
+          grid becomes a grid container. Its child elements then become grid
+          items. Use grid-template-columns and grid-template-rows to define
+          the size of each of the columns and rows in the grid.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="Grid" &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Grid</font>
+          { <br>
+          <font color="green">display:</font>grid; <br>
+          <font color="green">grid-template-columns:</font> 1fr 1fr 1fr; <br>
+          <font color="green">grid-template-rows:</font> 1fr 1fr; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Grid_Sub_Container">
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
+                <figcaption>Oran</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
+                <figcaption>Algiers</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
+                <figcaption>Algiers</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Taghit.jpg" alt="Taghit" width="150px" height="100px" />
+                <figcaption>Taghit</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Tipaza.jpg" alt="ensia_logo" width="150px" height="100px" />
+                <figcaption>Tipaza</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Constantine.jpg" alt="ensia_logo" width="150px" height="100px" />
+                <figcaption>Constantine</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="Grid" &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Grid</font>
+          { <br>
+          <font color="green">display:</font>grid; <br>
+          <font color="green">grid-template-columns:</font> 2fr 1fr; <br>
+          <font color="green">grid-template-rows:</font> 1fr 1fr; <br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Grid_Sub_Container_2">
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
+                <figcaption>Oran</figcaption>
+              </figure>
+              <!--Three times wider than the second column.-->
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
+                <figcaption>Oran</figcaption>
+              </figure>
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
+                <figcaption>Oran</figcaption>
+              </figure>
+              <!--two times higher than the first row.-->
+            </div>
+            <div>
+              <figure class="featured MediaImage">
+                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
+                <figcaption>Oran</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="Positions">
+      <h2 class="Section_Title">The position Property</h2>
+      <div class="Definitions">
+        <p>
+          The position property specifies the type of positioning method used for an element. <br>
+          There are five different position values:
+        <ol>
+          <li><b>static:</b> are not affected by the top, bottom, left, and right properties.</li>
+          <li><b>relative:</b> the top, right, bottom, and left properties of a relatively-positioned element will cause
+            it to be adjusted away from its normal position. </li>
+          <li><b>fixed:</b> positioned relative to the viewport, which means it always stays in the same place even if
+            the page is scrolled.</li>
+          <li><b>absolute:</b> is positioned relative to the nearest positioned ancestor</li>
+          <li><b>sticky:</b> is positioned based on the user's scroll position.</li>
+        </ol>
+        </p>
+        <a href="SRC/Labs/Lab_2/Lab_2_Page.html">Element positioning</a>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="CSS_fundamentals.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>CSS fundamentals</h1>
+    </a>
+    <a href="Introduction_JavaScript.html" class="Arrow">
+      <h1>Introduction to JavaScript</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

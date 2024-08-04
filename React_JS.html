@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>React JS</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">React JS</h1>
+    <section>
+      <h1 class="Section_Title">Setup</h1>
+      <h3 class="description">
+        Download Node.js®, go to the following website: <br /><br />
+        <a href="https://nodejs.org/en">https://nodejs.org/en</a><br /><br />
+      </h3>
+      <img class="Big_Image" src="SRC/IMAGES/Node_JS.png" alt="Node_JS" />
+      <div class="HTML_Code">
+        npx create-next-app@latest my-app OR ./ <br />
+      </div>
+      <p>
+        <a href="https://github.com/MAMahmoudi/SYAHA">Code example</a>
+      </p>
+    </section>
+    <section>
+      <h1 class="Title">I. Components</h1>
+      <div class="Definitions">
+        <ul>
+          <li>React apps are made out of components. A component is a piece of the UI (user interface) that has its own
+            logic and appearance.</li>
+          <li>React component names must always start with a capital letter, while HTML tags must be lowercase.</li>
+          <li>React components are JavaScript functions that return markup, called JSX.</li>
+          <li>JSX is stricter than HTML. You have to close tags like &lt;br />. Your component also can't return
+            multiple JSX tags. You have to wrap them into a shared parent, like a &lt;div>...&lt;/div> or an empty
+            &lt;>...&lt;/> wrapper.</li>
+          <li>JSX lets you put markup into JavaScript. Curly braces let you “escape back” into JavaScript so that you
+            can embed some variable from your code and display it to the user.</li>
+          <li>In React, you specify a CSS class with className.</li>
+          <li>The export default keywords specify the main component in the file.</li>
+          <li>The export default prefix is a standard JavaScript syntax (not specific to React). It lets you mark the
+            main function in a file so that you can later import it from other files.</li>
+          <li>If your markup isn't all on the same line as the return keyword, you must wrap it in a pair of
+            parentheses.</li>
+        </ul>
+      </div>
+      <h1 class="Section_Title">I.1 Importing and Exporting Components</h1>
+      <div class="Definitions">
+        <ul>
+          <li>There are two primary ways to export values with JavaScript: default exports and named exports. You can
+            use one or both of them in the same file. A file can have no more than one default export, but it can have
+            as many named exports as you like.</li>
+          <li>When you write a default import, you can put any name you want after import. In contrast, with named
+            imports, the name has to match on both sides. That's why they are called named imports!
+          </li>
+        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Syntax</th>
+              <th>Export statement</th>
+              <th>Import statement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Default</td>
+              <td><code dir="ltr"
+                  class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">export default function Button() {}</code>
+              </td>
+              <td><code dir="ltr"
+                  class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">import Button from './Button.js';</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Named</td>
+              <td><code dir="ltr"
+                  class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">export function Button() {}</code>
+              </td>
+              <td><code dir="ltr"
+                  class="inline text-code text-secondary dark:text-secondary-dark px-1 rounded-md no-underline bg-gray-30 bg-opacity-10 py-px">import { Button } from './Button.js';</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h1 class="Section_Title">I.2 Writing Markup with JSX</h1>
+      <div class="Definitions">
+        <ul>
+          <li>
+            JSX is a syntax extension for JavaScript that lets you write HTML-like markup inside a JavaScript file.
+          </li>
+        </ul>
+        <b>The Rules of JSX</b>
+        <ol>
+          <li>Return a single root element: to return multiple elements from a component, wrap them with a single parent
+            tag. For example, you can wrap them with a &lt;div>...
+            &lt;/div> or an empty &lt;>...&lt;/> wrapper. This empty tag is called a Fragment.
+          </li>
+          <li> Close all the tags: even self-closing tags like &lt;img> must become &lt;img />.</li>
+          <li>camelCase all most of the things! JSX turns into JavaScript and attributes written in JSX become keys of
+            JavaScript objects.</li>
+        </ol>
+        If you already have HTML code that you want to use in JSX, you can use a tool called<a
+          href="https://transform.tools/html-to-jsx"> HTML to JSX Converter.</a>
+      </div>
+      <h1 class="Section_Title">I.3 Passing Props to a Component</h1>
+      <div class="Definitions">
+        <ul>
+          <li>React components use props to communicate with each other. Every parent component can pass some
+            information to its child components by giving them props.</li>
+          <li>You can read these props by listing their names separated by the commas inside ({ and })
+            directly after the function name. </li>
+          <li>props are the only argument to your component! React component functions accept a single
+            argument, a props object.</li>
+          <li>Specifying a default value for a prop: function My_fun({ ..., name = "Karim" }) {/*...*/ }</li>
+          <li>Props are not always static. A component may receive different props over time.</li>
+          <li>
+            However, props are immutable. When a component needs to change its props, it will have to “ask” its
+            parent component to pass it different props—a new object! Its old props will then be cast aside, and
+            eventually the JavaScript engine will reclaim the memory taken by them.
+          </li>
+        </ul>
+      </div>
+      <h1 class="Section_Title">I.4 Conditional Rendering</h1>
+      <div class="Definitions">
+        <ul>
+          <li>In React, you can conditionally render JSX using JavaScript syntax like if statements, &&, and ? :
+            operators. For instance, if (Condition){ return &lt;h1>Some text&lt;/h1>}</li>
+          <li>Conditionally returning nothing with null. For instance, if (Condition){ return null;}. In practice,
+            returning null from a component isn't common.It is better to conditionally include or exclude the component
+            in the parent component's JSX. </li>
+          <li>Ternary operator: return( &lt;p>{ Condition ? &lt;h1>Some text&lt;/h1> : &lt;h4>Some other
+            text&lt;/h4>}&lt;/p>);</li>
+          <li>Logical AND operator (&&): to render some JSX when the condition is true, or render nothing otherwise. For
+            instance, return( &lt;p>{ Condition && &lt;h1>Some text&lt;/h1>}&lt;/p>);. A JavaScript && expression
+            returns the value of its right side (in our case, the checkmark) if the left side (our condition) is true.
+            But if the condition is false, the whole expression becomes false. Don't put numbers on the left side of &&.
+            React will render 0 as zero rather than false.
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <h1 class="Title">II. Events, States, and rendering</h1>
+      <div class="Definitions">
+        <ul>
+          <li>React lets you add event handlers to your JSX.</li>
+          <li>To add an event handler, you will first define a function and then pass it as a prop to the appropriate
+            JSX tag.</li>
+        </ul>
+      </div>
+      <div class="HTML_Code">
+        export default function Button() { <br />
+        function handleClick() { <br />
+        alert('You clicked me!'); <br />
+        } <br /> <br />
+
+        return &lt;button onClick={handleClick}> Click me &lt;/button> <br />
+        } <br /> <br />
+        OR <br /> <br />
+        &lt;button onClick={function handleClick() {
+        alert('You clicked me!');
+        }}> Click me &lt;/button> <br /> <br />
+        OR <br /> <br />
+        &lt;button onClick={() => {
+        alert('You clicked me!');
+        }}> Click me &lt;/button>
+
+      </div>
+      <h1 class="Section_Title">II.1 States</h1>
+      <div class="Definitions">
+        <ul>
+          <li>In React, data that changes over time is called state. You can add state to any component, and update it
+            as needed.</li>
+          <li>You can add state to a component with a useState Hook. Hooks are special functions that let your
+            components use React features (state is one of those features). The useState Hook lets you declare a state
+            variable. It takes the initial state and returns a pair of values: the current state, and a state setter
+            function that lets you update it.</li>
+          <li>When you call useState, you are telling React that you want this component to remember something. <br>
+            <ol>
+              <li>Your component renders the first time. Because you passed 0 to useState as the initial value for
+                index, it will return [0, setIndex]. React remembers 0 is the latest state value.
+              </li>
+              <li>You update the state. When a user clicks the button, it calls setIndex(index + 1). index is 0, so it's
+                setIndex(1). This tells React to remember index is 1 now and triggers another render.</li>
+              <li>Your component's second render. React still sees useState(0), but because React remembers that you set
+                index to 1, it returns [1, setIndex] instead.</li>
+              <li> And so on!</li>
+            </ol>
+          </li>
+          <li>You can have as many state variables of as many types as you like in one component.</li>
+          <li>State is local to a component instance on the screen. In other words, if you render the same component
+            twice, each copy will have completely isolated state! Changing one of them will not affect the other.</li>
+        </ul>
+
+      </div>
+      <div class="HTML_Code">
+        import { useState } from 'react';<br />
+        ...<br />
+        export default function My_Component() { <br />
+        const [index, setIndex] = useState(0);<br />
+        ...<br />
+        function handleClick() { <br />
+        ...<br />
+        setIndex(index + 1); <br />
+        }<br />
+        ...<br />
+        }<br />
+      </div>
+      <h1 class="Section_Title">II.2 Render and commit</h1>
+      <div class="Definitions">
+        <ul>
+          <li>Before your components are displayed on the screen, they must be rendered by React. “Rendering” is React
+            calling your components.</li>
+          <li>This process of requesting and serving UI has three steps:
+            <ol>
+              <li>Triggering a render: There are two reasons for a component to render: <br>
+                <ul>
+                  <li>It's the component's initial render. </li>
+                  <li>The component's (or one of its ancestors') state has been updated: Once the component has been
+                    initially rendered, you can trigger further renders by updating its state with the set function.
+                    Updating your component's state automatically queues a render. </li>
+                </ul>
+              </li>
+              <li>Rendering the component: After you trigger a render, React calls your components to figure out what to
+                display on screen.
+                <ul>
+                  <li>On initial render, React will call the root component (create the DOM nodes). </li>
+                  <li>For subsequent renders, React will call the function component whose state update triggered the
+                    render.</li>
+                </ul>
+                This process is recursive: if the updated component returns some other component, React will render that
+                component next, and if that component also returns something, it will render that component next, and so
+                on. The process will continue until there are no more nested components and React knows exactly what
+                should be displayed on screen.
+              </li>
+              <li>Committing to the DOM: After rendering (calling) your components, React will modify the DOM.
+                <ul>
+                  <li>For the initial render, React will use the appendChild() DOM API to put all the DOM nodes it has
+                    created on screen. </li>
+                  <li>For re-renders, React will apply the minimal necessary operations (calculated while rendering!) to
+                    make the DOM match the latest rendering output.</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <h1 class="Title">III. Hooks</h1>
+      <div class="Definitions">
+        <ul>
+          <li>You can either use the built-in Hooks or combine them to build your own.</li>
+        </ul>
+      </div>
+      <h1 class="Section_Title">III.1 State Hooks</h1>
+      <div class="Definitions">
+        To add state to a component, use one of these Hooks:
+        <ul>
+          <li><b>useState:</b> declares a state variable that you can update directly.</li>
+          <li><b>useReducer:</b> declares a state variable with the update logic inside a reducer function.</li>
+        </ul>
+      </div>
+      <div class="HTML_Code">
+        import { useReducer } from 'react'; <br>
+        const initialState = { <br>
+        isRunning: false, <br>
+        time: 0 <br>
+        }; <br>
+        function reducer(state, action) { <br>
+        switch (action.type) { <br>
+        case 'start': <br>
+        return { ...state, isRunning: true }; <br>
+        case 'stop': <br>
+        return { ...state, isRunning: false }; <br>
+        case 'reset': <br>
+        return { isRunning: false, time: 0 }; <br>
+        case 'tick': <br>
+        return { ...state, time: state.time + 1 }; <br>
+        default: <br>
+        throw new Error(); <br>
+        } <br>
+        } <br>
+        &lt;button onClick={()=> dispatch({ type: 'start' })}> Start &lt;/button> <br>
+        &lt;button onClick={()=> dispatch({ type: 'stop' })}> Stop &lt;/button> <br>
+        &lt;button onClick={()=> dispatch({ type: 'reset' })}> Reset &lt;/button>
+      </div>
+      <!--
+      <h1 class="Section_Title">III.2 Context Hooks</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>useContext:</b> reads and subscribes to a context.</li>
+        </ul>
+      </div>
+      <div class="HTML_Code"></div>-->
+      <h1 class="Section_Title">III.3 Effect Hooks</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>useEffect:</b> fires each time we re-render.</li>
+          <li>useEffect(setup, dependencies?)</li>
+        </ul>
+      </div>
+      <div class="HTML_Code">
+        function Timer() { <br>
+        const [count, setCount] = useState(0); <br>
+        useEffect(() => { <br>
+        setTimeout(() => { <br>
+        setCount((count) => count + 1); }, 1000); }); <br>
+        return &lt;h1>I have rendered {count} times!&lt;/h1>; <br>
+        } <br>
+        <a href="https://www.w3schools.com/react/showreact.asp?filename=demo2_react_useeffect_settimeout">Example</a>
+      </div>
+      <h1 class="Section_Title">III.4 Ref Hooks</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>useRef:</b> declares a ref. You can hold any value in it, but most often it's used to hold a DOM node.
+          </li>
+          <li><b>useImperativeHandle:</b> lets you customize the ref exposed by your component. This is rarely used.
+          </li>
+        </ul>
+      </div>
+      <div class="HTML_Code">
+        function InputFocus() { <br>
+        const inputRef = useRef(); <br>
+        useEffect(() => { inputRef.current.focus(); }, []); <br>
+        return ( &lt;input ref={inputRef} type="text" /> ); }
+      </div>
+      <!--
+      <h1 class="Section_Title">III.5 Performance Hooks</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>useMemo:</b> lets you cache the result of an expensive calculation.</li>
+          <li><b>useCallback:</b> lets you cache a function definition before passing it down to an optimized component.
+          </li>
+        </ul>
+      </div>-->
+    </section>
+    <section></section>
+    <!--
+    <section>
+      <h1 class="Title">IV. Routing</h1>
+      <h1 class="Section_Title">Routing</h1>
+      <div class="Definitions">
+        <p></p>
+      </div>
+    </section>-->
+  </main>
+  <footer class="Inter_Pages">
+    <a href="JavaScript_Events.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>JavaScript Events</h1>
+    </a>
+    <a href="Introduction_PHP.html" class="Arrow">
+      <h1>Introduction to PHP</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

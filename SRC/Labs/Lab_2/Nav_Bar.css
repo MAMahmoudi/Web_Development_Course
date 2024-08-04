@@ -1,0 +1,57 @@
+.Nav_Bar_Items {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  width: 95%;
+  height: 80px;
+  border-radius: 13px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 9999;
+}
+
+.Nav_Bar_Logo {
+  color: #222;
+  font-size: 3rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.Menu_Icon {
+  display: none;
+  margin-top: 10px;
+}
+
+.Nav_Bar_Menu {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+  list-style: none;
+  align-items: center;
+}
+
+.Nav_Bar_Menu_Item {
+  text-decoration: none;
+  color: #222;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+}
+
+.Nav_Bar_Menu_Item:hover {
+  color: white;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  background-color: #01959a;
+}
+
+.Nav_Bar_Menu_Item i {
+  padding-left: 10px;
+}

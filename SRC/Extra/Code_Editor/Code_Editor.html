@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Code_Editor.css">
+    <title>Code_Editor</title>
+</head>
+
+<body>
+    <main>
+        <div class="Code_Editor_Panel">
+            <img src="IMAGES/HTML_5_ICON.svg" alt="HTML_5_ICON" class="Code_Area_Title HTML_Code_Tag">
+            <textarea class="Code_Area HTML_Code_Area" id="HTML_Code" placeholder="HTML"></textarea>
+            <img src="IMAGES/CSS_3_ICON.svg" alt="CSS_3_ICON" class="Code_Area_Title CSS_Code_Tag">
+            <textarea class="Code_Area CSS_Code_Area" id="CSS_Code" placeholder="CSS"></textarea>
+            <img src="IMAGES/JS_ICON.svg" alt="JS_ICON" class="Code_Area_Title JS_Code_Tag">
+            <textarea class="Code_Area JS_Code_Area" id="JS_Code" placeholder="JS"></textarea>
+            <label class="Code_Area_Title Output_Tag">Output</label>
+            <div class="Code_Area Output_Area">
+                <iframe title="Output_Area" id="Output_Area"></iframe>
+            </div>
+        </div>
+        <button type="button" id="Run_Btn">Run</button>
+    </main>
+    <script src="Code_Editor.js"></script>
+    <script src="../../JS/Script.js"></script>
+</body>
+
+</html>

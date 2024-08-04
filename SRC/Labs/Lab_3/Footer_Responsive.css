@@ -1,0 +1,13 @@
+@media screen and (max-width: 850px) {
+    .Footer {
+      padding: 4rem 2rem;
+    }
+  
+    .Footer i {
+      margin: 1rem 1rem 0 0;
+    }
+  
+    .Footer_Buttom div {
+      width: 50%;
+    }
+  }

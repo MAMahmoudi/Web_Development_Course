@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Object-Oriented PHP and reusing code</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Object-Oriented PHP and reusing code</h1>
+    <section>
+      <h1 class="Section_Title">Declaring a Class</h1>
+      <div class="Definitions">
+        We define a class with the class keyword. Class definitions contain the class name (which is case-sensitive),
+        its
+        properties, and its methods.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            class User <br>
+            { <br>
+            &nbsp; public $Name; <br>
+            &nbsp; public $Age; <br>
+            &nbsp; public $Password; <br>
+            &nbsp; public $Email; <br>
+            &nbsp; public $Country; <br>
+            &nbsp; public $City; <br>
+            &nbsp; public $Phone; <br>
+            &nbsp; public $Address; <br>
+            function Print_Name() <br>
+            { <br>
+            &nbsp;
+            &nbsp;
+            return $this->Name; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          It will create a class named User.
+        </div>
+      </div>
+      <h1 class="Section_Title">Creating an Object</h1>
+      <div class="Definitions">
+        To create an object with a specified class, use the new keyword.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_User = new User; <br>
+            $A_User->Name = "Karim"; <br>
+            $A_User->Age = 25; <br>
+            echo "&lt;h1>" . $A_User->Print_Name() . " is " . $A_User->Age . " years old.&lt;/h1>";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>Karim is 25 years old.</h1>
+        </div>
+      </div>
+      <h1 class="Section_Title">Constructors</h1>
+      <div class="Definitions">
+        A constructor is declared in the same way as other operations, but has the special name __construct(). (that is,
+        construct preceded by two underscore characters). <br>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_User = new User("Amel"); <br>
+            class User <br>
+            { <br>
+            function __construct($param) <br>
+            { <br>
+            $this->Name = $param; <br>
+            echo "&lt;h1>User " . $this->Print_Name() . " is created.&lt;/h1>"; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>User Amel is created.</h1>
+        </div>
+      </div>
+      <h1 class="Section_Title">Destructors</h1>
+      <div class="Definitions">
+        The opposite of a constructor is a destructor. They are called when an object is destroyed. <br>
+        Similar to the way constructors are named, the destructor for a class must be named __destruct(). <br>
+        Destructors cannot take parameters. <br>
+        The __destruct() function that is automatically called at the end of the script.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            class User <br>
+            { <br>
+            function __destruct() <br>
+            { <br>
+            echo "&lt;h1>The User: " . $this->Print_Name() . " has been terminated.&lt;/h1>"; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>The User: Amel has been terminated.</h1>
+        </div>
+      </div>
+      <h1 class="Section_Title">Writing Methods</h1>
+      <div class="Definitions">
+        Declaring a method is similar to declaring a function. <br>
+        Method names beginning with a double underscore (__) are reserved. <br>
+        The syntax for accessing an object's property is $object->property. Likewise, you call a method like this:
+        $object->method(). <br>
+        Properties and methods do not have $ signs in front of them. <br>
+        A special variable called $this, which can be used to access the current object's properties.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_User->Change_Name("Karim"); <br>
+            $A_User = new User("Amine"); <br>
+            class User <br>
+            { <br>
+            function Change_Name($param) <br>
+            { <br>
+            echo "&lt;h1>The User: " . $this->Print_Name() . " has changed his name to "; <br>
+            $this->Name = $param; <br>
+            echo $this->Print_Name() . "&lt;/h1>"; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>The User: Amine has changed his name to Karim </h1>
+        </div>
+      </div>
+      <h1 class="Section_Title">Declaring Properties</h1>
+      <div class="Definitions">
+        It is not necessary to explicitly declare properties within classes, as they can be implicitly defined when
+        first used. <br>
+        You can place functions and class definitions anywhere in your code, before or after statements that use them.
+        Generally, though, it is considered good practice to place them toward the end of a file.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_User = new User(); <br>
+            $A_User->name = "Karim"; <br>
+            echo $A_User->name; <br>
+            class User <br>
+            { <br>
+            // Class definition <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h1 class="Section_Title">Property and Method Scope</h1>
+      <div class="Definitions">
+        PHP provides three keywords for controlling the scope of properties and methods (members): <br>
+        <ul>
+          <li><b>public: </b>Public members can be referenced anywhere, including by other classes and instances of the
+            object. Methods and properties are assumed to be public by default.</li>
+          <li><b>protected: </b>These members can be referenced only by the object's class methods and those of any
+            subclasses. The protected access modifier means that the marked item can be accessed only from
+            inside the class. It also exists in any subclasses.</li>
+          <li><b>private: </b> These members can be referenced only by methods within the same class—not by subclasses.
+          </li>
+        </ul>
+      </div>
+
+      <h1 class="Section_Title">Writing Accessor Functions</h1>
+      <div class="Definitions">
+        One of the advantages of an object-oriented approach is that it encourages encapsulation. You can enforce this
+        with the use of __get and __set functions. <br>
+        Note that __get() takes one parameter—the name of an attribute—and returns the value of
+        that attribute. Similarly, the __set() function takes two parameters: the name of an attribute
+        and the value you want to set it to. <br>
+        You do not directly call these functions. The double underscore in front of the name shows
+        that these functions have a special meaning in PHP, just like the __construct() and
+        __destruct() functions. <br>
+        These functions will not be used, even if declared, when accessing attributes declared to be public. <br>
+        $A_User->Age = 25; <br>
+        this statement implicitly calls the __set() function with the value of $Parameter_Name set to
+        "Age", and the value of $value set to 25. You need to write the __set() function to do any error checking you
+        require. <br>
+        The __get() function works in a similar way. If, in your code, you reference <br>
+        $A_User->Age; <br>
+        this expression implicitly calls the __get() function with the parameter $Parameter_Name set to "Age" It is up
+        to you to write the __get() function to return the value.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_User = new User(); <br>
+            $A_User->Name = "Kamel"; <br>
+            $A_User->Age = 25; <br>
+            echo "&lt;h1>" . $A_User->Name . "&lt;/h1>&lt;br>"; <br>
+            echo "&lt;h1>" . $A_User->Age . "&lt;/h1>"; <br>
+
+            class User <br>
+            { <br>
+            private $Name; <br>
+            private $Age; <br>
+            function __get($Parameter_Name) <br>
+            { <br>
+            return "The value of $Parameter_Name is " . $this->$Parameter_Name; <br>
+            } <br>
+            function __set($Parameter_Name, $Its_value) <br>
+            { <br>
+            if ($Parameter_Name == "Age" && $Its_value &lt; 18) <br>
+            { throw new Exception("Age must be greater than 18"); } <br>
+            $this->$Parameter_Name = $Its_value; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>The value of Name is Kamel</h1> <br>
+          <h1>The value of Age is 25</h1>
+        </div>
+      </div>
+      <h1 class="Section_Title">Static Methods</h1>
+      <div class="Definitions">
+        You can define a method as static, which means that it is called on a class, not on an object. A static method
+        has no access to any object properties. <br>
+        Note how we call the class itself, along with the static method, using a double colon (also known as the scope
+        resolution operator), not ->. <br>
+        If you try to access $this->property, or other object properties from within a static function, you will receive
+        an error message.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h1 class="Section_Title">Static Properties</h1>
+      <div class="Definitions">
+        declaring members of a class static makes them accessible without an instantiation of the class. A property
+        declared static cannot be directly accessed within an instance of a class, but a static method can.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h1 class="Section_Title">Inheritance</h1>
+      <div class="Definitions">
+        We implement inheritance using the extends keyword. <br>
+        If an attribute or method is specified as private, it will not be inherited. If an attribute or method is
+        specified as protected, it will not be visible outside the class (much like a private element) but will be
+        inherited.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_Customer = new Customer(); <br>
+            echo $A_Customer->Child_func(); <br>
+
+            class User <br>
+            { <br>
+            public function func_1() <br>
+            { <br>
+            echo "This is function 1"; <br>
+            } <br>
+            protected function func_2() <br>
+            { <br>
+            echo "This is function 2"; <br>
+            } <br>
+            private function func_3() <br>
+            { <br>
+            echo "This is function 3"; <br>
+            } <br>
+            } <br>
+
+            class Customer extends User <br>
+            { <br>
+            function Child_func() <br>
+            { <br>
+            $this->func_1(); <br>
+            echo "&lt;br>"; <br>
+            $this->func_2(); <br>
+            echo "&lt;br>"; <br>
+            $this->func_3(); <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          This is function 1 <br>
+          This is function 2 <br>
+          Fatal error: Uncaught Error: Call to private method User::func_3() from scope Customer in....
+        </div>
+      </div>
+      <h1 class="Section_Title">Overriding</h1>
+      <div class="Definitions">
+        Overriding is to redeclare the same attributes and operations. To give an attribute in the subclass a different
+        default value to the same attribute in its superclass or to give an operation in the subclass different
+        functionality to the same operation in its superclass. This action is called overriding. <br>
+        Declaring B does not affect the original definition of A. <br>
+        A subclass will inherit all the attributes and operations of its superclass, unless you provide replacements. If
+        you provide a replacement definition, it takes precedence and overrides the original definition.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_Customer = new Customer; <br>
+            echo $A_Customer->Parameter . "&lt;br>"; <br>
+            echo $A_Customer->func_1(); <br>
+            $A_user = new User; <br>
+            echo $A_user->Parameter . "&lt;br>"; <br>
+            echo $A_user->func_1(); <br>
+            class User <br>
+            { <br>
+            public $Parameter = "This is the parent parameter"; <br>
+            function func_1() <br>
+            { <br>
+            echo "This is the parent function"; <br>
+            } <br>
+            } <br>
+
+            class Customer extends User <br>
+            { <br>
+            public $Parameter = "This is the child parameter"; <br>
+            function func_1() <br>
+            { <br>
+            echo "This is the child function"; <br>
+            } <br>
+            }
+            <br> ?>
+
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          This is the child parameter <br>
+          This is the child function <br>
+          This is the parent parameter <br>
+          This is the parent function
+        </div>
+      </div>
+      <h1 class="Section_Title">The parent keyword</h1>
+      <div class="Definitions">
+        The parent keyword allows you to call the original version of the operation in the parent class. <br>
+        Although you call the operation from the parent class, PHP uses the attribute values from the current class.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_Customer = new Customer; <br>
+            echo $A_Customer->func_1() . "&lt;br>"; <br>
+
+            class User <br>
+            { <br>
+            public $Parameter = "This is the parent parameter"; <br>
+            function func_1() <br>
+            { <br>
+            echo "Parent class: " . $this->Parameter; <br>
+            } <br>
+            } <br>
+
+            class Customer extends User <br>
+            { <br>
+            public $Parameter = "This is the child parameter"; <br>
+            function func_1() <br>
+            { <br>
+            parent::func_1(); <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Parent class: This is the child parameter
+        </div>
+      </div>
+      <h1 class="Section_Title">Final methods</h1>
+      <div class="Definitions">
+        When you wish to prevent a subclass from overriding a superclass method, you can use the final keyword. <br>
+        When you use the keyword final in front of a function declaration, that function cannot be overridden in any
+        subclasses. <br>
+        You can also use the final keyword to prevent a class from being subclassed at all. For instance, final class
+        User{...}. If you then try to inherit from A, you will get an error.
+
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $A_Customer = new Customer; <br>
+            echo $A_Customer->func_1() . "&lt;br>"; <br>
+
+            class User <br>
+            { <br>
+            public $Parameter = "This is the parent parameter"; <br>
+            final function func_1() <br>
+            { <br>
+            echo "Parent class: " . $this->Parameter; <br>
+            } <br>
+            } <br>
+
+            class Customer extends User <br>
+            { <br>
+            public $Parameter = "This is the child parameter"; <br>
+            function func_1() <br>
+            { <br>
+            echo "Child class: " . $this->Parameter; <br>
+            } <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Fatal error: Cannot override final method User::func_1() in .....
+        </div>
+      </div>
+      <h1 class="Section_Title">Multiple inheritance using Traits</h1>
+      <div class="Definitions">
+        PHP does not support true multiple inheritance. This means that each class can inherit from only one parent.
+        <br>
+        However, you can use traits to simulate multiple inheritance. <br>
+        A class can combine multiple traits, and traits can inherit from one another. <br>
+        You create a trait the same way as a class, but using the keyword trait instead. <br>
+        The sub-class could override the method by declaring its own, if needed. However, you should note that if the
+        class had inherited a method from a parent, by default the trait method would override it. That is, a trait's
+        methods override inherited methods, but the current's class methods override a trait's methods. <br>
+        You can combine multiple traits and when there are methods with the same names, you can explicitly specify which
+        trait's functionality you wish to use. <br>
+        Because each of the traits implements the same method, we must specify which one to use. If you don't specify
+        this, PHP will generate a fatal error as it will not be able to resolve the conflict. <br>
+        You can specify which one to use by using the insteadof keyword or by using the as keyword to give the method a
+        new name.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            trait Trait_1 <br>
+            { <br>
+            function func_1() { echo "Trait_1 &lt;br>"; } <br>
+            } <br>
+
+            trait Trait_2 <br>
+            { <br>
+            function func_1() { echo "Trait_2 &lt;br>"; } <br>
+            } <br>
+
+            class Customer <br>
+            { <br>
+            use Trait_1, Trait_2 { <br>
+            Trait_1::func_1 insteadof Trait_2; <br>
+            Trait_2::func_1 as func_2; <br>
+            } <br>
+            function Customer_func() { <br>
+            $this->func_1(); <br>
+            $this->func_2(); <br>
+            } <br>
+            } <br>
+
+            $A_Customer = new Customer(); <br>
+            $A_Customer->Customer_func();
+
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Trait_1 <br>
+          Trait_2
+        </div>
+      </div>
+    </section>
+    <section>
+      <h1 class="Title">Including and Requiring Files</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>The include Statement:</b> <br>
+            Using include, you can tell PHP to fetch a particular file and load all its
+            contents. It's as if you pasted the included file into the current file at the insertion point.</li>
+          <li><b>Using include_once: </b><br>
+            Each time you issue the include directive, it includes the requested file again, even if
+            you have already inserted it. Use include_once instead of include.
+            Then, any further attempts to include the same file (with include or include_once)
+            will be ignored. To determine whether the requested file has already been executed,
+            the absolute filepath is matched after all relative paths are resolved (to their absolute
+            paths) and the file is found in your include path.</li>
+          <li><b>Using require and require_once:</b><br>
+            A potential problem with include and include_once is that PHP will
+            only attempt to include the requested file. Program execution continues even if the file is not found.
+            When it is absolutely essential to include a file, require it.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            include "the_other_file.php"; <br>
+            include_once "another_file.php"; <br>
+            require "the_other_file.php"; <br>
+            require_once "another_file.php";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Introduction_PHP.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Introduction PHP</h1>
+    </a>
+    <a href="PHP_MySQL.html" class="Arrow">
+      <h1>PHP & MySQL</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

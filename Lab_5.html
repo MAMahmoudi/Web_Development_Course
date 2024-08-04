@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 5</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Lab 5: MySQL</h1>
+    <h1 class="Section_Title">Instructions</h1>
+    <div class="Definitions">
+      <p>
+        <b>
+          In this lab, we will learn how to use MySQL. <br />
+          We will create a database and a table. <br />
+          In this week's lab, you must design you database on paper first. <br />
+          Then, you will create it using phpMyAdmin. <br />
+        </b>
+      </p>
+    </div>
+    <h1 class="Section_Title">I. Load MySQL</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          <b>
+            To use MySQL, we need to install XAMPP. XAMPP is a free and open-source cross-platform web server solution
+            stack. <br>
+            It consists mainly of the Apache HTTP Server, MariaDB database, and interpreters for scripts written in the
+            PHP.
+            <br />
+            First, we start XAMPP. On windows, we can find it in the start menu. <br />
+            Then, we double click on the XAMPP tray icon to load the XAMPP control panel (see figure below). <br />
+          </b>
+        </p>
+      </div>
+      <img class="Small_Image_List_Item" src="SRC/IMAGES/Lab_5/Load_XAMPP_Control_Panel.png"
+        alt="Load_XAMPP_Control_Panel" />
+      <div class="Definitions">
+        <p>
+          <b>
+            On the XAMPP control panel, we first check that MySQL is runing (green). If not we have to start it using
+            the
+            start button. In the figure below we cannot see the start button because it is already runing. <br />
+            Then, we click on the admin button to open the phpMyAdmin page. <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/XAMPP_Control_Panel.png" alt="XAMPP_Control_Panel" />
+    </section>
+    <h1 class="Section_Title">II. Create a database</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          <b>
+            On the phpMyAdmin page, we click on the new button to create a new database. <br />
+            We give the database a name and click on the create button. <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_1.png" alt="Create_DB_1" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_2.png" alt="Create_DB_2" />
+    </section>
+    <h1 class="Section_Title">III. Create a table</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          <b>
+            On the phpMyAdmin page, we click on the database we just created. <br />
+            Then, we click on the new button to create a new table. <br />
+            We give the table a name (1), the number of attributes (2) and click on the create button (3). <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_1.png" alt="Create_Table_1" />
+      <div class="Definitions">
+        <p>
+          <b>
+            We give the attributes a name (1), a type (2), and a size (3). <br />
+            We also specify the default value (4), and if the attribute is a primary key (5). <br />
+            We can also set to auto increment (6) the primary key. <br />
+            Then, we click on the save button at the bottom of the page. <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_2.png" alt="Create_Table_2" />
+      <div class="Definitions">
+        <p>
+          <b>
+            We can also modify any attribute after creating the table. <br />
+            We click on the structure tab, then on the change button (1) of the attribute we want to modify. <br />
+            We can delete an attribute by clicking on the drop button (2). <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_3.png" alt="Create_Table_3" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_4.png" alt="Create_Table_4" />
+      <div class="Definitions">
+        <p>
+          <b>
+            To delete a table, we go back to the database (1) and click on the drop button (2) of the table we want to
+            delete. <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_5.png" alt="Create_Table_5" />
+      <div class="Definitions">
+        <p>
+          <b>
+            We can use the SQL tab to perform all the tasks we did before. <br />
+            We can also use it to test our SQL queries before using them in our PHP code. <br />
+            We have just to write the query and click on the go button. <br />
+          </b>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_6.png" alt="Create_Table_6" />
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Lab_4.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 4: Javascript form validation</h1>
+    </a>
+    <a href="Lab_6.html" class="Arrow">
+      <h1>Lab 6</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

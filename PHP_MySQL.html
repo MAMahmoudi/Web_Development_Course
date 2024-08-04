@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Storing data with PHP</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Storing data with PHP</h1>
+    <section>
+      <h1 class="Section_Title">I. File Handling</h1>
+      <h2 class="Sub_Section_Title">Checking Whether a File Exists</h2>
+      <div class="Definitions">
+        Windows and macOS filenames are not case-sensitive, but Linux and Unix filenames are. <br>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            if (file_exists("page.php")) echo "File exists";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Creating a File</h2>
+      <div class="Definitions">
+        <ol>
+          <li>Always start by opening the file. You do this through a call to fopen.</li>
+          <li>Then you can call other functions; we write to the file (fwrite), read from an existing file (fread or
+            fgets) and do other things.</li>
+          <li>Finish by closing the file (fclose).</li>
+        </ol>
+        The $My_File variable is a number PHP uses to refer to internal information about the file. <br>
+        Upon failure, FALSE will be returned by fopen. To capture and respond to the failure: it calls the die function
+        to end the program and give the user an error message. <br>
+        The second parameter to the fopen call: the character w, which tells the function to open the file for writing.
+        The function creates the file if it doesn't already exist. <br>
+        <font color="red"><b>If the file already exists, the w mode parameter causes the fopen call to delete the old
+            contents (even if you
+            don't write anything new!).</b></font>
+
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_File = fopen("test.txt", 'w') or die("Failed to create file"); <br>
+            // some code to be executed... <br>
+            fclose($My_File);
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          The file test.txt should now be residing in the same folder in which you saved the php program.
+        </div>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Mode</strong></td>
+            <td><strong>Action</strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>'r'</strong></td>
+            <td>Read from file's beginning</td>
+            <td>Open for reading only; place the file pointer at the beginning of the file. Return FALSE if the file
+              doesn't already exist.</td>
+          </tr>
+          <tr>
+            <td><strong>'r+'</strong></td>
+            <td>Read from file's beginning and allow writing</td>
+            <td>Open for reading and writing; place the file pointer at the beginning of the file. Return FALSE if the
+              file doesn't already exist.</td>
+          </tr>
+          <tr>
+            <td><strong>'w'</strong></td>
+            <td>Write from file's beginning and truncate file</td>
+            <td>Open for writing only; place the file pointer at the beginning of the file and truncate the file to zero
+              length. If the file doesn't exist, attempt to create it.</td>
+          </tr>
+          <tr>
+            <td><strong>'w+'</strong></td>
+            <td>Write from file's beginning, truncate file, and allow reading</td>
+            <td>Open for reading and writing; place the file pointer at the beginning of the file and truncate the file
+              to zero length. If the file doesn't exist, attempt to create it.</td>
+          </tr>
+          <tr>
+            <td><strong>'a'</strong></td>
+            <td>Append to file's end</td>
+            <td>Open for writing only; place the file pointer at the end of the file. If the file doesn't exist, attempt
+              to create it.</td>
+          </tr>
+          <tr>
+            <td><strong>'a+'</strong></td>
+            <td>Append to file's end and allow reading</td>
+            <td>Open for reading and writing; place the file pointer at the end of the file. If the file doesn't exist,
+              attempt to create it.</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 class="Sub_Section_Title">Reading a File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>To grabs a whole line from the file use fgets.</li>
+          <li>You can retrieve multiple lines or portions of lines through the fread function.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_File = fopen("test.txt", 'r') or die("Failed to create file"); <br>
+            $line = fgets($My_File); <br>
+            $text = fread($My_File, 3); // 3 is the number of characters to read. <br>
+            fclose($My_File); <br>
+            echo '$line ' . $line . ' &lt;br>'; <br>
+            echo '$text ' . $text . ' &lt;br>';
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          It will print the first line of the file and the first 3 characters of the second line.
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Copying a File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>Use the copy function to copy a file.</li>
+          <li>It takes two parameters: the name of the file to copy and the name of the new file.</li>
+          <li>It returns TRUE if the copy succeeds and FALSE if it fails.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            copy('test.txt', 'test2.txt') or die("Could not copy file"); <br>
+            echo "File successfully copied to 'test2.txt'";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Moving a File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>Use the rename function to move a file.</li>
+          <li>It takes two parameters: the name of the file to move and the new name of the file.</li>
+          <li>It returns TRUE if the move succeeds and FALSE if it fails.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            rename('test.txt', 'Another_Location/test.txt') or die("Could not move file"); <br>
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Deleting a File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>Use the unlink function to delete a file.</li>
+          <li>It takes one parameter: the name of the file to delete.</li>
+          <li>It returns TRUE if the delete succeeds and FALSE if it fails.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            unlink('test2.txt') or die("Could not delete file"); <br>
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Updating a File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>The file pointer is the position within a file at which the next file access will take place, whether it's
+            a read or a write. It is not the same as the file handle which contains details about the file being
+            accessed.</li>
+          <li>'r+', which puts the file pointer right at the start.</li>
+          <li>The fseek function is called to move the file pointer right to the file end.</li>
+          <li>The fseek function was passed two other parameters, 0 and SEEK_END. SEEK_END tells the function to move
+            the file pointer to the end of the file, and 0 tells it how many positions it should then be moved backward
+            from that point.</li>
+          <li>There are two other seek options available to the fseek function: SEEK_SET and SEEK_CUR.
+            <ol>
+              <li>The SEEK_SET option tells the function to set the file pointer to the exact position given by the
+                preceding parameter.</li>
+              <li>The SEEK_CUR sets the file pointer to the current position plus the value of the given offset.</li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
+            $text = "This is some text that we will write to the file"; <br>
+            fseek($My_File, -20, SEEK_END); <br>
+            fwrite($My_File, "\n$text") or die("Could not write to file"); <br>
+            fseek($My_File, 30, SEEK_SET); <br>
+            fwrite($My_File, "This text should be written at the position 30 ") or die("Could not write to file"); <br>
+            fseek($My_File, 5, SEEK_CUR); <br>
+            fwrite($My_File, "This text should be written at the position 30 + 5 ") or die("Could not write to file");
+            <br>
+            fclose($My_File);
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <div class="Definitions">
+        <ul>
+          <li>Use the file_put_contents function to update a file.</li>
+          <li>It takes two parameters: the name of the file to update and the new content of the file.</li>
+          <li>It returns the number of bytes written to the file if the update succeeds and FALSE if it fails.</li>
+        </ul>
+      </div>
+      <h2 class="Sub_Section_Title">Locking Files for Multiple Acces</h2>
+      <div class="Definitions">
+        <ul>
+          <li>The flock function. This function queues up all other requests to access a file until your program
+            releases the lock.</li>
+          <li>The first call to flock sets an exclusive file lock on the file referred to by $My_File using the
+            LOCK_EX parameter.</li>
+          <li>After that, you release the lock by using the LOCK_UN parameter.</li>
+          <li>The call to request an exclusive lock is nested as part of an if statement. This is because flock is not
+            supported on all systems</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
+            $text = "This is a test that will be written at the end. \n"; <br>
+            if (flock($My_File, LOCK_EX)) { <br>
+            fseek($My_File, 0, SEEK_END); <br>
+            fwrite($My_File, "$text") or die("Could not write to file"); <br>
+            flock($My_File, LOCK_UN); <br>
+            } <br>
+            fclose($My_File); <br>
+            echo "File 'test.txt' successfully updated";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Reading an Entire File</h2>
+      <div class="Definitions">
+        <ul>
+          <li>Use the file_get_contents function to read an entire file.</li>
+          <li>It takes one parameter: the name of the file to read.</li>
+          <li>It returns the contents of the file if the read succeeds and FALSE if it fails.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            echo file_get_contents("https://www.ensia.edu.dz/");
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h2 class="Sub_Section_Title">Uploading Files</h2>
+      <div class="Definitions">
+        <ul>
+          <li>Use the move_uploaded_file function to upload a file.</li>
+          <li>It takes two parameters: the name of the file to upload and the name of the new file.</li>
+          <li>It returns TRUE if the upload succeeds and FALSE if it fails.</li>
+          <li>All uploaded files are placed into the associative system array $_FILES.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          &lt;form method='post' action='index.php' enctype='multipart/form-data'> <br>
+          &lt;label for="File_Input">Select File: &lt;/label> <br>
+          &lt;input type='file' name='filename' size='10' id="File_Input"> <br>
+          &lt;input type='submit' value='Upload'> <br>
+          &lt;/form> <br>
+          <font color="green">
+            &lt;?php <br>
+            if ($_FILES) { // Checks if empty<br>
+            $name = $_FILES['filename']['name']; <br>
+            move_uploaded_file($_FILES['filename']['tmp_name'], $name); <br>
+            echo "Uploaded image '$name'&lt;br>&lt;img src='$name'> &lt;br>"; <br>
+            foreach ($_FILES as $key => $value) { <br>
+            echo " $key : &lt;br>"; <br>
+            foreach ($value as $key2 => $value2) { <br>
+            echo " $key2 : $value2 &lt;br>"; <br>
+            }
+            }
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <form method='post' action='upload.php' enctype='multipart/form-data'>
+            <label for="File_Input">Select File: </label>
+            <input type='file' name='filename' size='10' id="File_Input">
+            <input type='submit' value='Upload'>
+          </form>
+        </div>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Array element</strong></td>
+            <td><strong>Content</strong></td>
+          </tr>
+          <tr>
+            <td><strong>$_FILES['file']['name']</strong></td>
+            <td> The name of the uploaded file</td>
+          </tr>
+          <tr>
+            <td><strong>$_FILES['file']['type']</strong></td>
+            <td> The content type of the file</td>
+          </tr>
+          <tr>
+            <td><strong>$_FILES['file']['size']</strong></td>
+            <td> The file's size in bytes</td>
+          </tr>
+          <tr>
+            <td><strong>$_FILES['file']['tmp_name']</strong></td>
+            <td> The name of the temporary file stored on the server</td>
+          </tr>
+          <tr>
+            <td><strong>$_FILES['file']['error']</strong></td>
+            <td> The error code resulting from the file upload</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h1 class="Section_Title">II. MySQLi</h1>
+      <h4 class="Sub_Section_Title">How Web Database Architectures Work</h4>
+      <div class="Definitions">
+        <img src="SRC/IMAGES/PHP_MySQL.png" alt="PHP_MySQL">
+        <ol>
+          <li>A user's web browser issues an HTTP request for a particular web page (requested a search using an HTML
+            form). The search results page is called action.php.</li>
+          <li>The web server receives the request for results.php, retrieves the file, and passes it to the PHP engine
+            for processing.</li>
+          <li>The PHP engine begins parsing the script. Inside the script is a command to connect to the database and
+            execute a query. PHP opens a connection to the MySQL server and sends on the appropriate query.</li>
+          <li>The MySQL server receives the database query, processes it, and sends the results back to the PHP engine.
+          </li>
+          <li>The PHP engine finishes running the script. This usually involves formatting the query results nicely in
+            HTML. It then returns the resulting HTML to the web server.</li>
+          <li>The web server passes the HTML back to the browser.</li>
+        </ol>
+      </div>
+      <h4 class="Sub_Section_Title">Querying a Database from the Web</h4>
+      <div class="Definitions">
+        In any script used to access a database from the Web, you follow some basic steps: <br>
+        <ol>
+          <li>Check and filter data coming from the user.</li>
+          <li>Set up a connection to the appropriate database.</li>
+          <li>Query the database.</li>
+          <li>Retrieve the results.</li>
+          <li>Present the results back to the user.</li>
+        </ol>
+      </div>
+      <h4 class="Sub_Section_Title">Checking and Filtering Input Data</h4>
+      <div class="Definitions">
+        We begin the script by stripping any whitespace that the user might have inadvertently entered
+        at the beginning or end of his input field. You can do this by applying the function trim(): <br> <br>
+        $My_Variable=trim($_POST['Input_Name']); <br> <br>
+        The next step is to verify that the user has entered somthing. Note that we check whether the user entered a
+        search term after trimming whitespace.
+      </div>
+      <h4 class="Sub_Section_Title">Setting Up a Connection</h4>
+      <div class="Definitions">
+        The basic PHP library for connecting to MySQL is called mysqli. The i stands for improved, as there was an older
+        library called mysql. When using the mysqli library in PHP, you can use either an object-oriented or procedural
+        syntax. <br>
+        You use the following line in the script to connect to the MySQL server: <br> <br>
+        @$db = new mysqli('Server_name', 'User_Name', 'Password', 'Database_Name'); <br> <br>
+        This line instantiates the mysqli class and creates a connection to host Server_name with username User_Name,
+        and password Password. The connection is set up to use the database called Database_Name. <br>
+        To connect in a procedural fashion, you can use: <br><br>
+        @$db = mysqli_connect('Server_name', 'User_Name', 'Password', 'Database_Name'); <br><br>
+        This function returns a resource rather than an object. This resource represents the connection to the database,
+        and if you are using the procedural approach, you will need to pass this resource in to all the other mysqli
+        functions. This is similar to the way the file-handling functions, such as fopen(), work. <br>
+        The procedural version function names start with mysqli_.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            @$My_Connection = new mysqli('localhost', 'root', '', 'my_db'); <br>
+            if (mysqli_connect_errno()) { <br>
+            echo 'Error: Could not connect to database. Please try again later.'; <br>
+            exit; <br>
+            } else { <br>
+            echo 'Connected to database. &lt;br />'; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            @$My_Connection = mysqli_connect('localhost', 'root', '', 'my_db', 3366); <br>
+            if (mysqli_connect_errno()) { <br>
+            echo 'Error: Could not connect to database. Please try again later.'; <br>
+            exit; <br>
+            } else { <br>
+            echo 'Connected to database. Procedural &lt;br />'; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <div class="Definitions">
+        <ul>
+          <li>The result of your attempt at connection is worth checking because none of the rest of code will work
+            without a valid database connection.</li>
+          <li>The mysqli_connect_errno() function returns an error number on error, or zero on success (This code is the
+            same for the object-oriented and procedural versions).</li>
+          <li>Note that when you connect to the database, you begin the line of code with the error
+            suppression operator, @ to handle any errors (This could also be done with exceptions).</li>
+          <li>Bear in mind that there is a limit to the number of MySQL connections that can exist at the
+            same time. The MySQL parameter max_connections determines what this limit is. The purpose
+            of this parameter and the related Apache parameter MaxClients is to tell the server to reject
+            new connection requests instead of allowing machine resources to be completely used up at
+            busy times or when software has crashed.</li>
+          <li>You can alter both of these parameters from their default values by editing the configuration
+            files. To set MaxClients in Apache, edit the httpd.conf file on your system. To set
+            max_connections for MySQL, edit the file my.conf.</li>
+        </ul>
+      </div>
+      <h4 class="Sub_Section_Title">Choosing a Database to Use</h4>
+      <div class="Definitions">
+        If you want to change the default database, you can do so with the mysqli_select_db() function. <br>
+        The procedural version begins with mysqli_ and requires the extra database handle parameter.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_Connection->select_db('my_db2');
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            mysqli_select_db($My_Connection, 'my_db2');
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Querying the Database</h4>
+      <div class="Definitions">
+        To actually perform the query, you can use the mysqli_query() function. Before doing this, however, it's a good
+        idea to set up the query you want to run: <br> <br>
+        $query = "SELECT * FROM user WHERE user.User_ID&lt;=?";
+        <br> <br>
+        The reason we have a question mark in the query is that we're going to use a type of query known as a prepared
+        statement. The question mark is a placeholder. This tells MySQL, "whatever we replace the question mark with
+        should be treated as data only, and not code." <br>
+        Placeholders can only be used for data, and not for column, table, or database names. <br>
+        Remember that the query you send to MySQL does not need a semicolon at the end of it, unlike a query you type
+        into the MySQL monitor. <br>
+        You should not put any quotation marks or other delimiters around these question marks.
+      </div>
+      <h4 class="Sub_Section_Title">Using Prepared Statements</h4>
+      <div class="Definitions">
+        The mysqli library supports the use of prepared statements. These are useful for speeding up execution when you
+        are performing large numbers of the same query with different data. <br>
+        The basic concept of a prepared statement is that you send a template of the query you want to execute to MySQL
+        and then send the data separately. <br>
+        The function $db->prepare(), which is called mysqli_stmt_prepare() in the procedural version. This line
+        constructs a statement object or resource that you will then use to do the actual processing. <br>
+        The statement object has a method called bind_param(). (In the procedural version, it is called
+        mysqli_stmt_bind_param()). The purpose of bind_param() is to tell PHP which variables should be substituted for
+        the question marks. The first parameter is a format string. <br>
+        Other possible characters in the format string are i for integer and b for blob. After this parameter, you
+        should list the same number of variables as you have question marks in your statement. They will be substituted
+        in this order. <br>
+        The call to $stmt->execute() (mysqli_stmt_execute() in the procedural version) actually runs the query.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Number = 10; <br>
+            $stmt = $My_Connection->prepare($query); <br>
+            $stmt->bind_param('i', $Number); <br>
+            $stmt->execute();
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Number = 10; <br>
+            $stmt = mysqli_stmt_init($My_Connection); <br>
+            mysqli_stmt_prepare($stmt, $query); <br>
+            mysqli_stmt_bind_param($stmt, 'i', $Number); <br>
+            mysqli_stmt_execute($stmt);
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Retrieving the Query Results</h4>
+      <div class="Definitions">
+        A large variety of functions is available to break the results out in different ways. <br>
+        As well as binding parameters, you can bind results. For SELECT-type queries, you can use $stmt->bind_result()
+        (or mysqli_stmt_bind_result()) to provide a list of variables that you would like the result columns to be
+        filled into. Each time you call $stmt->fetch() (or mysqli_stmt_fetch()), column values from the next row in the
+        resultset are filled into these bound variables. <br>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $stmt->store_result(); <br>
+            echo "Number of rows found: " . $stmt->num_rows . "&lt;br />"; <br>
+            $stmt->bind_result($User_ID, $Name, $Birthdate, $Address); <br>
+            while ($stmt->fetch()) { <br>
+            echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
+            echo "&lt;br />Name: " . $Name; <br>
+            echo "&lt;br />Birthdate: " . $Birthdate; <br>
+            echo "&lt;br />Address: " . $Address; <br>
+            echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            mysqli_stmt_bind_result($stmt, $User_ID, $Name, $Birthdate, $Address); <br>
+            while (mysqli_stmt_fetch($stmt)) { <br>
+            echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
+            echo "&lt;br />Name: " . $Name; <br>
+            echo "&lt;br />Birthdate: " . $Birthdate; <br>
+            echo "&lt;br />Address: " . $Address; <br>
+            echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <div class="Definitions">
+        If we'd like to get a count of the number of rows returned, we first tell PHP to retrieve and buffer all of the
+        rows returned from the query: $stmt->store_result();
+        When you use the object-oriented approach, the number of rows returned is stored in the num_rows member of the
+        result object. <br>
+        When you use a procedural approach, the function mysqli_num_rows() gives you the number of rows returned by the
+        query. You should pass it the result identifier.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $stmt->store_result(); <br>
+            echo "Number of rows found: " . $stmt->num_rows . "&lt;br />";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            $result = mysqli_stmt_get_result($stmt); <br>
+            $num_results = mysqli_num_rows($result); <br>
+            echo 'Number of records found: ' . $num_results . '&lt;br />';
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <div class="Definitions">
+        There are other approaches to fetching data from a query result other than using mysqli_stmt_fetch(). To use
+        these, first we must extract a result set resource from the statement. You can do this using the
+        mysqli_stmt_get_result() function. <br>
+        This function returns an instance of the mysqli_result object, which itself has a number of useful functions for
+        extracting the data. Probably the most useful are:
+        <ul>
+          <li>mysqli_fetch_array() (and related mysqli_fetch_assoc()), which returns the
+            next row from the result set as an array. The mysqli_fetch_assoc() version uses the
+            column names as keys, although you can also get this behavior from mysqli_fetch
+            _array(). The mysqli_fetch_array() function takes a second parameter for the
+            type of array to return. Passing MYSQLI_ASSOC will get you the column names as keys,
+            passing MYSQLI_NUM will result in numbered keys, and MYSQLI_BOTH will give you an
+            array containing two sets of the data, one with column names as keys and one with
+            numerical keys.</li>
+          <li>mysqli_fetch_all() returns all of the rows returned by the query as an array of arrays
+            where each of the inner arrays is one of the rows returned.</li>
+          <li>mysqli_fetch_object() returns the next row from the result set as an object, where
+            each value is stored in an attribute carrying the name of the column.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">Object-oriented</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            //After execute <br>
+            $result = $stmt->get_result(); <br>
+            while ($row = mysqli_fetch_assoc($result)) { <br>
+            foreach ($row as $key => $value) { <br>
+            echo $key . ' : ' . $value . '&lt;br />'; <br>
+            } <br>
+            echo '---------------------------------&lt;br />'; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Procedural</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            while ($row = mysqli_fetch_assoc($result)) { <br>
+            foreach ($row as $key => $value) { <br>
+            echo $key . ' : ' . $value . '&lt;br />'; <br>
+            } <br>
+            echo '---------------------------------&lt;br />'; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Inserting data into the Database</h4>
+      <div class="Definitions">
+        Inserting new items into the database is remarkably similar to getting items out of the database.
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font>
+            &lt;!DOCTYPE html> <br>
+            &lt;html lang="en"> <br>
+            &lt;head> <br>
+            &lt;meta charset="UTF-8"> <br>
+            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"> <br>
+            &lt;title>Document&lt;/title> <br>
+            &lt;/head> <br>
+            &lt;body> <br>
+            &lt;form action="index.php" method="post"> <br>
+            &lt;label for="Name">Name&lt;/label> <br>
+            &lt;input type="text" name="Name" id="Name"> &lt;br> <br>
+            &lt;label for="Birthdate">Birthdate&lt;/label> <br>
+            &lt;input type="date" name="Birthdate" id="Birthdate"> &lt;br> <br>
+            &lt;label for="Address">Address&lt;/label> <br>
+            &lt;input type="text" name="Address" id="Address"> &lt;br> <br>
+            &lt;input type="submit" value="submit" name="submit"> <br>
+            &lt;/form> <br>
+            &lt;/body> <br>
+            &lt;/html>
+          </font>
+        </div>
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="JS_Code">
+          <font color="green">
+            &lt;?php <br>
+            if (!isset($_POST['Name']) || !isset($_POST['Birthdate']) || !isset($_POST['Address'])) { <br>
+            echo '&lt;h1>Please fill all the fields&lt;/h1>'; <br>
+            exit(); <br>
+            } <br>
+            $Name = $_POST['Name']; <br>
+            $Birthdate = $_POST['Birthdate']; <br>
+            $Address = $_POST['Address']; <br>
+            @$My_Connection = new mysqli('localhost', 'root', '', 'my_db', 3366); <br>
+            $query = "INSERT INTO `user` ( `Name`, `BirthDate`, `Address`) VALUES (?, ?,?)"; <br>
+            $stmt = $My_Connection->prepare($query); <br>
+            $stmt->bind_param('sss', $Name, $Birthdate, $Address); <br>
+            $stmt->execute();
+            <br> ?>
+          </font>
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Disconnecting from the Database</h4>
+      <div class="Definitions">
+        You can free your result set by calling either <br> <br>
+        $result->free(); <br> <br>
+        or <br> <br>
+        mysqli_free_result($result); <br> <br>
+        You can then use <br> <br>
+        $db->close(); <br> <br>
+        or <br> <br>
+        mysqli_close($db); <br> <br>
+        to close a database connection. Using this command isn't strictly necessary because the <br>
+        connection will be closed when a script finishes execution anyway.
+      </div>
+    </section>
+    <section>
+      <h1 class="Section_Title">III. PDO</h1>
+      <h4 class="Sub_Section_Title">Setting Up a Connection</h4>
+      <div class="Definitions">
+        <ul>
+          <li>When you create a new PDO object, you pass it the connection details for the database you want to connect
+            to.</li>
+          <li>The first parameter is a string containing the database type, the host name, and the database name (dsn or
+            Data Source Name).</li>
+          <li>The second parameter is the username for the database.</li>
+          <li>The third parameter is the password for the database.</li>
+          <li>The fourth parameter is an array of options. You can use this to set the error mode and other options.
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            try { <br>
+            $Connection = new PDO("mysql:host=localhost;dbname=my_db;port=3366", "root", ""); <br>
+            echo "Connected successfully"; <br>
+            } catch (PDOException $e) { <br>
+            throw new PDOException($e->getMessage(), (int)$e->getCode()); <br>
+            }
+            <br> ?>
+
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Connected successfully
+          OR <br> <br>
+          Any error that may occur while connecting to the database.
+
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Querying the Database</h4>
+      <div class="Definitions">
+        <ul>
+          <li>Use the query function to query the database.</li>
+          <li>It takes one parameter: the query to run.</li>
+          <li>It returns a PDOStatement object if the query succeeds and FALSE if it fails.</li>
+          <li>The query function prepares and executes an SQL statement without placeholders </li>
+          <li>Once you have an object returned in $result, you can use it to extract the data you want, one item at a
+            time, using the fetch method of the object. The fetch method can return data in various styles, including
+            the following:
+            <ul>
+              <li><strong>PDO::FETCH_ASSOC </strong>Returns the next row as an array indexed by column name.</li>
+              <li><strong>PDO::FETCH_BOTH (default) </strong>Returns the next row as an array indexed by both column
+                name and number.</li>
+              <li><strong>PDO::FETCH_LAZY </strong>Returns the next row as an anonymous object with names as properties.
+              </li>
+              <li><strong>PDO::FETCH_OBJ </strong>Returns the next row as an anonymous object with column name as
+                properties.</li>
+              <li><strong>PDO::FETCH_NUM </strong>Returns an array indexed by column number.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $query = "SELECT * FROM User where User_Id&lt;=10"; <br>
+            $result = $Connection->query($query); <br>
+            while ($row = $result->fetch()) { <br>
+            echo 'Name: ' . htmlspecialchars($row['Name']) . "&lt;br>"; <br>
+            echo 'Birthdate: ' . htmlspecialchars($row['BirthDate']) . "&lt;br>"; <br>
+            echo 'Address: ' . htmlspecialchars($row['Address']) . "&lt;br>"; <br>
+            echo "---------------------------------------------&lt;br />"; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h4 class="Sub_Section_Title">Using Prepared Statements</h4>
+      <div class="Definitions">
+        The prepare function is used to prepare a statement for execution and returns a statement object. <br>
+        It takes one parameter: the query to prepare. <br>
+        The bindParam function is used to bind a parameter to the specified variable name. <br>
+        The first argument to bindParam is a number representing the position in the query
+        string of the value to insert (in other words, which question mark placeholder is
+        being referred to). This is followed by the variable that will supply the data for that
+        placeholder, and then the type of data the variable must be, and, if a string, another
+        value follows stating its maximum length. <br>
+        At this point, PHP has everything it needs to execute the prepared statement, so you
+        can issue the following command, which calls the execute method of the $stmt
+        object created earlier, passing the values to be inserted in the form of an array. <br>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Number = 10; <br>
+            $query = "SELECT * FROM User where User_Id &lt;=?"; <br>
+            $stmt=$Connection->prepare($query); <br>
+            $stmt->bindParam(1, $Number, PDO::PARAM_INT); <br>
+            $stmt->execute([$Number]); <br>
+            echo "Number of rows: " . $stmt->rowCount() . "&lt;br>"; <br>
+            while ($My_Results = $stmt->fetch(PDO::FETCH_ASSOC)) { <br>
+            echo 'Name: ' . htmlspecialchars($My_Results['Name']) . "&lt;br>"; <br>
+            echo 'Birthdate: ' . htmlspecialchars($My_Results['BirthDate']) . "&lt;br>"; <br>
+            echo 'Address: ' . htmlspecialchars($My_Results['Address']) . "&lt;br>"; <br>
+            echo "---------------------------------------------&lt;br />"; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+
+
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="OOPHP.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Object-oriented PHP</h1>
+    </a>
+    <a href="Sessions_Cookies.html" class="Arrow">
+      <h1>Sessions & Cookies</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

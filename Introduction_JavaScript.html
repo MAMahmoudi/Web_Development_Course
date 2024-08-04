@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Introduction_JavaScript.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Introduction to JavaScript</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Introduction to JavaScript</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          To call JavaScript code, you place it between opening <font color="blue">&lt;script&gt;</font> and closing
+          <font color="blue">&lt;/script&gt;</font> HTML tags. <br><br>
+          There is no trailing semicolon (;) because a newline serves the same purpose as a semicolon in JavaScript.
+          However, if you wish to have more than one statement on a single line, you do need to place a semicolon after
+          each command except the last one. <br><br>
+          In addition to placing a script within the body of a document, you can put it in the <font color="blue">
+            &lt;head&gt;</font> section, which is
+          the ideal place if you wish to execute a script when a page loads. <br><br>
+          You can include files of JavaScript code either from your website or from anywhere on the internet: <br><br>
+          <font color="blue">&lt;script type="text/javascript" src="./path/script.js"&gt;</font>
+          <font color="blue">&lt;/script&gt;</font> <br><br>
+          <font color="blue">&lt;script src="http://My_Server.dz/script.js"&gt;</font>
+          <font color="blue">&lt;/script&gt;</font> <br><br>
+        </p>
+      </div>
+    </section>
+    <section id="Variables">
+      <h2 class="Section_Title">I. Variables</h2>
+      <div class="Definitions">
+        <ul>
+          <li>A variable may include only the letters a-z, A-Z, 0-9, the $ symbol, and the
+            underscore (_).</li>
+          <li>No other characters, such as spaces or punctuation, are allowed in a variable
+            name.</li>
+          <li>The first character of a variable name can be only a-z, A-Z, $, or _ (no numbers).</li>
+          <li>Names are case-sensitive. Count, count, and COUNT are all different variables.</li>
+          <li>There is no set limit on variable name lengths.</li>
+        </ul>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Variable</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Example</strong></td>
+          </tr>
+          <tr>
+            <td><strong>var</strong></td>
+            <td>Used to initialize to value, redeclared and its value can be reassigned.</td>
+            <td>var x= value;</td>
+          </tr>
+          <tr>
+            <td><strong>let</strong></td>
+            <td>Similar to var but is block scoped</td>
+            <td>let y= value;</td>
+          </tr>
+          <tr>
+            <td><strong>const</strong></td>
+            <td>Used to declare a fixed value that cannot be changed.</td>
+            <td>const z= value;</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="Datatypes">
+      <h2 class="Section_Title">II. Datatypes</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Datatype</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Example</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Number</strong></td>
+            <td>Numeric values can be real number or integers.</td>
+            <td>var x= number;</td>
+          </tr>
+          <tr>
+            <td><strong>String</strong></td>
+            <td>Series of multiple characters written in quotes.</td>
+            <td>var x= “characters”;</td>
+          </tr>
+          <tr>
+            <td><strong>Boolean</strong></td>
+            <td>Has only two values true or false.</td>
+            <td>var x= true/false;</td>
+          </tr>
+          <tr>
+            <td><strong>Null</strong></td>
+            <td>Special value that represents that the variable is empty.</td>
+            <td>var x= null;</td>
+          </tr>
+          <tr>
+            <td><strong>Undefined</strong></td>
+            <td>Represents a variable which is declared but not assigned any value.</td>
+            <td>let x; / let x= undefined;</td>
+          </tr>
+          <tr>
+            <td><strong>Object</strong></td>
+            <td>Complex data type that allows us to store a collection of data.</td>
+            <td>var x= {<br>&nbsp; &nbsp; key: “value”;<br>&nbsp; &nbsp; key: “value”;<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>Array</strong></td>
+            <td>Stores multiple values of same type in a single variable.</td>
+            <td>
+              <p>var x =['y1', 'y2','y3','y4'];</p>
+              <p>y: any datatype</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Function</strong></td>
+            <td>Functions are objects that can be called to execute a block of code.</td>
+            <td>
+              <p>function x(arguments){</p>
+              <p>&nbsp; &nbsp; block of code</p>
+              <p>}</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="Operators">
+      <h2 class="Section_Title">III. Operators</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Operators</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Symbols</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Arithmetic</strong> </td>
+            <td>Used to perform basic arithmetic operations on variables(operands).</td>
+            <td>+ Addition j <br>
+              - Subtraction <br>
+              * Multiplication <br>
+              / Division j / 3.13
+              % Modulus (division remainder) <br>
+              ++ Increment <br>
+              -- Decrement</td>
+          </tr>
+          <tr>
+            <td><strong>Comparison</strong></td>
+            <td>Comparison operator is used to compare two operands.</td>
+            <td>
+              == Is equal to <br>
+              != Is not equal to <br>
+              &gt; Is greater than <br>
+              &lt; Is less than <br>
+              >= Is greater than or equal to <br>
+              &lt;= Is less than or equal to <br>
+              === Is equal to (and of the same type) <br>
+              !== Is not equal to (and of the same type)</td>
+          </tr>
+          <tr>
+            <td><strong>Bitwise</strong></td>
+            <td>Used to perform bitwise operations.</td>
+            <td>&amp;, | , ^,~,&lt;&lt;, &gt;&gt;, &gt;&gt;&gt;</td>
+          </tr>
+          <tr>
+            <td><strong>Logical</strong></td>
+            <td>
+              <p>There are three logical operators in javascript.</p>
+              <ul>
+                <li>logical AND: When all the operands are true.</li>
+                <li>logical OR: When one or more than one operands are true.</li>
+                <li>logical NOT: Converts true to false.</li>
+              </ul>
+            </td>
+            <td>&& And <br>
+              || Or <br>
+              ! Not
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Assignment</strong></td>
+            <td>Assignment operators assign values to JavaScript variables.</td>
+            <td>= <br> += <br> -= <br> *= <br> /= <br> %=</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="Scope">
+      <h2 class="Section_Title">IV. Scope</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>scope</strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>function</strong></td>
+            <td>Variables declared inside a function is inside the function scope also known as local scope. <br><br>
+              Parameters passed to a function automatically have local scope. <br><br>
+              To define a local variable that has scope only within the current function, and has not been passed as a
+              parameter, use the var keyword.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>global</strong></td>
+            <td>The variables in global scope can be accessed from anywhere in the program. <br><br>
+              Global variables are ones defined outside of any functions (or defined within functions but without the
+              var keyword).
+            </td>
+          </tr>
+          <tr>
+            <td><strong>block</strong></td>
+            <td>Block scope restricts the access of a variable outside its scope</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="Definitions">
+        <p>
+          With the let keyword you cannot redeclare a variable once you have done so with let. <br><br>
+          let keyword is either globally or block scoped, and variables are not initialized. <br><br>
+          Any variable assigned using let has scope either within the entire document if declared outside of any block,
+          or, if declared within a block bounded by {} (which includes functions), its scope is limited to that block
+          (and any nested sub-blocks).
+        </p>
+        <p>
+          If you use the const keyword to declare the variable and assign its value, any attempt to change the value
+          later will be disallowed. <br><br>
+          const declarations are also block scoped (within {} sections and any sub-blocks) <br><br>
+        </p>
+        <p>
+          In summary: var has global or function scope, and let and const have global or
+          block scope. Both var and let can be declared without being initialized,
+          while const must be initialized during declaration. The var keyword can be reused to
+          re-declare a var variable, but let and const cannot. Finally, const can neither be
+          redeclared nor reassigned.
+        </p>
+      </div>
+    </section>
+
+    <section id="Functions">
+      <h2 class="Section_Title">V. Functions</h2>
+      <div class="Definitions">
+        <p>
+          The general syntax for a function is: <br><br>
+          function function_name([parameter [, ...]]) <br>
+          { <br>&nbsp;
+          statements <br>
+          } <br>
+        </p>
+        <p>
+        <ul>
+          <li>A definition starts with the word function.</li>
+          <li>A name follows that must start with a letter or underscore, followed by any number of letters, digits,
+            dollar signs, or underscores.</li>
+          <li>The parentheses are required.</li>
+          <li>One or more parameters, separated by commas, are optional</li>
+        </ul>
+        Function names are case-sensitive.
+        </p>
+        <p>
+          The opening curly brace starts the statements that will execute when you call the
+          function; a matching curly brace must close it. These statements may include one or
+          more return statements, which force the function to cease execution and return to
+          the calling code. If a value is attached to the return statement, the calling code can
+          retrieve it.
+        </p>
+      </div>
+    </section>
+
+    <section id="Arrays">
+      <h2 class="Section_Title">VI. Arrays</h2>
+      <div class="Definitions">
+        <p>
+          To create a new array, use the following syntax: <br> <br>
+          arrayname = new Array() <br> <br>
+          Or you can use the shorthand form, as follows: <br> <br>
+          arrayname = [] <br> <br>
+          arrayname[0] = value_1 <br> <br>
+          You can also create an array together with some initial elements by using the Array keyword, like this: <br>
+          <br>
+          Team_G_12_1 = Array("Omar", "Kamel", "Manel", "Nour", "Hana", "Sami", "Sara") <br> <br>
+          There is nothing stopping you from adding more elements afterward as well. <br> <br>
+        </p>
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Method</strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>push()</strong></td>
+            <td>Adds a new element at the very end of an array.</td>
+          </tr>
+          <tr>
+            <td><strong>pop()</strong></td>
+            <td>Removes the last element of an array.</td>
+          </tr>
+          <tr>
+            <td><strong>concat()</strong>
+            </td>
+            <td>Joins various arrays into a single array.</td>
+          </tr>
+          <tr>
+            <td><strong>shift()</strong></td>
+            <td>Removes the first element of an array</td>
+          </tr>
+          <tr>
+            <td><strong>unShift()</strong>
+            </td>
+            <td>Adds new elements at the beginning of the array</td>
+          </tr>
+          <tr>
+            <td><strong>reverse()</strong>
+            </td>
+            <td>Reverses the order of the elements in an array.</td>
+          </tr>
+          <tr>
+            <td><strong>slice()</strong></td>
+            <td>Pulls a copy of a part of an array into a new array.</td>
+          </tr>
+          <tr>
+            <td><strong>splice()</strong>
+            </td>
+            <td>Adds elements in a particular way and position.</td>
+          </tr>
+          <tr>
+            <td><strong>toString()</strong>
+            </td>
+            <td>Converts the array elements into strings.</td>
+          </tr>
+          <tr>
+            <td><strong>valueOf()</strong>
+            </td>
+            <td>Returns the primitive value of the given object.</td>
+          </tr>
+          <tr>
+            <td><strong>indexOf()</strong>
+            </td>
+            <td>Returns the first index at which a given element is found.</td>
+          </tr>
+          <tr>
+            <td><strong>lastIndexOf()</strong>
+            </td>
+            <td>Returns the final index at which a given element appears.</td>
+          </tr>
+          <tr>
+            <td><strong>join()</strong></td>
+            <td>Combines elements of an array into one single string and then returns it</td>
+          </tr>
+          <tr>
+            <td><strong>sort()</strong></td>
+            <td>Sorts the array elements based on some condition.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <section id="Loops">
+      <h2 class="Section_Title">VII. Loops</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Loop</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Syntax</strong></td>
+          </tr>
+          <tr>
+            <td><strong>for</strong></td>
+            <td>Loops over a block of with conditions specified in the beginning.</td>
+            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
+              statement(s)<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>while</strong></td>
+            <td>Entry control loop which executes after checking the condition.</td>
+            <td>while (boolean condition)<br>{<br>&nbsp; &nbsp; loop statements…<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>do-while</strong>
+            </td>
+            <td>Exit Control Loop which executes once before checking the condition.</td>
+            <td>
+              <p>do<br>{<br>&nbsp; &nbsp; statements..<br>}</p>
+              <p>while (condition);</p>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>for-in</strong></td>
+            <td>Another version of for loop to provide a simpler way to iterate.</td>
+            <td>for (variableName in Object)<br>{<br>&nbsp; &nbsp; statement(s)<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>break</strong></td>
+            <td>Breaks out from a loop.</td>
+            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
+              statement(s)<br>&nbsp; &nbsp;
+              if (found) break;<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>continue</strong></td>
+            <td>Sometimes you don't want to entirely exit from a loop but instead wish to skip the <br>
+              remaining statements just for this iteration of the loop. In such cases, you can use the <br>
+              continue command</td>
+            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
+              statement(s)<br>&nbsp; &nbsp;
+              if (not found) continue;<br>&nbsp; &nbsp;
+              statement(s)<br>
+              }</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="If_else">
+      <h2 class="Section_Title">VIII. Conditionals</h2>
+      <div class="Definitions">
+        <p>
+          There are three types of nonlooping conditionals: the if statement, the switch statement, and the ? operator.
+        </p>
+      </div>
+
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Conditionals</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Syntax</strong></td>
+          </tr>
+          <tr>
+            <td><strong>if...else</strong></td>
+            <td>
+              The code within such a statement is executed only if the given expression evaluates to true. <br>
+              When a condition has not been met, you can execute an alternative by using an else statement. <br>
+              JavaScript has no elseif statement.
+            </td>
+            <td>if (Condition)<br>{<br>&nbsp; &nbsp;
+              statement(s)<br>}
+              else{ <br>&nbsp; &nbsp; statement(s)<br>}</td>
+          </tr>
+          <tr>
+            <td><strong>switch</strong></td>
+            <td>The switch statement is useful when one variable or the result of an expression can have multiple values
+              <br>
+              and you want to perform a different function for each value. <br>
+              The break command allows your code to break out of the switch statement once a condition has been <br>
+              satisfied. <br>
+              When no condition is satisfied, you can specify a default action for a switch statement <br>
+              by using the default keyword.
+            </td>
+            <td>
+              switch (variable) <br>
+              {<br>&nbsp; &nbsp;
+              case value_1: <br>&nbsp; &nbsp;&nbsp; &nbsp;
+              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
+              break <br>&nbsp; &nbsp;
+              case value_2: <br>&nbsp; &nbsp;&nbsp; &nbsp;
+              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
+              break <br>&nbsp; &nbsp;
+              default: <br>&nbsp; &nbsp;&nbsp; &nbsp;
+              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
+              break <br>
+              }
+              <br>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>The ? Operator</strong>
+            </td>
+            <td>The ternary operator (?), combined with the : character, provides a quick way of
+              doing if...else tests. <br> With it you can write an expression to evaluate and then follow
+              it with a ? symbol and the code to execute if the expression is true. <br> After that,
+              place a : and the code to execute if the expression evaluates to false.
+            </td>
+            <td>
+              <p> Variable = Condition ? value if true : value if false</p>
+              <br>
+              EX: Pass = (Exam >= 10) ? true : false;
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="Strings">
+      <h2 class="Section_Title">IX. Strings</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Methods</strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>concat()</strong>
+            </td>
+            <td>Used for concatenating multiple strings into a single string.</td>
+          </tr>
+          <tr>
+            <td><strong>match()</strong></td>
+            <td>Used for finding matche of a string against a provided pattern.</td>
+          </tr>
+          <tr>
+            <td><strong>replace()</strong>
+            </td>
+            <td>Used for finding and replacing a given text in string.</td>
+          </tr>
+          <tr>
+            <td><strong>substr()</strong></td>
+            <td>Used to extract length characters from a given string.</td>
+          </tr>
+          <tr>
+            <td><strong>slice()</strong></td>
+            <td>Used for extracting an area of the string and returs it</td>
+          </tr>
+          <tr>
+            <td><strong>lastIndexOf()</strong>
+            </td>
+            <td>Used to return the index (position) of the last occurrence of a specified value.</td>
+          </tr>
+          <tr>
+            <td><strong>charAt()</strong>
+            </td>
+            <td>Used for returning the character at a particular index of a string</td>
+          </tr>
+          <tr>
+            <td><strong>valueOf()</strong></td>
+            <td>Used for returning the primitive value of a string object.</td>
+          </tr>
+          <tr>
+            <td><strong>split()</strong>
+            </td>
+            <td>Used for splitting a string object into an array of strings.</td>
+          </tr>
+          <tr>
+            <td><strong>toUpperCase()</strong>
+            </td>
+            <td>Used for converting strings to upper case.</td>
+          </tr>
+          <tr>
+            <td><strong>toLoweCase()</strong>
+            </td>
+            <td>Used for converting strings to lower case.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+    <section id="Math">
+      <h2 class="Section_Title">X. Numbers and maths</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Method</strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>max(x,y,z…n)</strong>
+            </td>
+            <td>Returns the highest-valued number</td>
+          </tr>
+          <tr>
+            <td><strong>min(x,y,z…n)</strong>
+            </td>
+            <td>Returns the lowest-valued number</td>
+          </tr>
+          <tr>
+            <td><strong>exp(x)</strong></td>
+            <td>Returns x's exponential value.</td>
+          </tr>
+          <tr>
+            <td><strong>log(x)</strong></td>
+            <td>Returns the natural logarithm (base E) of x.</td>
+          </tr>
+          <tr>
+            <td><strong>sqrt(x)</strong></td>
+            <td>Returns x's square root value.</td>
+          </tr>
+          <tr>
+            <td><strong>pow(x,y)</strong></td>
+            <td>Returns the value of x to the power of y</td>
+          </tr>
+          <tr>
+            <td><strong>round(x)</strong>
+            </td>
+            <td>Rounds the value of x to the nearest integer</td>
+          </tr>
+          <tr>
+            <td><strong>sin(x)</strong></td>
+            <td>Finds the sine value of x(x is in radians).</td>
+          </tr>
+          <tr>
+            <td><strong>tan(x)</strong></td>
+            <td>Finds the angle's(x) tangent value.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="CSS_Layout.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>CSS Layout</h1>
+    </a>
+    <a href="DOM.html" class="Arrow">
+      <h1>The Document Object Model</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

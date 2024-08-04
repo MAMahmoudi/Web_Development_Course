@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Sessions, Cookies, and Authentification</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Sessions, Cookies, and Authentification</h1>
+    <div class="Definitions">
+      <ul>
+        <li>HTTP is a stateless protocol, which means that each request is independent of the others. This is
+          fine for most web pages, but it can be a problem if you want to keep track of users as they move
+          around your site. For example, you might want to keep track of users so that you can:
+          <ol>
+            <li>Personalize the content of your site for them</li>
+            <li>Keep track of their shopping carts</li>
+            <li>Keep track of their progress through a multi-page form</li>
+            <li>Keep track of their login status</li>
+          </ol>
+        </li>
+        <li>PHP provides three ways to keep track of users:
+          <ol>
+            <li>Using cookies</li>
+            <li>Using sessions</li>
+            <li>Using HTTP authentication</li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <h1 class="Title">Cookies</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>A cookie is an item of data that a web server saves to your computer's hard disk via a
+            web browser.</li>
+          <li>It can contain almost any alphanumeric information (as long as it's
+            under 4 KB) and can be retrieved from your computer and returned to the server</li>
+          <li>Because of their privacy implications, cookies can be read only from the issuing
+            domain.</li>
+          <li>
+            Third-party cookies are cookies that are set by a domain other than the one you are currently
+            visiting. For example, if you visit a site that has a Facebook Like button, Facebook will set a
+            cookie on your computer. This cookie will be sent to Facebook when you visit other sites that
+            have Facebook Like buttons. This allows Facebook to track your browsing habits across the
+            web.
+          </li>
+          <li>Cookies are exchanged during the transfer of headers, before the actual HTML of a
+            web page is sent, and it is impossible to send a cookie once any HTML has been
+            transferred.</li>
+        </ul>
+      </div>
+      <img src="SRC/IMAGES/Cookies.png" alt="Cookies" class="Smaller_Image">
+      <div class="Definitions">
+        This exchange shows a browser receiving two pages:
+        <ol>
+          <li>The browser issues a request to retrieve the main page, index.html, at the website
+            http://www.webserver.com. The first header specifies the file, and the second
+            header specifies the server.</li>
+          <li>When the web server at webserver.com receives this pair of headers, it returns
+            some of its own. The second header defines the type of content to be sent (text/
+            html), and the third one sends a cookie of the name name and with the value
+            value. Only then are the contents of the web page transferred.</li>
+          <li>Once the browser has received the cookie, it will then return it with every future
+            request made to the issuing server until the cookie expires or is deleted. So, when
+            the browser requests the new page /news.html, it also returns the cookie name
+            with the value value.</li>
+          <li>Because the cookie has already been set, when the server receives the request to
+            send /news.html, it does not have to resend the cookie but just returns the requested
+            page.</li>
+        </ol>
+      </div>
+    </section>
+    <h1 class="Section_Title">Setting a Cookie</h1>
+    <section>
+      <div class="Definitions">
+        setcookie(name, value, expire, path, domain, secure, httponly);
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Parameter</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Example</strong></td>
+          </tr>
+          <tr>
+            <td>name </td>
+            <td>The name of the cookie. This is the name that your server will use to access the
+              cookie on subsequent browser requests.</td>
+            <td>location</td>
+          </tr>
+          <tr>
+            <td>value </td>
+            <td>The value of the cookie, or the cookie's contents. This can contain up to 4 KB of
+              alphanumeric text.</td>
+            <td>Algeria</td>
+          </tr>
+          <tr>
+            <td>expire </td>
+            <td>(Optional.) The Unix timestamp of the expiration date. Generally, you will probably
+              use time() plus a number of seconds. If not set, the cookie expires when the
+              browser closes.</td>
+            <td>time() + 2592000</td>
+          </tr>
+          <tr>
+            <td>path </td>
+            <td>(Optional.) The path of the cookie on the server. If this is a / (forward slash), the
+              cookie is available over the entire domain, such as www.webserver.com. If it is a
+              subdirectory, the cookie is available only within that subdirectory. The default is
+              the current directory that the cookie is being set in, and this is the setting you will
+              normally use.</td>
+            <td>/</td>
+          </tr>
+          <tr>
+            <td>domain </td>
+            <td>(Optional.) The internet domain of the cookie. If this is webserver.com, the cookie is
+              available to all of webserver.com and its subdomains, such as www.webserver.com
+              and images.webserver.com. If it is images.webserver.com, the cookie is available
+              only to images.webserver.com and its subdomains, such as
+              sub.images.webserver.com, but not, say, to www.webserver.com.</td>
+            <td>webserver.com</td>
+          </tr>
+          <tr>
+            <td>secure </td>
+            <td>(Optional.) Whether the cookie must use a secure connection (https://). If this value
+              is TRUE, the cookie can be transferred only across a secure connection. The default
+              is FALSE.</td>
+            <td>FALSE</td>
+          </tr>
+          <tr>
+            <td>httponly </td>
+            <td>(Optional; implemented since PHP version 5.2.0.) Whether the cookie must use the
+              HTTP protocol. If this value is TRUE, scripting languages such as JavaScript cannot
+              access the cookie. The default is FALSE.</td>
+            <td>FALSE</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            setcookie('location', 'Algeria', time() + 60 * 60 * 24 * 7, '/');
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p>Create a cookie with the name location and the value Algeria that is accessible
+            across the entire web server on the current domain, and will be removed from the
+            browser's cache in seven days</p>
+        </div>
+      </div>
+    </section>
+    <h1 class="Section_Title">Accessing a Cookie</h1>
+    <section>
+      <div class="Definitions">
+
+        <ul>
+          <li>Reading the value of a cookie is as simple as accessing the $_COOKIE system array.</li>
+          <li>Note that you can read a cookie back only after it has been sent to a web browser.
+            This means that when you issue a cookie, you cannot read it in again until the
+            browser reloads the page (or another with access to the cookie) from your website
+            and passes the cookie back to the server in the process.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            if (isset($_COOKIE['location'])) <br> $location = $_COOKIE['location'];
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p>Checks if the current browser has the cookie called
+            location already stored and, if so, to read its value.</p>
+        </div>
+      </div>
+    </section>
+    <h1 class="Section_Title">Destroying a Cookie</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>To destroy a cookie, you must set it to a date in the past. This will cause the browser to
+            delete the cookie.</li>
+          <li>It is important to note that you cannot destroy a cookie by unsetting it from the $_COOKIE
+            array. This will simply remove the cookie from the array, but the browser will still have it
+            stored.</li>
+          <li>It is important for all parameters in your new setcookie call except the timestamp to be identical to
+            the parameters when the cookie was first issued; otherwise, the deletion will fail.</li>
+          <li>You may also provide an empty string for the
+            cookie value (or a value of FALSE), and PHP will automatically set its time in the past
+            for you.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            setcookie('location', '', time() - 3600, '/');
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p>Destroy the cookie called location by setting it to a date in the past.</p>
+        </div>
+      </div>
+      <a href="https://github.com/ENSIA-AI/Web_Development_2023/tree/main/SRC/Cookies">
+        <h1>See code example</h1>
+      </a>
+    </section>
+    <h1 class="Title">Sessions</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>
+            These are groups of variables that are stored on the server but relate only to the current user.
+          </li>
+          <li>
+            To ensure that the right variables are applied to the right users, PHP saves a cookie in the users’ web
+            browsers to uniquely identify them. This cookie is called the session ID.
+          </li>
+          <li>This cookie has meaning only to the web server and cannot be used to ascertain any information about a
+            user.</li>
+        </ul>
+      </div>
+    </section>
+    <h1 class="Section_Title">Implementing Simple Sessions</h1>
+    <section>
+      <div class="Definitions">
+        The basic steps of using sessions in PHP are:
+        <ol>
+          <li>Starting a session</li>
+          <li>Registering session variables</li>
+          <li>Using session variables</li>
+          <li>Deregistering variables and destroying the session</li>
+        </ol>
+      </div>
+    </section>
+    <h1 class="Section_Title">Starting a session</h1>
+    <section>
+      <div class="Definitions">
+        There are two ways you can do this:
+        <ol>
+          <li>The first, and simplest, is to begin a script with a call to the session_start() function. <br>
+            This function checks to see whether there is already a current session. If not, it will create
+            one, providing access to the superglobal $_SESSION array. If a session already exists,
+            session_start() loads the registered session variables so that you can use them.
+          </li>
+          <li>
+            The second way you can begin a session is to set PHP to start one automatically when someone
+            comes to your site. You can do this by using the session.auto_start option in your php.ini
+            file. <br>
+            This option is set to 0 by default, which means that sessions are not started automatically.
+            If you set it to 1, sessions will be started automatically (<a href="https://php.net/session.auto-start">See
+              doc</a>). <br>
+            This is not recommended, however, because it can cause problems if you have a lot of traffic on your site.
+            It is better to start sessions only when you need them. <br>
+            Note: If you are using a hosting service, you may not have access to the php.ini file. In that
+            case, you will have to use the first method.
+
+          </li>
+        </ol>
+
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            session_start();
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          This will start a session.
+        </div>
+      </div>
+    </section>
+    <h1 class="Section_Title">Registering session variables</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>Session variables are stored in the superglobal $_SESSION array. To
+            create a session variable, you simply set an element in this array.</li>
+          <li>The session variable you have just created will be tracked until the session ends or until you
+            manually unset it. The session may also naturally expire based on the session.gc_maxlifetime
+            setting in the php.ini file. This setting determines the amount of time (in seconds) that a session
+            will last before it is ended by the garbage collector. By default, this is set to 1440 seconds (24
+            minutes).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $_SESSION['myvar'] = "Any value you want";
+            <br> ?>
+
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+
+
+        </div>
+      </div>
+    </section>
+    <h1 class="Section_Title">Using session variables</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>To bring session variables into scope so that they can be used, you must first start a session
+            calling session_start(), as previously mentioned. You can then access the variable via the
+            $_SESSION superglobal array—for example, as $_SESSION['myvar'].</li>
+          <li>You need to check whether session variables have been set (via, say, isset() or empty()).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            // Another page <br>
+            session_start(); <br>
+            if (isset($_SESSION['myvar'])) <br>
+            { <br>
+            echo $_SESSION['myvar']; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Any value you want
+        </div>
+      </div>
+    </section>
+    <h1 class="Section_Title">Deregistering variables and destroying the session</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>When you are finished with a session variable, you can unset it. You can do this directly by
+            unsetting the appropriate element of the $_SESSION array.</li>
+          <li>You should not try to unset the whole $_SESSION array because doing so will effectively disable
+            sessions.</li>
+          <li>When you are finished with a session, you should first unset all the variables and then call
+            session_destroy() to clean up the session ID.</li>
+        </ul>
+        <h3>Setting a Timeout</h3>
+        <ul>
+          <li>
+            There are other times when you might wish to close a user's session yourself, such as
+            when the user has forgotten or neglected to log out, and you want the program to do
+            so for them for their own security. You do this by setting the timeout after which a
+            logout will automatically occur if there has been no activity.</li>
+          <li>
+            To do this, use the ini_set function as follows. This example sets the timeout to
+            exactly one day (the letters gc standing for garbage collection): <br>
+            <font color="green">ini_set('session.gc_maxlifetime', 60 * 60 * 24);</font>
+          </li>
+          <li>
+            If you wish to know what the current timeout period is, you can display it using the following: <br>
+            <font color="green">echo ini_get('session.gc_maxlifetime');</font>
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            //unset a single variable <br>
+            unset($_SESSION['myvar']); <br>
+            /*To unset all the session variables at once, you can clear out the existing elements in the $_SESSION
+            superglobal. */<br>
+            $_SESSION = array(); <br>
+            //To destroy the session. <br>
+            session_destroy();
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <a href="https://github.com/ENSIA-AI/Web_Development_2023/tree/main/SRC/Session">
+        <h1>See code example</h1>
+      </a>
+    </section>
+    <h1 class="Title">HTTP Authentication</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>HTTP authentication uses the web server to manage users and passwords for the
+            application. It's adequate for simple applications that ask users to log in, although
+            most applications will have specialized needs or more stringent security requirements
+            that call for other techniques.</li>
+          <li>To use HTTP authentication, PHP sends a header request asking to start an authentication
+            dialog with the browser. The server must have this feature turned on in order
+            for it to work.</li>
+          <li>
+            Basic realm is the name of the section that is protected and appears as part of the pop-up prompt.
+          </li>
+          <li>Once a user has been authenticated, you will not be able to get the
+            authentication dialog to pop up again unless the user closes and
+            reopens all browser windows, because the web browser will keep
+            returning the same username and password to PHP.</li>
+          <li>HTTP authentication is not secure. The username and password are sent in plain text, so
+            anyone who can intercept the request can read them. You should use HTTP authentication
+            only over a secure connection (https://).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $username = 'admin'; <br>
+            $password = '123'; <br>
+            if (
+            isset($_SERVER['PHP_AUTH_USER']) && <br>
+            isset($_SERVER['PHP_AUTH_PW'])
+            ) { <br>
+            if (
+            $_SERVER['PHP_AUTH_USER'] === $username && <br>
+            $_SERVER['PHP_AUTH_PW'] === $password
+            ) <br>
+            echo "You are now logged in"; <br>
+            else die("Invalid username/password combination"); <br>
+            } else { <br>
+            header('WWW-Authenticate: Basic realm="Restricted Area"'); <br>
+            header('HTTP/1.0 401 Unauthorized'); <br>
+            die("Please enter your username and password"); <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="PHP_MySQL.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Storing data with PHP</h1>
+    </a>
+    <a href="Security.html" class="Arrow">
+      <h1>Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

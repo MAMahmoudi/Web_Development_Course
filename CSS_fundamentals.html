@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/CSS_fundamentals.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>CSS fundamentals</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">CSS fundamentals</h1>
+    <section>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; link rel="stylesheet" href="SRC/CSS/Styles.css" /&gt;</font> <br><br>
+          <h1>OR</h1>
+          <font color="blue">&lt; style type="text/css" &gt;</font> <br>
+          <font color="green">body</font>
+          { <br>
+          <font color="green">font-family</font>: arial;<br>
+          <font color="green">background-color</font>: rgb(185,179,175);<br>
+          } <br>
+          <font color="green">h1</font>
+          { <br>
+          <font color="green">color</font>: rgb(255,255,255);<br>
+          } <br>
+          <font color="blue">&lt;/style &gt;</font>
+
+        </div>
+        <h2 class="Code_Tag">Styles.css</h2>
+        <div class="CSS_Code">
+          <font color="green">.Selector</font> <br>
+          { <br>
+          <font color="green">Property</font>: Value; /* This is a CSS rule */<br>
+          }
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2 class="Section_Title">I. CSS Selectors</h2>
+      <h3 class="Sub_Section_Title">1. Basic selectors</h3>
+      
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;h4&gt;</font>
+          tagname—Type selector or tag selector: This selector matches the
+          tag name of the elements to target.
+          <font color="blue">&lt;/h4&gt;</font><br /><br />
+          <font color="blue">&lt;h4 class="My_class"&gt;</font>
+          Class selector: Targets elements that have the specified class
+          name as part of their class attribute.
+          <font color="blue">&lt;/h4&gt;</font><br /><br />
+          <font color="blue">&lt;h4 id="My_ID"&gt;</font>
+          ID selector. Targets the element with the specified ID attribute.
+          <font color="blue">&lt;/h4&gt;</font><br /><br />
+          <font color="blue">&lt;h4&gt;</font>
+          * Universal selector. Targets all elements.
+          <font color="blue">&lt;/h4&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          h4 { color: #8c1515; } <br /><br />
+          .My_class{ color:green; } <br /><br />
+          #My_ID { color: blue; } <br /><br />
+          *{ color: purple;}
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h4>
+            tagname—Type selector or tag selector. This selector matches the
+            tag name of the elements to target.
+          </h4>
+          <h4 class="My_class">
+            Class selector. Targets elements that have the specified class
+            name as part of their class attribute.
+          </h4>
+          <h4 id="My_ID">
+            ID selector: Targets the element with the specified ID attribute.
+          </h4>
+          <h4>* Universal selector: Targets all elements.</h4>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">2. Combinators</h3>
+      <div class="Definitions">
+        <ol>
+          <li>
+            <h4>Child combinator (>):</h4>
+            Targets elements that are a direct descendant of another
+            element.
+          </li>
+          <li>
+            <h4>Adjacent sibling combinator (+):</h4>
+            Targets elements that immediately follow another.
+          </li>
+          <li>
+            <h4>General sibling combinator (~):</h4>
+            Targets all sibling elements following a specified element. Note
+            this doesn't target siblings that appear before the indicated
+            element.
+          </li>
+        </ol>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="My_Div" &gt;</font> <br />
+          <font color="blue">&lt; h4 &gt;</font>Syllabus
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; ol &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font> <br />
+          <font color="blue">&lt; h4 &gt;</font>Chapter 1
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; ol &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 1.1
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 1.2
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; /ol &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Lab 1
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Test 1
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font> <br />
+          <font color="blue">&lt; h4 &gt;</font>Chapter 2
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; ol &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 2.1
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 2.2
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; /ol &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Lab 2
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Test 2
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font> <br />
+          <font color="blue">&lt; h4 &gt;</font>Chapter 3
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; ol &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 3.1
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 3.2
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; /ol &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Lab 3
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Test 3
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font> <br />
+          <font color="blue">&lt; h4 &gt;</font>Chapter 4
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; ol &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 4.1
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; li &gt;</font>Section 4.2
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; /ol &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Lab 4
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; h4 &gt;</font>Test 4
+          <font color="blue">&lt; /h4 &gt;</font><br />
+          <font color="blue">&lt; /li &gt;</font><br />
+          <font color="blue">&lt; /ol &gt;</font><br />
+          <font color="blue">&lt; /div &gt;</font><br />
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="blue">.My_Div > h4 </font>
+          {<br />
+          color: #8c1515;<br />
+          font-size: 20px; <br />
+          font-weight: bold;<br />
+          } <br /><br />
+          <font color="blue">.My_Div li </font>{<br />
+          color: black;<br />
+          } <br /><br />
+          <font color="blue">ol + h4 </font>{<br />
+          color: #000000;<br />
+          font-size: 20px; <br />font-weight: bold;<br />
+          }<br /><br />
+          <font color="blue">ol ~ h4 </font>{<br />
+          text-decoration: underline;<br />
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="My_Div">
+            <h4>Syllabus</h4>
+            <ol>
+              <li>
+                <h4>Chapter 1</h4>
+                <ol>
+                  <li>Section 1.1</li>
+                  <li>Section 1.2</li>
+                </ol>
+                <h4>Lab 1</h4>
+                <h4>Test 1</h4>
+              </li>
+              <li>
+                <h4>Chapter 2</h4>
+                <ol>
+                  <li>Section 2.1</li>
+                  <li>Section 2.2</li>
+                </ol>
+                <h4>Lab 2</h4>
+                <h4>Test 2</h4>
+              </li>
+              <li>
+                <h4>Chapter 3</h4>
+                <ol>
+                  <li>Section 3.1</li>
+                  <li>Section 3.2</li>
+                </ol>
+                <h4>Lab 3</h4>
+                <h4>Test 3</h4>
+              </li>
+              <li>
+                <h4>Chapter 4</h4>
+                <ol>
+                  <li>Section 4.1</li>
+                  <li>Section 4.2</li>
+                </ol>
+                <h4>Lab 4</h4>
+                <h4>Test 4</h4>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">3. Pseudo-class selectors</h3>
+      <div class="Definitions">
+        <ol>
+          <li>
+            <h4>:first-child</h4>
+            Targets elements that are the first element within their parent
+            element.
+          </li>
+          <li>
+            <h4>:last-child</h4>
+            Targets elements that are the last element within their parent
+            element.
+          </li>
+          <li>
+            <h4>:only-child</h4>
+            Targets elements that are the only element within their parent
+            element (no siblings).
+          </li>
+          <li>
+            <h4>:nth-child(an+b)</h4>
+            Targets elements based upon their position among their siblings.
+          </li>
+          <li>
+            <h4>:nth-last-child(an+b)</h4>
+            Similar to :nth-child(), but instead of counting from the first element, it counts
+            from the last element.
+          </li>
+          <li>
+            <h4>:first-of-type</h4>
+            It considers an element's numerical position only among other children
+            with the same tag name.
+          </li>
+          <li>
+            <h4>:last-of-type</h4>
+            Targets the last child element of each type.
+          </li>
+          <li>
+            <h4>:only-of-type</h4>
+            Targets elements that are the only child of their type.
+          </li>
+          <li>
+            <h4>:nth-of-type(an+b)</h4>
+            Targets elements of their type based on their numerical order and the specified formula.
+          </li>
+          <li>
+            <h4>:nth-last-of-type(an+b)</h4>
+            Targets elements of their type based on a specified formula, counting from the last of those elements
+            backward.
+          </li>
+          <li>
+            <h4>:not(selector)</h4>
+            Targets elements that don't match the selector within the parentheses.
+          </li>
+          <li>
+            <h4>:empty</h4>
+            Targets elements that have no children. Beware that this doesn't target
+            an element that contains whitespace.
+          </li>
+          <li>
+            <h4>:focus</h4>
+            Targets elements that have received focus, whether from a mouse
+            click, screen tap, or Tab key navigation.
+          </li>
+          <li>
+            <h4>:hover</h4>
+            Targets elements while the mouse cursor hovers over them.
+          </li>
+          <li>
+            <h4>:root</h4>
+            Targets the root element of the document. In HTML, this is the <font color="blue">&lt; html &gt;</font>
+            element. But CSS can be applied to other XML or XML-like documents, such as
+            SVG; in which case, this selector works more generically.
+          </li>
+        </ol>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="Squares" &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div &gt;</font>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; /div &gt;</font><br>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Squares :first-child </font><br>
+          { <br>
+          <font color="green">background-color</font>: #8c1515;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Table_Div">
+            <div class="Row_Div">
+              <p>:first-child</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:last-child</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:nth-child(2n)</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:nth-child(n+2)</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:nth-child(-n+2)</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:nth-last-child(n+2)</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:nth-last-child(-n + 2)</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:only-child</p>
+              <div class="Squares">
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h3:first-of-type</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h3:last-of-type</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h5:only-of-type</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h1:nth-of-type(2)</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h3:nth-last-of-type(2)</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:not(h3)</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>h3:empty</p>
+              <div class="Squares">
+                <h1>H1</h1>
+                <h1>H1</h1>
+                <h3>H3</h3>
+                <h3>H3</h3>
+                <h3></h3>
+                <h5>H5</h5>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:hover</p>
+              <div class="Squares">
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+                <div class="Square"></div>
+              </div>
+            </div>
+            <div class="Row_Div">
+              <p>:focus</p>
+              <div class="Squares">
+                <label for="Input_1">1</label>
+                <input type="text" id="Input_1" class="Input"></input>
+                <label for="Input_2">2</label>
+                <input type="text" id="Input_2" class="Input"></input>
+                <label for="Input_3">3</label>
+                <input type="text" id="Input_3" class="Input"></input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">4. Pseudo-element selectors</h3>
+      <div class="Definitions">
+        <p>
+          Pseudo-elements are similar to pseudo-classes, but instead of selecting elements with a special state, they
+          target a certain part of the document that doesn't directly correspond to a particular element in the HTML.
+          They may target only portions of an element or even inject content into the page where the markup defines
+          none. <br><br>
+          These selectors begin with a double-colon (::), though most browsers also support a single-colon syntax for
+          backward-compatibility reasons.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; h1 &gt;</font>
+          Nothing was there before.
+          <font color="blue">&lt; /h1 &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">h1::before</font>
+          { <br>
+          <font color="green">content</font>: "Before";<br>
+          <font color="green">color</font>: #8c1515;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Table_Div">
+            <div class="Row_Div">
+              <p>::before</p>
+              <h1>Nothing was there before.</h1>
+            </div>
+            <div class="Row_Div">
+              <p>::after</p>
+              <h1>Nothing was there after.</h1>
+            </div>
+            <div class="Row_Div">
+              <p>::first-letter</p>
+              <h1>The first letter was black.</h1>
+            </div>
+            <div class="Row_Div">
+              <p>::first-line</p>
+              <h3>
+                All the lines of this paragraph were black. We can change the styling of the first line of a paragraph
+                using the ::first-line pseudo-element.
+              </h3>
+            </div>
+            <div class="Row_Div">
+              <p>::selection</p>
+              <h3>
+                If you select a portion of the text, its background will be changed to yellow. Like a highlighter.
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2 class="Section_Title" id="Typography">III. CSS Typography</h2>
+      <h3 class="Sub_Section_Title">1. System fonts</h3>
+      <div class="Definitions">
+        <p>
+          Each operating system has its own set of fonts that come pre-installed. <br><br />
+          You may use some fonts that are not available on the user's device. <br><br />
+          Subsequently, developers used to writing font stacks, which
+          enable them to write a font “wish list” for the browser. <br /><br />
+          The browser reads this declaration and goes from left to right until it finds a font it has available,
+          choosing that to render the associated text.<br /><br />
+          Some font names contain whitespace, so it is necessary to surround those strings
+          with single or double quotes.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;div class="My_class" &gt;</font> <br><br>
+          Some content... <br><br>
+          <font color="blue">&lt;/div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.My_class</font>
+          { <br>
+          <font color="green">font-family</font>: -apple-system, BlinkMacSystemFont, Roboto, Ubuntu, <br>
+          "Segoe UI", "Helvetica Neue", Arial, sans-serif;<br>
+          }
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The terms typeface and font are often conflated. Traditionally, typeface
+          refers to an entire family of fonts (Roboto), usually created by the same
+          designer. Within a typeface there may be multiple variants or weights (light,
+          bold, italic, condensed, and so on). Each of these variants is a font.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">2. The @font-face CSS rule</h3>
+      <div class="Definitions">
+        <p>
+          Web fonts use the @font-face at-rule to tell the browser where it can find and download custom fonts for use
+          on a page; <br><br>
+          To make a web font available for use in our CSS, we use the @font-face at-rule. This lets us provide a name
+          for the font that we can then reference, and also tells the browser where to go to fetch this file from.
+          <br><br>
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;p class="My_Font_1"&gt;</font><br>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+          repellat ullam repudiandae
+          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+          maiores.
+          <br>
+          <font color="blue">&lt;/p&gt;</font><br>
+          <font color="blue">&lt;p class="My_Font_2"&gt;</font>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+          repellat ullam repudiandae
+          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+          maiores.
+          <font color="blue">&lt;/p&gt;</font><br>
+          <font color="blue">&lt;p class="My_Font_3"&gt;</font><br>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+          repellat ullam repudiandae
+          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+          maiores.
+          <br>
+          <font color="blue">&lt;/p&gt;</font><br>
+          <font color="blue">&lt;p class="My_Font_4"&gt;</font><br>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+          repellat ullam repudiandae
+          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+          maiores.
+          <br>
+          <font color="blue">&lt;/p&gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">@font-face</font> { <br>
+          <font color="green">font-family</font>: "My_Font_1";<br>
+          <font color="green">src</font>: url("../Fonts/My_Font.woff2") format("woff2"),<br>
+          url("../Fonts/My_Font.woff") format("woff");<br>
+          <font color="green">font-weight</font>: normal;<br>
+          <font color="green">font-style</font>: normal;<br>
+          <font color="green">font-display</font>: fallback;<br>
+          }<br>
+          <font color="green">.My_Font_1</font>
+          { <br>
+          <font color="green">font-family</font>: "My_Font_1", sans-serif;<br>
+          } <br><br>
+          <font color="green">@font-face</font> { <br>
+          <font color="green">font-family</font>: "My_Font_2";<br>
+          <font color="green">src</font>: url("../Fonts/My_Font.woff2") format("woff2"),<br>
+          url("../Fonts/My_Font.woff") format("woff");<br>
+          <font color="green">font-weight</font>: normal;<br>
+          <font color="green">font-style</font>: normal;<br>
+          <font color="green">font-display</font>: fallback;<br>
+          }<br>
+          <font color="green">.My_Font_2</font>
+          { <br>
+          <font color="green">font-family</font>: "My_Font_2", sans-serif;<br>
+          } <br><br>
+          <font color="green">@font-face</font> { <br>
+          <font color="green">font-family</font>: "My_Font_3";<br>
+          <font color="green">src</font>: url("../Fonts/My_Font.woff2") format("woff2"),<br>
+          url("../Fonts/My_Font.woff") format("woff");<br>
+          <font color="green">font-weight</font>: normal;<br>
+          <font color="green">font-style</font>: normal;<br>
+          <font color="green">font-display</font>: fallback;<br>
+          }<br>
+          <font color="green">.My_Font_3</font>
+          { <br>
+          <font color="green">font-family</font>: "My_Font_3", sans-serif;<br>
+          } <br><br>
+          <font color="green">@font-face</font> { <br>
+          <font color="green">font-family</font>: "My_Font_4";<br>
+          <font color="green">src</font>: url("../Fonts/My_Font.woff2") format("woff2"),<br>
+          url("../Fonts/My_Font.woff") format("woff");<br>
+          <font color="green">font-weight</font>: normal;<br>
+          <font color="green">font-style</font>: normal;<br>
+          <font color="green">font-display</font>: fallback;<br>
+          }<br>
+          <font color="green">.My_Font_4</font>
+          { <br>
+          <font color="green">font-family</font>: "My_Font_2", sans-serif;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p class="My_Font_1">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+            repellat ullam repudiandae
+            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+            maiores.
+          </p>
+          <p class="My_Font_2">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+            repellat ullam repudiandae
+            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+            maiores.
+          </p>
+          <p class="My_Font_3">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+            repellat ullam repudiandae
+            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+            maiores.
+          </p>
+          <p class="My_Font_4">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
+            repellat ullam repudiandae
+            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
+            maiores.
+          </p>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">3. Optimizing font loading with font-display</h3>
+      <h3 class="Sub_Section_Title">FOUT and FOIT</h3>
+      <div class="Definitions">
+        <p>
+          There's usually a moment when the content and layout of the page are ready to render, but the fonts are
+          still downloading.
+          It's important to consider what'll happen for that brief moment.
+          Originally, most browser vendors decided to render the page as soon as possible, using available system
+          fonts.
+          Then, a moment later, the web font would finish loading, and the page would re-render with the web fonts.
+          <br>
+          This is known as <b>FOUT</b>, or <b>Flash of Unstyled Text</b>. <br><br>
+          However, most browser vendors changed the behavior of their browsers.
+          Instead of rendering the fallback font, they rendered everything on the page except the text.
+          More precisely, they rendered the text as invisible, so it still takes up space on the page. <br>
+          This is known as <b>FOIT</b>, for <b>Flash of Invisible Text</b> <br><br>
+          A new CSS property, font-display, is in the works to provide better control over font loading. <br>
+          This property goes inside a @font-face rule. It specifies how the browser should treat web font loading.
+          <br>
+          The possible values are:
+        </p>
+        <ul>
+          <li><b>auto</b>: The default behavior (a FOIT in most browsers).</li>
+          <li><b>swap</b>: Displays the fallback font, then swaps in the web font when it's ready (a FOUT).</li>
+          <li><b>fallback</b>: A compromise between auto and swap. For a brief time (100 ms), the text will be
+            invisible. If the web font isn't available at this point, the fallback font is displayed. Then, once the
+            web font is loaded, it'll be displayed.</li>
+          <li><b>block</b>: Get a white screen for up to 3 seconds and then the actual font can replace any system
+            displayed font at any future point.</li>
+          <li><b>optional</b>: Similar to fallback, but allows the browser to decide whether to display the web
+            font based on the connection speed.</li>
+        </ul>
+
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; p class="My_Font_Class" &gt;</font><br>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi nostrum commodi,
+          possimus vitae rerum
+          voluptate, facilis explicabo assumenda veritatis inventore eaque ipsa, sed libero ipsam non voluptatibus
+          facere id dolorum. <br>
+          <font color="blue">&lt; /p &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.My_Font_Class</font>
+          { <br>
+          <font color="green">font-size</font>: 20px;<br>
+          <font color="green">font-weight</font>: bold;<br>
+          <font color="green">font-style</font>: italic; /*normal, oblique */<br>
+          <font color="green">line-height</font>: 1.4;<br>
+          <font color="green">letter-spacing</font>: 0.01em;<br>
+          <font color="green">text-transform</font>: uppercase;/* lowercase */<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p class="My_Font_Class">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi nostrum commodi,
+            possimus vitae rerum
+            voluptate, facilis explicabo assumenda veritatis inventore eaque ipsa, sed libero ipsam non voluptatibus
+            facere id dolorum.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2 class="Section_Title">IV. CSS Colors</h2>
+      <h3 class="Sub_Section_Title">1. RGB color</h3>
+      <div class="Definitions">
+        <p>
+          RGB (Red, Green, and Blue). <br><br>
+          A color might be defined in CSS as a hex (hexadecimal) value, where The first two digits are the red value
+          in hexadecimal, the next two are the green, and the last two are the blue. <br><br>
+          Or RGB functional notation, where each value can be specified in a range from 0 to 255.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; h1 class="My_RGB_Class" &gt;</font>
+          My_RGB_Class
+          <font color="blue">&lt;/h1 &gt;</font> <br><br>
+          <font color="blue">&lt; h1 class="My_Other_RGB_Class" &gt;</font>
+          My_Other_RGB_Class
+          <font color="blue">&lt;/h1 &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.My_RGB_Class</font>
+          { <br>
+          <font color="green">color</font>: #8c1515;<br>
+          } <br><br>
+          <font color="green">.My_Other_RGB_Class</font>
+          { <br>
+          <font color="green">color</font>: rgb(254, 2, 8);<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1 class="My_RGB_Class">My_RGB_Class</h1>
+          <h1 class="My_Other_RGB_Class">My_Other_RGB_Class</h1>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">2. HSL color</h3>
+      <div class="Definitions">
+        <p>
+          hsl(hue, saturation, lightness) <br><br>
+          Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, and 240 is blue. <br><br>
+          Saturation is a percentage value. 0% means a shade of gray, and 100% is the full color. <br><br>
+          Lightness is also a percentage. 0% is black, 50% is neither light or dark, 100% is white <br><br>
+        </p>
+      </div>
+      <img class="Smaller_Image" src="SRC/IMAGES/HSL_Color_Wheel.png" alt="HSL_Color_Wheel" />
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; h1 class="Blue" &gt;</font>
+          This is blue
+          <font color="blue">&lt;/h1 &gt;</font> <br><br>
+          <font color="blue">&lt; h1 class="Darker_Blue" &gt;</font>
+          This is Darker Blue
+          <font color="blue">&lt;/h1 &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Blue</font>
+          { <br>
+          <font color="green">color</font>: hsl(240, 99%, 50%);<br>
+          } <br><br>
+          <font color="green">.Darker_Blue</font>
+          { <br>
+          <font color="green">color</font>: hsl(240, 99%, 30%);<br>
+          } <br><br>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1 class="Blue">This is blue</h1>
+          <h1 class="Darker_Blue">This is Darker Blue</h1>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">3. Alpha channels</h3>
+      <div class="Definitions">
+        <p>
+          Colors can be partially transparent to allow some of what's beneath to show through. For that need, with
+          hex, RGB, and HSL, it is possible to define an alpha channel. <br> <br>
+          With hex, you can define an alpha channel with a four-digit or eight-digit syntax. <br><br>
+          It used to be necessary to define RGB or HSL colors with an alpha channel using the functional rgba() or
+          hsla() formats. However, that's no longer needed unless you need to support a very old browser.
+
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font>&lt; div class="Alpha_HEX_4" &gt;</font>
+          <font>&lt; /div &gt;</font> <br> <br>
+          <font>&lt; div class="Alpha_HEX_8" &gt;</font>
+          <font>&lt; /div &gt;</font> <br> <br>
+          <font>&lt; div class="Alpha_HSL" &gt;</font>
+          <font>&lt; /div &gt;</font> <br> <br>
+          <font>&lt; div class="Alpha_HSL_Percent" &gt;</font>
+          <font>&lt; /div &gt;</font> <br> <br>
+          <font>&lt; div class="Alpha_RGB" &gt;</font>
+          <font>&lt; /div &gt;</font> <br><br>
+          <font>&lt; div class="Alpha_RGB_Space_Separated" &gt;</font>
+          <font>&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Alpha_HEX_4</font>
+          { <br>
+          <font color="green">background-color</font>: #0007;<br>
+          } <br><br>
+          <font color="green">.Alpha_HEX_8</font>
+          { <br>
+          <font color="green">background-color</font>: #00000077;<br>
+          } <br><br>
+          <font color="green">.Alpha_HSL</font>
+          { <br>
+          <font color="green">background-color</font>: hsl(359, 99%, 50%, 0.5);<br>
+          } <br><br>
+          <font color="green">.Alpha_HSL_Percent</font>
+          { <br>
+          <font color="green">background-color</font>: hsl(359, 99%, 50%, 50%);<br>
+          } <br><br>
+          <font color="green">.Alpha_RGB</font>
+          { <br>
+          <font color="green">background-color</font>: rgb(0, 0, 0, 0.5);<br>
+          } <br><br>
+          <font color="green">.Alpha_RGB_Space_Separated</font>
+          { <br>
+          <font color="green">background-color</font>: rgb(0 0 0 / 0.5);<br>
+          } <br><br>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="Alpha_HEX_4 Square"></div>
+            <div class="Alpha_HEX_8 Square"></div>
+            <div class="Alpha_HSL Square"></div>
+            <div class="Alpha_HSL_Percent Square"></div>
+            <div class="Alpha_RGB Square"></div>
+            <div class="Alpha_RGB_Space_Separated Square"></div>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">4. Display-P3</h3>
+      <div class="Definitions">
+        <p>
+          P3 is a superset of sRGB and makes up to 50% more colors possible. <br><br>
+          It uses the color() function to pass the red, green, and blue values. <br><br>
+          It differs only in that rather than using 0-255 to set each color channel,
+          it uses a decimal between 0 and 1, where 0 is none of that channel and 1 is all of it.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font>&lt; div class="Display_P3" &gt;</font>
+          <font>&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Display_P3</font>
+          { <br>
+          <font color="green">background-color</font>: color(display-p3 0 1 0);<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="Display_P3 Square"></div>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">4. LCH function</h3>
+      <div class="Definitions">
+        <p>
+          Lab/LCH are designed to be able to express all of human vision, even if currently our monitors are not
+          capable of it. <br><br>
+          LCH is an abbreviation of Lightness, Chroma, Hue. <br><br>
+          The syntax is Lightness as a percentage, then two numerical values: one for the Chroma,
+          and the third value for the Hue angle. <br><br>
+          Like the other functional color notations, you can add a forward slash (/) and then
+          add an alpha channel as a value between 0 and 1 or a percentage. <br><br>
+          Practically, when working with LCH, lower the lightness value for a darker variant of a color,
+          and increase it for a lighter one.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font>&lt; div class="LCH" &gt;</font>
+          <font>&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.LCH</font>
+          { <br>
+          <font color="green">background-color</font>: lch(50% 132 43);<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="LCH Square"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2 class="Section_Title">II. CSS Units</h2>
+      <h3 class="Sub_Section_Title">1. Absolute units</h3>
+      <div class="Definitions">
+        <p>
+          CSS supports several absolute length units: pixel (px), mm (millimeter), cm (centimeter), in. (inch), pt
+          (point—typographic term for 1/72nd of an inch), and pc (pica—typographic term for 12 points).
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">2. Relative units</h3>
+      <h3 class="Sub_Section_Title">2.1 Ems</h3>
+      <div class="Definitions">
+        <p>
+          In CSS, 1 em means the font size of the current element; its exact value varies depending on the element
+          you're applying it to. <br><br>
+          Values declared using relative units are evaluated by the browser to an absolute value, called the computed
+          value. <br><br>
+          Using ems can be convenient when setting properties like padding, height, width, or border-radius because
+          these will scale evenly with the element if it inherits different font sizes,
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="EMS Small_EMS" &gt;</font><br>
+          This text is 20px large and the padding is 1em <br>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div class="EMS Large_EMS" &gt;</font><br>
+          This text is 40px large and the padding is 1em <br>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.EMS</font>
+          { <br>
+          <font color="green">border</font>: solid 3px #8c1515;<br>
+          <font color="green">padding</font>: 1em;<br>
+          } <br>
+          <font color="green">.Large_EMS</font>
+          { <br>
+          <font color="green">font-size</font>: 40px;<br>
+          } <br>
+          <font color="green">.Small_EMS</font>
+          { <br>
+          <font color="green">font-size</font>: 20px;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="EMS Small_EMS">This text is 20px large and the padding is 1em</div>
+            <div class="EMS Large_EMS">This text is 40px large and the padding is 1em</div>
+          </div>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          If we em unit to specify font-size itself, the ems will be derived from the inherited font size. <br><br>
+          It's helpful to know that, for most browsers, the default font size is 16 px. Technically, it's the keyword
+          value medium that calculates to 16 px. <br><br>
+          What makes ems tricky is when you use them for both font size and any other properties on the same element.
+          When you do this, the browser must calculate the font size first, and then it uses that value to calculate
+          the other values.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">2.2 Rems</h3>
+      <div class="Definitions">
+        <p>
+          When the browser parses an HTML document, it creates a representation in memory of all the elements on the
+          page. This representation is called the DOM (Document Object Model). It's a tree structure, where each
+          element is represented by a node. The <font color="blue">&lt; html &gt;</font> element is the top-level (or
+          root) node. Beneath it are its child nodes, <font color="blue">&lt; head &gt;</font> and <font color="blue">
+            &lt; body &gt;</font>. And beneath those are their children, then their children, and so on. The root node
+          is the ancestor of all other elements in the document. It has a special pseudo-class selector (:root) that
+          you can use to target it. <br><br>
+          Rem is short for root em. Instead of being relative to the current element, rems are relative to the root
+          element. No matter where you apply it in the document, 1.2 rem has the same computed value: 1.2 times the
+          font size of the root element.
+        </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt; div class="REMS Small_REMS" &gt;</font><br>
+          This text is 20px large and the padding is 1rem <br>
+          <font color="blue">&lt; /div &gt;</font><br>
+          <font color="blue">&lt; div class="REMS Large_REMS" &gt;</font><br>
+          This text is 40px large and the padding is 1rem <br>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.REMS</font>
+          { <br>
+          <font color="green">border</font>: solid 3px #8c1515;<br>
+          <font color="green">padding</font>: 1rem;<br>
+          } <br>
+          <font color="green">.Large_REMS</font>
+          { <br>
+          <font color="green">font-size</font>: 40px;<br>
+          } <br>
+          <font color="green">.Small_REMS</font>
+          { <br>
+          <font color="green">font-size</font>: 20px;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="REMS Small_REMS">This text is 20px large and the padding is 1rem</div>
+            <div class="REMS Large_REMS">This text is 40px large and the padding is 1rem</div>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">2.3 Viewport-relative</h3>
+      <div class="Definitions">
+        <p>
+          viewport: The framed area in the browser window where the web page is visible. This excludes the browser's
+          address bar, toolbars, and status bar, if present. <br><br>
+        <ul>
+          <li><b>vh:</b> 1/100th of the viewport height.</li>
+          <li><b>vw:</b> 1/100th of the viewport width.</li>
+          <li><b>vmin:</b> 1/100th of the smaller dimension, height or width.</li>
+          <li><b>vmax:</b> 1/100th of the larger dimension, height or width.</li>
+        </ul>
+        For example, 50 vw is equal to half the width of the viewport. <br> <br>
+        This is helpful for ensuring that an element will fit on the screen regardless of its orientation: If the
+        screen is landscape, it will be based on the height; if portrait, it's based on the width.
+        </p>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="HTML.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>HTML</h1>
+    </a>
+    <a href="CSS_Layout.html" class="Arrow">
+      <h1>CSS Layout</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

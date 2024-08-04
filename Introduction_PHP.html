@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Introduction_JavaScript.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Introduction to PHP</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">I. Introduction to PHP</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>A PHP document will output only HTML.</li>
+          <li>If you have only PHP code in a file, you may omit the closing ?>.
+            This can be a good practice, as it will ensure that you have no
+            excess whitespace leaking from your PHP files (especially important
+            when you're writing object-oriented code).</li>
+          <li>PHP commands ended with must a semicolon.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          Including PHP in a File: <br />
+          <font color="green">
+            &lt;?php <br> echo "Salem"; <br> ?> <br></font>
+          Or <br>
+          <font color="green">
+            &lt;? <br> echo "Salem"; <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Salem
+        </div>
+      </div>
+      <h1 class="Section_Title">Writing Comments</h1>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong></strong></td>
+            <td><strong>Description</strong></td>
+          </tr>
+          <tr>
+            <td><strong>//</strong></td>
+            <td>Denotes comments that only span on one line</td>
+          </tr>
+          <tr>
+            <td><strong>#</strong></td>
+            <td>Another way of producing single-line comments</td>
+          </tr>
+          <tr>
+            <td><strong>/*...*/</strong></td>
+            <td>Everything between /* and */ is not executed, also works across
+              several lines</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br> echo "Salem Aleykum"; <br>
+            // This is a single-line comment <br>
+            # This is also a single-line comment <br>
+            /* <br>
+            This is a multiple-lines comment block <br>
+            that spans over multiple <br>
+            lines <br>
+            */ <br>
+            ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Salem Aleykum
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">II. Variables</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>You must place a $ in front of all variables.</li>
+          <li>
+            Variable names, after the dollar sign, must start with a letter of the alphabet or the _ (underscore)
+            character.
+          </li>
+          <li>Variable names can contain only the characters a-z, A-Z, 0-9, and _ (underscore).</li>
+          <li>Variable names should not contain spaces.</li>
+          <li>Variable names are case-sensitive.</li>
+          <li>PHP also supports the bytes from 127 through 255 in variable names.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_Variable = "Introduction to PHP"; <br>
+            echo $My_Variable;
+            <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Introduction to PHP
+        </div>
+      </div>
+      <h1 class="Section_Title">Variable Scope</h1>
+      <div class="Definitions">
+        <ul>
+          <li><b>Local variables:</b> Local variables are variables that are created within, and can be accessed only
+            by, a function. One set of local variables is the list of arguments to a function.
+          </li>
+          <li><b>Global variables: </b>To access variables from global scope, add the keyword global.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          Declare a global variable in a separate file: <br>
+          <font color="green">
+            &lt;?php <br>
+            global $The_Global_Variable;
+            <br> ?>
+          </font><br>
+          Then access it in another file: <br>
+          <font color="green">
+            &lt;?php <br>
+            $The_Global_Variable = "I am a global variable"; <br>
+            echo $The_Global_Variable;
+            <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          I am a global variable
+        </div>
+      </div>
+      <div class="Definitions">
+        <ul>
+          <li><b>Static variables: </b>A local variable inside a function that you
+            don't want any other parts of your code to have access to, but you would also like to
+            keep its value for the next time the function is called.</li>
+          <li>The next time the function is called, because $count has already been declared, the
+            first line of the function is skipped.</li>
+          <li>If you plan to use static variables, you should note that you cannot assign the result of
+            an expression in their definitions. They can be initialized only with predetermined
+            values.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            function test() <br>
+            { <br>
+            static $count = 0; <br>
+            echo $count; <br>
+            echo "<br>"; <br>
+            $count++; <br>
+            } <br>
+            test();<br>
+            test();<br>
+            test();<br>
+            test();<br>
+            test();
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          0 <br>
+          1 <br>
+          2 <br>
+          3 <br>
+          4
+        </div>
+      </div>
+      <div class="Definitions">
+        <ul>
+          <li><b>Superglobal variables: </b>predefined variables known
+            as superglobal variables, which means that they are provided by the PHP environment
+            but are global within the program, accessible absolutely everywhere.</li>
+          <li>All of the superglobals (except for $GLOBALS) are named with a single initial underscore
+            and only capital letters. <a href="https://www.php.net/manual/en/language.variables.superglobals.php">Here
+              is the complete list.</a></li>
+        </ul>
+      </div>
+      <h1 class="Section_Title">Constants</h1>
+      <div class="Definitions">
+        <ul>
+          <li>To declare a constant, use the define() function.</li>
+          <li>Then, to read the contents of the variable, you just refer to it like a regular variable
+            (but it isn't preceded by a dollar sign).</li>
+          <li><b>Predefined Constants: </b> PHP comes ready-made with dozens of predefined constants known as the magic
+            constants. The names of the magic constants always have two underscores at the beginning and two at the end.
+            <a href="https://www.php.net/manual/en/language.constants.magic.php">Here is the complete list.</a>
+          </li>
+        </ul>
+
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            define("ROOT_LOCATION", "/usr/local/www/"); <br>
+            echo ROOT_LOCATION;
+            <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          /usr/local/www/
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">III. Strings</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>PHP supports two types of strings that are denoted by the type of quotation mark
+            that you use. If you wish to assign a literal string, preserving the exact contents, you
+            should use single quotation marks (apostrophes).</li>
+          <li>In this case, every character within the single-quoted string is assigned to $Single_Quote_String. If
+            you had used double quotes, PHP would have attempted to evaluate $My_Variable as a
+            variable.</li>
+          <li>On the other hand, when you want to include the value of a variable inside a string,
+            you do so by using double-quoted strings.</li>
+          <li>As you will realize, this syntax also offers a simpler option to concatenation in which
+            you don't need to use a period, or close and reopen quotes, to append one string to
+            another. This is called variable substitution.</li>
+          <li>String concatenation uses the period (.) to append one string of characters to
+            another.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_Variable = "Introduction to PHP &lt;br>"; <br>
+            echo $My_Variable; <br>
+            $Single_Quote_String = 'This is a string declared with single quotes $My_Variable &lt;br>'; <br>
+            echo $Single_Quote_String; <br>
+            $Double_Quote_String = "This is a string declared with double quotes $My_Variable &lt;br>"; <br>
+            echo $Double_Quote_String; <br>
+            $Concatenated_String = '$My_Variable contains the follwing value: ' . $My_Variable; <br>
+            echo $Concatenated_String; <br>
+            $My_Variable .= $My_Variable; <br>
+            echo $My_Variable;
+            <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Introduction to PHP <br>
+          This is a string declared with single quotes $My_Variable <br>
+          This is a string declared with double quotes Introduction to PHP <br>
+          $My_Variable contains the follwing value: Introduction to PHP <br>
+          Introduction to PHP <br>
+          Introduction to PHP
+        </div>
+      </div>
+      <div class="Definitions">
+        <ul>
+          <li> To escape characters with special meaning add a backslash directly before to tell PHP to treat the
+            character literally and not to interpret it</li>
+          <li>These special backslash-preceded characters work only in double-quoted strings. In single-quoted strings,
+            the preceding string would be displayed.</li>
+          <li>Within single-quoted strings, only the escaped apostrophe (\') and escaped backslash itself (\\) are
+            recognized as escaped characters.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            echo "&lt;pre>"; <br>
+            echo 'It\'s a beautiful day! &lt;br>'; <br>
+            echo "He said:\n \"It's \ta \tbeautiful \tday!\" &lt;br>"; <br>
+            echo 'He said:\n \"It\'s \ta \tbeautiful \tday!\" &lt;br>'; <br>
+            echo "&lt;/pre>";
+            <br> ?> <br>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          It's a beautiful day! <br>
+          He said: <br>
+          "It's a beautiful day!" <br>
+          He said:\n \"It's \ta \tbeautiful \tday!\"
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">IV. Operators</h1>
+    <section id="Operators">
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Operators</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Example</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Arithmetic</strong> </td>
+            <td>
+              + Addition <br>
+              - Subtraction <br>
+              * Multiplication <br>
+              / Division <br>
+              % Modulus <br>
+              ++ Increment <br>
+              -- Decrement <br>
+              ** Exponentiation (or power)
+            </td>
+            <td>
+              $j + 1 <br>
+              $j - 1 <br>
+              $j * 11 <br>
+              $j / 4 <br>
+              $j % 9 <br>
+              ++$j <br>
+              --$j <br>
+              $j**2
+            </td>
+          <tr>
+            <td><strong>Comparison</strong></td>
+            <td>
+              == Is equal to <br>
+              != Is not equal to <br>
+              > Is greater than <br>
+              &lt; Is less than <br>
+              >= Is greater than or equal to <br>
+              &lt;= Is less than or equal to <br>
+              &lt;> Is not equal to <br>
+              === Is identical to <br>
+              !== Is not identical to<br>
+              <font color="red">
+                <b>
+                  Because PHP is a loosely typed language,<br> if the two operands of an equality expression<br>
+                  are of different types, PHP will<br> convert them to whatever type makes<br> the best
+                  sense to it. A rarely used identity operator,<br> which consists of three equals signs in a<br>
+                  row, can be used to compare items without doing conversion.<br> See example below.
+                </b>
+              </font>
+            </td>
+            <td>
+              $j == 4 <br>
+              $j != 21 <br>
+              $j > 3 <br>
+              $j &lt; 100 <br>
+              $j >= 15 <br>
+              $j &lt;= 8 <br>
+              $j &lt;> 23 <br>
+              $j === "987" <br>
+              $j !== "1.2e3"
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Logical</strong></td>
+            <td>
+              && And <br>
+              and Low-precedence and <br>
+              || Or <br>
+              or Low-precedence or <br>
+              ! Not <br>
+              xor Exclusive or <br>
+              <font color="red"><b>A lower precedence force a second <br> statement to execute if the first fails.</b>
+              </font>
+            </td>
+            <td>
+              $j == 3 && $k == 2 <br>
+              $j == 3 and $k == 2 <br>
+              $j &lt; 5 || $j > 10 <br>
+              $j &lt; 5 or $j > 10 <br>
+              ! ($j == $k) <br>
+              $j xor $k
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Assignment</strong></td>
+            <td>
+              = <br>
+              += <br>
+              -= <br>
+              *= <br>
+              /= <br>
+              .= <br>
+              %=
+            </td>
+            <td>
+              $j = 15 Equivalent to $j = 15 <br>
+              $j += 5 Equivalent to $j = $j + 5 <br>
+              $j -= 3 Equivalent to $j = $j - 3 <br>
+              $j *= 8 Equivalent to $j = $j * 8 <br>
+              $j /= 16 Equivalent to $j = $j / 16 <br>
+              $j .= $k Equivalent to $j = $j . $k <br>
+              $j %= 4 Equivalent to $j = $j % 4
+            </td>
+          </tr>
+          <tr>
+            <td><strong>increment/decrement</strong></td>
+            <td>
+              ++$x; Pre-increment <br>
+              $x++; Post-increment <br>
+              --$y; Pre-decrement <br>
+              $y--; Post-decrement
+            </td>
+            <td>
+              $j = 0; <br>
+              echo ++$j + 3;
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $a = "1000"; <br>
+            $b = "+1000"; <br>
+            if ($a == $b) echo "1"; <br>
+            if ($a === $b) echo "2";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          What should be the output?
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">V. Loops</h1>
+    <section>
+      <h1 class="Section_Title">For Loop</h1>
+      <div class="Definitions">
+        <p>
+          for (starting counter value; ending counter value; increment by which to increase) { <br>
+          // code to execute goes here <br>
+          } <br> <br>
+          for ($i = 1, $j = 1 ; $i + $j &lt; 10 ; $i++ , $j++) <br>
+          { <br>
+          // code to execute goes here <br>
+          } <br> <br>
+          The key is to distinguish commas from semicolons. The three parameters must be separated by
+          semicolons. Within each parameter, multiple statements can be separated by commas.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            for ($count = 1; $count &lt;= 10; ++$count) <br> { <br> echo "Salem for the $count time &lt;br>" ; <br>}
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Salem for the 1 time <br>
+          Salem for the 2 time <br>
+          Salem for the 3 time <br>
+          Salem for the 4 time <br>
+          Salem for the 5 time <br>
+          Salem for the 6 time <br>
+          Salem for the 7 time <br>
+          Salem for the 8 time <br>
+          Salem for the 9 time <br>
+          Salem for the 10 time
+        </div>
+      </div>
+      <h1 class="Section_Title">Foreach Loop</h1>
+      <div class="Definitions">
+        <p>
+          foreach ($InsertYourArrayName as $value) { <br>
+          // code to execute goes here <br>
+          }
+        </p>
+      </div>
+      <h1 class="Section_Title">While Loop</h1>
+      <div class="Definitions">
+        <p>
+          while (condition that must apply) { <br>
+          // code to execute goes here <br>
+          }
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $count = 10; <br>
+            while ($count > 1) { <br>
+            echo "Salem &lt;br>"; <br>
+            $count--; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem <br>
+          Salem
+        </div>
+      </div>
+      <h1 class="Section_Title">Do..While Loop</h1>
+      <div class="Definitions">
+        <p>
+          do { <br>
+          // code to execute goes here; <br>
+          } <br>
+          while (condition that must apply); <br>
+        </p>/
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $count = 1; <br>
+            do <br>
+            echo "Salem for the $count time &lt;br>"; <br>
+            while (++$count &lt;= 12);
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Salem for the 1 time <br>
+          Salem for the 2 time <br>
+          Salem for the 3 time <br>
+          Salem for the 4 time <br>
+          Salem for the 5 time <br>
+          Salem for the 6 time <br>
+          Salem for the 7 time <br>
+          Salem for the 8 time <br>
+          Salem for the 9 time <br>
+          Salem for the 10 time <br>
+          Salem for the 11 time <br>
+          Salem for the 12 time
+        </div>
+      </div>
+      <h1 class="Section_Title">Break</h1>
+      <div class="Definitions">
+        if you have code nested more than one layer deep that you need to break out of, you can follow the break command
+        with a number to indicate how many levels to break out of: <br> <br>
+        break 2;
+      </div>
+    </section>
+    <h1 class="Title">VI. Conditional statements</h1>
+    <section>
+      <h1 class="Section_Title">If Statement</h1>
+      <div class="Definitions">
+        <p>
+          An else statement closes either an if...else or an
+          if...elseif...else statement. You can leave out a final else if it
+          is not required, but you cannot have one before an elseif; you also
+          cannot have an elseif before an if statement.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            if (condition) { <br>
+            // code to execute if condition is met <br>
+            } <br>
+            elseif (another condition) { <br>
+            // code to execute if this condition is met <br>
+            } <br>
+            else { <br>
+            // code to execute if none of the conditions are met <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+      <h1 class="Section_Title">Switch Statement</h1>
+      <div class="Definitions">
+        <p>
+          With switch statements, you do not use curly braces inside case
+          commands. Instead, they commence with a colon and end with the
+          break statement. The entire list of cases in the switch statement is
+          enclosed in a set of curly braces, though.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            switch (n) { <br>
+            case x: <br>
+            code to execute if n=x; <br>
+            break; <br>
+            case y: <br>
+            code to execute if n=y; <br>
+            break; <br>
+            // add more cases as needed <br>
+            default: <br>
+            code to execute if n is neither of the above; <br>
+            }
+            <br> ?> <br>
+
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+
+
+        </div>
+      </div>
+      <h1 class="Section_Title">The ? (or ternary) Operator</h1>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Variable = $Condition ? <br> "Value to return when true" : <br> "Value to return when false";
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">VII. Functions</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          The general syntax for a function is as follows: <br>
+          function function_name([parameter [, ...]]) <br>
+          { <br>
+          // Statements to execute <br>
+          } <br> <br>
+          The first line of the syntax indicates the following: <br>
+        <ul>
+          <li>A definition starts with the word function.</li>
+          <li>A name follows, which must start with a letter or underscore, followed by any number of letters, numbers,
+            or underscores.</li>
+          <li>The parentheses are required.</li>
+          <li>One or more parameters, separated by commas, are optional.</li>
+        </ul>
+        Function names are case-insensitive.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+
+            <br> ?> <br>
+
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+
+
+        </div>
+      </div>
+    </section>
+    <h1 class="Title">VIII. Arrays</h1>
+    <section>
+      <div class="Definitions">
+        <ul>
+          <li>Some arrays are referenced by numeric indexes; others allow alphanumeric identifiers.</li>
+        </ul>
+      </div>
+      <h1 class="Section_Title">Indexed arrays</h1>
+      <div class="Definitions">
+        <ul>
+          <li>Arrays that have a numeric index.</li>
+          <li>each time you assign a value to the array $Student, the first empty location within that array is used to
+            store the value, and a pointer internal to PHP is incremented to point to the next free location</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Student[] = "Karim"; <br>
+            $Student[] = "Amel"; <br>
+            $Student[] = "Nour"; <br>
+            $Student[] = "Ahmed"; <br>
+            print_r($Student);
+            <br> ?>
+          </font><br>
+          Or <br>
+          <font color="green">
+            &lt;?php <br>
+            $Student[0] = "Karim"; <br>
+            $Student[1] = "Amel"; <br>
+            $Student[2] = "Nour"; <br>
+            $Student[3] = "Ahmed"; <br>
+            print_r($Student);
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Array ( <br>[0] => Karim <br>[1] => Amel <br>[2] => Nour <br>[3] => Ahmed <br>)
+        </div>
+      </div>
+      <h1 class="Section_Title">Associative arrays</h1>
+      <div class="Definitions">
+        <ul>
+          <li>Associative arrays reference the items in an array by name rather than by number.</li>
+          <li>The names (Karim, Amel, and so on) are called indexes or keys, and the items assigned to them (such as
+            First Year Student) are called values.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Student["Karim"] = "First Year Student"; <br>
+            $Student["Amel"] = " Second Year Student"; <br>
+            $Student["Nour"] = " Third Year Student"; <br>
+            $Student["Ahmed"] = " Fourth Year Student"; <br>
+            print_r($Student);
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Array ( <br> [Karim] => First Year Student <br> [Amel] => Second Year Student <br>
+          [Nour] => Third Year Student <br> [Ahmed] => Fourth Year Student <br>)
+        </div>
+      </div>
+      <h1 class="Section_Title">Assignment Using the array Keyword</h1>
+      <div class="Definitions">
+        <p>
+          Using the format key => value. The use of => is similar to the regular = assignment operator, except that you
+          are assigning a value to an index rather than to a variable.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $My_Array = array("Karim", "Amel", "Nour", "Ahmed"); <br>
+            print_r($My_Array); <br>
+            echo "&lt;br>"; <br>
+            $My_Second_Array = array("Karim" => "First Year Student", <br> "Amel" => "Second Year Student",<br> "Nour"
+            => "Third
+            Year Student",<br> "Ahmed" => "Fourth Year Student");<br>
+            print_r($My_Second_Array);<br>
+            ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Array ( <br>[0] => Karim <br>[1] => Amel <br>[2] => Nour <br>[3] => Ahmed <br>) <br> <br>
+          Array ( <br> [Karim] => First Year Student <br> [Amel] => Second Year Student <br>
+          [Nour] => Third Year Student <br> [Ahmed] => Fourth Year Student <br>)
+        </div>
+      </div>
+      <h1 class="Section_Title">The foreach...as Loop</h1>
+      <div class="Definitions">
+        <ul>
+          <li>The foreach...as loop is especially for arrays: . Using it, you can step through all the items in an
+            array, one at a time, and</li>
+          <li>When PHP encounters a foreach statement, it takes the first item of the array and
+            places it in the variable following the as keyword; and each time control flow returns
+            to the foreach, the next array element is placed in the as keyword.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $Students = array("Karim", "Amel", "Nour", "Ahmed"); <br> <br>
+            foreach ($Students as $Student) { <br>
+            echo $Student . "&lt;br>"; <br>
+            } <br>
+            echo "&lt;br>"; <br>
+            $Students_Year = array( <br>"Karim" => "First Year Student", <br> "Amel" => "Second Year Student", <br>
+            "Nour" => "Third Year Student", <br> "Ahmed" => "Fourth Year Student"); <br> <br>
+            foreach ($Students_Year as $Student => $Year) { <br>
+            echo $Student . " is a " . $Year . "&lt;br>"; <br>
+            }
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Karim <br>
+          Amel <br>
+          Nour <br>
+          Ahmed <br> <br>
+          Karim is a First Year Student <br>
+          Amel is a Second Year Student <br>
+          Nour is a Third Year Student <br>
+          Ahmed is a Fourth Year Student
+        </div>
+      </div>
+      <h1 class="Section_Title">Multidimensional arrays</h1>
+      <div class="Definitions">
+        <ul>
+          <li>Arrays that contain one or more other arrays.</li>
+          <li> You can directly access a particular element of the array by using square brackets: $array[0][1].</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <font color="green">
+            &lt;?php <br>
+            $University_Staff = array(<br>
+            'Students_Year' => array("Karim" => "First Year Student",<br> "Amel" => "Second Year Student",<br>
+            "Nour" => "Third
+            Year Student",<br> "Ahmed" => "Fourth Year Student"),<br>
+            'Teachers' => array("Mohamed" => "DSA",<br> "Hassan" => "DB",<br> "Ali" => "OS",<br> "Omar" =>
+            "AI"),<br>
+            'Courses' => array("DSA" => "Data Structure",<br> "DB" => "Data Base",<br> "OS" => "Operating
+            System",<br> "AI" =>
+            "Artificial Intelligence")<br>
+            );<br>
+            print_r($University_Staff); <br>
+            echo "&lt;br>"; <br>
+            echo $University_Staff['Courses']['DSA'];
+            <br> ?>
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          Array ( <br> [Students_Year] => Array (<br> [Karim] => First Year Student <br>[Amel] => Second Year Student
+          <br>[Nour] => Third
+          Year Student <br>[Ahmed] => Fourth Year Student <br>)<br> [Teachers] => Array (<br> [Mohamed] => DSA<br>
+          [Hassan] => DB<br> [Ali] =>
+          OS<br> [Omar] => AI <br>)<br> [Courses] => Array (<br> [DSA] => Data Structure<br> [DB] => Data Base <br>[OS]
+          => Operating System <br>[AI]
+          => Artificial Intelligence<br> )<br> ) <br>
+          Data Structure
+
+        </div>
+      </div>
+      <h1 class="Section_Title">Array functions</h1>
+      <a href="https://www.php.net/manual/en/ref.array.php">Here the complete list.</a>
+      <table>
+        <tbody>
+          <tr>
+            <td><strong>Function</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Example</strong></td>
+          </tr>
+          <tr>
+            <td><strong>is_array</strong></td>
+            <td>To check whether a variable is an array.</td>
+            <td>$Students = array("Karim", "Amel", "Nour", "Ahmed"); <br>
+              $Another_Variable = "Anything"; <br>
+              if (is_array($Students)) echo "Yes, it's an array"; <br>
+              else echo "No, it's not an array"; <br>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>count</strong></td>
+            <td>To count all the elements in the top level of an array. <br>
+              To know how many elements there are altogether in a <br>
+              multidimensional array, you can use count($fred, 1); <br>
+              The second parameter is optional and sets the mode to use. <br>
+              It should be either 0 to limit counting to only the top level <br>
+              or 1 to force recursive counting of all subarray elements too.
+            </td>
+            <td>echo count($Students);</td>
+          </tr>
+          <tr>
+            <td><strong>sort</strong></td>
+            <td>It will act directly on the supplied array rather than <br>
+              returning a new array of sorted elements. It returns TRUE <br>
+              on success and FALSE on error and also supports a few flags:
+              sort($Students, SORT_NUMERIC); OR sort($Students, SORT_STRING); <br>
+              To sort an array in reverse order using the rsort function: <br>
+              rsort($Students, SORT_NUMERIC); OR rsort($Students, SORT_STRING);
+            </td>
+            <td>
+              sort($Students); <br>
+              print_r($Students);
+            </td>
+          </tr>
+          <tr>
+            <td><strong>explode</strong></td>
+            <td>can take a string containing several items separated <br>
+              by a single character (or string of characters) and <br>
+              then place each of these items into an array. <br>
+              The first parameter, the delimiter, can be several characters.</td>
+            <td>$URL = "https://ensia-ai.github.io/Web_Development_2023/"; <br>
+              $temp = explode("/", $URL); <br>
+              print_r($temp);</td>
+          </tr>
+          <tr>
+            <td><strong>extract</strong></td>
+            <td>To turn the key/value pairs from an array into PHP variables. <br>
+              If the variables were sent using the GET method, they will be <br>
+              placed in an associative array called $_GET; if they were sent <br>
+              using POST, they will be placed in an associative array called $_POST. <br>
+              Be careful with this approach, though, because if any extracted variables <br>
+              conflict with ones that you have already defined, your existing values <br>
+              will be overwritten. To avoid this possibility, you can use one of the <br>
+              many additional parameters available to this function, like this: <br>
+              extract($_GET, EXTR_PREFIX_ALL, 'fromget'); <br>
+              In this case, all the new variables will begin with the given prefix <br>
+              string followed by an underscore.
+            </td>
+            <td>
+              extract($Students_Year); <br>
+              echo "Karim is a $Karim&lt;br>"; <br>
+              echo "Amel is a $Amel&lt;br>"; <br>
+              echo "Nour is a $Nour&lt;br>"; <br>
+              echo "Ahmed is a $Ahmed&lt;br>";
+            </td>
+          </tr>
+          <tr>
+            <td><strong>compact</strong></td>
+            <td>The inverse of extract. <br>
+              Note how compact requires the variable names to be supplied in quotes, <br>
+              not preceded by a $ symbol. This is because compact is looking for a <br>
+              list of variable names, not their values.
+            </td>
+            <td>$temp= compact("Karim","Amel","Nour","Ahmed"); <br>
+              print_r($temp);</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="React_JS.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>ReactJS</h1>
+    </a>
+    <a href="OOPHP.html" class="Arrow">
+      <h1>Object-Oriented PHP</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

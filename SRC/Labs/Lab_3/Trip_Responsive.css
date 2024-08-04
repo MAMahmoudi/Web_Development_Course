@@ -1,0 +1,14 @@
+@media screen and (max-width: 850px) {
+  .Trip {
+    margin: 4rem 2rem;
+  }
+
+  .Trip_Cards {
+    flex-direction: column;
+  }
+
+  .Trip_Card {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+}

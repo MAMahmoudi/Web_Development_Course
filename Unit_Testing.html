@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <title>Unit Testing</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Unit Testing</h1>
+    <section>
+      <h1 class="Section_Title">Composer: A Dependency Manager for PHP </h1>
+      <div class="Definitions">
+        <p>
+          Composer is a tool for dependency management in PHP. It allows you to
+          declare the libraries your project depends on and it will manage
+          (install/update) them for you. <br>
+          <br>
+          Composer is not a package manager in the same sense as Yum or Apt are.
+          Yes, it deals with "packages" or libraries, but it manages them on a
+          per-project basis, installing them in a directory (e.g. vendor) inside
+          your project. By default it will never install anything globally. <br>
+          <br>
+          Moreover, Composer supports autoloading of classes, which means that
+          you can use classes without even including the files that define them.
+          <br>
+          <br>
+        </p>
+      </div>
+      <h1 class="Sub_Section_Title">How to install Composer?</h1>
+      <div class="Definitions">
+        <p>
+          Composer offers a convenient installer that you can execute directly
+          from the command line. Feel free to download this file or review it on
+          GitHub if you wish to know more about the inner workings of the
+          installer. <br>
+          <br>
+          To install composer, run the following command in your terminal:
+          <br>
+          <br>
+          <code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"</code>
+          <br>
+          <br>
+          <code>php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo
+            'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"</code>
+          <br>
+          <br>
+          <code>php composer-setup.php</code>
+          <br>
+          <br>
+          <code>php -r "unlink('composer-setup.php');"</code>
+          <br>
+          <br>
+          This installer script will simply check some php.ini settings, warn you
+          if they are set incorrectly, and then download the latest composer.phar
+          in the current directory. The 4 lines above will, in order: <br>
+          <br>
+          1. Download the installer to the current directory <br>
+          2. Verify the installer SHA-384 which you can also cross-check here <br>
+          3. Run the installer <br>
+          4. Remove the installer <br>
+          <br>
+          You can install Composer to a specific directory by using the --install-dir option and providing a target
+          directory. <br>
+          <br>
+          <code>php composer-setup.php --install-dir=bin</code>
+          <br>
+          <br>
+          Alternatively, you can install Composer globally. <br>
+          <br>
+          <code>php composer-setup.php --install-dir=bin --filename=composer</code>
+          <br>
+          <br>
+          Note: If the above fails due to permissions, you may need to run it
+          again with sudo. <br>
+          <br>
+          Note: Composer requires PHP 5.3.2+ to run. A few sensitive php settings
+          and compile flags are also required, but when using the installer you
+          will be warned about any incompatibilities. <br>
+          <br>
+          Note: If you are running OS X, you can also install Composer by
+          following the instructions here. <br>
+          <br>
+          Note: If you are on Windows and have XAMPP installed, you may need to
+          use the <code>php</code> command instead of <code>php</code> when following the
+          command-line installation instructions above. <br>
+          <br>
+          Note: If the above fails, you can manually download the installer
+          <a href="https://getcomposer.org/installer">here</a> and run the same
+          commands without the first line. <br>
+          <br>
+          Note: Composer will just check a few PHP settings and then download
+          composer.phar to your working directory. This file is the Composer
+          binary. It is a PHAR (PHP archive), which is an archive format for PHP
+          which can be run on the command line, amongst other things. <br>
+          <br>
+          Note: You can place the Composer PHAR anywhere you wish. If you put it
+          in a directory that is part of your PATH, you can access it globally.
+          On unixy systems you can even make it executable and invoke it without
+          directly using the php interpreter. <br>
+          <br>
+          Note: If you want to run Composer from anywhere on your system, you can
+          create a global <code>composer</code> command (on Unix systems) with the
+          following commands: <br>
+          <br>
+          <code>curl -sS https://getcomposer.org/installer | php</code>
+          <br>
+          <br>
+          <code>sudo mv composer.phar /usr/local/bin/composer</code>
+          <br>
+          <br>
+          Note: If the above fails due to permissions, you may need to run it
+          again with sudo. <br>
+          <br>
+          Note: If you prefer a graphical user interface (GUI) instead of the
+          command line, you can try Composer <a href="https://getcomposer.org/doc/03-cli.md#composer-gui">GUI</a>.
+          <br>
+          <br>
+          Note: If you want to install Composer to be used by all users on your
+          system, you may place it in <code>/usr/local/bin</code>. <br>
+          <br>
+          Note: If you are using SELinux, make sure you have set the
+          <code>httpd_execmem</code> permission to allow PHP to execute external
+          programs, otherwise you will get a cryptic error message like
+          <code>Failed to execute the Phar</code> or <code>phar error: exec
+            failed</code>. <br>
+          <br>
+          Note: If you are using cPanel, you will need to use the command line
+          method listed above. <br>
+          <br>
+        </p>
+      </div>
+      <img class="Smaller_Image" src="SRC/IMAGES/Unit_Test/Composer_Installed.png" alt="Composer_Installed">
+    </section>
+    <section>
+      <h1 class="Section_Title">PHPUnit: The PHP Testing Framework</h1>
+      <div class="Definitions">
+        <p>
+          PHPUnit is a programmer-oriented testing framework for PHP. It is an
+          instance of the xUnit architecture for unit testing frameworks. <br>
+          <br>
+          PHPUnit is the de-facto standard for unit testing in PHP projects. It
+          provides both a framework that makes the writing of tests easy as well as
+          the functionality to easily run the tests and analyse their results. <br>
+          <br>
+          PHPUnit is distributed through <a href="https://phar.phpunit.de/">PHAR</a>
+          and available on <a href="https://packagist.org/packages/phpunit/phpunit">Packagist</a>.
+          It can be installed globally in seconds and is then available to check
+          your application. <br>
+          <br>
+          PHPUnit 9.0 supports PHP 7.3, PHP 7.4, and PHP 8.0. <br>
+          <br>
+          PHPUnit 8.5 supports PHP 7.2, PHP 7.3, and PHP 7.4. <br>
+          <br>
+          PHPUnit 7.5 supports PHP 7.1, PHP 7.2, and PHP 7.3. <br>
+          <br>
+          PHPUnit 6.5 supports PHP 7.0, PHP 7.1, and PHP 7.2. <br>
+          <br>
+          PHPUnit 5.7 supports PHP 5.6, PHP 7.0, and PHP 7.1. <br>
+          <br>
+        </p>
+        <p>
+
+        </p>
+      </div>
+      <h1 class="Sub_Section_Title">PHPUnit installation with Composer</h1>
+      <div class="Definitions">
+        <p>
+          The recommended way to install PHPUnit is via Composer. <br>
+          <br>
+          <code>composer require --dev phpunit/phpunit</code>
+          <br>
+          <br>
+          Composer will install the proper PHPUnit version in the <code>vendor/bin</code> directory.
+          <br>
+          <br>
+        </p>
+      </div>
+      <img class="Smaller_Image" src="SRC/IMAGES/Unit_Test/PHPUnit_Installing.png" alt="PHPUnit_Installing">
+
+      <div class="Definitions">
+        <p>
+          To verify that PHPUnit has been installed correctly, run the
+          <code>phpunit --version</code> command. <br>
+        </p>
+      </div>
+      <img class="Smaller_Image" src="SRC/IMAGES/Unit_Test/PHPUnit_Installed.png" alt="PHPUnit_Installed">
+      <div class="Definitions">
+        <p>
+
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h1 class="Section_Title"></h1>
+    </section>
+    <section>
+      <h1 class="Section_Title"></h1>
+    </section>
+  </main>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

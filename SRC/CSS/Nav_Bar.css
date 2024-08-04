@@ -1,0 +1,154 @@
+.Nav_Bar_Items {
+  font-family: "Source Sans Pro";
+  background-color: #8c1515;
+  color: #2e2d29;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  width: 95%;
+  height: 80px;
+  border-radius: 13px;
+  position: relative;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 9999;
+}
+
+.Nav_Bar_Logo {
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.Menu_Icon {
+  display: none;
+  margin-top: 10px;
+}
+
+.Nav_Bar_Menu {
+  background-color: #8c1515;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 20px;
+  list-style: none;
+  align-items: center;
+  width: 60%;
+}
+
+.Nav_Bar_Menu_Item {
+  text-decoration: none;
+  color: #fff;
+  background-color: #8c1515;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+  position: relative;
+}
+
+.Nav_Bar_Menu_Item:hover {
+  color: white;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  background-color: #01959a;
+}
+
+.Nav_Bar_Menu_Item i {
+  padding-left: 10px;
+}
+
+.Labs_Menu {
+  text-decoration: none;
+  color: #fff;
+  background-color: rgba(140, 21, 21, 0.9);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  list-style: none;
+}
+
+#Nav_Bar_Item_Labs_ID:hover .Labs_Menu {
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr 3fr 1fr;
+}
+
+.Labs_Menu_Item {
+  text-decoration: none;
+  color: #fff;
+  background-color: transparent;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+  display: block;
+  top: 70px;
+  list-style: none;
+}
+
+.Labs_Menu_Item:hover {
+  color: white;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  background-color: #01959a;
+}
+
+@media screen and (max-width: 850px) {
+  .Nav_Bar_Menu {
+    display: none;
+  }
+
+  .Nav_Bar_Menu_Active {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #8c1515;
+    width: 80%;
+    height: auto;
+    position: absolute;
+    top: 70px;
+    align-items: stretch;
+    padding: 50px;
+    margin: 0;
+    transition: 0.5s ease-in-out;
+    left: 0;
+    z-index: 9999;
+  }
+
+  .Nav_Bar_Menu_Item {
+    display: block;
+    font-size: 1.2rem;
+    padding: 2rem 0;
+    width: 100%;
+    margin-right: 10%;
+    position: relative;
+  }
+  .Nav_Bar_Menu_Item:hover {
+    color: white;
+    transition: none;
+    border-radius: 4px;
+    background-color: #01959a;
+  }
+  .Nav_Bar_Items {
+    z-index: 9999;
+  }
+  .Menu_Icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  .Menu_Icon i {
+    font-size: 1.2rem;
+    color: #222;
+  }
+}

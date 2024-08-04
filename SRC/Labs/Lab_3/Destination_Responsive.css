@@ -1,0 +1,36 @@
+@media screen and (max-width: 850px) {
+  .Destination {
+    margin: 4rem 2rem;
+  }
+
+  .Destination_Item {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 2.5rem;
+  }
+
+  .Destination_Item_Reverse {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 2.5rem;
+  }
+
+  .Destination_Title {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 2.5rem;
+  }
+
+  .Destination_Text {
+    width: 100%;
+  }
+
+  .Destination_Image {
+    width: 100%;
+    margin: 1.8rem 0;
+  }
+
+  .Destination_Image img {
+    height: 250px;
+  }
+}

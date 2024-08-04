@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>The Document Object Model</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">I. The Document Object Model (DOM)</h1>
+    <section id="DOM">
+      <div class="Definitions">
+        <p>
+          Document object—which represents the HTML document that is displayed in a browser window or tab. <br><br>
+          HTML documents contain HTML elements nested within one another, forming a tree.
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/DOM_Tree.png" alt="DOM_Tree" />
+      <a href="Sample_Document.html">Sample Document</a>
+      <div class="Definitions">
+        <p>
+          The DOM API mirrors the tree structure of an HTML document. For each HTML
+          tag in the document, there is a corresponding JavaScript Element object, and for each
+          run of text in the document, there is a corresponding Text object. The Element and Text classes, as well as
+          the Document class itself, are all subclasses of the more general
+          Node class, and Node objects are organized into a tree structure that JavaScript can
+          query and traverse using the DOM API. <br><br>
+        </p>
+      </div>
+      <h1 class="Section_Title">Selecting Document Elements</h1>
+      <div class="Definitions">
+        <p>
+          The global document property refers to the Document object,
+          and the Document object has head and body properties that refer to the Element
+          objects for the &lt;head&gt; and &lt;body&gt; tags, respectively. <br><br>
+          let My_DIV = document.getElementById("DIV_ID"); <br><br>
+          let My_Input = document.getElementsByName("Input_Name"); <br><br>
+          let The_H1 = document.getElementsByTagName("h1"); <br><br>
+          let Btn = document.getElementsByClassName("Btn_Class"); <br><br>
+          <font color="red">These selection methods that are more or less obsolete now.</font>
+        </p>
+      </div>
+      <h1 class="Section_Title">Selecting elements with CSS selectors</h1>
+      <div class="Definitions">
+        <p>
+          The DOM methods querySelector() and querySelectorAll() allow us to find the element or elements within a
+          document that match a specified CSS selector. <br><br>
+          The querySelector() method takes a CSS selector string as its argument and returns the first matching element
+          in the document that it finds, or returns null if none match. <br><br>
+          querySelectorAll() is similar, but it returns all matching elements in the document rather than just returning
+          the first. <br><br>
+          The return value of querySelectorAll() is not an array of Element objects. Instead,
+          it is an array-like object known as a NodeList. NodeList objects have a length property
+          and can be indexed like arrays. <br><br>
+          If you want to convert a NodeList into a true array, simply pass it to Array.from(). <br><br>
+          The NodeList returned by querySelectorAll() will have a length property set to 0 if
+          there are not any elements in the document that match the specified selector. <br><br>
+          querySelector() and querySelectorAll() will only return elements that are descendants of that element.
+          <br><br>
+          <font color="red">document.getElementById("DIV_ID");</font>= document.querySelector("#DIV_ID") <br><br>
+          <font color="red">document.getElementsByName("Input_Name");</font>
+          =document.querySelectorAll('*[name="Input_Name"]'); <br><br>
+          <font color="red">document.getElementsByTagName("h1");</font>=document.querySelectorAll("h1") <br><br>
+          <font color="red">document.getElementsByClassName("Btn_Class"); </font>
+          =document.querySelectorAll(".Btn_Class")<br><br>
+          <font color="red">Unlike querySelectorAll(), however, the NodeLists returned by these older selection methods
+            are “live,”
+            which means that the length and content of the list can change if the document content or structure changes.
+          </font>
+
+        </p>
+      </div>
+      <h1 class="Section_Title">Document Structure and Traversal</h1>
+      <div class="Definitions">
+        <p>
+          Once you have selected an Element from a Document, you sometimes need to find
+          structurally related portions (parent, siblings, children) of the document. <br><br>
+          there is a traversal API
+          that allows us to treat a document as a tree of Element objects, ignoring Text nodes
+          that are also part of the document. This traversal API does not involve any methods;
+          it is simply a set of properties on Element objects that allow us to refer to the parent,
+          children, and siblings of a given element. <br><br>
+        </p>
+        <ul>
+          <li><b>parentNode:</b> This property of an element refers to the parent of the element, which will be
+            another Element or a Document object.</li>
+          <li><b>children:</b> This NodeList contains the Element children of an element, but excludes non-
+            Element children like Text nodes (and Comment nodes).</li>
+          <li><b>childElementCount:</b> The number of Element children. Returns the same value as children.length.
+          </li>
+          <li><b>firstElementChild, lastElementChild:</b> These properties refer to the first and last Element children
+            of an Element. They are null if the Element has no Element children.</li>
+          <li><b>nextElementSibling, previousElementSibling:</b> These properties refer to the sibling Elements
+            immediately before or immediately
+            after an Element, or null if there is no such sibling.</li>
+        </ul>
+        <font color="green">
+          document.children[0].children[1] <br><br>
+          document.firstElementChild.firstElementChild.nextElementSibling
+        </font>
+      </div>
+      <div class="Definitions">
+        <h1>Documents as trees of nodes</h1>
+        <p>
+          If you want to traverse a document or some portion of a document and do not want
+          to ignore the Text nodes, you can use a different set of properties defined on all Node
+          objects. This will allow you to see Elements, Text nodes, and even Comment nodes. <br><br>
+        </p>
+        <ul>
+          <li>parentNode: The node that is the parent of this one, or null for nodes like the Document
+            object that have no parent.</li>
+          <li>childNodes: A read-only NodeList that that contains all children (not just Element children)
+            of the node.</li>
+          <li>firstChild, lastChild: The first and last child nodes of a node, or null if the node has no children.</li>
+          <li>nextSibling, previousSibling: The next and previous sibling nodes of a node. These properties connect
+            nodes in a doubly linked list.</li>
+          <li>nodeType: A number that specifies what kind of node this is. Document nodes have value 9.
+            Element nodes have value 1. Text nodes have value 3. Comment nodes have value 8.</li>
+          <li>nodeValue: The textual content of a Text or Comment node.</li>
+          <li>nodeName: The HTML tag name of an Element, converted to uppercase.</li>
+        </ul>
+        <font color="green">document.childNodes[0].childNodes[1] <br><br>
+          document.firstChild.firstChild.nextSibling</font><br><br>
+        Then the second child of the first child is the &lt;body&gt; element. It has a nodeType of 1 and a nodeName of
+        “BODY”.
+      </div>
+      <h1 class="Section_Title">Attributes</h1>
+      <div class="Definitions">
+        <p>
+          HTML elements consist of a tag name and a set of name/value pairs known as
+          attributes. <br><br>
+          The Element class defines general getAttribute(), setAttribute(), hasAttri
+          bute(), and removeAttribute() methods for querying, setting, testing, and removing
+          the attributes of an element. But the attribute values of HTML elements are available as properties of the
+          HTMLElement objects that represent those elements. <br><br>
+          <b>HTML attributes as element properties</b><br><br>
+          HTML attributes are not case sensitive, but JavaScript property names are. <br><br>
+          For some elements, such as the &lt;input&gt; element, some HTML attribute names map
+          to differently named properties. The HTML value attribute of an &lt;input&gt;, for example,
+          is mirrored by the JavaScript defaultValue property. The JavaScript value property
+          of the &lt;input&gt; element contains the user's current input. <br><br>
+          Some HTML attribute names are reserved words in JavaScript. For these, the general
+          rule is to prefix the property name with “html”. The HTML for attribute (of the
+          &lt;label&gt; element), for example, becomes the JavaScript htmlFor property. “class” is a
+          reserved word in JavaScript, and the very important HTML class attribute is an
+          exception to the rule: it becomes className in JavaScript code. <br><br>
+          <b>The class attribute</b> <br><br>
+          The class attribute of an HTML element is a particularly important one. Its value is a
+          space-separated list of CSS classes that apply to the element and affect how it is styled
+          with CSS. <br><br>
+          Because class is a reserved word in JavaScript, the value of this attribute is
+          available through the className property on Element objects. The className property
+          can set and return the value of the class attribute as a string. But the class attribute is poorly named: its
+          value is a list of CSS classes, not a single class. <br><br>
+          Element objects define a classList property that allows you to treat
+          the class attribute as a list (add(), remove(), and contains() methods). <br><br>
+          <b>Dataset attributes</b><br><br>
+          In HTML, any attribute whose name is lowercase and begins with the prefix
+          “data-” is considered valid, and you can use them for any purpose. These “dataset
+          attributes” will not affect the presentation of the elements on which they appear, and
+          they define a standard way to attach additional data without compromising document
+          validity. <br><br>
+          In the DOM, Element objects have a dataset property that refers to an object that
+          has properties that correspond to the data- attributes with their prefix removed.
+          Thus, dataset.x would hold the value of the data-x attribute. Hyphenated attributes
+          map to camelCase property names: the attribute data-section-number becomes the
+          property dataset.sectionNumber. <br><br>
+        </p>
+      </div>
+      <h1 class="Section_Title">Element Content</h1>
+      <div class="Definitions">
+        <p>
+          <b>Element content as HTML</b><br><br>
+          Reading the innerHTML property of an Element returns the content of that element as
+          a string of markup. Setting this property on an element invokes the web browser's
+          parser and replaces the element's current content with a parsed representation of the
+          new string. <br><br>
+          The outerHTML property of an Element is like innerHTML except that its value
+          includes the element itself. When you query outerHTML, the value includes the opening
+          and closing tags of the element. And when you set outerHTML on an element, the
+          new content replaces the element itself. <br><br>
+          A related Element method is insertAdjacentHTML(), which allows you to insert a
+          string of arbitrary HTML markup “adjacent” to the specified element. The markup is
+          passed as the second argument to this method, and the precise meaning of “adjacent”
+          depends on the value of the first argument. This first argument should be a string
+          with one of the values “beforebegin,” “afterbegin,” “beforeend,” or “afterend.” <br><br>
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/insertAdjacentHTML.png" alt="insertAdjacentHTML" />
+      <div class="Definitions">
+        <p>
+          <b>Element content as plain text</b><br><br>
+          To query the content of an element as plain text or to insert plain
+          text into a document use the textContent property. <br><br>
+          The textContent property is defined by the Node class, so it works for Text nodes as
+          well as Element nodes. For Element nodes, it finds and returns all text in all descendants
+          of the element.
+        </p>
+      </div>
+      <h1 class="Section_Title">Creating, Inserting, and Deleting Nodes</h1>
+      <div class="Definitions">
+        <p>
+          Create a new element with the createElement() method of the Document class and
+          append strings of text or other elements to it with its append() and prepend()
+          methods. <br><br>
+          append() and prepend() take any number of arguments, which can be Node objects
+          or strings. String arguments are automatically converted to Text nodes. <br><br>
+          append() adds the arguments to the element at the end of the child
+          list. prepend() adds the arguments at the start of the child list. <br><br>
+          If you want to insert an Element or Text node into the middle of the containing element's
+          child list, you should obtain a reference to a sibling node and call before() to insert the new
+          content before that sibling or after() to insert it after that sibling. <br><br>
+          Like append() and prepend(), after() and before() take any number of string and
+          element arguments and insert them all into the document after converting strings to
+          Text nodes. append() and prepend() are only defined on Element objects, but
+          after() and before() work on both Element and Text nodes. <br><br>
+          Note that elements can only be inserted at one spot in the document. If an element is
+          already in the document and you insert it somewhere else, it will be moved to the new
+          location, not copied. <br><br>
+          If you do want to make a copy of an element, use the cloneNode() method, passing
+          true to copy all of its content: <br><br>
+          Parent_Div.after(DIV.cloneNode(true)); <br><br>
+          You can remove an Element or Text node from the document by calling its remove()
+          method, or you can replace it by calling replaceWith() instead. remove() takes no
+          arguments, and replaceWith() takes any number of strings and elements just like
+          before() and after() do. <br><br>
+        </p>
+      </div>
+      <h1 class="Section_Title">CSS Classes</h1>
+      <div class="Definitions">
+        <p>
+          The simplest way to use JavaScript to affect the styling of document content is to add
+          and remove CSS class names from the class attribute of HTML tags. This is easy to
+          do with the classList property of Element objects. <br><br>
+          <b>Inline Styles</b> <br><br>
+          The DOM defines a style property on all
+          Element objects that correspond to the style attribute. Unlike most such properties,
+          however, the style property is not a string. Instead, it is a CSSStyleDeclaration
+          object. <br><br>
+          When working with the style properties of the CSSStyleDeclaration object, remember
+          that all values must be specified as strings. <br><br>
+          <b>Naming Conventions: CSS Properties in JavaScript</b> <br><br>
+          Many CSS style properties, such as font-size, contain hyphens in their names. In
+          JavaScript, a hyphen is interpreted as a minus sign and is not allowed in property
+          names or other identifiers. <br><br>
+          If a CSS property name contains one or more hyphens, the CSSStyleDeclaration property
+          name is formed by removing the hyphens and capitalizing the letter immediately following
+          each hyphen. For example, and the CSS font-family property
+          is written as fontFamily in JavaScript.
+        </p>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Introduction_JavaScript.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Introduction to JavaScript</h1>
+    </a>
+    <a href="JavaScript_Events.html" class="Arrow">
+      <h1>JavaScript Events</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

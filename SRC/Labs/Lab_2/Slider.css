@@ -1,0 +1,76 @@
+.Hero {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  margin: 0px;
+}
+
+.Slider {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  border: none;
+  margin: 0px;
+}
+
+.Slides_Container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.Slide {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  transition: 1s;
+  inset: 0;
+}
+
+.Slide > img {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.Slide.Animated {
+  -webkit-transition: left 0.3s ease-in;
+  transition: left 0.3s ease-in;
+}
+
+.Slides_Next_Btn,
+.Slides_Previous_Btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  z-index: 900;
+  color: white;
+  background: none;
+  border: none;
+  top: 90%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.Slides_Next_Btn {
+  right: 1rem;
+}
+
+.Slides_Previous_Btn {
+  left: 1rem;
+}
+
+.Slides_Previous_Btn:hover .fa-solid .fa-envelope {
+}
+
+.Slides_Next_Btn:hover .fa-solid .fa-envelope {
+}

@@ -1,0 +1,66 @@
+.Destinations {
+  margin: 4rem 6rem;
+}
+
+.Destinations h1 {
+  font-size: 3rem;
+  direction: rtl;
+}
+
+.Destinations h2 {
+  font-size: 2rem;
+  direction: rtl;
+}
+
+.Destination_Item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4.5rem;
+}
+
+.Destination_Item_Reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4.5rem;
+}
+
+.Destination_Text {
+  width: 45%;
+  text-align: start;
+  font-size: 1.1rem;
+}
+
+.Destination_Text h2 {
+  direction: rtl;
+  padding-bottom: 1rem;
+}
+
+.Destination_Text p {
+  direction: rtl;
+  text-align: justify;
+}
+
+.Destination_Image {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  z-index: -99;
+}
+
+.Destination_Image img {
+  width: 49%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: -1px 1px 62px -18px rgba(0, 0, 0, 0.19);
+}
+
+.Destination_Image img:nth-child(2) {
+  position: absolute;
+  top: -10%;
+  right: 0;
+}

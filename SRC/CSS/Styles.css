@@ -1,0 +1,868 @@
+@import url("https://fonts.cdnfonts.com/css/century-schoolbook");
+
+body {
+  font-family: "Source Sans Pro";
+  background-color: #e5e1de;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  margin: 0;
+  padding: 0;
+}
+
+main > .Title {
+  text-align: center;
+  font-size: 2em;
+  margin-top: 10vh;
+}
+
+section {
+  margin-left: 2.5vw;
+  margin-right: 2.5vw;
+  padding: 0;
+  border: 0;
+}
+
+b {
+  font-weight: bolder;
+}
+
+table {
+  margin: 2% 0 2% 0;
+  width: 100%;
+}
+
+th {
+  border: 1px solid black;
+  margin: 2%;
+  padding: 2%;
+}
+
+td {
+  background-color: #fff;
+  border: 2px solid green;
+  font-size: 1.5em;
+  margin: 2%;
+  padding: 2%;
+}
+
+.Definitions.HTML_demo {
+  font-size: 1.5em;
+}
+
+.Title {
+  text-align: center;
+  font-size: 2em;
+  margin: 0;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  //height: 80vh;
+  margin: 5vh 2vw 5vh 2vw;
+  grid-gap: 5vh 2vw;
+  margin-bottom: 10vh;
+}
+
+.card > .Result_Demo {
+  grid-column: 2;
+  grid-row: 1;
+  border: 3px solid green;
+  background-color: #ffffff;
+  overflow: auto;
+  padding: 2rem;
+  font-size: 1.5rem;
+}
+
+.card > .CSS_Code {
+  border: 3px solid green;
+  grid-column: 2;
+  grid-row: 1;
+  background-color: #1e1e1e;
+  color: green;
+  overflow: auto;
+  padding: 2rem;
+}
+
+.card > .JS_Code {
+  border: 3px solid green;
+  grid-column: 2;
+  grid-row: 1;
+  background-color: #1e1e1e;
+  color: yellow;
+  overflow: auto;
+  padding: 2rem;
+}
+
+.card > .Code_Tag:first-of-type {
+  top: -5vh;
+}
+
+.card > .Code_Tag:last-of-type {
+  top: -5vh;
+  left: 50vw;
+  background-color: #ffffff;
+}
+
+.Vertical_Demo {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  margin: 5vh 2vw 5vh 2vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr 1fr;
+  grid-gap: 5vh 2vw;
+  margin-bottom: 30px;
+}
+
+.Code_Tag {
+  position: absolute;
+  top: -40px;
+  left: 20px;
+  background-color: #1e1e1e;
+  color: #f36619;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 3px solid green;
+  border-radius: 10px;
+}
+
+.Vertical_Demo > .Code_Tag:first-of-type {
+  top: -5vh;
+}
+
+.Vertical_Demo > .Code_Tag:nth-of-type(2) {
+  top: 37vh;
+}
+
+.Vertical_Demo > .Code_Tag:last-of-type {
+  top: -5vh;
+  left: 50vw;
+  background-color: #ffffff;
+}
+
+.HTML_Code {
+  border: 3px solid green;
+  grid-column: 1;
+  grid-row: 1;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  overflow: auto;
+  padding: 2rem;
+  font-size: 1.5em;
+}
+
+.Tag {
+  display: inline;
+  color: blue;
+  margin: 0;
+  padding: 0;
+}
+
+.CSS_Code {
+  border: 3px solid green;
+  grid-column: 1;
+  grid-row: 2;
+  background-color: #1e1e1e;
+  color: green;
+  overflow: auto;
+  padding: 2rem;
+  font-size: 1.5rem;
+}
+
+.JS_Code {
+  border: 3px solid green;
+  grid-column: 1;
+  grid-row: 2;
+  background-color: #1e1e1e;
+  color: green;
+  overflow: auto;
+  padding: 2rem;
+  font-size: 1.5rem;
+}
+
+.Result_Demo {
+  border: 3px solid green;
+  grid-column: 2;
+  grid-row: 1/3;
+  background-color: #ffffff;
+  overflow: auto;
+  padding: 2rem;
+}
+
+.Result_Demo iframe {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: none;
+}
+
+.card_info {
+  width: 50%;
+  text-align: justify;
+  margin-right: 20px;
+}
+
+.card_demo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  border: 3px solid #ccc;
+  margin-top: 30px;
+}
+
+.HTML_demo {
+  width: 50%;
+  //height: 40vh;
+  text-align: justify;
+  position: relative;
+  background-color: white;
+  padding: 2%;
+  border: 3px solid green;
+  //overflow:scroll;
+}
+
+.Definitions {
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  //max-height: 80vh;
+  margin: 5vh 2vw 5vh 2vw;
+  text-align: justify;
+  position: relative;
+  background-color: white;
+  padding: 2%;
+  border: 3px solid green;
+  overflow: scroll;
+}
+
+.description {
+  color: black;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 2% 2% 2% 2%;
+  padding: 0;
+  text-align: justify;
+}
+
+.opening_tag {
+  position: absolute;
+  top: -40px;
+  left: 20px;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  /*
+  border: 3px solid #f36619;
+  border-radius: 10px;*/
+}
+
+.Floats {
+  flex-direction: column;
+}
+
+.Media {
+  margin: 0px;
+  padding: 0px;
+}
+
+.MediaImage {
+  float: left;
+  margin: 5px;
+  background-color: #eee;
+}
+
+.MediaImage2 {
+  float: right;
+  margin: 5px;
+  background-color: #eee;
+}
+
+.clearfix::before,
+.clearfix::after {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+.Flex_Container {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.Close_Column {
+  justify-content: center;
+  gap: 100px;
+}
+
+.Display_Flex {
+  display: flex;
+}
+
+.Row_Reverse {
+  flex-direction: row-reverse;
+}
+
+.Row {
+  flex-direction: row;
+}
+
+.Column_Reverse {
+  flex-direction: column-reverse;
+}
+
+.Column {
+  flex-direction: column;
+}
+
+.Flex_No_Wrap {
+  flex-wrap: nowrap;
+}
+
+.Flex_Wrap {
+  flex-wrap: wrap;
+}
+
+.Flex_Wrap_Reverse {
+  flex-wrap: wrap-reverse;
+}
+
+.Justify_Flex_Start {
+  justify-content: flex-start;
+}
+
+.Justify_Flex_Start > div {
+  width: 20%;
+}
+
+.Justify_Flex_End {
+  justify-content: flex-end;
+}
+
+.Justify_Flex_End > div {
+  width: 20%;
+}
+
+.Justify_Center {
+  justify-content: center;
+}
+
+.Justify_Center > div {
+  width: 20%;
+}
+
+.Justify_Space_Between {
+  justify-content: space-between;
+}
+
+.Justify_Space_Between > div {
+  width: 20%;
+}
+
+.Justify_Space_Around {
+  justify-content: space-around;
+}
+
+.Justify_Space_Around > div {
+  width: 20%;
+}
+
+.Justify_Space_Evenly {
+  justify-content: space-evenly;
+}
+
+.Justify_Space_Evenly > div {
+  width: 20%;
+}
+
+.Align_Flex_Start {
+  align-items: flex-start;
+}
+
+.Align_Flex_End {
+  align-items: flex-end;
+}
+
+.Align_Center {
+  align-items: center;
+}
+
+.Align_Stretch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.Align_Baseline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.Align_Space_Evenly {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: space-evenly;
+}
+
+.Content_Flex_Start {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.Content_Flex_End {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+}
+
+.Content_Flex_Stretch {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+}
+
+.Content_Center {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.Content_Space_Between {
+  align-content: space-between;
+}
+
+.Content_Space_Around {
+  display: flex;
+  align-content: space-around;
+}
+
+.Content_Space_Evenly {
+  display: flex;
+  align-content: space-evenly;
+}
+
+.Self_Auto {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: auto;
+}
+
+.Self_Start {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: self-start;
+}
+
+.Self_End {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: self-end;
+}
+
+.Self_Center {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: center;
+}
+
+.Self_Stretch {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: stretch;
+}
+
+.Self_Baseline {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: baseline;
+}
+
+.Height {
+  height: 300px;
+}
+
+.Big_Height {
+  height: 1500px;
+}
+
+.Big_Width {
+  width: 1000px;
+}
+
+.Flex_Sub_Container {
+  background-color: #e5e1de;
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+.Flex_Sub_Container_No_Justify {
+  background-color: #e5e1de;
+  width: 90%;
+  display: flex;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+.Flex_Sub_Container_No_Align_Item {
+  background-color: #e5e1de;
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 10px;
+  align-content: space-evenly;
+}
+
+.Flex_Sub_Container_No_Align_Content {
+  background-color: #e5e1de;
+  width: 90%;
+  display: flex;
+  padding: 10px;
+  margin: 10px;
+  align-items: space-evenly;
+}
+
+.Grid_Sub_Container {
+  background-color: white;
+  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+.Grid_Sub_Container_2 {
+  background-color: white;
+  width: 90%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-content: space-evenly;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+.Dixed_Div {
+  display: flex;
+  position: fixed;
+  color: #fff;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+/****************Not mine**************/
+
+.portfolio {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 1fr;
+  grid-gap: 1em;
+  grid-auto-flow: dense;
+}
+.featured figure {
+  margin: 0;
+  padding: 0;
+}
+.featured img {
+  max-width: 100%;
+  margin-bottom: 5px;
+  align-item: center;
+  justify-content: center;
+}
+.featured figcaption {
+  padding: 0.3em 0.8em;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+}
+
+.featured {
+  display: grid;
+  grid-row: span 2;
+  grid-column: span 2;
+}
+
+.Dialog {
+  display: none;
+  z-index: 1000;
+}
+
+.Dialog_Backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Dialog_Msg {
+  position: fixed;
+  top: 3em;
+  bottom: 3em;
+  right: 20%;
+  left: 20%;
+  padding: 2em 3em;
+  background-color: white;
+  overflow: auto;
+}
+
+.Close_Btn {
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+}
+/********************/
+.Section_Title {
+  color: #8c1515;
+  margin-left: 10%;
+}
+
+.Section_Title h4 {
+  color: black;
+  margin-left: 10%;
+}
+
+.Section_Paragraph {
+  margin-left: 15%;
+  text-align: justify;
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+.Sub_Section_Title {
+  margin-left: 15%;
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
+
+.Chapter {
+  margin-left: 10%;
+}
+.Chapter a {
+  text-decoration: none;
+  color: #8c1515;
+}
+
+.Chapter a:hover {
+  text-decoration: underline;
+}
+
+.Chapter a h2 {
+  margin-bottom: 0;
+}
+
+.Section a {
+  text-decoration: none;
+  color: #3f3c30;
+}
+
+.Section a:hover {
+  text-decoration: underline;
+}
+
+.Section {
+  margin-left: 2%;
+}
+
+.Big_Image {
+  width: 80%;
+  height: auto;
+  margin: 2% 10% 2% 10%;
+}
+
+.Small_Image {
+  width: 100%;
+  height: auto;
+  margin: 2% 3% 2% 3%;
+}
+
+.Smaller_Image {
+  width: 60%;
+  height: auto;
+  margin: 5% 20% 5% 20%;
+  border: 3px solid green;
+}
+
+.Long_Image {
+  width: auto;
+  height: 80vh;
+  margin: 2% 50% 2% 50%;
+  translate: transform(-50%, -50%);
+  border: 3px solid green;
+}
+
+.Small_Image_List_Item {
+  margin-left: 25%;
+}
+
+.Teachers {
+  margin: 2% 10% 2% 10%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: 1fr 1fr;
+  grid-gap: 2em;
+}
+
+.Teacher_Div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background-color: white;
+}
+
+.Teacher_Pic {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 10px;
+}
+
+.Teacher_Info {
+  border-top: 3px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Teacher_Name {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 0;
+  color: #8c1515;
+}
+
+.Teacher_Rank {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.Teacher_Email {
+  font-size: 1.2em;
+  margin: 10px;
+  text-decoration: none;
+  color: #3f3c30;
+}
+
+.Teacher_Email:hover {
+  text-decoration: underline;
+  color: #8c1515;
+}
+
+.Instructions {
+  text-justify: justify;
+  color: #8c1515;
+  font-size: 1em;
+  font-weight: bold;
+}
+.Definition_Title {
+  color: #8c1515;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.Description_Big {
+  font-size: 1.2em;
+  line-height: 1.5em;
+  text-align: justify;
+  margin: 5% 10% 5% 10%;
+}
+
+.Order_3 {
+  order: 3;
+}
+.Order_2 {
+  order: 2;
+}
+.Order_1 {
+  order: 1;
+}
+.Order_4 {
+  order: 4;
+}
+
+.Image_2 {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.Inter_Pages {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2% 5% 2% 5%;
+}
+
+.Arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: 8c1515;
+}
+
+.Arrow h1 {
+  color: 8c1515;
+}
+.Color_Div {
+  width: 40%;
+  height: 20%;
+  margin: 1% 25% 1% 25%;
+}
+
+.Blue {
+  background-color: blue;
+}
+
+.Red {
+  background-color: red;
+}
+
+.Green {
+  background-color: green;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+    <title>Element positioning</title>
+  </head>
+  <body>
+    <main class="Main">
+      <div class="Dixed_Div" style="top: 0; right: 0; left: 0">
+        <h3>position: fixed; top: 0; right: 0; left: 0</h3>
+        <img
+          src="SRC/IMAGES/Oran.jpg"
+          alt="Oran"
+          style="
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            width: 5em;
+            height: 5em;
+          "
+        />
+        <img
+          src="SRC/IMAGES/Tlemcen.jpg"
+          alt="Tlemcen"
+          style="
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            width: 5em;
+            height: 5em;
+          "
+        />
+      </div>
+      <div class="Dixed_Div" style="bottom: 0; right: 0; left: 0">
+        <h3>position: fixed; bottom: 0; right: 0; left: 0</h3>
+        <img
+          src="SRC/IMAGES/Constantine.jpg"
+          alt="Constantine"
+          style="
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            width: 5em;
+            height: 5em;
+          "
+        />
+        <img
+          src="SRC/IMAGES/Algiers.jpg"
+          alt="Algiers"
+          style="
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            width: 5em;
+            height: 5em;
+          "
+        />
+      </div>
+      <div>
+        <h1>Element positioning</h1>
+        <p>
+          The initial value of the position property is static. Positioning is
+          different: it removes elements from the document flow entirely. This
+          allows you to place the element somewhere else on the screen. It can
+          place elements in front of or behind one another, thus overlapping one
+          another.
+        </p>
+      </div>
+      <section>
+        <h2>Fixed positioning</h2>
+        <p>
+          Applying position: fixed to an element lets you position the element
+          arbitrarily within the viewport. This is done with four companion
+          properties: top, right, bottom, and left. The values you assign to
+          these properties specify how far the fixed element should be from each
+          edge of the browser viewport. By setting these four values, you also
+          implicitly define the width and height of the element.
+        </p>
+        <h3>
+          Click on the button below to see an example of fixed positioning
+        </h3>
+        <button
+          class="Open_Dialog_Btn"
+          id="Open_Dialog_Btn_ID"
+          style="background-color: #ffb600; color: white; height: 30px"
+        >
+          Open Dialog
+        </button>
+
+        <div class="Dialog" id="Dialog_ID">
+          <div class="Dialog_Backdrop">
+            <!--A “backdrop” to
+                  obscure content
+                  behind the modal-->
+          </div>
+          <div class="Dialog_Msg">
+            <h4>I'm positioned here until you click on close.</h4>
+            <button class="Close_Btn" id="Close_Btn_ID">Close</button>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Absolute positioning</h2>
+        <p>
+          Absolute positioning position is based on the closest positioned
+          ancestor element. In cases where the parent element is not positioned,
+          then the browser will look up the DOM hierarchy at the grandparent,
+          great-grandparent, and so on until a positioned element is found,
+          which is then used as the containing block. If none of the element's
+          ancestors are positioned, then the absolutely positioned element will
+          be positioned based on something called the initial containing block.
+          This is an area with dimensions equal to the viewport size, anchored
+          at the top of the page. The images in the corners are positioned
+          absolutely within a div that has a fixed position.
+        </p>
+      </section>
+      <section>
+        <h2>Relative positioning</h2>
+      </section>
+      <a href="CSS.html">Back</a>
+    </main>
+    <script src="SRC/JS/Script.js" type="module"></script>
+  </body>
+</html>

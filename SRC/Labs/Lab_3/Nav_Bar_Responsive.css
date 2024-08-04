@@ -1,0 +1,59 @@
+@media screen and (max-width: 850px) {
+  .Nav_Bar_Menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0px;
+    right: -100%;
+    opacity: 0;
+    align-items: stretch;
+    padding: 80px 0 30px 0;
+    margin: 0;
+    transition: 0.5s ease-in-out;
+    border-radius: 13px;
+  }
+
+  .Nav_Bar_Menu.active {
+    display: flex;
+    flex-direction: column-reverse;
+    right: 0;
+    opacity: 1;
+    z-index: -1;
+    transition: 0.5s ease-in-out;
+  }
+
+  .Nav_Bar_Menu_Item {
+    display: block;
+    font-size: 1.2rem;
+    padding: 2rem 0;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+    color: #222;
+    text-decoration: none;
+  }
+
+  .Nav_Bar_Menu_Item:hover {
+    color: white;
+    transition: none;
+    border-radius: 4px;
+    background-color: #01959a;
+  }
+  .Nav_Bar_Items {
+    z-index: 99;
+  }
+  .Menu_Icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  .Menu_Icon i {
+    font-size: 1.2rem;
+    color: #222;
+  }
+}

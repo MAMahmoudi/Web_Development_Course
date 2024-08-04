@@ -1,0 +1,290 @@
+h4 {
+  color: #8c1515;
+}
+
+.My_class {
+  color: green;
+}
+
+#My_ID {
+  color: blue;
+}
+
+.My_Div > h4 {
+  color: #8c1515;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.My_Div li {
+  color: black;
+}
+
+ol + h4 {
+  color: #000000;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+ol ~ h4 {
+  text-decoration: underline;
+}
+
+.Table_Div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Row_Div {
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.Row_Div p {
+  font-size: 20px;
+  font-weight: bold;
+  width: 35%;
+}
+
+.Squares {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.Square {
+  background-color: #fff;
+  border: 3px solid #8c1515;
+  width: 30px;
+  height: 30px;
+}
+
+.Table_Div :first-child > .Squares :first-child {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(2) > .Squares :last-child {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(3) > .Squares :nth-child(2n) {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(4) > .Squares :nth-child(n + 2) {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(5) > .Squares :nth-child(-n + 2) {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(6) > .Squares :nth-last-child(n + 2) {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(7) > .Squares :nth-last-child(-n + 2) {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(8) > .Squares :only-child {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(9) > .Squares > h3:first-of-type {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(10) > .Squares h3:last-of-type {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(11) > .Squares h5:only-of-type {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(12) > .Squares h1:nth-of-type(2) {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(13) > .Squares h3:nth-last-of-type(2) {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(14) > .Squares :not(h3) {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(15) > .Squares > h3:empty {
+  width: 30px;
+  height: 30px;
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(16) > .Squares > .Square:hover {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(17) > .Squares > .Input:focus {
+  background-color: #8c1515;
+}
+
+.Table_Div :nth-child(1) > h1::before {
+  content: "Before";
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(2) > h1::after {
+  content: "after";
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(3) > h1::first-letter {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(4) > h3::first-line {
+  color: #8c1515;
+}
+
+.Table_Div :nth-child(5) > h3::selection {
+  background-color: yellow;
+}
+
+.Blue {
+  color: hsl(240, 99%, 50%);
+}
+
+.Darker_Blue {
+  color: hsl(240, 99%, 30%);
+}
+
+.My_RGB_Class {
+  color: #8c1515;
+}
+
+.My_Other_RGB_Class {
+  color: rgb(254, 2, 8);
+}
+
+.Alpha_HEX_4 {
+  background-color: #0007;
+}
+
+.Alpha_HEX_8 {
+  background-color: #00000077;
+}
+
+.Alpha_HSL {
+  background-color: hsl(359, 99%, 50%, 0.5);
+}
+
+.Alpha_HSL_Percent {
+  background-color: hsl(359, 99%, 50%, 50%);
+}
+
+.Alpha_RGB {
+  background-color: rgb(0, 0, 0, 0.5);
+}
+
+.Alpha_RGB_Space_Separated {
+  background-color: rgb(0 0 0 /0.5);
+}
+
+.Display_P3 {
+  background-color: color(display-p3 0 1 0);
+}
+
+.LCH {
+  background-color: lch(50% 132 43);
+}
+
+.My_Font_Class {
+  font-size: 20px;
+  font-weight: bold;
+  font-style: italic; /*normal, oblique */
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-transform: uppercase; /* lowercase */
+}
+
+.EMS {
+  border: solid 3px #8c1515;
+  padding: 1em;
+}
+
+.Large_EMS {
+  font-size: 40px;
+}
+
+.Small_EMS {
+  font-size: 20px;
+}
+
+.REMS {
+  border: solid 3px #8c1515;
+  padding: 1rem;
+}
+.Large_REMS {
+  font-size: 40px;
+}
+.Small_REMS {
+  font-size: 20px;
+}
+
+@font-face {
+  font-family: "My_Font_1";
+  src: url("../Fonts/SportCenter-DO9Od.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+
+.My_Font_1 {
+  font-family: "My_Font_1", sans-serif;
+}
+
+@font-face {
+  font-family: "My_Font_2";
+  src: url("../Fonts/JackportCollegeNcv-1MZe.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+
+.My_Font_2 {
+  font-family: "My_Font_2", sans-serif;
+}
+
+@font-face {
+  font-family: "My_Font_3";
+  src: url("../Fonts/JackportGreekNcv-RGdo.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+
+.My_Font_3 {
+  font-family: "My_Font_3", sans-serif;
+}
+
+@font-face {
+  font-family: "My_Font_4";
+  src: url("../Fonts/JackportRegularNcv-BeY3.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+
+.My_Font_4 {
+  font-family: "My_Font_4", sans-serif;
+}

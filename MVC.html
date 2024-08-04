@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="SRC/CSS/HTML.css">
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+    <link rel="stylesheet" href="SRC/CSS/Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Design Patterns, MVC</title>
+</head>
+
+<body>
+    <main>
+        <h1 class="Title">Design Patterns, MVC</h1>
+        <h1 class="Section_Title">How does the PHP MVC works?</h1>
+        <div class="Definitions">
+            <p>
+                The MVC pattern is a software architecture that separates an application into three main logical
+                components: the model, the view, and the controller. Each of these components are built to handle
+                specific development aspects of an application. <br>
+                MVC is one of the most frequently used industry-standard web development framework to create scalable
+                and extensible projects. <br>
+                MVC pattern isolates the application logic from the user interface layer and supports separation of
+                concerns. <br>
+                Here are the components of MVC pattern:
+            <ul>
+                <li>
+                    <strong>Model:</strong>
+                    <p> The Model is responsible for managing the data of the application. It receives user input
+                        from the controller.</p>
+                </li>
+                <li>
+                    <strong>View:</strong>
+                    <p> The View is responsible for displaying all or a portion of the data to the user. It receives
+                        data from the controller.</p>
+                </li>
+                <li><strong>Controller:</strong>
+                    <p> The Controller is responsible for responding to user requests. It receives input from the
+                        user and instructs the model and view to perform actions based on that input.</p>
+                </li>
+            </ul>
+
+            </p>
+        </div>
+        <img class="Smaller_Image" src="SRC/IMAGES/MVC.png" alt="MVC">
+        <h1 class="Section_Title">Why do we need to implement a PHP MVC?</h1>
+        <div class="Definitions">
+            <p>
+                Implementing MVC in PHP offers several advantages for web development:
+            <ul>
+                <li>
+                    <strong>Separation of Concerns:</strong>
+                    <p> MVC enforces a clear separation between the data management (Model),
+                        presentation (View), and application logic (Controller). This separation makes code more modular
+                        and
+                        easier to maintain.</p>
+                </li>
+                <li>
+                    <strong>Code Reusability:</strong>
+                    <p>
+                        Because MVC promotes modular code, you can reuse models, views, and
+                        controllers across
+                        different parts of your application. This reduces redundancy and leads to more efficient
+                        development.
+                    </p>
+                </li>
+                <li><strong>Scalability:</strong>
+                    <p> By structuring your application with MVC, you can easily scale and extend it. Whether you
+                        need to add new features, change the user interface, or optimize database queries, MVC allows
+                        you to do
+                        so without affecting other parts of the application.</p>
+                </li>
+                <li><strong>Collaborative Development:</strong>
+                    <p> When working with a team of developers, MVC simplifies collaboration. Team
+                        members can focus on specific components (Model, View, or Controller) without interfering with
+                        each
+                        other's work.</p>
+                </li>
+            </ul>
+            <a href="https://github.com/MAMahmoudi/HERAFY">Here</a> is an example of a PHP MVC.
+            </p>
+        </div>
+
+
+        <h1 class="Section_Title">Creating the Directory Structure</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The first step in creating an MVC application is to create the directory structure. The directory
+                    structure is the same for all MVC applications. The directory structure is shown in the following
+                    image.
+                </p>
+            </div>
+            <img class="Long_Image" src="SRC/IMAGES/MVC/MVC_Folder_Structure.png" alt="MVC_Folder_Structure">
+            <!--
+            <div class="Definitions">
+                <p>
+                    The following table describes the directories and files in the directory structure.
+                </p>
+
+            </div>
+            <table>
+                <tr>
+                    <th>Directory/File</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>app</td>
+                    <td>
+                        Contains the application code.
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>app/controllers</td>
+                    <td>Contains the controller classes.</td>
+                </tr>
+                <tr>
+                    <td>app/models</td>
+                    <td>Contains the model classes.</td>
+                </tr>
+                <tr>
+                    <td>app/views</td>
+                    <td>Contains the view files.</td>
+                </tr>
+                <tr>
+                    <td>app/views/layouts</td>
+                    <td>Contains the layout files.</td>
+                </tr>
+                <tr>
+                    <td>config</td>
+                    <td>Contains the configuration files.</td>
+                </tr>
+                <tr>
+                    <td>config/routes.rb</td>
+                    <td>Contains the routing rules.</td>
+                </tr>
+                <tr>
+                    <td>db</td>
+                    <td>Contains the database files.</td>
+                </tr>
+                <tr>
+                    <td>doc</td>
+                    <td>Contains the documentation files.</td>
+                </tr>
+                <tr>
+                    <td>lib</td>
+                    <td>Contains the library files.</td>
+                </tr>
+                <tr>
+                    <td>log</td>
+                    <td>Contains the log files.</td>
+                </tr>
+                <tr>
+                    <td>public</td>
+                    <td>Contains the static files.</td>
+                </tr>
+                <tr>
+                    <td>script</td>
+                    <td>Contains the script files.</td>
+                </tr>
+                <tr>
+                    <td>test</td>
+                    <td>Contains the test files.</td>
+                </tr>
+                <tr>
+                    <td>tmp</td>
+                    <td>Contains the temporary files.</td>
+                </tr>
+                <tr>
+                    <td>vendor</td>
+                    <td>Contains the vendor files.</td>
+                </tr>
+                <tr>
+                    <td>README</td>
+                    <td>Contains the information about the application.</td>
+                </tr>
+                <tr>
+                    <td>Rakefile</td>
+                    <td>Contains the rake tasks.</td>
+                </tr>
+                <tr>
+                    <td>config.ru</td>
+                    <td>Contains the rack configuration.</td>
+                </tr>
+                <tr>
+                    <td>Gemfile</td>
+                    <td>Contains the gem dependencies.</td>
+                </tr>
+            </table>-->
+        </section>
+        <h1 class="Section_Title">The Public folder</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The public folder contains the static file that can be seen by the user. The public folder contains
+                    the following files and directories.
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        # <br>
+                        Options -MultiViews <br>
+
+                        RewriteEngine On <br>
+
+                        RewriteBase /HERAFY/public <br>
+
+                        # Accept loading of actual -f files and -d directories <br>
+                        # It means that if the user type a valid file name or a valid directory name ==> just open it
+                        <br>
+                        RewriteCond %{REQUEST_FILENAME} !-d <br>
+                        RewriteCond %{REQUEST_FILENAME} !-f <br>
+
+                        # If the user type a non-valid file name or a non-valid directory name <br>
+                        # Send everything else to the index page <br>
+                        # and save the rest in url <br>
+                        RewriteRule ^(.+)$ index.php?url=$1 [QSA,L] <br>
+
+                        # Except for these <br>
+                        # RewriteCond $1 !^(config|core|css|js|robots\.txt) <br>
+
+                        <br> ?>
+
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>.htaccess: </strong>
+                    <p>
+                        Htaccess is short for Hypertext Access. It is a configuration file used by Apache-based web
+                        servers. <br> <br>
+
+                        Configuration files configure the initial settings of a program or, in this case, the
+                        server. This means that the .htaccess file can be used to make the server behave in a
+                        certain way. Each function is just a line of text, or code, which tells the server what to
+                        do. You can add or change functionality by adding or changing the code in the .htaccess
+                        file. <br><br>
+                        You can find more information on how to use an .htaccess file<a
+                            href="https://httpd.apache.org/docs/2.4/howto/htaccess.html"> here</a>.
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        require_once("../app/core/init.php"); <br>
+                        $app = new \app\core\App; <br>
+                        <br> ?>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>index.php: </strong>
+                    <p>
+                        The index.php file is the entry point of the application. It loads the init.php file and
+                        creates an instance of the App class. <br>
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        User-agent : * <br>
+                        Disallow: /admin/ <br>
+                        Disallow: /ajax/ <br>
+                        <br> ?>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>robot.txt: </strong>
+                    <p>
+                        The robot.txt file is used to tell the search engines which pages to index and which pages
+                        not to index. <br>
+                        User-agent does not allow the search engines to index the pages in the admin and ajax
+                        directories. <br>
+                        You can find more information on how to use a robot.txt file
+                        <a href="https://developers.google.com/search/docs/advanced/robots/create-robots-txt">here</a>.
+                        <br>
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="Definitions">
+                <strong>assets: </strong>
+                <p>
+                    The assets folder contains the CSS, JavaScript, and image files. <br>
+                    The CSS folder contains the CSS files. <br>
+                    The JavaScript folder contains the JavaScript files. <br>
+                    The images folder contains the image files. <br>
+                </p>
+            </div>
+            <img class="Long_Image" src="SRC/IMAGES/MVC/Public_Folder.png" alt="Public_Folder">
+        </section>
+        <h1 class="Section_Title">The App folder</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The app folder contains the application code. The app folder contains the following files and
+                    directories.
+                </p>
+            </div>
+            <img class="Long_Image" src="SRC/IMAGES/MVC/App_Folder.png" alt="App_Folder">
+        </section>
+        <h1 class="Section_Title">Creating the PHP Router</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The next step in creating an MVC application is to create the PHP router. The PHP router is used to
+                    route the requests to the appropriate controller. <br>
+                    The PHP router is created in the index.php file or as a separate class then called from index.php.
+                    <br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        class App <br>
+                        { <br>
+
+                        //Default class, method and parameters <br>
+                        protected $controller = 'Home'; <br>
+                        protected $method = 'index'; <br>
+                        protected $params = []; <br>
+
+                        // A function that loads the controller when an App is instanciated in index.php ---> $app = new
+                        App; <br>
+                        public function __construct() <br>
+                        { <br>
+                        $url = $this->parseUrl(); <br>
+                        if (isset($url[0])) { <br>
+                        //concatenation to get the full path and check if the controller exists <br>
+                        // which is in $url[0] <br>
+                        if (file_exists('../app/controllers/' . ucfirst($url[0]) . '.php')) { <br>
+
+                        //Replace with a new instance of this->controller <br>
+                        $this->controller = ucfirst($url[0]); <br>
+                        // remove it from the array <br>
+                        unset($url[0]); <br>
+                        } else { <br>
+                        //if there is no page then route to 404 error <br>
+                        //require ('../app/controllers/_404.php'); <br>
+                        $this->controller = "_404"; <br>
+                        } <br>
+                        } <br>
+
+                        require_once('../app/controllers/' . $this->controller . '.php'); <br>
+                        $this->controller = new $this->controller; <br>
+
+
+                        //check if the method exists <br>
+                        if (isset($url[1])) { <br>
+                        if (method_exists($this->controller, $url[1])) { <br>
+                        $this->method = $url[1]; <br>
+                        unset($url[1]); <br>
+                        } <br>
+                        } <br>
+                        //check if the array exists else return empty array <br>
+                        $this->params = $url ? array_values($url) : []; <br>
+
+                        // The next line will call a function specified by $this->method <br>
+                        // which is in the class $this->controller <br>
+                        // and give it a set of parameters specified by$this->params <br>
+                        call_user_func_array([$this->controller, $this->method], $this->params); <br>
+                        } <br>
+
+                        public function parseUrl() <br>
+                        { <br>
+                        //It will split the url using explode with / as parameter <br>
+                        if (isset($_GET['url'])) { <br>
+
+                        return $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL)); <br>
+                        } <br>
+                        } <br>
+                        }
+
+                        <br> ?>
+
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>App.php: </strong>
+                    <p>
+                        The App class is used to route the requests to the appropriate controller. For example, if the
+                        user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The App class will route the request to the Home controller, the index method, and the 1
+                        parameter. <br> <br>
+
+
+                        The App class has the following properties. <br>
+                        <strong>controller: </strong> The controller name. For example, Home or About. <br>
+                        <strong>method: </strong> The method name. For example, index or show. <br>
+
+                        <strong>params: </strong> The parameters. For example, 1 or 2. <br> <br>
+
+                        The App class has the following methods. <br> <br>
+
+                        <strong>parseUrl: </strong> The parseUrl method is used to parse the URL. For example, if the
+                        user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The parseUrl method will return the following array. <br>
+                        <strong>Array ( [0] => home [1] => index [2] => 1 )</strong> <br> <br>
+                        <strong>rtrim: </strong> The rtrim method is used to remove the trailing slash from the URL.
+                        For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1/</strong> <br>
+                        The rtrim method will return the following URL. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br> <br>
+                        <strong>filter_var:</strong> The filter_var method is used to filter the URL. The
+                        FILTER_SANITIZE_URL
+                        filter removes all illegal URL characters from a string.<br>
+
+                        <strong>explode: </strong> The explode method is used to split the URL into an array. For
+                        example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The explode method will return the following array. <br>
+                        <strong>Array ( [0] => home [1] => index [2] => 1 )</strong> <br> <br>
+                        <strong>isset: </strong> The isset method is used to check if the URL is set. For example, if
+                        the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The isset method will return true. <br> <br>
+                        <strong>__construct: </strong> The constructor method. <br> <br>
+
+                        <strong>ucfirst: </strong> The ucfirst method is used to convert the first character of the
+                        string to uppercase. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The ucfirst method will return the following string. <br>
+                        <strong>Home</strong> <br> <br>
+                        <strong>file_exists: </strong> The file_exists method is used to check if the controller
+                        exists. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The file_exists method will check if the Home controller exists. <br> <br>
+                        <strong>unset: </strong> The unset method is used to remove the controller from the array.
+                        For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The unset method will remove the Home controller from the array. <br> <br>
+                        <strong>require_once: </strong> The require_once method is used to load the controller. For
+                        example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The require_once method will load the Home controller. <br> <br>
+
+                        <strong>method_exists: </strong> The method_exists method is used to check if the method
+                        exists. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/show/1</strong> <br>
+                        The method_exists method will check if the show method exists in the Home controller. <br>
+                        <strong>array_values: </strong> The array_values method is used to return all the values of
+                        an array. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/show/1</strong> <br>
+                        The array_values method will return the following array. <br>
+                        <strong>Array ( [0] => 1 )</strong> <br> <br>
+
+                        <strong>call_user_func_array: </strong> The call_user_func_array method is used to call the
+                        method of the controller. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The call_user_func_array method will call the index method of the Home controller. <br>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <h1 class="Section_Title">Creating the PHP Controller</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The next step in creating an MVC application is to create the PHP controller. The PHP controller is
+                    used to handle the requests and load the views. <br>
+                    The PHP controller is created in the app/controllers folder. <br> <br>
+
+                    The PHP controller has the following methods. <br>
+                    <strong>view: </strong> The view method is used to load the view. <br>
+                    <strong>model: </strong> The model method is used to load the model. <br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+
+                        require_once('config.php'); <br>
+
+                        class Controller <br>
+                        { <br>
+                        public function view($view, $My_Data = []) <br>
+                        { <br>
+                        if (!empty($My_Data)) { <br>
+                        extract($My_Data); <br>
+                        } <br>
+
+                        $FilePath = '../app/views/' . $view . '.view.php'; <br>
+                        require_once($FilePath); <br>
+                        } <br>
+
+                        public function model($model) <br>
+                        { <br>
+                        $FilePath = './models/' . $model . '.php'; <br>
+                        if (file_exists($FilePath)) { <br>
+                        require_once('./models/' . $model . '.php'); <br>
+                        return new $model(); <br>
+                        } else { <br>
+                        //if there is no page then route to 404 error <br>
+                        require('../app/views/404.view.php'); <br>
+                        } <br>
+                        } <br>
+                        }
+                        <br> ?>
+
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>Controller.php: </strong>
+                    <p>
+                        The Controller class is used to handle the requests and load the views. <br> <br>
+
+                        The Controller class has the following methods. <br> <br>
+
+                        <strong>view: </strong> The view method is used to create the path to the view. It takes two
+                        parameters. The first parameter is the view name. The second parameter is the data that will be
+                        passed to the view. For example, if the user types the following URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The view method will load the Home view. <br> <br>
+
+
+                        <strong>model: </strong> The model method is used to create the path to the model. It takes
+                        one parameter. The parameter is the model name. For example, if the user types the following
+                        URL in the browser. <br>
+                        <strong>http://localhost/HERAFY/public/home/index/1</strong> <br>
+                        The model method will load the Home model. <br> <br>
+                        The Controller class is extended by all the controllers. <br>
+                        These controllers are in the app/controllers folder. <br>
+                        For example, the Home controller is in the app/controllers/Home.php file. <br>
+                        The Home controller extends the Controller class. <br>
+                    </p>
+                </div>
+            </div>
+            <img class="Long_Image" src="SRC/IMAGES/MVC/Controllers.png" alt="Controllers">
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        // This is a controller <br>
+                        class Contact_Us extends app\core\Controller <br>
+                        { <br>
+                        public function index() <br>
+                        { <br>
+                        $this->view('Contact_Us'); <br>
+                        } <br>
+                        }
+                        <br> ?>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>Contact_Us.php: </strong>
+                    <p>
+                        The Contact_Us controller is used to handle the requests and load the views. <br>
+                        The Contact_Us controller extends the Controller class. <br>
+                        The Contact_Us controller has the following methods. <br>
+                        <strong>index: </strong> The index method is used to load the Contact_Us view. <br>
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        // This is a controller <br>
+                        class _404 extends \app\core\Controller <br>
+                        { <br>
+                        public function index() <br>
+                        { <br>
+                        $this->view('404'); <br>
+                        } <br>
+                        }
+                        <br> ?>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <strong>_404.php: </strong>
+                    <p>
+                        _404.php starts with an underscore because class names cannot start with a number. <br>
+                        The _404 controller is used to handle the requests and load the views. <br>
+                        The _404 controller extends the Controller class. <br>
+                        The _404 controller has the following methods. <br>
+                        <strong>index: </strong> The index method is used to load the 404 view. <br>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <h1 class="Section_Title">Creating the Views</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The app/views folder contains the view files. The view files are used to display the data. <br>
+                    For example, the Home view is in the app/views/Home.view.php file. <br>
+                    These are what the user sees when they visit the website. <br>
+                    They are requasted by the controller and then displayed to the user. <br>
+                    To summerize, the user type the URL in the browser, the URL is routed to the appropriate
+                    controller, the controller loads the view, and the view is displayed to the user. <br>
+
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+                        &lt;!DOCTYPE html> <br>
+                        &lt;html lang="en"> <br>
+
+                        &lt;head> <br>
+                        &lt;meta charset="UTF-8"> <br>
+                        &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"> <br>
+                        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"> <br>
+                        &lt;title>Error 404&lt;/title> <br>
+                        &lt;/head> <br>
+
+                        &lt;body> <br>
+                        &lt;h1>Error 400004&lt;/h1> <br>
+
+                        &lt;/body> <br>
+
+                        &lt;/html>
+
+                        <br> ?>
+
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+                    <p>
+                        The 404 view is used to display the 404 error. <br>
+                        The 404 view is in the app/views/404.view.php file. <br>
+
+                    </p>
+
+
+                </div>
+            </div>
+
+            <img class="Long_Image" src="SRC/IMAGES/MVC/Views.png" alt="Views">
+        </section>
+        <h1 class="Section_Title">Creating the Models</h1>
+        <section>
+            <div class="Definitions">
+                <p>
+                    The Model.php file is used to connect to the database. <br>
+                    The Model.php file is in the app/core/Model.php file. <br>
+                    The Model.php file has the following methods. <br>
+                    <strong>Execute_Querry: </strong> The Execute_Querry method is used to execute the querry. <br>
+                    <strong>Connect_To_DataBase: </strong> The Connect_To_DataBase method is used to connect to the
+                    database. <br>
+                    <strong>Disconnect_From_DataBase: </strong> The Disconnect_From_DataBase method is used to
+                    disconnect from the database. <br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+
+                        trait Model <br>
+                        { <br>
+
+                        use DataBase_Connection; <br>
+
+                        // Tnside the trait Model we have to define the CRUD methods <br>
+                        // CRUD = Create, Read, Update, Delete <br>
+                        // This way we can use these methods just by providing the table name and data <br>
+                        // $My_Table = table name <br>
+                        public $My_Table; <br>
+
+                        public $My_Errors = []; <br>
+
+                        public function Single_Result($My_Data) <br>
+                        { <br>
+                        $keys = array_keys($My_Data); <br>
+                        $My_Querry = "select * from $this->My_Table where "; <br>
+                        foreach ($keys as $key) { <br>
+                        $My_Querry .= $key . " = :" . $key . " && "; <br>
+                        } <br>
+                        $My_Querry = trim($My_Querry, " && "); <br>
+                        print_r($My_Querry); <br>
+                        $My_Results = $this->Execute_Querry($My_Querry, $My_Data); <br>
+                        if ($My_Results) { <br>
+                        return $My_Results[0]; <br>
+                        } else { <br>
+                        return false; <br>
+                        } <br>
+                        } <br>
+
+                        public function Search_For($My_Data) <br>
+                        { <br>
+                        $keys = array_keys($My_Data); <br>
+                        $My_Querry = "select * from $this->My_Table where "; <br>
+                        foreach ($keys as $key) { <br>
+                        $My_Querry .= $key . " = :" . $key . " && "; <br>
+                        } <br>
+                        $My_Querry = trim($My_Querry, " && "); <br>
+                        return $this->Execute_Querry($My_Querry, $My_Data); <br>
+                        } <br>
+
+                        public function Insert($My_Data) <br>
+                        { <br>
+                        $keys = array_keys($My_Data); <br>
+
+                        $My_Querry = "insert into $this->My_Table (" . implode(",", $keys) . ") values (:" . <br>
+                        implode(",:", $keys) . ")"; <br>
+                        print_r($My_Querry); <br>
+                        $this->Execute_Querry($My_Querry, $My_Data); <br>
+                        return false; <br>
+                        } <br>
+
+                        public function Update($id, $My_Data) <br>
+                        { <br>
+                        $keys = array_keys($My_Data); <br>
+                        $My_Querry = "select * from $this->My_Table where "; <br>
+                        foreach ($keys as $key) { <br>
+                        $My_Querry .= $key . " = :" . $key . " && "; <br>
+                        } <br>
+                        $My_Querry = trim($My_Querry, " && "); <br>
+                        $this->Execute_Querry($My_Querry, $My_Data); <br>
+                        return false; <br>
+                        } <br>
+
+                        public function Delete($My_Data) <br>
+                        { <br>
+                        $keys = array_keys($My_Data); <br>
+                        $My_Querry = "delete from $this->My_Table where "; <br>
+                        $this->Execute_Querry($My_Querry, $My_Data); <br>
+                        } <br>
+                        }
+                        <br> ?>
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+
+
+
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    The app/models folder contains the model files. The model files are used to get the data from the
+                    database. <br>
+                    For example, the Home model is in the app/models/Home.php file. <br>
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">PHP</h2>
+                <div class="HTML_Code">
+                    <font color="green">
+                        &lt;?php <br>
+
+                        class Account_User <br>
+                        { <br>
+                        use Model; <br>
+
+
+                        public function Verify_My_Data($My_Data) <br>
+                        { <br>
+                        $this->My_Errors = []; <br>
+
+                        if (empty($My_Data['ism'])) { <br>
+                        $this->My_Errors['ism'] = "الرجاء ادخال الاسم"; <br>
+                        } <br>
+
+                        if (empty($My_Data['laqab'])) { <br>
+                        $this->My_Errors['laqab'] = "الرجاء ادخال اللقب"; <br>
+                        } <br>
+
+                        if (empty($My_Data['mostakhdim'])) { <br>
+                        $this->My_Errors['mostakhdim'] = "الرجاء ادخال اسم المستخدم"; <br>
+                        } elseif (!filter_var($My_Data['mostakhdim'], FILTER_VALIDATE_EMAIL)) { <br>
+                        $this->My_Errors['mostakhdim'] = "الرجاء التأكد من اسم المستخدم"; <br>
+                        } <br>
+                        if (empty($My_Data['kalimat_sir'])) { <br>
+                        $this->My_Errors['kalimat_sir'] = "الرجاء ادخال كلمة المرور"; <br>
+                        } <br>
+
+                        if (empty($My_Data['Re_kalimat_sir'])) { <br>
+                        $this->My_Errors['Re_kalimat_sir'] = " الرجاء ادخال كلمة المرور مره اخرى"; <br>
+                        } <br>
+                        /* <br>
+                        if($My_Data['Re_kalimat_sir'] != $My_Data['kalimat_sir']) <br>
+                        { <br>
+                        $this->My_Errors['Re_kalimat_sir'] = "كلمة المرور غير متطابقة"; <br>
+                        } <br>
+                        */ <br>
+
+                        if (empty($this->My_Errors)) { <br>
+                        return true; <br>
+                        } <br>
+                        return false; <br>
+                        } <br>
+                        }
+
+                        <br> ?>
+
+                    </font>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo">
+
+
+                </div>
+            </div>
+
+            <img class="Smaller_Image" src="SRC/IMAGES/MVC/Models.png" alt="Models">
+        </section>
+    </main>
+    <footer class="Inter_Pages">
+        <a href="Security.html" class="Arrow">
+            <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+            <h1>Security</h1>
+        </a>
+        <a href="Unit_Testing.html" class="Arrow">
+            <h1>Unit Testing</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+        </a>
+    </footer>
+    <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
+</html>

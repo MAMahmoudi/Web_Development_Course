@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Form_Validation.css">
+    <link rel="stylesheet" href="../../CSS/Styles.css">
+    <link rel="stylesheet" href="../../CSS/Nav_Bar.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Form validation</title>
+</head>
+
+<body>
+    <main>
+        <form id="Form" action="/" method="POST">
+            <label for="Name">الإسم الكامل</label>
+            <input type="text" name="Name" id="Name" size="15" maxlength="30" autocomplete="off" required /><br />
+            <label for="User_Name">إسم المستخدم</label>
+            <input type="text" name="User_Name" id="User_Name" size="15" maxlength="30" autocomplete="off"
+                required /><br />
+            <label for="Password">كلمة السر</label>
+            <input type="password" name="Password" id="Password" size="15" maxlength="30" autocomplete="off"
+                required /><br />
+            <label for="Confirm_Password">تأكيد كلمة السر</label>
+            <input type="password" name="Confirm_Password" id="Confirm_Password" size="15" maxlength="30"
+                autocomplete="off" required /><br />
+            <label for="Birthdate">تاريخ الميلاد</label>
+            <input type="date" name="Birthdate" id="Birthdate" size="15" maxlength="30" autocomplete="off"
+                required /><br />
+            <label for="Email">البريد الإلكتروني</label>
+            <input type="email" name="Email" id="Email" size="15" maxlength="30" autocomplete="off" required /><br />
+            <label for="Phone_Number">رقم الهاتف</label>
+            <input type="tel" name="Phone_Number" id="Phone_Number" size="10" maxlength="10" autocomplete="off" required
+                pattern="[0]{1}[5-7]{1}[0-9]{8}" /><br />
+            <input type="submit" value="إرسال" id="Submit_Btn" />
+            <small></small>
+        </form>
+
+    </main>
+    <script src="Form_Validation.js"></script>
+</body>
+
+</html>

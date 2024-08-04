@@ -1,0 +1,124 @@
+.Logins {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10vh 10vw;
+  margin: 0;
+  gap: 10vw;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+}
+
+.Account_Login,
+.Page_Login {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  box-shadow: 10px 10px 20px #888888;
+  border-radius: 30px;
+  align-items: center;
+  background-color: #f2f2f2;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.Form > h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #03632e;
+  margin: 10px;
+}
+
+.Email_Password {
+  outline: none;
+  border: none;
+  height: 30px;
+  width: 80%;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid rgb(9, 232, 9);
+  background: transparent;
+  text-align: center;
+  display: block;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.LoginBtn {
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 80%;
+  background-color: #01959a;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 25px;
+  padding: 1px 20px;
+  margin-top: 10px;
+}
+
+.Forgot_Password {
+  text-decoration: none;
+  color: #03632e;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.CreateAccountBtn {
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 90%;
+  background-color: #01959a;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 25px;
+  padding: 1px 20px;
+  margin-top: 10px;
+}
+
+.CreateAccountBtn:hover,
+.LoginBtn:hover {
+  background-image: linear-gradient(to bottom right, #80ffdb 1%, #01959a 99%);
+  color: white;
+}
+
+.Create_Account_Btn {
+  text-decoration: none;
+  color: white;
+}
+
+.Dialog {
+  display: none;
+}
+
+.Dialog_Backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Close_Btn {
+  position: absolute;
+  top: 0em;
+  right: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+}

@@ -1,0 +1,14 @@
+@media screen and (max-width: 555px) {
+  .Hero_Text h1 {
+    padding: 10px 20px;
+  }
+  .Hero_Text p {
+    font-size: 1.1rem;
+    padding: 0 0 2rem 0;
+  }
+  .Hero_Text .Show {
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+}

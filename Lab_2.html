@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <title>Lab 2</title>
+</head>
+
+<body>
+  <main>
+    <section>
+      <h1 class="Title">Lab 2: CSS Backgrounds, shadows, and typography</h1>
+    </section>
+    <section id="Backgrounds">
+      <h1 class="Title">I. Backgrounds</h1>
+      <div class="Definitions HTML_demo">
+        <p>
+          The <b>background</b> property is a shorthand for eight properties:
+        <ol>
+          <li><b>background-image:</b> Specifies an image from a file or a generated color gradient.</li>
+          <li><b>background-position:</b> Sets the initial position of the background image.</li>
+          <li><b>background-size:</b> Specifies how large to render the background image within the element.</li>
+          <li><b>background-repeat:</b> Determines whether to tile the image if necessary to fill the entire element.
+          </li>
+          <li><b>background-origin:</b> Determines whether background positioning is relative to the element's
+            border-box, padding-box (initial value), or content-box.</li>
+          <li><b>background-clip:</b> Specifies whether the background should fill the element's border-box (initial
+            value), padding-box, or content-box.</li>
+          <li><b>background-attachment:</b> Specifies whether the background image will scroll
+            up and down along with the element (the initial value), or if the image will be
+            fixed in place in the viewport.</li>
+          <li><b>background-color:</b> Specifies a solid background color.</li>
+        </ol>
+        This means that you can set all the background properties above by using only the background property. <br>
+        Also, using the shorthand property (background) will set the values you specify while also resetting all the
+        others to their initial value. <br><br>
+        The background-image property is particularly interesting. It accepts a path to an image URL (background-image:
+        url(Oran.jpg)), but it can also accept a gradient function (see example below).
+        </p>
+      </div>
+      <div class="card">
+        <div class="HTML_demo">
+          <h2 class="opening_tag">HTML</h2>
+          <font color="blue">&lt; div class="Gradient_Div" &gt;</font>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <div class="HTML_demo">
+          <h2 class="opening_tag">CSS</h2>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image</font>: linear-gradient(90deg, #00dbde, #fc00ff); <br>
+          } <br><br>
+          <font color="green">/* Using color stops */</font><br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image:</font> linear-gradient(to right, #017137, #ffffff, #f47639); <br>
+          } <br><br>
+          <font color="green">/* Stripes */</font><br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image:</font> linear-gradient(
+          to bottom,
+          #000000 0%,
+          #000000 33%,
+          #c71231 33%,
+          #c71231 66%,
+          #ffba32 66%
+          ); <br>
+          } <br><br>
+          <font color="green">/* Repeating gradients */</font><br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image:</font> repeating-linear-gradient(
+          to bottom,
+          #be0b31 0%,
+          #be0b31 10%,
+          #ffffff 10%,
+          #ffffff 20%
+          );<br>
+          } <br>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">1. Linear gradient</h3>
+      <div class="Definitions HTML_demo">
+        <h3>The linear-gradient function</h3>
+        <p>
+          The linear-gradient function has three parameters defining its behavior: angle, starting color, and ending
+          color. <br>
+          The angle of the gradient can be specified in several ways. <br>
+        <ul>
+          <li>Using words like: to right, to left, to top or to bottom. You can even specify a corner such as to bottom
+            right</li>
+          <li>You can use more specific units, such as degrees. The value 0deg points straight up (equivalent to to
+            top); higher values move clockwise around the circle, so 90deg points to the right, 180deg points down,
+            360deg points up again.</li>
+          <li>rad: indicates radians. One full circle is 2 &#960;, or roughly 6.2832 radians.</li>
+          <li>turn: indicates the number of full turns around the circle. For example, 0.25turn, is equal to 90deg.</li>
+          <li>grad: indicates gradians. One full circle is 400 gradians (400grad) and 100grad equals 90deg.</li>
+        </ul>
+        </p>
+        <h3>Color stops</h3>
+        <p>
+          You can define a gradient with multiple colors, which are each called a color stop (see third row in the
+          example below). <br>
+          The linear-gradient function can accept any number of color stops, each separated by a comma. <br>
+          You can adjust the position of the color stops however you want. They also do not need to be measured in
+          percentages. Pixels, ems, and other length units are perfectly valid.
+        </p>
+        <h3>Stripes</h3>
+        <p>
+          If you place two color stops at the same position, the gradient's color will instantly switch from one to the
+          other, rather than a smooth transition (see forth row in the example below). <br>
+          In the example above, the color #000000 and #c71231 have the same color stop which is 33%. In this case the
+          transition will be instant, creating a stripe effect. <br>
+        </p>
+        <h3>Repeating gradients</h3>
+        <p>
+          We can use the repeating-linear-gradient function to create a gradient that repeats itself. <br>
+          We use either color stops or stripes to create a pattern first then it will be repeated. <br>
+          It can be used to create a progress bar, for example. (This effect requires a bit of JavaScript, which we will
+          cover in detai in Lab 5. If you to take a look at it now, go to <a
+            href="https://github.com/ENSIA-AI/Web_Development_2023/blob/main/SRC/Labs/Lab_5/Lab_2.js">Lab 5 JS
+            code</a>.)
+        </p>
+        <button type="button" class="Try_It_Btn" id="Repeating_Gradients_Try_It_Btn_ID">Try it</button>
+        <div class="Dialog" id="Dialog_ID">
+          <div class="Dialog_Backdrop">
+            <!--A “backdrop” to
+                  obscure content
+                  behind the modal-->
+          </div>
+          <div class="Progress_Bar" id="Progress_Bar_ID"></div>
+        </div>
+      </div>
+      <div class="Definitions HTML_demo">
+        <h2 class="opening_tag">Result</h2>
+        <div class="Gradient_Divs">
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+        </div>
+      </div>
+      <p class="Description_Big">You can find many websites that provide some aesthetic backgrounds with their CSS code.
+        For
+        example, <a href="https://cssgradient.io/gradient-backgrounds/">this one.</a></p>
+      <h3 class="Sub_Section_Title">2. Radial gradient</h3>
+      <div class="Definitions HTML_demo">
+        <p>
+          Radial gradients start at a single point and proceed outward in all directions. <br>
+          By default, the gradient is centered in the element, transitioning evenly to its corners.
+          It's elliptical in shape, matching the proportions of the element (that is, wider for wide elements, taller
+          for tall elements). <br>
+          Radial gradients support color stops, the same as linear gradients. <br>
+          You can also make the radial gradient a circle rather than an ellipse, or you can specify where the gradient
+          should be centered. <br>
+          A repeating-radialgradient() function repeats the pattern in concentric rings.
+        </p>
+      </div>
+      <div class="card">
+        <div class="HTML_demo">
+          <h2 class="opening_tag">HTML</h2>
+          <font color="blue">&lt; div class="Gradient_Div" &gt;</font>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <div class="HTML_demo">
+          <h2 class="opening_tag">CSS</h2>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image</font>: radial-gradient(white, blue); <br>
+          } <br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">background-image</font>: radial-gradient(circle, white, midnightblue) <br>
+          } <br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">/* Sized 3 em, centered 25% from the left and top edges */</font><br>
+          <font color="green">background-image</font>: radial-gradient(3em at 25% 25%, white, midnightblue); <br>
+          } <br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">/* Radial gradient with explicit color stop positions */</font><br>
+          <font color="green">background-image</font>: radial-gradient(circle, midnightblue 0%, white 75%, red 100%);
+          <br>
+          } <br><br>
+          <font color="green">.Gradient_Div</font>
+          { <br>
+          <font color="green">/* Repeating gradient with stripes */</font><br>
+          <font color="green">background-image</font>: repeating-radial-gradient(circle, midnightblue 0,
+          midnightblue 1em, white 1em, white 2em); <br>
+          } <br>
+        </div>
+      </div>
+      <div class="Definitions HTML_demo">
+        <h2 class="opening_tag">Result</h2>
+        <div class="Radial_Gradient_Divs">
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <div class="Gradient_Div"></div>
+          <button type="button" class="Try_It_Btn" id="Radial_Gradients_Try_It_Btn_ID">Try it</button>
+        </div>
+      </div>
+      <div class="Dialog" id="Dialog_2_ID">
+        <div class="Dialog_Backdrop">
+          <!--A “backdrop” to
+                  obscure content
+                  behind the modal-->
+        </div>
+        <div class="Radial_Gradients" id="Radial_Gradients_ID"></div>
+      </div>
+    </section>
+    <section id="Shadows">
+      <h1 class="Title">II. Shadows</h1>
+      <div class="Definitions HTML_demo">
+        <p>
+          Two properties that create shadows are box-shadow, which creates a shadow of an element's box shape, and
+          text-shadow, which creates a shadow of rendered text. <br>
+          Shadows rules have the following syntax: <br> <br>
+          <font color="green">box-shadow: </font> <i>offset-x offset-y blur-radius spread-radius color</i>; <br>
+        <ul>
+          <li><b>offset-x offset-y:</b> how far the shadow will be shifted from the element's position (horizontal, then
+            vertical). If these have a value of 0, then the shadow will be directly behind the element.</li>
+          <li><b>blur-radius:</b> controls how much the edges of the shadow are to be blurred. This will give it a
+            softer, slightly transparent edge.</li>
+          <li><b>spread-radius:</b> The spread radius controls the size of the shadow. A positive spread radius makes
+            the shadow larger in all directions; a negative value makes the shadow smaller.</li>
+          <li><b>color:</b> any color format.</li>
+          <li><b>inset:</b> makes the shadow appear inside the border of the element, rather than outside.</li>
+        </ul>
+        The shadow is by default the exact size and dimensions of the element. It also has
+        rounded corners, matching any border-radius the element has applied. The values:
+        horizontal offset (x), vertical offset (y), and color should always be specified for the
+        shadow.
+        </p>
+      </div>
+      <div class="card">
+        <div class="HTML_demo">
+          <h2 class="opening_tag">HTML</h2>
+          <font color="blue">&lt; div class="Shadow_Div" &gt;</font>
+          <font color="blue">&lt; /div &gt;</font>
+        </div>
+        <div class="HTML_demo">
+          <h2 class="opening_tag">CSS</h2>
+          <font color="green">.Shadow_Div</font>
+          { <br>
+          <font color="green">/* Dark blue shadow with a 0.5 em blur */</font><br>
+          <font color="green">box-shadow:</font> 0.1em 0.1em 0.5em #124; <br>
+          <font color="green">text-shadow:</font> 0.1em 0.1em 0.5em #ffffff;
+          <br>
+          } <br><br>
+          <font color="green">.Shadow_Div:active</font>
+          {/* When I click on it */ <br>
+          <font color="green">/* Several shadows definition can be added, separating them with a comma.*/</font><br>
+          <font color="green">box-shadow:</font> inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4); <br>
+          } <br><br>
+          <font color="green">.Shadow_Div:hover</font>
+          { <br>
+          <font color="green">box-shadow:</font> 0 0 50px 15px #48abe0; <br>
+          } <br><br>
+          <font color="green">.Shadow_Div:hover</font>
+          { <br>
+          <font color="green">box-shadow:</font> 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca, 0 0 25px 20px #8a2be2, 0 0
+          30px 25px #ff1493; <br>
+          } <br><br>
+          <font color="green">.Shadow_Div:hover</font>
+          { <br>
+          <font color="green">box-shadow:</font> -10px -10px 0 5px #000000;<br>
+          } <br><br>
+          <font color="green">.Shadow_Div:hover</font>
+          { <br>
+          <font color="green">box-shadow:</font> 10px 10px 0 5px #000000;<br>
+          } <br><br>
+          <font color="green">.Shadow_Div:hover</font>
+          { <br>
+          <font color="green">box-shadow:</font> 0 10px 0 5px #000000; <br>
+          } <br><br>
+        </div>
+      </div>
+      <div class="Definitions HTML_demo">
+        <h2 class="opening_tag">Result</h2>
+        <h4>Hover or click to effect.</h4>
+        <div class="Shadow_Divs">
+          <div class="Shadow_Div">Click</div>
+          <div class="Shadow_Div">Hover</div>
+          <div class="Shadow_Div">Glow</div>
+          <div class="Shadow_Div">Solid</div>
+          <div class="Shadow_Div"></div>
+          <div class="Shadow_Div"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="Typography">
+      <h1 class="Title">III. Typography </h1>
+      <div class="Definitions HTML_demo">
+        <p>
+          We have already seen Typography in the previous lecture <a href="CSS_fundamentals.html#Typography">here</a>.
+          <br><br>
+          In this section, we will see how to use external fonts like Google fonts. <br>
+        </p>
+      </div>
+      <ol class="Steps">
+
+        <li>
+          <p>
+            Go to <a href="https://fonts.google.com/">https://fonts.google.com/</a>
+          </p>
+          <img src="SRC/IMAGES/Lab_2/Google_Fonts_1.png" alt="Google_Fonts_1" />
+          <p>
+            You can select fonts from this screen, or you can search for a particular one.
+          </p>
+        </li>
+        <li>
+          <p>
+            In the style section click on the <b>+</b> button next to the <b>Fonts</b> section.
+            google will add this font to your font selection.
+          </p>
+          <img src="SRC/IMAGES/Lab_2/Google_Fonts_2.png" alt="Google_Fonts_2" />
+          <p>
+            You can also delete a font from the selection by clicking on the <b>-</b> button next to the font name.
+          </p>
+        </li>
+        <li>
+          <p>
+            Copy the <font color="blue">&lt;link&gt;</font> tag and add it to your page's <font color="blue">
+              &lt;head&gt;</font>.
+          </p>
+          <img src="SRC/IMAGES/Lab_2/Google_Fonts_3.png" alt="Google_Fonts_3" />
+          <p>
+          </p>
+        </li>
+      </ol>
+      <div class="card">
+        <div class="HTML_demo">
+          <h2 class="opening_tag">HTML</h2>
+
+          <font color="blue">&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</font><br>
+          <font color="blue">&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</font><br>
+          <font color="blue">&lt;link
+            href="https://fonts.googleapis.com/css2?family=Amiri:ital, wght@0,400; 0,700; 1,400; 1,700&display=swap"
+            rel="stylesheet"&gt;</font>
+        </div>
+        <div class="HTML_demo">
+          <h2 class="opening_tag">CSS</h2>
+          <font color="green">.New_Font</font>
+          { <br>
+          <font color="green">font-family:</font> Amiri; <br>
+          <font color="green">font-size:</font> 2rem; <br>
+          <font color="green">font-weight:</font> bold; <br>
+          }
+        </div>
+      </div>
+      <div class="Definitions HTML_demo">
+        <h2 class="opening_tag">Result</h2>
+        <p class="New_Font">
+          لقد أصبح الذكاء الاصطناعي مصطلحًا شاملًا للتطبيقات التي تؤدي مهام مُعقدة كانت تتطلب في الماضي إدخالات بشرية
+          مثل التواصل مع العملاء عبر الإنترنت أو ممارسة لعبة الشطرنج. يُستخدم غالبًا هذا المصطلح بالتبادل مع مجالاته
+          الفرعية، والتي تشمل التعلم الآلي (ML) والتعلم العميق.
+        </p>
+
+      </div>
+    </section>
+
+  </main>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="SRC/Labs/Lab_5/Lab_2.js" type="module"></script>
+</body>
+
+</html>

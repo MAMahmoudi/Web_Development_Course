@@ -1,0 +1,378 @@
+.Try_It_Btn {
+  margin: 1rem auto;
+  width: 200px;
+  align-self: center;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+}
+
+.Try_It_Btn:hover {
+  background-image: linear-gradient(to left, #79fad5, #027b92);
+}
+
+.Progress_Bar {
+  position: fixed;
+  top: 48vh;
+  bottom: 48vh;
+  right: 20vw;
+  left: 20vw;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #57b,
+    #57b 10px,
+    #148 10px,
+    #148 20px
+  );
+  overflow: auto;
+  border-radius: 15px;
+}
+
+.Radial_Gradients {
+  position: fixed;
+  top: 2vh;
+  bottom: 2vh;
+  right: 2vw;
+  left: 2vw;
+  background-image: repeating-radial-gradient(
+    circle,
+    black 0,
+    black 5px,
+    white 5px,
+    white 10px
+  );
+  z-index: 1000;
+  overflow: auto;
+  border-radius: 15px;
+}
+
+.Radial_Gradients_2 {
+  background-image: repeating-radial-gradient(
+    circle,
+    white 0,
+    white 5px,
+    black 5px,
+    black 10px
+  );
+}
+
+.Progress_Bar_Background_2 {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #148,
+    #148 10px,
+    #57b 10px,
+    #57b 20px
+  );
+}
+
+.Gradient_Divs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.Radial_Gradient_Divs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.Shadow_Divs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.Shadow_Div {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.Gradient_Div {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+.Gradient_Divs :first-child {
+  background-image: linear-gradient(
+    43deg,
+    #4158d0 0%,
+    #c850c0 46%,
+    #ffcc70 100%
+  );
+}
+
+.Gradient_Divs :nth-child(2) {
+  background-image: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+}
+.Gradient_Divs :nth-child(3) {
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+}
+.Gradient_Divs :nth-child(4) {
+  background-image: linear-gradient(147deg, #ffe53b 0%, #ff2525 74%);
+}
+.Gradient_Divs :nth-child(5) {
+  background-image: linear-gradient(132deg, #f4d03f 0%, #16a085 100%);
+}
+.Gradient_Divs :nth-child(6) {
+  background-image: linear-gradient(
+    225deg,
+    #ff3cac 0%,
+    #784ba0 50%,
+    #2b86c5 100%
+  );
+}
+.Gradient_Divs :nth-child(7) {
+  background-image: linear-gradient(
+    45deg,
+    #fa8bff 0%,
+    #2bd2ff 52%,
+    #2bff88 90%
+  );
+}
+.Gradient_Divs :nth-child(8) {
+  background-image: linear-gradient(45deg, #fbda61 0%, #ff5acd 100%);
+}
+.Gradient_Divs :nth-child(9) {
+  background-image: linear-gradient(180deg, #52acff 25%, #ffe32c 100%);
+}
+.Gradient_Divs :nth-child(10) {
+  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
+}
+.Gradient_Divs :nth-child(11) {
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #6284ff 50%,
+    #ff0000 100%
+  );
+}
+
+.Gradient_Divs :nth-child(12) {
+  background-image: linear-gradient(160deg, #0093e9, #80d0c7);
+}
+
+.Gradient_Divs :nth-child(13) {
+  background-image: linear-gradient(to right, #017137, #ffffff, #f47639);
+}
+.Gradient_Divs :nth-child(14) {
+  background-image: linear-gradient(
+    to right,
+    #02733f,
+    #ffffff,
+    #02733f,
+    #ffffff,
+    #02733f
+  );
+}
+.Gradient_Divs :nth-child(15) {
+  background-image: linear-gradient(
+    to right,
+    #f47639,
+    #ffffff,
+    #f47639,
+    #ffffff,
+    #017137
+  );
+}
+.Gradient_Divs :nth-child(16) {
+  background-image: linear-gradient(to right, #319500, #ffffff, #df2111);
+}
+.Gradient_Divs :nth-child(17) {
+  background-image: linear-gradient(to bottom, #ffffff, #0179d0, #ec3c01);
+}
+.Gradient_Divs :nth-child(18) {
+  background-image: linear-gradient(to bottom, #000000, #c71231, #ffba32);
+}
+
+.Gradient_Divs :nth-child(19) {
+  background-image: linear-gradient(
+    to right,
+    #017137,
+    #017137 33%,
+    #ffffff 33%,
+    #ffffff 66%,
+    #f47639 66%
+  );
+}
+.Gradient_Divs :nth-child(20) {
+  background-image: linear-gradient(
+    to right,
+    #02733f,
+    #02733f 33%,
+    #ffffff 33%,
+    #ffffff 66%,
+    #02733f 66%
+  );
+}
+.Gradient_Divs :nth-child(21) {
+  background-image: linear-gradient(
+    to right,
+    #f47639,
+    #f47639 33%,
+    #ffffff 33%,
+    #ffffff 66%,
+    #017137 66%
+  );
+}
+.Gradient_Divs :nth-child(22) {
+  background-image: linear-gradient(
+    to right,
+    #319500,
+    #319500 33%,
+    #ffffff 33%,
+    #ffffff 66%,
+    #df2111 66%
+  );
+}
+.Gradient_Divs :nth-child(23) {
+  background-image: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #ffffff 33%,
+    #0179d0 33%,
+    #0179d0 66%,
+    #ec3c01 66%
+  );
+}
+.Gradient_Divs :nth-child(24) {
+  background-image: linear-gradient(
+    to bottom,
+    #000000 0%,
+    #000000 33%,
+    #c71231 33%,
+    #c71231 66%,
+    #ffba32 66%
+  );
+}
+
+.Gradient_Divs :nth-child(25) {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #be0b31 0%,
+    #be0b31 10%,
+    #ffffff 10%,
+    #ffffff 20%
+  );
+}
+
+.Gradient_Divs :nth-child(26) {
+  background-image: repeating-linear-gradient(
+    135deg,
+    #2b3284 0%,
+    #2b3284 10%,
+    #4177bc 10%,
+    #4177bc 12%,
+    #2b3284 12%,
+    #2b3284 17%,
+    #4177bc 17%,
+    #4177bc 25%,
+    #ffffff 25%,
+    #ffffff 27%,
+    #4177bc 27%,
+    #4177bc 29%,
+    #ffffff 29%,
+    #ffffff 35%
+  );
+}
+
+.Gradient_Divs :nth-child(27) {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #be0b31 0%,
+    #ffffff 10%,
+    #4177bc 20%
+  );
+}
+
+.Radial_Gradient_Divs :first-child {
+  background-image: radial-gradient(white, blue);
+}
+
+.Radial_Gradient_Divs :nth-child(2) {
+  background-image: radial-gradient(circle, white, midnightblue);
+}
+
+.Radial_Gradient_Divs :nth-child(3) {
+  background-image: radial-gradient(3em at 25% 25%, white, midnightblue);
+}
+
+.Radial_Gradient_Divs :nth-child(4) {
+  background-image: radial-gradient(
+    circle,
+    midnightblue 0%,
+    white 75%,
+    red 100%
+  );
+}
+
+.Radial_Gradient_Divs :nth-child(5) {
+  background-image: repeating-radial-gradient(
+    circle,
+    black 0,
+    black 5px,
+    white 5px,
+    white 10px
+  );
+}
+
+.Shadow_Divs .Shadow_Div {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100px;
+  text-shadow: 0.1em 0.1em 0.5em #ffffff;
+  background-image: linear-gradient(to bottom, #57b, #148);
+}
+
+.Shadow_Divs :first-child:active {
+  box-shadow: inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4);
+}
+
+.Shadow_Divs :nth-child(2):hover {
+  box-shadow: 0 0 50px 15px #48abe0;
+}
+
+.Shadow_Divs :nth-child(3):hover {
+  box-shadow: 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca, 0 0 25px 20px #8a2be2,
+    0 0 30px 25px #ff1493;
+}
+
+.Shadow_Divs :nth-child(4):hover {
+  box-shadow: -10px -10px 0 5px #000000;
+}
+
+.Shadow_Divs :nth-child(5):hover {
+  box-shadow: 10px 10px 0 5px #000000;
+}
+
+.Shadow_Divs :nth-child(6):hover {
+  box-shadow: 0 10px 0 5px #000000;
+}
+
+.Steps {
+  font-size: 1.5rem;
+  line-height: 50px;
+}
+
+.Steps > li > img {
+  width: 100%;
+  height: 100%;
+}
+
+.New_Font {
+  font-family: Amiri;
+  font-size: 2rem;
+  font-weight: bold;
+  direction: rtl;
+}

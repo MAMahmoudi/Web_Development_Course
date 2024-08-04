@@ -1,0 +1,66 @@
+.html {
+  margin: 2%;
+  padding: 2%;
+  color: green;
+  position: relative;
+  border: 3px solid green;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.closing_tag {
+  position: absolute;
+  bottom: -30px;
+  left: 20px;
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.head {
+  margin: 2%;
+  padding: 2%;
+  color: red;
+  position: relative;
+  border: 3px solid red;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  margin: 2%;
+  padding: 2%;
+  color: red;
+  position: relative;
+  border: 3px solid red;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex: 1;
+  color: blue;
+  border: 3px solid blue;
+  margin: 2%;
+  padding: 2%;
+  position: relative;
+}
+
+.main {
+  flex: 2;
+  color: blue;
+  border: 3px solid blue;
+  margin: 2%;
+  padding: 2%;
+  position: relative;
+}
+
+.footer {
+  flex: 1;
+  color: blue;
+  border: 3px solid blue;
+  margin: 2%;
+  padding: 2%;
+  position: relative;
+}
