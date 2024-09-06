@@ -1,11 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="SRC/CSS/Styles.css">
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+    <title>Git and GitHub</title>
 </head>
+
 <body>
-    
+    <main>
+        <h1 class="Title">Git and GitHub</h1>
+        <section>
+            <h2 class="Section_Title">What is Git?</h2>
+            <div class="Definitions">
+                <p>Git is a distributed version control system that is used to track changes in source code during
+                    software
+                    development. It is designed to coordinate work among programmers, but it can be used to track
+                    changes in
+                    any set of files. Its goals include speed, data integrity, and support for distributed, non-linear
+                    workflows.
+                </p>
+            </div>
+            <h2 class="Section_Title">Install Git</h2>
+            <div class="Definitions">
+                <p>Download Git from the official website: <a href="https://git-scm.com/downloads">Git Downloads</a></p>
+            </div>
+            <h2 class="Sub_Section_Title">Windows</h2>
+            <div class="Definitions">
+                <p>After downloading the installer, run it and follow the installation steps. You can leave the default
+                    settings as they are.</p>
+            </div>
+            <h2 class="Sub_Section_Title">Mac</h2>
+            <div class="Definitions">
+                <p>
+                    There are several ways to install Git on macOS. The easiest is probably to install the Xcode
+                    Command Line Tools. On Mavericks (10.9) or above you can do this simply by trying to run git from
+                    the Terminal the very first time.
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git --version
+            </pre>
+            <div class="Definitions">
+                <p>
+                    If you don't have it installed already, it will prompt you to install it. <br>
+                    If you want a more up to date version, you can also install it via a binary installer. A macOS Git
+                    installer is maintained and available for download at the Git website, at <a
+                        href="https://git-scm.com/download/mac">https://git-scm.com/download/mac</a>.
+                </p>
+            </div>
+            <img class="Smaller_Image" src="SRC/Images/Lab_0/Git_Install_MacOS.png" alt="Git_Install_MacOS">
+            <h2 class="Sub_Section_Title">Linux</h2>
+            <div class="Definitions">
+                <p>
+                    If you want to install the basic Git tools on Linux via a binary installer, you can generally do so
+                    through the package management tool that comes with your distribution. If you’re on Fedora (or
+                    any closely-related RPM-based distribution, such as RHEL or CentOS), you can use dnf:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ sudo dnf install git-all
+            </pre>
+            <div class="Definitions">
+                <p>
+                    If you're on a Debian-based distribution like Ubuntu, try apt:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ sudo apt install git-all
+            </pre>
+
+
+        </section>
+    </main>
+
+    <script src="SRC/JS/Script.js" type="module"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
+
 </html>

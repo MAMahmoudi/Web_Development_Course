@@ -15,8 +15,68 @@
 
 <body>
   <main>
-    <h1 class="Title">I. The structure of HTML pages</h1>
+    <h1 class="Title">HTML</h1>
+    <section id="HTML">
+      <div class="Definitions">
+        <p>
+          HTML stands for Hyper Text Markup Language. It is the standard markup language for creating Web pages. It
+          describes the structure of Web pages using markup. HTML elements are the building blocks of HTML pages. With
+          HTML constructs, images and other objects, such as interactive forms, may be embedded into the rendered page.
+          It provides a means to create structured documents by denoting structural semantics for text such as headings,
+          paragraphs, lists, links, quotes, and other items. It can embed scripts written in languages such as
+          JavaScript which affect the behavior of HTML web pages.
+        </p>
+        <p>
+          To read the living standard of HTML, head over <a href="https://html.spec.whatwg.org/multipage/">here.</a>
+        </p>
+        <p>
+          When writing HTML, you will typically be marking up or writing content inside a series of tags or elements.
+          These elements are denoted by angle brackets, and most come in pairs: an opening tag and a closing tag.
+          The opening tag denotes the start of a piece of content; the closing tag denotes the end.
+          For instance, a paragraph element would look like this:
+          <font color="blue">&lt;p&gt;</font> This is a paragraph <font color="blue">&lt;/p&gt;</font>
+        </p>
+      </div>
+    </section>
     <section id="The_structure_of_HTML_pages">
+      <h1 class="Title">I. The structure of HTML pages</h1>
+      <pre class="prettyprint">
+        &lt;!DOCTYPE html>
+        &lt;html lang="en">
+
+        &lt;head>
+        &lt;meta charset="UTF-8">
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+        &lt;link rel="stylesheet" href="Styles.css">
+        &lt;title>Basics&lt;/title>
+        &lt;/head>
+      </pre>
+      <div class="Definitions">
+        <ul>
+          <li>
+            The HTML 5 document starts with the <font color="blue">&lt;!DOCTYPE html&gt;</font> declaration. This
+            declaration is not an HTML tag; it is an instruction to the web browser about what version of HTML the page
+            is written in.
+          </li>
+          <li>
+            The <font color="blue">&lt;html&gt;</font> element is the root element of an HTML page.
+          </li>
+          <li>
+            The lang attribute inside the <font color="blue">&lt;html&gt;</font> tag sets the language of the document.
+          </li>
+          <li>
+            The <font color="blue">&lt;head&gt;</font> element contains meta-information about the document, such as its
+            title, scripts, and style sheets.
+          </li>
+          <li>
+            Character encoding is specified with the <font color="blue">&lt;meta charset="UTF-8"&gt;</font> tag. It
+            tells the browser how to interpret the characters in your HTML document.
+          </li>
+          <li>
+            The <font color="blue">&lt;title&gt;</font> element specifies a title for the document.
+          </li>
+        </ul>
+      </div>
       <div class="html">
         <h2 class="opening_tag">&lt;html&gt;</h2>
         <p class="description">
@@ -74,7 +134,7 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <font color="blue">&lt;h1&gt;</font>
-          This is a Main Heading
+          This is a Level 1 Heading
           <font color="blue">&lt;/h1&gt;</font><br /><br />
           <font color="blue">&lt;h2&gt;</font>
           This is a Level 2 Heading
@@ -94,7 +154,7 @@
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <h1>This is a Main Heading</h1>
+          <h1>This is a Level 1 Heading</h1>
           <h2>This is a Level 2 Heading</h2>
           <h3>This is a Level 3 Heading</h3>
           <h4>This is a Level 4 Heading</h4>
@@ -261,32 +321,51 @@
     </section>
     <section id="Links">
       <h1 class="Title">IV. Links</h1>
-      <h2 class="Title">IV.1 Absolute and relative Links</h2>
+      <div class="Definitions">
+        The a tag (short for anchor tag) is arguably the most important and defining tag of HTML. The
+        anchor tag is the tag used to link from the document a user is on to another document elsewhere
+        on the internet, or another point in the same document. The anchor tag is written as &lt;a href="URL">Link
+        Text&lt;/a>.
+        <p>
+          Links are created using the
+          <font color="blue">&lt;a&gt;</font> element.
+          Users can click on anything between the opening
+          <font color="blue">&lt;a&gt;</font> tag and the closing
+          <font color="blue">&lt;/a&gt;</font> tag.
+          You specify which page you want to link to using the
+          href attribute.
+        </p>
+
+      </div>
+      <h2 class="Title">IV.1 Absolute Links</h2>
+      <div class="Definitions">
+        <p>
+          When you link to a different website, the value of the href attribute will be the full web address for the
+          site, which is known as an absolute URL.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <p>
-            Links are created using the
-            <font color="blue">&lt;a&gt;</font> element.
-            Users can click on anything between the opening
-            <font color="blue">&lt;a&gt;</font> tag and the closing
-            <font color="blue">&lt;/a&gt;</font> tag.
-            You specify which page you want to link to using the
-            href attribute.
-          </p>
-          <p>
-            When you link to a different website, the value of the href attribute will be the full web address for the
-            site, which is known as an absolute URL.
-          </p>
-          <p>
-          <h3>Absolute URL</h3>
           <font color="blue">&lt;a href="https://ensia.edu.dz/"&gt;</font> The National School of Artificial
           Intelligence<font color="blue">&lt;/a&gt;</font>
-          </p>
-          <p>
-            When you are linking to other pages within the same site, you do not need to specify the domain name in the
-            URL. You can use a shorthand known as a relative URL.
-          <h3>Relative URL</h3>
+
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <a href="https://ensia.edu.dz/">The National School of Artificial Intelligence</a>
+        </div>
+      </div>
+      <h2 class="Title">IV.2 Relative Links</h2>
+      <div class="Definitions">
+        <p>
+          When you are linking to other pages within the same site, you do not need to specify the domain name in the
+          URL. You can use a shorthand known as a relative URL.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
           <font color="blue">&lt;ul&gt;</font><br />
           <font color="blue">&lt;li&gt;</font>
           <font color="blue">&lt;a href="index.html"&gt;</font>Home<font color="blue">&lt;/a&gt;</font>
@@ -301,66 +380,103 @@
           <font color="blue">&lt;a href="PHP.html"&gt;</font>PHP<font color="blue">&lt;/a&gt;</font>
           <font color="blue">&lt;/li&gt;</font><br />
           <font color="blue">&lt;/ul&gt;</font><br />
-          </p>
-          <h3>Linking to a specific part of the same page</h3>
-          <p>
-            To link to an element that uses an id attribute you use the <font color="blue">&lt;a&gt;</font> element
-            again, but the value of the href attribute starts with the # symbol, followed by the value of the id
-            attribute of the element you want to link to. <br />
-            <font color="blue">&lt;a href="#Top"&gt;</font>Top<font color="blue">&lt;/a&gt;</font>
-          </p>
-          <h3>Linking to a specific part of another page</h3>
-          <p>
-            If you want to link to a specific part of a different page the href attribute will contain the address for
-            the page followed by the # symbol, followed by the value of the id attribute that is used on the element you
-            are linking to. <br />
-            <font color="blue">&lt;a href="https://ensia.edu.dz/#Top"&gt;</font>ENSIA Top<font color="blue">&lt;/a&gt;
-            </font>
-          </p>
-          <h3>Opening links in a new window</h3>
-          <p>
-            If you want a link to open in a new window, you can use the target attribute on the opening <font
-              color="blue">&lt;a&gt;</font> tag. The value of this attribute should be _blank.
-          </p>
-          <font color="blue">&lt;a href="https://ensia.edu.dz/" target="_blank" rel="noopener noreferrer"&gt;</font>The
-          National School of Artificial Intelligence<font color="blue">&lt;/a&gt;</font>
-          <p>
-            Adding rel="noopener noreferrer" to links protects your site's users against having the site you've linked
-            to potentially hijacking the browser.
-          </p>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <h3>Absolute URL</h3>
-          <a href="https://ensia.edu.dz/">The National School of Artificial Intelligence</a>
-          <h3>Relative URL</h3>
           <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="CSS.html">CSS</a></li>
             <li><a href="JAVASCRIPT.html">JavaScript</a></li>
             <li><a href="PHP.html">PHP</a></li>
           </ul>
-          <h3>Linking to a specific part of the same page</h3>
-          <a href="#Top">Top</a>
-          <h3>Linking to a specific part of another page</h3>
-          <a href="https://ensia.edu.dz/#Top">ENSIA Top</a>
+        </div>
+      </div>
+      <h2 class="Title">IV.3 Linking to a specific part of the same page</h2>
+      <div class="Definitions">
+        <p>
+          To link to an element that uses an id attribute you use the <font color="blue">&lt;a&gt;</font> element
+          again, but the value of the href attribute starts with the # symbol, followed by the value of the id
+          attribute of the element you want to link to. <br />
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;a href="#Text"&gt;</font>Text section<font color="blue">&lt;/a&gt;</font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <a href="#Text">Text section</a>
+        </div>
+      </div>
+
+
+
+      <h2 class="Title">IV.4 Linking to a specific part of another page</h2>
+      <div class="Definitions">
+        <p>
+          If you want to link to a specific part of a different page the href attribute will contain the address for
+          the page followed by the # symbol, followed by the value of the id attribute that is used on the element you
+          are linking to.
+        </p>
+
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;a href="https://ensia.edu.dz/#colophon"&gt;</font>ENSIA Footer<font color="blue">
+            &lt;/a&gt;
+          </font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <a href="https://ensia.edu.dz/#colophon">ENSIA Footer</a>
+        </div>
+      </div>
+
+
+
+
+      <h2 class="Title">IV.5 Opening links in a new window</h2>
+      <div class="Definitions">
+        <p>
+          If you want a link to open in a new window, you can use the target attribute on the opening <font
+            color="blue">&lt;a&gt;</font> tag. The value of this attribute should be _blank.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+
+          <font color="blue">&lt;a href="https://ensia.edu.dz/" target="_blank" rel="noopener noreferrer"&gt;</font>The
+          National School of Artificial Intelligence<font color="blue">&lt;/a&gt;</font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
           <h3>Opening links in a new window</h3>
           <a href="https://ensia.edu.dz/" target="_blank" rel="noopener noreferrer">The National School of Artificial
             Intelligence</a>
         </div>
       </div>
-      <h2 class="Title">IV.2 Email Links</h2>
+      <div class="Definitions">
+        <p>
+          Adding rel="noopener noreferrer" to links protects your site's users against having the site you've linked
+          to potentially hijacking the browser.
+        </p>
+      </div>
+      <h2 class="Title">IV.6 Email Links</h2>
+      <div class="Definitions">
+        <p>
+          To create a link that starts up the user's email program and addresses an email to a specified email
+          address, you use the <font color="blue">&lt;a&gt;</font><br /> element. However, this time the value of the
+          href attribute starts with mailto: and is followed by the email address you want the email to be sent to.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <p>
-            To create a link that starts up the user's email program and addresses an email to a specified email
-            address, you use the <font color="blue">&lt;a&gt;</font><br /> element. However, this time the value of the
-            href attribute starts with mailto: and is followed by the email address you want the email to be sent to.
-            <br />
-            <font color="blue">&lt;a href="mailto:mohamed.mahmoudi@ensia.edu.dz"&gt;</font>Contact me<font color="blue">
-              &lt;a&gt;</font>
-          </p>
+          <font color="blue">&lt;a href="mailto:mohamed.mahmoudi@ensia.edu.dz"&gt;</font>Contact me<font color="blue">
+            &lt;a&gt;</font>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -370,29 +486,30 @@
     </section>
     <section id="Images">
       <h1 class="Title">V. Images</h1>
-      <h2 class="Title">V.1 Images</h2>
+      <div class="Definitions">
+        <p>
+          To add an image into the page you need to use an <font color="blue">&lt;img&gt;</font> element. It must
+          carry the following attributes:
+        </p>
+        <ul>
+          <li>
+            <font color="blue">src:</font> tells the browser where it can find the image file. <br />
+          </li>
+          <li>
+            <font color="blue">alt:</font> provides a text description if the image cannot be loaded. <br />
+          </li>
+          <li>
+            <font color="blue">height:</font> specifies the height of the image in pixels. <br />
+          </li>
+          <li>
+            <font color="blue">width:</font> specifies the width of the image in pixels. <br /><br />
+          </li>
+        </ul>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <p>
-            To add an image into the page you need to use an <font color="blue">&lt;img&gt;</font> element. It must
-            carry the following attributes: <br /><br />
-          <ul>
-            <li>
-              <font color="blue">src:</font> tells the browser where it can find the image file. <br />
-            </li>
-            <li>
-              <font color="blue">alt:</font> provides a text description if the image cannot be loaded. <br />
-            </li>
-            <li>
-              <font color="blue">height:</font> specifies the height of the image in pixels. <br />
-            </li>
-            <li>
-              <font color="blue">width:</font> specifies the width of the image in pixels. <br /><br />
-            </li>
-          </ul>
           <font color="blue">&lt;img src="./SRC/IMAGES/Oran.jpg" alt="Oran" width="500" height="300"&gt;</font>
-          </p>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -402,17 +519,19 @@
     </section>
     <section id="Tables">
       <h1 class="Title">VI. Tables</h1>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;table&gt;</font> element is used to create a table. The contents of the table are
+          written out row by row. <br /><br />
+          The <font color="blue">&lt;th&gt;</font> element is used to represent the heading for either a column or a
+          row.<br /><br />
+          You indicate the start of each row using the opening <font color="blue">&lt;tr&gt;</font> tag.<br /><br />
+          Each cell of a table is represented using a <font color="blue">&lt;td&gt;</font> element
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <p>
-            The <font color="blue">&lt;table&gt;</font> element is used to create a table. The contents of the table are
-            written out row by row. <br /><br />
-            The <font color="blue">&lt;th&gt;</font> element is used to represent the heading for either a column or a
-            row.<br /><br />
-            You indicate the start of each row using the opening <font color="blue">&lt;tr&gt;</font> tag.<br /><br />
-            Each cell of a table is represented using a <font color="blue">&lt;td&gt;</font> element
-          </p>
           <p>
             <font color="blue">&lt;table&gt;</font><br />
             <font color="blue">&lt;tr&gt;</font><br />
@@ -459,15 +578,16 @@
         </div>
       </div>
       <h2 class="Title">VI.1 Spanning columns and rows</h2>
+      <div class="Definitions">
+        <p>
+          The colspan and rowspan attributes can be used on a <font color="blue">&lt;th&gt;</font> or <font
+            color="blue">&lt;td&gt;
+          </font> elements and indicates how many columns or rows that cell should run across.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <p>
-            The colspan and rowspan attributes can be used on a <font color="blue">&lt;th&gt;</font> or <font
-              color="blue">&lt;td&gt;
-            </font> elements and indicates how many columns or rows that cell should run across.
-
-          </p>
           <p>
             <font color="blue">&lt;table&gt;</font><br />
             <font color="blue">&lt;tr&gt;</font><br />
@@ -555,106 +675,127 @@
     <section id="Forms">
       <h1 class="Title">VII. Forms</h1>
       <div class="Definitions">
-        We create forms using the <font color="blue">&lt;form&gt;</font> tag. This element should always carry the
-        action attribute and will usually have a method and id attribute too. <br /><br />
-        <font color="blue">action:</font> its value is the URL for the page on the server that will receive the
-        information in the form when it is submitted. <br /><br />
-        <font color="blue">method:</font> Forms can be sent using one of two methods: get or post. <br /><br />
-        <font color="blue">&lt;label&gt;</font> element should be associated with every control element. <br />
         <ul>
           <li>
-            <font color="blue">for</font> attribute states which form control the label belongs to.
-          </li>
-        </ul>
-        <font color="blue">&lt;input&gt;</font> element is used to create several different form controls. The value of
-        the type attribute determines what kind of input they will be creating. <br />
-        <ul>
-          <li>
-            <font color="blue">type="text":</font> creates a singleline text input.
+            We create forms using the <font color="blue">&lt;form&gt;</font> tag. This element should always carry the
+            action attribute and will usually have a method and id attribute too.
           </li>
           <li>
-            <font color="blue">type="password":</font> creates a single-line text input where the characters are blocked
-            out (hidden).
+            <font color="blue">action:</font> its value is the URL for the page on the server that will receive the
+            information in the form when it is submitted.
           </li>
           <li>
-            <font color="blue">type="date":</font> create a date input.
+            <font color="blue">method:</font> Forms can be sent using one of two methods: get or post.
           </li>
           <li>
-            <font color="blue">type="email":</font> browsers in the validation will check that the user has provided
-            information in the correct format of an email address.
+            <font color="blue">&lt;label&gt;</font> element should be associated with every control element. It should
+            carry the for attribute that should match the id attribute of the control element.
           </li>
           <li>
-            <font color="blue">type="url":</font> browsers in the validation will check that the user has provided
-            information in the correct format of an URL.
-          </li>
-          <li>
-            <font color="blue">type="search":</font> a single line text box for search queries,
-          </li>
-          <li>
-            <font color="blue">type="radio":</font> creates radio buttons.
-          </li>
-          <li>
-            <font color="blue">type="checkbox":</font> allow users to select (and unselect) one or more options.
-          </li>
-          <li>
-            <font color="blue">type="file":</font> creates a box followed by a browse button.
-          </li>
-          <li>
-            <font color="blue">type="submit":</font> creates a submit button that is used to send a form to the server.
-          </li>
-          <li>
-            <font color="blue">type="image"":</font> creates an image submit button.
-          </li>
-          <li>
-            <font color="blue">name:</font> the value of this attribute identifies the form control and is sent along
-            with the information they enter to the server.
-          </li>
-          <li>
-            <font color="blue">value:</font> is used to control the text that appears on a button
-          </li>
-          <li>
-            <font color="blue">required:</font> can be used on any form element that the user is expected to fill
-          </li>
-          <li>
-            <font color="blue">maxlength:</font> limit the number of characters a user may enter into the text field.
-          </li>
-          <li>
-            <font color="blue">size:</font> the number of characters that would be seen.
-          </li>
-          <li>
-            <font color="blue">checked:</font> when type="radio", indicate which value (if any) should be selected when
-            the page loads.
-          </li>
-        </ul>
-        <font color="blue">&lt;select&gt;</font> allows to select one option from a drop down list.<br />
-        <ul>
-          <li>
-            <font color="blue">&lt;option&gt;</font> element is used to specify the options of the drop down list.
+            <font color="blue">&lt;input&gt;</font> element is used to create several different form controls. The value
+            of
+            the type attribute determines what kind of input they will be creating. <br />
             <ul>
               <li>
-                <font color="blue">&lt;option&gt;</font> element uses the <font color="blue">value</font> attribute to
-                indicate the value that is sent to the server along with the name of the control if this option is
-                selected.
+                <font color="blue">type="text":</font> creates a singleline text input.
               </li>
-              <li>The <font color="blue">selected</font> attribute can be used to indicate the option that should be
-                selected when the page loads.</li>
+              <li>
+                <font color="blue">type="password":</font> creates a single-line text input where the characters are
+                blocked
+                out (hidden).
+              </li>
+              <li>
+                <font color="blue">type="date":</font> create a date input.
+              </li>
+              <li>
+                <font color="blue">type="email":</font> browsers in the validation will check that the user has provided
+                information in the correct format of an email address.
+              </li>
+              <li>
+                <font color="blue">type="url":</font> browsers in the validation will check that the user has provided
+                information in the correct format of an URL.
+              </li>
+              <li>
+                <font color="blue">type="search":</font> a single line text box for search queries,
+              </li>
+              <li>
+                <font color="blue">type="radio":</font> creates radio buttons.
+              </li>
+              <li>
+                <font color="blue">type="checkbox":</font> allow users to select (and unselect) one or more options.
+              </li>
+              <li>
+                <font color="blue">type="file":</font> creates a box followed by a browse button.
+              </li>
+              <li>
+                <font color="blue">type="submit":</font> creates a submit button that is used to send a form to the
+                server.
+              </li>
+              <li>
+                <font color="blue">type="image"":</font> creates an image submit button.
+              </li>
+              <li>
+                <font color="blue">name:</font> the value of this attribute identifies the form control and is sent
+                along
+                with the information they enter to the server.
+              </li>
+              <li>
+                <font color="blue">value:</font> is used to control the text that appears on a button
+              </li>
+              <li>
+                <font color="blue">required:</font> can be used on any form element that the user is expected to fill
+              </li>
+              <li>
+                <font color="blue">maxlength:</font> limit the number of characters a user may enter into the text
+                field.
+              </li>
+              <li>
+                <font color="blue">size:</font> the number of characters that would be seen.
+              </li>
+              <li>
+                <font color="blue">checked:</font> when type="radio", indicate which value (if any) should be selected
+                when
+                the page loads.
+              </li>
             </ul>
           </li>
           <li>
-            <font color="blue">multiple:</font> allow to select multiple options from the list by adding the multiple
-            attribute with a value of multiple.
+            <font color="blue">&lt;select&gt;</font> allows to select one option from a drop down list.<br />
+            <ul>
+              <li>
+                <font color="blue">&lt;option&gt;</font> element is used to specify the options of the drop down list.
+                <ul>
+                  <li>
+                    <font color="blue">&lt;option&gt;</font> element uses the <font color="blue">value</font> attribute
+                    to
+                    indicate the value that is sent to the server along with the name of the control if this option is
+                    selected.
+                  </li>
+                  <li>The <font color="blue">selected</font> attribute can be used to indicate the option that should be
+                    selected when the page loads.</li>
+                </ul>
+              </li>
+              <li>
+                <font color="blue">multiple:</font> allow to select multiple options from the list by adding the
+                multiple
+                attribute with a value of multiple.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <font color="blue">&lt;textarea&gt;</font> element is used to create a mutli-line text input. <br />
+            <ul>
+              <li>
+                <font color="blue">cols:</font> attribute indicates how wide the text area should be.
+              </li>
+              <li>
+                <font color="blue">rows:</font> indicates how many rows the text area should take up vertically.
+              </li>
+            </ul>
           </li>
         </ul>
-        <font color="blue">&lt;textarea&gt;</font> element is used to create a mutli-line text input. <br />
         <ul>
-          <li>
-            <font color="blue">cols:</font> attribute indicates how wide the text area should be.
-          </li>
-          <li>
-            <font color="blue">rows:</font> indicates how many rows the text area should take up vertically.
-          </li>
         </ul>
-
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
@@ -773,6 +914,8 @@
       <h1>CSS fundamentals</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
   <script src="SRC/JS/Script.js" type="module"></script>
 </body>
 

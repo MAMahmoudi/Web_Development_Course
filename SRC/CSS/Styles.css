@@ -231,7 +231,7 @@ td {
 }
 
 .Definitions {
-  font-size: 1.2em;
+  font-size: 1.5em;
   display: flex;
   flex-direction: column;
   width: 90vw;
@@ -239,10 +239,10 @@ td {
   margin: 5vh 2vw 5vh 2vw;
   text-align: justify;
   position: relative;
-  background-color: white;
+  //background-color: white;
   padding: 2%;
-  border: 3px solid green;
-  overflow: scroll;
+  //border: 3px solid green;
+  //overflow: scroll;
 }
 
 .description {
