@@ -13,7 +13,7 @@
 <body>
     <main>
         <h1 class="Title">Git and GitHub</h1>
-        <section>
+        <section id="Git_Install">
             <h2 class="Section_Title">What is Git?</h2>
             <div class="Definitions">
                 <p>Git is a distributed version control system that is used to track changes in source code during
@@ -27,6 +27,7 @@
             <h2 class="Section_Title">Install Git</h2>
             <div class="Definitions">
                 <p>Download Git from the official website: <a href="https://git-scm.com/downloads">Git Downloads</a></p>
+                <img src="SRC/IMAGES/Lab_0/Git_Download.png" alt="Git_Download" class="Smaller_Image">
             </div>
             <h2 class="Sub_Section_Title">Windows</h2>
             <div class="Definitions">
@@ -57,7 +58,7 @@
             <div class="Definitions">
                 <p>
                     If you want to install the basic Git tools on Linux via a binary installer, you can generally do so
-                    through the package management tool that comes with your distribution. If you’re on Fedora (or
+                    through the package management tool that comes with your distribution. If you're on Fedora (or
                     any closely-related RPM-based distribution, such as RHEL or CentOS), you can use dnf:
                 </p>
             </div>
@@ -71,6 +72,111 @@
             </div>
             <pre class="prettyprint">
                 $ sudo apt install git-all
+            </pre>
+        </section>
+        <section id="Git_Config">
+            <h1 class="Title">First-time Git setup</h1>
+            <div class="Definitions">
+                <p>
+                    After you install Git, you need to configure it only once on any computer. These configurations can
+                    be changed later on if needed by runing the same commands.
+                </p>
+            </div>
+            <h2 class="Section_Title">Your identity</h2>
+            <div class="Definitions">
+                <p>
+                    The first thing you should do when you install Git
+                    is to set your user name and email address. This is important because every Git commit uses this
+                    information, and it's immutably baked into the commits you start creating:</p>
+            </div>
+            <pre class="prettyprint">
+                $ git config --global user.name "Mahmoudi Mohamed Amine"
+                $ git config --global user.email mohamed.mahmoudi@ensia.edu.dz
+            </pre>
+            <h2 class="Section_Title">Your default branch name</h2>
+            <div class="Definitions">
+                <p>
+                    If you want to change the default branch name from "master" to "main", you can run the following
+                    command:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git config --global init.defaultBranch main
+            </pre>
+            <h2 class="Section_Title">Your editor</h2>
+            <div class="Definitions">
+                <p>
+                    Now that you have your identity set up, you can configure the default text editor that will be used
+                    when Git needs you to type in a message. If not configured, Git uses the system default editor.
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git config --global core.editor "nano"
+            </pre>
+            <div class="Definitions">
+                <p>
+                    You can also use other text editors like vim, emacs, or any other text editor you prefer.
+                </p>
+            </div>
+            <h2 class="Section_Title">Checking your settings</h2>
+            <div class="Definitions">
+                <p>
+                    You can check your settings by running the following command:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git config --list
+            </pre>
+        </section>
+        <section id="Git_Basics">
+            <h1 class="Title">Git Basics</h1>
+            <h2 class="Section_Title">Getting a Git repository</h2>
+            <div class="Definitions">
+                <p>
+                    You can get a Git repository in two ways: by cloning an existing repository from elsewhere
+                    or by creating a new repository from a local directory. <br>
+                    In our case, we will clone existing repositories from GitHub. Since the latters will be created by
+                    your teacher, you will only need to clone them.
+                </p>
+            </div>
+            <h2 class="Section_Title">Clone an existing repository</h2>
+            <div class="Definitions">
+                <p>
+                    To clone an existing repository, you need to go to the directory for your project in your local
+                    machine then run the clone command followed by the repository URL
+                    (i.e. git clone &lt;url>):
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ cd /path/to/your/project
+                $ git clone https://github.com/the-repository-url
+            </pre>
+            <div class="Definitions">
+                <p>
+                    To get the repository URL, you need to go to the repository page on GitHub then click on the green
+                    "Code" button and copy the URL.
+                </p>
+            </div>
+            <img src="SRC/IMAGES/Lab_0/Git_url.png" alt="Git_url" class="Smaller_Image">
+            <h2 class="Section_Title">Create a new repository</h2>
+            <div class="Definitions">
+                <p>
+                    To create a new repository, you need to go to the project directory in your local machine then run
+                    the following command:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ cd /path/to/your/project
+                $ git init
+            </pre>
+            <h2 class="Section_Title">Add files to the repository</h2>
+            <div class="Definitions">
+                <p>
+                    To add files to the repository, you need to run the following command:
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git add .
             </pre>
 
 
