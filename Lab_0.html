@@ -169,14 +169,81 @@
                 $ cd /path/to/your/project
                 $ git init
             </pre>
-            <h2 class="Section_Title">Add files to the repository</h2>
+            <h2 class="Section_Title">Recording Changes to the Repository</h2>
             <div class="Definitions">
                 <p>
-                    To add files to the repository, you need to run the following command:
+                    Each file in your working directory can be in one of two states: tracked or
+                    untracked.
+                </p>
+                <ul>
+                    <li>
+                        <strong>Tracked files: </strong>
+                        <p>
+                            These files are files that were in the last snapshot, as well as any newly staged files;
+                            they can be unmodified, modified, or staged. In short, tracked files are files that Git
+                            knows about.
+                        </p>
+                    </li>
+                    <li>
+                        <strong>Untracked files: </strong>
+                        <p>
+                            Untracked files are everything else — any files in your working directory that were not in
+                            your last snapshot and are not in your staging area. When you first clone a repository, all
+                            of your
+                            files will be tracked and unmodified because Git just checked them out and you haven't
+                            edited anything.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    As you edit files, Git sees them as modified, because you've changed them since your last commit.
+                    As you work, you selectively stage these modified files and then commit all those staged changes,
+                    and the cycle repeats.
+                </p>
+            </div>
+            <img src="SRC/IMAGES/Lab_0/Git_Files_Stages.png" alt="Git_Files_Stages" class="Smaller_Image">
+            <h2 class="Section_Title">Checking the Status of Your Files</h2>
+            <div class="Definitions">
+                <p>
+                    The main tool you use to determine which files are in which state is the git status command.
                 </p>
             </div>
             <pre class="prettyprint">
-                $ git add .
+                $ git status
+            </pre>
+            <h2 class="Section_Title">Tracking New Files</h2>
+            <div class="Definitions">
+                <p>
+                    In order to begin tracking a new file, you use the command git add. The git add command takes a path
+                    name for either a file or a directory; if it's a directory, the command adds all the files in that
+                    directory recursively. To add all files in the directory, you can use the dot (.) symbol.
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git add filename
+            </pre>
+            <h2 class="Section_Title">Committing Your Changes</h2>
+            <div class="Definitions">
+                <p>
+                    After staging one or multiple files, you can commit them to the repository. To do so, you need to
+                    run the git commit command followed by the -m flag and the commit message. Remember
+                    that anything that is still unstaged — any files you have created or modified that you haven't run
+                    git add on since you edited them — won't go into this commit. They will stay as modified files on
+                    your disk.
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git commit -m "Your commit message"
+            </pre>
+            <h2 class="Section_Title">Removing Files</h2>
+            <div class="Definitions">
+                <p>
+                    To remove a file from the repository, you need to run the git rm command followed by the file name.
+                    This command will remove the file from the repository and the working directory.
+                </p>
+            </div>
+            <pre class="prettyprint">
+                $ git rm filename
             </pre>
 
 
