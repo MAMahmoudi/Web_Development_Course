@@ -221,7 +221,21 @@
     </section>
     <section id="Text">
       <h1 class="Title">II. Text</h1>
+      <div class="Definitions">
+        <p>
+          HTML elements are used to describe the structure of the text on a page. They also provide semantic
+          information about where emphasis should be placed, the definition of acronyms and abbreviations, when
+          something is a citation, and other such semantic information.
+        </p>
+      </div>
       <h2 class="Title">II.1 Headings</h2>
+      <div class="Definitions">
+        <p>
+          HTML has six levels of headings, which use the elements <font color="blue">&lt;h1&gt;</font> through
+          <font color="blue">&lt;h6&gt;</font>. Headings are used to represent the hierarchical structure of the
+          content, and are displayed in a larger font size than the surrounding text.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -246,6 +260,7 @@
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
+
           <h1>This is a Level 1 Heading</h1>
           <h2>This is a Level 2 Heading</h2>
           <h3>This is a Level 3 Heading</h3>
@@ -255,6 +270,13 @@
         </div>
       </div>
       <h2 class="Title">II.2 Paragraphs</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;p&gt;</font> element is used to create a paragraph. Browsers automatically add some
+          space (margin) before and after each <font color="blue">&lt;p&gt;</font> element. The margins can be modified
+          using CSS.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -286,6 +308,12 @@
         </div>
       </div>
       <h2 class="Title">II.3 Bold and Italic</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;b&gt;</font> element is used to represent text in a bold format. The <font
+            color="blue">&lt;i&gt;</font> element is used to represent text in an italic format.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -310,6 +338,12 @@
         </div>
       </div>
       <h2 class="Title">II.4 Superscript and Subscript</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;sup&gt;</font> element is used to represent superscript text. The <font
+            color="blue">&lt;sub&gt;</font> element is used to represent subscript text.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -343,6 +377,12 @@
         </div>
       </div>
       <h2 class="Title">II.5 Line Breaks and Horizontal Rules</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;br /&gt;</font> element is used to add a line break in a paragraph. The <font
+            color="blue">&lt;hr /&gt;</font> element is used to add a horizontal rule.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -368,7 +408,31 @@
     </section>
     <section id="Lists">
       <h1 class="Title">III. Lists</h1>
+      <div class="Definitions">
+        <p>
+          Lists are used to group a set of related items together. There are three types of lists in HTML:
+        </p>
+        <ul>
+          <li>
+            <strong>Ordered lists:</strong> Lists where each item in the list is numbered.
+          </li>
+          <li>
+            <strong>Unordered lists:</strong> Lists that begin with a bullet point.
+          </li>
+          <li>
+            <strong>Definition lists:</strong> Made up of a set of terms along with the definitions for each of those
+            terms.
+          </li>
+        </ul>
+      </div>
       <h2 class="Title">III.1 Ordered Lists</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;ol&gt;</font> element is used to create an ordered list. This list will be
+          displayed with numbers by default. The <font color="blue">&lt;li&gt;</font> element is used to create each
+          item in the list.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -390,6 +454,13 @@
         </div>
       </div>
       <h2 class="Title">III.2 Unordered Lists</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;ul&gt;</font> element is used to create an unordered list. This list will be
+          displayed with bullets by default. The <font color="blue">&lt;li&gt;</font> element is used to create each
+          item in the list.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -410,6 +481,48 @@
           </ul>
         </div>
       </div>
+      <h2 class="Title">III.3 Definition Lists</h2>
+      <div class="Definitions">
+        <p>
+          The <font color="blue">&lt;dl&gt;</font> element is used to create a definition list. This list will be
+          displayed with terms and their definitions. The <font color="blue">&lt;dt&gt;</font> element is used to create
+          each term in the list, and the <font color="blue">&lt;dd&gt;</font> element is used to create each definition.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;dl&gt;</font><br />
+          <font color="blue">&lt;dt&gt;</font>HTML<font color="blue">&lt;/dt&gt;</font><br />
+          <font color="blue">&lt;dd&gt;</font>Hyper Text Markup Language<font color="blue">&lt;/dd&gt;</font><br />
+          <font color="blue">&lt;dt&gt;</font>CSS<font color="blue">&lt;/dt&gt;</font><br />
+          <font color="blue">&lt;dd&gt;</font>Cascading Style Sheets<font color="blue">&lt;/dd&gt;</font><br />
+          <font color="blue">&lt;dt&gt;</font>JavaScript<font color="blue">&lt;/dt&gt;</font><br />
+          <font color="blue">&lt;dd&gt;</font>JavaScript is a programming language that enables you to create
+          dynamically updating content, control multimedia, animate images, and much more.<font color="blue">&lt;/dd&gt;
+          </font><br />
+          <font color="blue">&lt;dt&gt;</font>PHP<font color="blue">&lt;/dt&gt;</font><br />
+          <font color="blue">&lt;dd&gt;</font>PHP is a server-side scripting language designed for web development but
+          also used as a general-purpose programming language.<font color="blue">&lt;/dd&gt;</font><br />
+          <font color="blue">&lt;/dl&gt;</font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <dl>
+            <dt>HTML</dt>
+            <dd>Hyper Text Markup Language</dd>
+            <dt>CSS</dt>
+            <dd>Cascading Style Sheets</dd>
+            <dt>JavaScript</dt>
+            <dd>JavaScript is a programming language that enables you to create dynamically updating content, control
+              multimedia, animate images, and much more.</dd>
+            <dt>PHP</dt>
+            <dd>PHP is a server-side scripting language designed for web development but also used as a general-purpose
+              programming language.</dd>
+          </dl>
+        </div>
+      </div>
+
     </section>
     <section id="Links">
       <h1 class="Title">IV. Links</h1>
@@ -993,6 +1106,53 @@
               title="image" width="100" height="40" /><br /><br />
             <input type="submit" value="Submit" />
           </form>
+        </div>
+      </div>
+    </section>
+    <section id="Images">
+      <h1 class="Title">VIII Videos</h1>
+      <div class="Definitions">
+        <p>
+          To add a video into the page you need to use an <font color="blue">&lt;video&gt;</font> element. It must
+          carry the following attributes:
+        </p>
+        <ul>
+          <li>
+            <font color="blue">src:</font> tells the browser where it can find the video file. <br />
+          </li>
+          <li>
+            <font color="blue">controls:</font> adds a set of controls to the video player. <br />
+          </li>
+          <li>
+            <font color="blue">autoplay:</font> the video will start playing as soon as it is ready. <br />
+          </li>
+          <li>
+            <font color="blue">loop:</font> the video will start playing again when it finishes. <br />
+          </li>
+          <li>
+            <font color="blue">muted:</font> the audio will be muted. <br />
+          </li>
+          <li>
+            <font color="blue">poster:</font> a placeholder image that is displayed before the video plays. <br />
+          </li>
+          <li>
+            <font color="blue">width:</font> specifies the width of the video in pixels. <br />
+          </li>
+          <li>
+            <font color="blue">height:</font> specifies the height of the video in pixels. <br /><br />
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font color="blue">&lt;video src="./SRC/VIDEOS/Video.mp4" controls autoplay loop muted
+            poster="./SRC/IMAGES/Oran.jpg" width="500" height="300"&gt;</font>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <video src="./SRC/VIDEOS/Video.mp4" controls autoplay loop muted poster="./SRC/IMAGES/Oran.jpg" width="500"
+            height="300"></video>
         </div>
       </div>
     </section>
