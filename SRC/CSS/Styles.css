@@ -38,6 +38,10 @@ th {
   border: 1px solid black;
   margin: 2%;
   padding: 2%;
+  font-size: 1.5em;
+  background-color: #8c1515;
+  color: white;
+  font-weight: bold;
 }
 
 td {

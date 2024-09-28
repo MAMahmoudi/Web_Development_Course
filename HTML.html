@@ -15,100 +15,8 @@
 
 <body>
   <main>
-    <h1 class="Title">Getting started with web development</h1>
-    <section>
-      <h2 class="Section_Title">What is three-tier architecture?</h2>
-      <div class="Definitions">
-        <p>
-          Three-tier architecture is a well-established software application architecture that organizes applications
-          into three logical and physical computing tiers: the presentation tier, or user interface; the application
-          tier, where data is processed; and the data tier, where application data is stored and managed.
-        </p>
-        <img src="SRC/IMAGES/Introduction/Three-Tier-architecture1.png" alt="Three-Tier-architecture1"
-          class="Smaller_Image">
-        <ul>
-          <li>
-            <strong>Presentation tier:</strong>
-            <p>
-              The presentation tier is the user interface and communication layer of the application, where the end user
-              interacts with the application. Its main purpose is to display information to and collect information from
-              the user. Web presentation tiers are developed by using HTML, CSS, and JavaScript.
-            </p>
-          </li>
-          <li>
-            <strong>Application tier:</strong>
-            <p>
-              The application tier, also known as the logic tier or middle tier, is the heart of the application. In
-              this tier, information that is collected in the presentation tier is processed - sometimes against other
-              information in the data tier - using business logic, a specific set of business rules. The application
-              tier can also add, delete, or modify data in the data tier.
-            </p>
-            <p>
-              The application tier is typically developed by using Python, Java, Perl, PHP or Ruby, and communicates
-              with the data tier by using API calls.
-            </p>
-          </li>
-          <li>
-            <strong>Data Tier:</strong>
-            <p>
-              The data tier, sometimes called database tier, data access tier or back-end, is where the information that
-              is processed by the application is stored and managed. This can be a relational database management system
-              such as PostgreSQL, MySQL, MariaDB, Oracle, Db2, Informix or Microsoft SQL Server, or in a NoSQL Database
-              server such as Cassandra, CouchDB, or MongoDB.
-            </p>
-          </li>
-        </ul>
-        <p>
-          In a three-tier application, all communication goes through the application tier. The presentation tier and
-          the data tier cannot communicate directly with one another.
-        </p>
-      </div>
-      <h2 class="Section_Title">Benefits of three-tier architecture</h2>
-      <div class="Definitions">
-        <p>
-          Again, the chief benefit of three-tier architecture is its logical and physical separation of functionality.
-          Each tier can run on a separate operating system and server platform - for example, web server, application
-          server, database server - that best fits its functional requirements. And each tier runs on at least one
-          dedicated server hardware or virtual server, so the services of each tier can be customized and optimized
-          without impacting the other tiers.
-        </p>
-        <p>
-          Other benefits (compared to single- or two-tier architecture) include:
-        </p>
-        <ul>
-          <li>
-            <strong>Faster development:</strong>
-            <p>
-              Because each tier can be developed simultaneously by different teams, an organization can bring the
-              application to market faster. And programmers can use the latest and best languages and tools for each
-              tier.
-            </p>
-          </li>
-          <li>
-            <strong>Improved scalability:</strong>
-            <p>
-              The three-tier architecture can scale to accommodate more users by adding more servers to the application
-              tier or more servers to the data tier. Any tier can be scaled independently of the others as needed.
-            </p>
-          </li>
-          <li>
-            <strong>Improved reliability:</strong>
-            <p>
-              An outage in one tier is less likely to impact the availability or performance of the other tiers.
-            </p>
-          </li>
-          <li>
-            <strong>Improved security:</strong>
-            <p>
-              Because the presentation tier and data tier can't communicate directly, a well-designed application tier
-              can function as an internal firewall, preventing SQL injections and other malicious exploits.
-            </p>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <h1 class="Title">HTML</h1>
     <section id="HTML">
-      <h1 class="Title">HTML</h1>
       <div class="Definitions">
         <p>
           HTML stands for Hyper Text Markup Language. It is the standard markup language for creating Web pages. It
@@ -1158,9 +1066,9 @@
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Syllabus.html" class="Arrow">
+    <a href="Introduction.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Syllabus</h1>
+      <h1>Introduction</h1>
     </a>
     <a href="CSS_fundamentals.html" class="Arrow">
       <h1>CSS fundamentals</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
