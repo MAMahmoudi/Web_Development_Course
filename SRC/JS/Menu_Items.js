@@ -33,6 +33,12 @@ export const Menu_Items = [
 
 export const Labs_Items = [
   {
+    title: "Lab 0: Team, project and GitHub account",
+    url: "Lab_0.html",
+    cName: "Labs_Menu_Item",
+    icon: "fa-solid fa-user-plus",
+  },
+  {
     title: "Lab 1: Installations",
     url: "Lab_1.html",
     cName: "Labs_Menu_Item",
