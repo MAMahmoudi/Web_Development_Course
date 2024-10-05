@@ -718,9 +718,9 @@ td {
 }
 
 .Smaller_Image {
-  width: 60%;
+  width: 50%;
   height: auto;
-  margin: 5% 20% 5% 20%;
+  margin: 5% 25% 5% 25%;
   border: 3px solid green;
 }
 
@@ -797,9 +797,12 @@ td {
 
 .Instructions {
   text-justify: justify;
-  color: #8c1515;
-  font-size: 1em;
+  color: #000000;
+  font-size: 1.5em;
   font-weight: bold;
+  background-color: rgb(255, 67, 3, 0.3);
+  border: 5px solid rgb(255, 67, 3);
+  padding: 20px;
 }
 .Definition_Title {
   color: #8c1515;

@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="SRC/CSS/Styles.css" />
   <link rel="stylesheet" href="SRC/CSS/HTML.css" />
   <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Lab 1: Installation</title>
 </head>
 
@@ -21,7 +24,7 @@
         <a href="https://www.apachefriends.org/">https://www.apachefriends.org/</a><br /><br />
         Download the version of XAMPP for your operating system.
       </h3>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_1/XAMPP_Download.png" alt="XAMPP_Download" />
+      <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Download.png" alt="XAMPP_Download" />
       <h2 class="Section_Title">Windows</h2>
       <ol>
         <li class="description">
@@ -29,7 +32,7 @@
             Get into your downloaded directory and execute the installer file.
             You will see a Welcome Screen. Click Next button to continue.
           </p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_1.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_1.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>
@@ -37,7 +40,7 @@
             will advise you to leave the recommended ticks. Click Next button
             to continue.
           </p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_2.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_2.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>
@@ -45,47 +48,47 @@
             another directory. But it is preferable to leave it as it is.
             Click Next button to continue.
           </p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_3.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_3.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>
             Choose your preferred language. Click Next button to continue.
           </p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_4.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_4.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>Now click Next button to start the installation.</p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_5.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_5.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>Just wait!!</p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_6.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_6.png" alt="XAMPP_Download" />
         </li>
         <li class="description">
           <p>Done. Click the Finish button to close the installer.</p>
-          <img class="Small_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_7.png" alt="XAMPP_Download" />
+          <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Installation_7.png" alt="XAMPP_Download" />
         </li>
       </ol>
       <h2 class="Section_Title">Linux</h2>
       <ol>
         <li class="description">
           <p>Get into the ~/Downloads/ or your downloaded directory:</p>
-          <div class="Definitions HTML_demo">cd ~/Downloads/</div>
+          <pre class="prettyprint">cd ~/Downloads/</pre>
         </li>
         <li class="description">
           <p>
             Now, make the above-downloaded file executable by changing the
             execution bits into -rwxr-xr-x:
           </p>
-          <div class="Definitions HTML_demo">
+          <pre class="prettyprint">
             sudo chmod 755 xampp-linux-x64-7.4.29-1-installer.run
-          </div>
+          </pre>
         </li>
         <li class="description">
           <p>Now, execute that installer file:</p>
-          <div class="Definitions HTML_demo">
+          <pre class="prettyprint">
             sudo ./xampp-linux-x64-7.4.29-1-installer.run
-          </div>
+          </pre>
         </li>
         <li class="description">
           <p>
@@ -99,14 +102,14 @@
             To start Xampp in Linux, execute the /opt/lampp/lampp start
             command:
           </p>
-          <div class="Definitions HTML_demo">
+          <pre class="prettyprint">
             [user@computer ~]$ sudo /opt/lampp/lampp start <br />
             [sudo] password for user: <br />
             Starting XAMPP for Linux 8.1.6-0... <br />
             XAMPP: Starting Apache...ok. <br />
             XAMPP: Starting MySQL...ok. <br />
             XAMPP: Starting ProFTPD...ok.
-          </div>
+          </pre>
           <p>
             If the above command does not work, try executing /opt/lampp/xampp
             start because in some versions of xampp, words lampp and xampp are
@@ -114,6 +117,13 @@
           </p>
         </li>
       </ol>
+      <h2 class="Section_Title">Start XAMPP</h2>
+      <h3 class="description">
+        To start XAMPP, execute the xampp-control.exe file in the XAMPP
+        installation directory. You will see the XAMPP control panel. Click
+        the Start button for Apache and MySQL.
+      </h3>
+      <img class="Smaller_Image" src="SRC/IMAGES/Lab_1/XAMPP_Control_Panel.png" alt="XAMPP_Control_Panel" />
       <h4 class="description">
         To confirm if xampp started and everything worked fine, open up your
         favorite web browser and go to the website
@@ -123,26 +133,47 @@
     </section>
     <section>
       <h1 class="Title">Homework: Requirements specification</h1>
-      <h4 class="description">
-        The goal of this Lab is to make you think about the specifications of
-        the website you are going to create in this course.<br /><br />
-        These specifications will give you a clear view about the structure of
-        the website, the information it will provide, and the users it will
-        target.<br /><br />
-      </h4>
-      <div class="Definitions HTML_demo">
-        <h1 class="opening_tag">Instructions:</h1>
-        <p class="Instructions">
-          For this lab homework, you will need to create a README file for the
-          website you are going to create in this course. The README file
-          should contain the sections shown below. <br /><br />
-          The README file should be uploaded to your GitHub repository.
-          <br /><br />
-          You can download a sample README file in the following link:
-          <a href="SRC/Download/README.md" download>Download a README file sample</a>
-        </p>
+      <div>
+        <h1>Instructions:</h1>
+        <div class="Instructions">
+          In this lab, you are asked to complete the following tasks:<br /><br />
+          <ol>
+            <li>
+              Write a README file for the website you are going to create in this
+              semester. The README file should include a clear description of the
+              services you are going to provide, the target audience, and the
+              goals of the website.
+            </li>
+            <li>
+              Your teacher will validate the README file or ask you to make some
+              changes.
+            </li>
+            <li>
+              Draw a site map for the website you are going to create in this
+              semester. The site map should include all the pages you are going to
+              create.
+            </li>
+            <li>
+              Divide the workload among your team members. Each team member
+              should be responsible for a specific part of the website. The
+              division of work should be included in the README file. This will
+              help you to avoid conflicts and misunderstandings among team
+              members. It will also help you to complete the project on time.
+              Your teacher will validate the division of work or ask you to make
+              some changes.
+            </li>
+            <li>
+              The course teacher will create a GitHub repository for your team.
+              You will need to upload the README file and the site map to the
+              GitHub repository. The repository should be shared with your teacher
+              and your team members.
+            </li>
+          </ol>
+          You can find bellow some questions that will help you to write the
+          README file. You can also find an example of a site map.
+        </div>
       </div>
-
+      <h2 class="Section_Title">Requirements specification questions:</h2>
       <ol>
         <li type="I">
           <h2>Who is this website for?</h2>
@@ -268,12 +299,25 @@
           <h2>Site maps:</h2>
         </li>
       </ol>
+      <h2 class="Section_Title">Site map example</h2>
       <img class="Big_Image" src="SRC/IMAGES/Lab_1/Site_maps.png" alt="Site_maps" />
     </section>
-    <a class="Title" href="SRC/Download/README.md" download>Download a README file sample</a>
   </main>
 
+  <footer class="Inter_Pages">
+    <a href="Lab_0.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 0</h1>
+    </a>
+    <a href="Lab_2.html" class="Arrow">
+      <h1>Lab 2</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
 
 </html>
