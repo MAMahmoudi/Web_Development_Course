@@ -127,6 +127,109 @@
         </p>
       </div>
     </section>
+    <section>
+      <h2 class="Section_Title">Example</h2>
+      <div class="Definitions">
+        <p>
+          Let's build a page that has a header, footer, and main content area. <br>
+          The header will contain the site logo and navigation links. <br>
+          The footer will contain the copyright information. <br>
+          The main content area will contain the main content of the page. <br>
+          To build this page, we will create the following files: <br>
+        <ol>
+          <li>
+            <strong>index.php</strong> - The main PHP file for the project. This file will contain the HTML content
+            for the page.
+          </li>
+          <li>
+            <strong>assets</strong> - A folder that contains all the assets used in the project.
+            <ol type="a">
+              <li>
+                <strong>CSS</strong> - A folder that contains the CSS files for the project.
+              </li>
+              <li>
+                <strong>JS</strong> - A folder that contains the JavaScript files for the project.
+              </li>
+              <li>
+                <strong>Images</strong> - A folder that contains the images used in the project.
+              </li>
+              <li>
+                <strong>Fonts</strong> - A folder that contains the fonts used in the project.
+              </li>
+            </ol>
+          </li>
+          <li>
+            <strong>Components</strong> - A folder that contains the PHP files for the components.
+            <ol type="a">
+              <li>
+                <strong>header.php</strong> - The PHP file for the header component.
+              </li>
+              <li>
+                <strong>footer.php</strong> - The PHP file for the footer component.
+              </li>
+              <li>
+                <strong>main.php</strong> - The PHP file for the main content area component.
+              </li>
+            </ol>
+          </li>
+        </ol>
+        </p>
+      </div>
+      <div class="Definitions">
+        <p>
+          The header.php file will contain the following code: <br>
+        </p>
+        <pre class="prettyprint">
+            &lt;header&gt;
+              &lt;h1&gt;Site Logo&lt;/h1&gt;
+              &lt;nav&gt;
+                &lt;a href="#"&gt;Home&lt;/a&gt;
+                &lt;a href="#"&gt;About&lt;/a&gt;
+                &lt;a href="#"&gt;Contact&lt;/a&gt;
+              &lt;/nav&gt;
+            &lt;/header&gt;
+          </pre>
+        <p>
+        <p>
+          The footer.php file will contain the following code: <br>
+        </p>
+        <pre class="prettyprint">
+            &lt;footer&gt;
+              &lt;p&gt;Copyright &copy; 2021&lt;/p&gt;
+            &lt;/footer&gt;
+          </pre>
+        <p>
+          The main.php file will contain the following code: <br>
+        </p>
+        <pre class="prettyprint">
+            &lt;main&gt;
+              &lt;h2&gt;Main Content&lt;/h2&gt;
+              &lt;p&gt;This is the main content of the page.&lt;/p&gt;
+            &lt;/main&gt;
+          </pre>
+        <p>
+          The index.php file will contain the following code: <br>
+        </p>
+        <pre class="prettyprint">
+            &lt;?php include 'components/header.php'; ?&gt;
+            &lt;?php include 'components/main.php'; ?&gt;
+            &lt;?php include 'components/footer.php'; ?&gt;
+          </pre>
+        <p>
+          The advantage of using this structure is that it allows you to work on different parts of the project
+          independently. <br>
+          Each team member can work on their component without interfering with the work of other team members. <br>
+          To use a component that another team member is working on, you can include the PHP file for that component in
+          the page you are working on. <br>
+          For example, if you are working on the main content area and you need to use the header component, you can
+          include the header.php file in the main.php file. <br>
+          This way, you can work on your component without having to wait for other team members to finish their work.
+          <br>
+          In addition, this structure makes it easy to update the project. If you need to make changes to a component,
+          you can do so without affecting the rest of the project. <br>
+
+        </p>
+    </section>
 
 
   </main>

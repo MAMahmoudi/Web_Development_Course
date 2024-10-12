@@ -45,7 +45,7 @@ export const Labs_Items = [
     icon: "fa-solid fa-user-plus",
   },
   {
-    title: "Lab 2: CSS part 1",
+    title: "Lab 2: Project structure",
     url: "Lab_2.html",
     cName: "Labs_Menu_Item",
     icon: "fa-solid fa-user-plus",
