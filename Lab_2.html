@@ -4,23 +4,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css">
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
   <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
-  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
-  <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet">
-  <title>Lab 2</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 2: Project Structure</title>
 </head>
 
 <body>
   <main>
-   
+    <h1 class="Title">Lab 2: Project Structure</h1>
+
+    <section id="Pulling_Project">
+      <h1>Instructions:</h1>
+      <div class="Instructions">
+        <p>
+          In this lab, you will learn how to pull your project from the repository to your local machine. <br>
+          You will also learn how to set up the project structure and start working on your project. <br>
+          Follow the instructions below to complete the lab. <br>
+        </p>
+      </div>
+      <h2 class="Section_Title">Pulling your project</h2>
+      <div class="Definitions">
+        <p>
+          At this point you should have a team already created and a project assigned to you. If you do not have a
+          project assigned to you, please contact your instructor. <br>
+          To start working on your project, you will need to pull the project from the repository to your local machine.
+          Since we are using XAMPP, you will need to pull the project to the htdocs folder. <br>
+          To pull the project, you will need to use the command line. Open the command line and navigate to the htdocs
+          folder. <br>
+          Once you are in the htdocs folder, you will need to use the git clone command to pull the project. <br>
+          The git clone command is used to create a copy of the repository on your local machine. <br>
+          The syntax for the git clone command is as follows:
+        </p>
+      </div>
+      <pre class="prettyprint">
+        $ cd C:/xampp/htdocs
+        $ git clone https://github.com/the-repository-url
+    </pre>
+      <div class="Definitions">
+        <p>
+          where the-repository-url is the URL of the repository you want to clone. <br>
+        </p>
+      </div>
+      <h2 class="Sub_Section_Title">Windows</h2>
+      <div class="Definitions">
+        <p>
+          If you are using Windows, you can use GitHub Desktop to clone the repository. <br>
+          GitHub Desktop is a graphical user interface for Git that makes it easier to work with repositories. <br>
+          To download GitHub Desktop, go to the following website: <br>
+          <a href="https://desktop.github.com/">https://desktop.github.com/</a> <br>
+          To clone the repository using GitHub Desktop, follow these steps: <br>
+        <ol>
+          <li>Open GitHub Desktop.</li>
+          <li>Click on the "File" menu and select "Clone repository".</li>
+          <li>In the "Clone a repository" window, enter the URL of the repository you want to clone.</li>
+          <li>Click on the "Clone" button.</li>
+          <li>Choose the location where you want to clone the repository.</li>
+          <li>Click on the "Clone" button.</li>
+          <li>Wait for the repository to be cloned.</li>
+          <li>Once the repository is cloned, you can start working on your project.</li>
+        </ol>
+        </p>
+        <p>
+          At this point, you should have the project cloned to your local machine. You can now start working on your
+          project. <br>
+
+        </p>
+      </div>
+    </section>
+    <section>
+      <h2 class="Section_Title">The structure of a project</h2>
+      <div class="Definitions">
+        <p>
+          When you start working on a project, it is important to have a clear structure for your project. <br>
+          A good project structure will help you organize your files and folders in a way that makes it easy to find
+          what you need. <br>
+          In this section, we will discuss the structure of a typical web project. <br>
+        </p>
+        <p>
+          Unless you are working with a specific framework or tool that has its own structure, you are free to organize
+          your project in any way you like. <br>
+          A typical web project will have the following structure: <br>
+        <ol>
+          <li>
+            <strong>index.php</strong> - The main PHP file for the project. This file is usually the entry point
+            for the project and contains the content that will be displayed to the user.
+          </li>
+          <li>
+            <strong>assets</strong> - A folder that contains all the assets used in the project, such as images,
+            fonts, and JavaScript files.
+            <ol type="a">
+              <li>
+                <strong>CSS</strong> - A folder that contains the CSS files for the project. CSS files are used to style
+                the HTML content.
+              </li>
+              <li>
+                <strong>JS</strong> - A folder that contains the JavaScript files for the project. JavaScript files are
+                used to add interactivity to the project.
+              </li>
+              <li>
+                <strong>Images</strong> - A folder that contains the images used in the project.
+              </li>
+              <li>
+                <strong>Fonts</strong> - A folder that contains the fonts used in the project.
+              </li>
+            </ol>
+          </li>
+
+          <li>
+            <strong>Components</strong> - Depending on the way you divide the worklload among your team members, you may
+            assign each member a specific component to work on. For example, if you are working on a website that has a
+            header, footer, and main content area, you may assign one team member to work on the header, another team
+            member
+            to work on the footer, and another team member to work on the main content area. Each team member will be
+            responsible for creating the HTML, CSS, and JavaScript files for their component. <br>
+            The PHP files for the components can be stored in a folder called components. <br>
+          </li>
+        </ol>
+        </p>
+      </div>
+    </section>
+
 
   </main>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
   <script src="SRC/Labs/Lab_5/Lab_2.js" type="module"></script>
 </body>
 
