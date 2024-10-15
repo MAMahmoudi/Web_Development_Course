@@ -32,12 +32,18 @@
           At this point you should have a team already created and a project assigned to you. If you do not have a
           project assigned to you, please contact your instructor. <br>
           To start working on your project, you will need to pull the project from the repository to your local machine.
-          Since we are using XAMPP, you will need to pull the project to the htdocs folder. <br>
+          Since we are using XAMPP, you will need to pull the project to the <strong>xampp/htdocs</strong> folder. <br>
           To pull the project, you will need to use the command line. Open the command line and navigate to the htdocs
           folder. <br>
-          Once you are in the htdocs folder, you will need to use the git clone command to pull the project. <br>
-          The git clone command is used to create a copy of the repository on your local machine. <br>
-          The syntax for the git clone command is as follows:
+          The default location of the htdocs folder is as follows: <br>
+        <ol>
+          <li>Windows: C:/xampp/htdocs</li>
+          <li>Mac: /Applications/XAMPP/xamppfiles/htdocs</li>
+          <li>Linux: /opt/lampp/htdocs</li>
+        </ol>
+        Once you are in the htdocs folder, you will need to use the git clone command to pull the project. <br>
+        The git clone command is used to create a copy of the repository on your local machine. <br>
+        The syntax for the git clone command is as follows:
         </p>
       </div>
       <pre class="prettyprint">
@@ -47,6 +53,9 @@
       <div class="Definitions">
         <p>
           where the-repository-url is the URL of the repository you want to clone. <br>
+          In our case, you can find the URL of the repository by going to the <strong>Ensia-AI</strong> organization on
+          GitHub and look for the repository that has been assigned to you. This repository should have the same name as
+          your project.
         </p>
       </div>
       <h2 class="Sub_Section_Title">Windows</h2>
@@ -70,8 +79,7 @@
         </p>
         <p>
           At this point, you should have the project cloned to your local machine. You can now start working on your
-          project. <br>
-
+          project.
         </p>
       </div>
     </section>
@@ -230,6 +238,39 @@
 
         </p>
     </section>
+    <section>
+      <h2 class="Section_Title">Load your website</h2>
+      <div class="Definitions">
+        <p>
+          To load your website, you need to start the Apache server in XAMPP. <br>
+          To start the Apache server, open the XAMPP control panel and click on the "Start" button next to Apache. <br>
+          Once the Apache server is started, open a web browser and go to the following URL: <br>
+          <a href="http://localhost/your-project-name">http://localhost/your-project-name</a> <br>
+          where your-project-name is the name of the folder where you cloned the project. <br>
+          For example, if you cloned the project to a folder called "my-project", you would go to the following URL:
+          <br>
+          <a href="http://localhost/my-project">http://localhost/my-project</a> <br>
+          This will load the index.php file in your project and display the content of the page.
+          If you do not have an index.php file, nothing will be displayed. <br>
+          To test your website, you can create an index.php file with some content and load it in the browser. <br>
+          For example, add the following code to the index.php file: <br>
+        </p>
+      </div>
+      <pre class="prettyprint">
+        &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    </pre>
+      <div class="Definitions">
+        <p>
+          Save the file and reload the page in the browser. You should see the text "Hello, world!" displayed on the
+          page. <br>
+          You can now start working on your project and build your website. <br>
+          If you have any questions or need help, please contact your instructor. <br>
+          Good luck!
+        </p>
+      </div>
+
+    </section>
+
 
 
   </main>
