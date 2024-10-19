@@ -18,6 +18,20 @@
   <main>
     <h1 class="Title">CSS fundamentals</h1>
     <section>
+      <h2 class="Section_Title">Introduction</h2>
+      <div class="Definitions">
+        <p>
+          CSS (Cascading Style Sheets) is a language used to style the visual presentation of a web page. <br><br>
+          It is used to control the layout of multiple web pages all at once. <br><br>
+          CSS is a cornerstone technology of the World Wide Web, alongside HTML and JavaScript. <br><br>
+          CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.
+          <br><br>
+          This separation can improve content accessibility, provide more flexibility and control in the specification
+          of presentation characteristics, enable multiple web pages to share formatting by specifying the relevant CSS
+          in a separate .css file, and reduce complexity and repetition in the structural content. <br><br>
+          To use CSS you can either use an external stylesheet, an internal stylesheet, or inline styles.
+        </p>
+      </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -48,7 +62,18 @@
     <section>
       <h2 class="Section_Title">I. CSS Selectors</h2>
       <h3 class="Sub_Section_Title">1. Basic selectors</h3>
-      
+      <div class="Definitions">
+        <p>
+          CSS selectors are used to target specific elements on an HTML page. <br><br>
+          There are several types of selectors, including tag selectors, class selectors, ID selectors, and universal
+          selectors. <br><br>
+          Tag selectors target elements based on their tag name. <br><br>
+          Class selectors target elements based on their class attribute. <br><br>
+          ID selectors target elements based on their ID attribute. <br><br>
+          Universal selectors target all elements on a page. <br><br>
+          The following example demonstrates how to use these selectors in HTML and CSS.
+        </p>
+      </div>
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
@@ -96,11 +121,17 @@
           <li>
             <h4>Child combinator (>):</h4>
             Targets elements that are a direct descendant of another
-            element.
+            element. This means the targeted elements are the immediate children
+            of the specified parent element. Descendants beyond the immediate
+            children are not targeted.
           </li>
           <li>
             <h4>Adjacent sibling combinator (+):</h4>
-            Targets elements that immediately follow another.
+            Targets elements that immediately follow another. This means the
+            targeted elements are siblings that appear directly after the
+            specified element. Siblings that appear before the indicated element
+            are not targeted. Note that the adjacent sibling combinator only
+            targets the first sibling that appears after the specified element.
           </li>
           <li>
             <h4>General sibling combinator (~):</h4>
@@ -246,66 +277,94 @@
           <li>
             <h4>:first-child</h4>
             Targets elements that are the first element within their parent
-            element.
+            element. This selector is useful for applying styles to the first
+            element in a list or the first paragraph in an article. It can also
+            be used to apply styles to the first element in a row of elements. The
+            :first-child selector is a pseudo-class, which means it is used to
+            define a special state of an element. In this case, the state is that
+            the element is the first child of its parent.
           </li>
           <li>
             <h4>:last-child</h4>
             Targets elements that are the last element within their parent
-            element.
+            element. This selector is useful for applying styles to the last
+            element in a list or the last paragraph in an article. It can also
+            be used to apply styles to the last element in a row of elements.
           </li>
           <li>
             <h4>:only-child</h4>
             Targets elements that are the only element within their parent
-            element (no siblings).
+            element (no siblings). This selector is useful for applying styles
+            to elements that are the only child of their parent.
           </li>
           <li>
             <h4>:nth-child(an+b)</h4>
             Targets elements based upon their position among their siblings.
+            The formula an+b is used to determine which elements to target.
+            The formula is used to determine the position of the element in the
+            list of siblings.
           </li>
           <li>
             <h4>:nth-last-child(an+b)</h4>
             Similar to :nth-child(), but instead of counting from the first element, it counts
-            from the last element.
+            from the last element. This selector is useful for applying styles to elements
+            based on their position in a list of siblings, counting from the last element. The
+            formula an+b is used to determine which elements to target.
           </li>
           <li>
             <h4>:first-of-type</h4>
             It considers an element's numerical position only among other children
-            with the same tag name.
+            with the same tag name. This selector is useful for applying styles to the
+            first element of a specific type within a parent element.
           </li>
           <li>
             <h4>:last-of-type</h4>
-            Targets the last child element of each type.
+            Targets the last child element of each type. This is the opposite of
+            :first-of-type. It is useful for applying styles to the last element of a
+            specific type within a parent element.
           </li>
           <li>
             <h4>:only-of-type</h4>
-            Targets elements that are the only child of their type.
+            Targets elements that are the only child of their type. Meaning they have
+            no siblings with the same tag name. This selector is useful for applying
+            styles to elements that are the only child of their type within a parent
+            element. It is similar to :only-child, but it only targets elements of a
+            specific type.
           </li>
           <li>
             <h4>:nth-of-type(an+b)</h4>
             Targets elements of their type based on their numerical order and the specified formula.
+            The formula an+b specifies which elements to target based on their position among
+            their siblings. This selector is useful for applying styles to elements based on their
+            position in a list of siblings of the same type.
           </li>
           <li>
             <h4>:nth-last-of-type(an+b)</h4>
             Targets elements of their type based on a specified formula, counting from the last of those elements
-            backward.
+            backward. This is the same as :nth-of-type(), but it counts from the last element of the specified type.
           </li>
           <li>
             <h4>:not(selector)</h4>
             Targets elements that don't match the selector within the parentheses.
+            This selector is useful for applying styles to all the elements except those that match the selector.
           </li>
           <li>
             <h4>:empty</h4>
             Targets elements that have no children. Beware that this doesn't target
-            an element that contains whitespace.
+            an element that contains whitespace. It only targets elements that have no
+            children at all.
           </li>
           <li>
             <h4>:focus</h4>
             Targets elements that have received focus, whether from a mouse
-            click, screen tap, or Tab key navigation.
+            click, screen tap, or Tab key navigation. For example, when you click
+            on a text input field, it receives focus, and you can type into it.
           </li>
           <li>
             <h4>:hover</h4>
             Targets elements while the mouse cursor hovers over them.
+            For example, you might change
+            the background color of a button when the user hovers over it.
           </li>
           <li>
             <h4>:root</h4>
@@ -804,13 +863,23 @@
     </section>
     <section>
       <h2 class="Section_Title">IV. CSS Colors</h2>
+      <div class="Definitions">
+        <p>
+          There are several ways to define colors in CSS. <br><br>
+          We can use the RGB, HSL, Display-P3, and LCH color spaces. <br><br>
+          You can use the RGB format only but it is good to know the other formats. But knowing the other formats can
+          be useful especially when you need to work with colors in a more advanced way. In addition, it can be useful
+          to know how to convert between these formats especially when you work on maintaining other people's code.
+        </p>
+      </div>
       <h3 class="Sub_Section_Title">1. RGB color</h3>
       <div class="Definitions">
         <p>
           RGB (Red, Green, and Blue). <br><br>
           A color might be defined in CSS as a hex (hexadecimal) value, where The first two digits are the red value
-          in hexadecimal, the next two are the green, and the last two are the blue. <br><br>
-          Or RGB functional notation, where each value can be specified in a range from 0 to 255.
+          in hexadecimal, the next two are the green, and the last two are the blue. The syntaxe is #RRGGBB. <br><br>
+          Or RGB functional notation, where each value can be specified in a range from 0 to 255. The syntaxe is rgb(r,
+          g, b).
         </p>
       </div>
       <div class="Vertical_Demo">
@@ -843,10 +912,13 @@
       <h3 class="Sub_Section_Title">2. HSL color</h3>
       <div class="Definitions">
         <p>
-          hsl(hue, saturation, lightness) <br><br>
+          HSL stands for Hue, Saturation, and Lightness. <br><br>
           Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, and 240 is blue. <br><br>
           Saturation is a percentage value. 0% means a shade of gray, and 100% is the full color. <br><br>
           Lightness is also a percentage. 0% is black, 50% is neither light or dark, 100% is white <br><br>
+          The syntaxe is hsl(hue, saturation, lightness). <br><br>
+          For example, if we locate the color red on the color wheel, we find it at 0 degrees. If we want a darker red,
+          we can decrease the lightness value. If we want a lighter red, we can increase the lightness value. <br><br>
         </p>
       </div>
       <img class="Smaller_Image" src="SRC/IMAGES/HSL_Color_Wheel.png" alt="HSL_Color_Wheel" />
@@ -873,7 +945,7 @@
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <h1 class="Blue">This is blue</h1>
+          <h1 class="Blue_H1">This is blue</h1>
           <h1 class="Darker_Blue">This is Darker Blue</h1>
         </div>
       </div>
@@ -884,8 +956,10 @@
           hex, RGB, and HSL, it is possible to define an alpha channel. <br> <br>
           With hex, you can define an alpha channel with a four-digit or eight-digit syntax. <br><br>
           It used to be necessary to define RGB or HSL colors with an alpha channel using the functional rgba() or
-          hsla() formats. However, that's no longer needed unless you need to support a very old browser.
-
+          hsla() formats. However, that's no longer needed unless you need to support a very old browser. <br><br>
+          The syntaxe is rgba(red, green, blue, alpha) or hsla(hue, saturation, lightness, alpha). <br><br>
+          The alpha value can be a number between 0 and 1, where 0 is fully transparent and 1 is fully opaque. <br><br>
+          It can also be a percentage, where 0% is fully transparent and 100% is fully opaque. <br><br>
         </p>
       </div>
       <div class="Vertical_Demo">
@@ -1013,8 +1087,52 @@
       <div class="Definitions">
         <p>
           CSS supports several absolute length units: pixel (px), mm (millimeter), cm (centimeter), in. (inch), pt
-          (point—typographic term for 1/72nd of an inch), and pc (pica—typographic term for 12 points).
+          (point—typographic term for 1/72nd of an inch), and pc (pica—typographic term for 12 points). <br><br>
+          The most commonly used unit is the pixel. <br><br>
         </p>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <font>&lt; div class="Pixels" &gt;</font>
+          <font>&lt; /div &gt;</font>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <font color="green">.Pixels</font>
+          { <br>
+          <font color="green">width</font>: 50px;<br>
+          <font color="green">height</font>: 50px;<br>
+          <font color="green">background-color</font>: #8c1515;<br>
+          } <br>
+          <font color="green">.centimeter</font>
+          { <br>
+          <font color="green">width</font>: 2cm;<br>
+          <font color="green">height</font>: 2cm;<br>
+          <font color="green">background-color</font>: yellow;<br>
+          } <br>
+          <font color="green">.point</font>
+          { <br>
+          <font color="green">width</font>: 50pt;<br>
+          <font color="green">height</font>: 50pt;<br>
+          <font color="green">background-color</font>: blue;<br>
+          } <br>
+          <font color="green">.pica</font>
+          { <br>
+          <font color="green">width</font>: 5pc;<br>
+          <font color="green">height</font>: 5pc;<br>
+          <font color="green">background-color</font>: green;<br>
+          }
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Squares">
+            <div class="Pixels"></div>
+            <div class="centimeter"></div>
+            <div class="point"></div>
+            <div class="pica"></div>
+          </div>
+        </div>
       </div>
       <h3 class="Sub_Section_Title">2. Relative units</h3>
       <h3 class="Sub_Section_Title">2.1 Ems</h3>
@@ -1023,7 +1141,8 @@
           In CSS, 1 em means the font size of the current element; its exact value varies depending on the element
           you're applying it to. <br><br>
           Values declared using relative units are evaluated by the browser to an absolute value, called the computed
-          value. <br><br>
+          value. For example, if you set the padding of a paragraph to 1.5 em, the browser will calculate the
+          computed value based on the font size of the parent element. <br><br>
           Using ems can be convenient when setting properties like padding, height, width, or border-radius because
           these will scale evenly with the element if it inherits different font sizes,
         </p>
@@ -1064,7 +1183,8 @@
       </div>
       <div class="Definitions">
         <p>
-          If we em unit to specify font-size itself, the ems will be derived from the inherited font size. <br><br>
+          If we use em units to specify font-size itself, the ems will be derived from the inherited font size. <br>
+          <br>
           It's helpful to know that, for most browsers, the default font size is 16 px. Technically, it's the keyword
           value medium that calculates to 16 px. <br><br>
           What makes ems tricky is when you use them for both font size and any other properties on the same element.
@@ -1126,11 +1246,18 @@
         <p>
           viewport: The framed area in the browser window where the web page is visible. This excludes the browser's
           address bar, toolbars, and status bar, if present. <br><br>
+          Recall when we saw the head part of the HTML document, we saw the meta tag viewport. This tag has an attribute
+          content that includes the width of the viewport. You can also set the initial scale, minimum scale, and
+          maximum
+          scale. <br><br>
+          This means that you can set the width of the viewport to be the same as the device width or you can set it to
+          be a specific width. <br><br>
+          CSS has four units that are relative to the viewport, that can take values between 0 and 100. <br><br>
         <ul>
-          <li><b>vh:</b> 1/100th of the viewport height.</li>
-          <li><b>vw:</b> 1/100th of the viewport width.</li>
-          <li><b>vmin:</b> 1/100th of the smaller dimension, height or width.</li>
-          <li><b>vmax:</b> 1/100th of the larger dimension, height or width.</li>
+          <li><b>vh:</b> 1/100<sup>th</sup> of the viewport height.</li>
+          <li><b>vw:</b> 1/100<sup>th</sup> of the viewport width.</li>
+          <li><b>vmin:</b> 1/100<sup>th</sup> of the smaller dimension, height or width.</li>
+          <li><b>vmax:</b> 1/100<sup>th</sup> of the larger dimension, height or width.</li>
         </ul>
         For example, 50 vw is equal to half the width of the viewport. <br> <br>
         This is helpful for ensuring that an element will fit on the screen regardless of its orientation: If the
