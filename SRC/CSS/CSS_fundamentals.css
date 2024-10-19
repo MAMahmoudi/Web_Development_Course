@@ -311,3 +311,11 @@ ol ~ h4 {
 .My_Font_4 {
   font-family: "My_Font_4", sans-serif;
 }
+
+.New_Font {
+  font-family: "Amiri Quran", serif;
+  font-weight: 400;
+  font-style: normal;
+  direction: rtl;
+  font-size: 2rem;
+}
