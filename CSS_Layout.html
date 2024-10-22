@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" type="text/css" />
   <link rel="stylesheet" href="SRC/CSS/HTML.css" type="text/css" />
   <link rel="stylesheet" href="SRC/CSS/CSS_Layout.css" type="text/css" />
+  <link rel="stylesheet" href="SRC/CSS/Lab_2.css" type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
@@ -39,7 +40,7 @@
         <h3>Top</h3>
         <div class="Middle">
           <h3>
-            <font>&lt;</font>-----------Left-----------<font>&gt;</font>
+            <font>&lt;-----------Left-----------<font>&gt;
           </h3>
           <div class="Margin">
             <h3>Margin</h3>
@@ -50,17 +51,17 @@
                 <div class="Content">
                   <h3>Content</h3>
                   <h4 class="Width_Label">
-                    <font>&lt;</font>-----------Width-----------<font>&gt;</font>
+                    <font>&lt;-----------Width-----------<font>&gt;
                   </h4>
                   <h4 class="Height_Label">
-                    <font>&lt;</font>-----------Height-----------<font>&gt;</font>
+                    <font>&lt;-----------Height-----------<font>&gt;
                   </h4>
                 </div>
               </div>
             </div>
           </div>
           <h3>
-            <font>&lt;</font>-----------Right-----------<font>&gt;</font>
+            <font>&lt;-----------Right-----------<font>&gt;
           </h3>
         </div>
         <h3>Bottom</h3>
@@ -83,19 +84,23 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;img class="Float_Img" src="SRC/IMAGES/Oran.jpg" /&gt;</font><br>
-          <font color="blue">&lt; p &gt;</font><br>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus rem ad aliquid vero, cumque eligendi quasi
-          impedit ipsam quos voluptas aperiam reiciendis placeat, cum recusandae sapiente. Ullam iure laudantium modi!
-          <br>
-          <font color="blue">&lt;/p &gt;</font>
+          <pre class="prettyprint  lang-html">
+            &lt;img class="Float_Img" src="SRC/IMAGES/Oran.jpg"/&gt;<br>
+            &lt;p&gt;
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus rem ad aliquid vero, cumque eligendi quasi
+            impedit ipsam quos voluptas aperiam reiciendis placeat, cum recusandae sapiente. Ullam iure laudantium modi!
+            <br>
+            &lt;/p&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Float_Img</font>
+          <pre class="prettyprint  lang-css">
+          .Float_Img
           {<br>
-          <font color="green">float:</font> left;<br>
+          float: left;<br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -169,34 +174,38 @@
         </p>
         <div class="Content">
           <h2 class="Width_Label">
-            <font>&lt;</font>-----------Main axis-----------<font>&gt;</font>
+            <font>&lt;-----------Main axis-----------<font>&gt;
           </h2>
           <h2 class="Height_Label">
-            <font>&lt;</font>------Cross axis------<font>&gt;</font>
+            <font>&lt;------Cross axis------<font>&gt;
           </h2>
         </div>
       </div>
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
-          { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">flex-direction:</font> row; <br>
-          }
+          <pre class="prettyprint  lang-css">
+            .Flex_Container
+            { <br>
+            display: flex; <br>
+            flex-direction: row; <br>
+            }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -261,24 +270,28 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
+          <pre class="prettyprint  lang-css">
+          .Flex_Container
           { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">flex-direction:</font> column; <br>
+          display: flex; <br>
+          flex-direction: column; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -356,24 +369,28 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
+          <pre class="prettyprint  lang-css">
+          .Flex_Container
           { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">flex-wrap:</font> nowrap; <br>
+          display: flex; <br>
+          flex-wrap: nowrap; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -547,24 +564,28 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
+          <pre class="prettyprint  lang-css">
+          .Flex_Container
           { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">justify-content:</font> flex-start; <br>
+          display: flex; <br>
+          justify-content: flex-start; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -741,24 +762,28 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
+          <pre class="prettyprint  lang-css">
+          .Flex_Container
           { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">align-items:</font> flex-start; <br>
+          display: flex; <br>
+          align-items: flex-start; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -863,24 +888,28 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;div class="Flex_Container"&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;div&gt;</font>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Flex_Container"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Flex_Container</font>
+          <pre class="prettyprint  lang-css">
+          .Flex_Container
           { <br>
-          <font color="green">display:</font> flex; <br>
-          <font color="green">align-content:</font> flex-start; <br>
+          display: flex; <br>
+          align-content: flex-start; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -1176,17 +1205,21 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt; img class="Order_3" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" / &gt;</font>
-          <font color="blue">&lt; img class="Order_4" src="SRC/IMAGES/Oran.jpg" alt="Oran" / &gt;</font>
-          <font color="blue">&lt; img class="Order_1" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" / &gt;</font>
-          <font color="blue">&lt; img class="Order_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine"/ &gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;img class="Order_3" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" / &gt;
+          &lt;img class="Order_4" src="SRC/IMAGES/Oran.jpg" alt="Oran" / &gt;
+          &lt;img class="Order_1" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" / &gt;
+          &lt;img class="Order_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine"/ &gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Order_1</font>
+          <pre class="prettyprint  lang-css">
+          .Order_1
           { <br>
-          <font color="green">order:</font> 1; <br>
+          order: 1; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -1224,23 +1257,27 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt; div class="Grid" &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; /div &gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Grid" &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;/div &gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Grid</font>
+          <pre class="prettyprint  lang-css">
+          .Grid
           { <br>
-          <font color="green">display:</font>grid; <br>
-          <font color="green">grid-template-columns:</font> 1fr 1fr 1fr; <br>
-          <font color="green">grid-template-rows:</font> 1fr 1fr; <br>
+          display:grid; <br>
+          grid-template-columns: 1fr 1fr 1fr; <br>
+          grid-template-rows: 1fr 1fr; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -1287,23 +1324,27 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt; div class="Grid" &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; div &gt;</font>
-          <font color="blue">&lt; /div &gt;</font><br>
-          <font color="blue">&lt; /div &gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;div class="Grid" &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;div &gt;
+          &lt;/div &gt;<br>
+          &lt;/div &gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <font color="green">.Grid</font>
+          <pre class="prettyprint  lang-css">
+          .Grid
           { <br>
-          <font color="green">display:</font>grid; <br>
-          <font color="green">grid-template-columns:</font> 2fr 1fr; <br>
-          <font color="green">grid-template-rows:</font> 1fr 1fr; <br>
+          display:grid; <br>
+          grid-template-columns: 2fr 1fr; <br>
+          grid-template-rows: 1fr 1fr; <br>
           }
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -1359,7 +1400,7 @@
     </section>
     <section id="Backgrounds">
       <h1 class="Title">I. Backgrounds</h1>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           The <b>background</b> property is a shorthand for eight properties:
         <ol>
@@ -1384,27 +1425,31 @@
         url(Oran.jpg)), but it can also accept a gradient function (see example below).
         </p>
       </div>
-      <div class="card">
-        <div class="HTML_demo">
-          <h2 class="opening_tag">HTML</h2>
-          <font color="blue">&lt; div class="Gradient_Div" &gt;</font>
-          <font color="blue">&lt; /div &gt;</font>
+
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+           &lt;div class="Gradient_Div" &gt;
+          &lt;/div &gt;
+          </pre>
         </div>
-        <div class="HTML_demo">
-          <h2 class="opening_tag">CSS</h2>
-          <font color="green">.Gradient_Div</font>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <pre class="prettyprint  lang-css">
+          .Gradient_Div
           { <br>
-          <font color="green">background-image</font>: linear-gradient(90deg, #00dbde, #fc00ff); <br>
+          background-image: linear-gradient(90deg, #00dbde, #fc00ff); <br>
           } <br><br>
-          <font color="green">/* Using color stops */</font><br><br>
-          <font color="green">.Gradient_Div</font>
+          /* Using color stops */<br><br>
+          .Gradient_Div
           { <br>
-          <font color="green">background-image:</font> linear-gradient(to right, #017137, #ffffff, #f47639); <br>
+          background-image: linear-gradient(to right, #017137, #ffffff, #f47639); <br>
           } <br><br>
-          <font color="green">/* Stripes */</font><br><br>
-          <font color="green">.Gradient_Div</font>
+          /* Stripes */<br><br>
+          .Gradient_Div
           { <br>
-          <font color="green">background-image:</font> linear-gradient(
+          background-image: linear-gradient(
           to bottom,
           #000000 0%,
           #000000 33%,
@@ -1413,10 +1458,10 @@
           #ffba32 66%
           ); <br>
           } <br><br>
-          <font color="green">/* Repeating gradients */</font><br><br>
-          <font color="green">.Gradient_Div</font>
+          /* Repeating gradients */<br><br>
+          .Gradient_Div
           { <br>
-          <font color="green">background-image:</font> repeating-linear-gradient(
+          background-image: repeating-linear-gradient(
           to bottom,
           #be0b31 0%,
           #be0b31 10%,
@@ -1424,10 +1469,51 @@
           #ffffff 20%
           );<br>
           } <br>
+          </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Gradient_Divs">
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+          </div>
         </div>
       </div>
+
+
+
+
+
       <h3 class="Sub_Section_Title">1. Linear gradient</h3>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <h3>The linear-gradient function</h3>
         <p>
           The linear-gradient function has three parameters defining its behavior: angle, starting color, and ending
@@ -1465,7 +1551,7 @@
           We use either color stops or stripes to create a pattern first then it will be repeated. <br>
           It can be used to create a progress bar, for example. (This effect requires a bit of JavaScript, which we will
           cover in detai in Lab 5. If you to take a look at it now, go to <a
-            href="https://github.com/ENSIA-AI/Web_Development_2023/blob/main/SRC/Labs/Lab_5/Lab_2.js">Lab 5 JS
+            href="https://github.com/MAMahmoudi/Web_Development_Course/blob/main/SRC/Labs/Lab_4%2B/Lab_2.js">Lab JS
             code</a>.)
         </p>
         <button type="button" class="Try_It_Btn" id="Repeating_Gradients_Try_It_Btn_ID">Try it</button>
@@ -1478,46 +1564,12 @@
           <div class="Progress_Bar" id="Progress_Bar_ID"></div>
         </div>
       </div>
-      <div class="Definitions HTML_demo">
-        <h2 class="opening_tag">Result</h2>
-        <div class="Gradient_Divs">
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-        </div>
-      </div>
+
       <p class="Description_Big">You can find many websites that provide some aesthetic backgrounds with their CSS code.
         For
         example, <a href="https://cssgradient.io/gradient-backgrounds/">this one.</a></p>
       <h3 class="Sub_Section_Title">2. Radial gradient</h3>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           Radial gradients start at a single point and proceed outward in all directions. <br>
           By default, the gradient is centered in the element, transitioning evenly to its corners.
@@ -1529,50 +1581,54 @@
           A repeating-radialgradient() function repeats the pattern in concentric rings.
         </p>
       </div>
-      <div class="card">
-        <div class="HTML_demo">
-          <h2 class="opening_tag">HTML</h2>
-          <font color="blue">&lt; div class="Gradient_Div" &gt;</font>
-          <font color="blue">&lt; /div &gt;</font>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+          &lt;div class="Gradient_Div" &gt;
+          &lt;/div &gt;
+          </pre>
         </div>
-        <div class="HTML_demo">
-          <h2 class="opening_tag">CSS</h2>
-          <font color="green">.Gradient_Div</font>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <pre class="prettyprint  lang-css">
+          .Gradient_Div
           { <br>
-          <font color="green">background-image</font>: radial-gradient(white, blue); <br>
+          background-image: radial-gradient(white, blue); <br>
           } <br><br>
-          <font color="green">.Gradient_Div</font>
+          .Gradient_Div
           { <br>
-          <font color="green">background-image</font>: radial-gradient(circle, white, midnightblue) <br>
+          background-image: radial-gradient(circle, white, midnightblue) <br>
           } <br><br>
-          <font color="green">.Gradient_Div</font>
+          .Gradient_Div
           { <br>
-          <font color="green">/* Sized 3 em, centered 25% from the left and top edges */</font><br>
-          <font color="green">background-image</font>: radial-gradient(3em at 25% 25%, white, midnightblue); <br>
+          /* Sized 3 em, centered 25% from the left and top edges */<br>
+          background-image: radial-gradient(3em at 25% 25%, white, midnightblue); <br>
           } <br><br>
-          <font color="green">.Gradient_Div</font>
+          .Gradient_Div
           { <br>
-          <font color="green">/* Radial gradient with explicit color stop positions */</font><br>
-          <font color="green">background-image</font>: radial-gradient(circle, midnightblue 0%, white 75%, red 100%);
+          /* Radial gradient with explicit color stop positions */<br>
+          background-image: radial-gradient(circle, midnightblue 0%, white 75%, red 100%);
           <br>
           } <br><br>
-          <font color="green">.Gradient_Div</font>
+          .Gradient_Div
           { <br>
-          <font color="green">/* Repeating gradient with stripes */</font><br>
-          <font color="green">background-image</font>: repeating-radial-gradient(circle, midnightblue 0,
+          /* Repeating gradient with stripes */<br>
+          background-image: repeating-radial-gradient(circle, midnightblue 0,
           midnightblue 1em, white 1em, white 2em); <br>
           } <br>
+          </pre>
         </div>
-      </div>
-      <div class="Definitions HTML_demo">
-        <h2 class="opening_tag">Result</h2>
-        <div class="Radial_Gradient_Divs">
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <div class="Gradient_Div"></div>
-          <button type="button" class="Try_It_Btn" id="Radial_Gradients_Try_It_Btn_ID">Try it</button>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <div class="Radial_Gradient_Divs">
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <div class="Gradient_Div"></div>
+            <button type="button" class="Try_It_Btn" id="Radial_Gradients_Try_It_Btn_ID">Try it</button>
+          </div>
         </div>
       </div>
       <div class="Dialog" id="Dialog_2_ID">
@@ -1586,12 +1642,12 @@
     </section>
     <section id="Shadows">
       <h1 class="Title">II. Shadows</h1>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           Two properties that create shadows are box-shadow, which creates a shadow of an element's box shape, and
           text-shadow, which creates a shadow of rendered text. <br>
           Shadows rules have the following syntax: <br> <br>
-          <font color="green">box-shadow: </font> <i>offset-x offset-y blur-radius spread-radius color</i>; <br>
+          box-shadow: <i>offset-x offset-y blur-radius spread-radius color</i>; <br>
         <ul>
           <li><b>offset-x offset-y:</b> how far the shadow will be shifted from the element's position (horizontal, then
             vertical). If these have a value of 0, then the shadow will be directly behind the element.</li>
@@ -1608,65 +1664,69 @@
         shadow.
         </p>
       </div>
-      <div class="card">
-        <div class="HTML_demo">
-          <h2 class="opening_tag">HTML</h2>
-          <font color="blue">&lt; div class="Shadow_Div" &gt;</font>
-          <font color="blue">&lt; /div &gt;</font>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+          &lt;div class="Shadow_Div" &gt;
+          &lt;/div &gt;
+          </pre>
         </div>
-        <div class="HTML_demo">
-          <h2 class="opening_tag">CSS</h2>
-          <font color="green">.Shadow_Div</font>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <pre class="prettyprint  lang-css">
+          .Shadow_Div
           { <br>
-          <font color="green">/* Dark blue shadow with a 0.5 em blur */</font><br>
-          <font color="green">box-shadow:</font> 0.1em 0.1em 0.5em #124; <br>
-          <font color="green">text-shadow:</font> 0.1em 0.1em 0.5em #ffffff;
+          /* Dark blue shadow with a 0.5 em blur */<br>
+          box-shadow: 0.1em 0.1em 0.5em #124; <br>
+          text-shadow: 0.1em 0.1em 0.5em #ffffff;
           <br>
           } <br><br>
-          <font color="green">.Shadow_Div:active</font>
+          .Shadow_Div:active
           {/* When I click on it */ <br>
-          <font color="green">/* Several shadows definition can be added, separating them with a comma.*/</font><br>
-          <font color="green">box-shadow:</font> inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4); <br>
+          /* Several shadows definition can be added, separating them with a comma.*/<br>
+          box-shadow: inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4); <br>
           } <br><br>
-          <font color="green">.Shadow_Div:hover</font>
+          .Shadow_Div:hover
           { <br>
-          <font color="green">box-shadow:</font> 0 0 50px 15px #48abe0; <br>
+          box-shadow: 0 0 50px 15px #48abe0; <br>
           } <br><br>
-          <font color="green">.Shadow_Div:hover</font>
+          .Shadow_Div:hover
           { <br>
-          <font color="green">box-shadow:</font> 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca, 0 0 25px 20px #8a2be2, 0 0
+          box-shadow: 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca, 0 0 25px 20px #8a2be2, 0 0
           30px 25px #ff1493; <br>
           } <br><br>
-          <font color="green">.Shadow_Div:hover</font>
+          .Shadow_Div:hover
           { <br>
-          <font color="green">box-shadow:</font> -10px -10px 0 5px #000000;<br>
+          box-shadow: -10px -10px 0 5px #000000;<br>
           } <br><br>
-          <font color="green">.Shadow_Div:hover</font>
+          .Shadow_Div:hover
           { <br>
-          <font color="green">box-shadow:</font> 10px 10px 0 5px #000000;<br>
+          box-shadow: 10px 10px 0 5px #000000;<br>
           } <br><br>
-          <font color="green">.Shadow_Div:hover</font>
+          .Shadow_Div:hover
           { <br>
-          <font color="green">box-shadow:</font> 0 10px 0 5px #000000; <br>
+          box-shadow: 0 10px 0 5px #000000; <br>
           } <br><br>
+          </pre>
         </div>
-      </div>
-      <div class="Definitions HTML_demo">
-        <h2 class="opening_tag">Result</h2>
-        <h4>Hover or click to effect.</h4>
-        <div class="Shadow_Divs">
-          <div class="Shadow_Div">Click</div>
-          <div class="Shadow_Div">Hover</div>
-          <div class="Shadow_Div">Glow</div>
-          <div class="Shadow_Div">Solid</div>
-          <div class="Shadow_Div"></div>
-          <div class="Shadow_Div"></div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h4>Hover or click for the effect.</h4>
+          <div class="Shadow_Divs">
+            <div class="Shadow_Div">Click</div>
+            <div class="Shadow_Div">Hover</div>
+            <div class="Shadow_Div">Glow</div>
+            <div class="Shadow_Div">Solid</div>
+            <div class="Shadow_Div"></div>
+            <div class="Shadow_Div"></div>
+          </div>
         </div>
       </div>
     </section>
     <h1 class="Title"> Lab 3: CSS Responsive design </h1>
     <section>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           The three key principles to responsive design:
         <ol>
@@ -1690,7 +1750,7 @@
           <b>The viewport meta tag:</b> is an HTML tag that tells mobile devices you've intentionally designed for small
           screens. Without it, a mobile browser assumes your page is not responsive, and it will attempt to emulate a
           desktop browser. <br><br>
-          <font color="blue">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</font><br><br>
+          &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;<br><br>
           The meta tag's content attribute indicates two things. First, it tells the browser to use the device width as
           the assumed width when interpreting the CSS, instead of pretending to be a full size desktop browser. Second,
           it uses initial-scale to set the zoom level at 100% when the page loads.
@@ -1699,7 +1759,7 @@
     </section>
     <section id="Media_Queries">
       <h1 class="Title">I. Media queries</h1>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           <b>Media queries:</b> allow you to write a set of styles that only apply to the page under certain conditions.
           <br><br>
@@ -1713,13 +1773,15 @@
           targets both viewports 560px and narrower and those 1200px and wider.
         </p>
       </div>
-      <div class="HTML_demo">
+      <div class="CSS_Code">
         <h2 class="opening_tag">CSS</h2>
-        <font color="green">@media (min-width: 560px) { ....}</font> <br><br>
-        <font color="green">@media (min-width: 560px) and (max-width: 1200px) { .... }</font><br><br>
-        <font color="green">@media (max-width: 560px), (min-width: 1200px) { .... }</font><br>
+        <pre class="prettyprint lang-css">
+        @media (min-width: 560px) { ....} <br><br>
+        @media (min-width: 560px) and (max-width: 1200px) { .... }<br><br>
+        @media (max-width: 560px), (min-width: 1200px) { .... }<br>
+      </pre>
       </div>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           min-width targets devices with a viewport above a certain width, and max-width targets devices below a certain
           width are each called a media feature. <br><br>
@@ -1737,9 +1799,9 @@
         </ul>
         </p>
       </div>
-      <div class="Definitions HTML_demo">
-        <p><b>TIP 1:</b> You can also place a media query in the <font color="blue">&lt;link&gt;</font> tag. Adding
-          <font color="blue">&lt;link rel="stylesheet" media="(min-width: 500px)" href="large-screen.css" /&gt;</font>
+      <div class="Definitions">
+        <p><b>TIP 1:</b> You can also place a media query in the &lt;link&gt; tag. Adding
+          &lt;link rel="stylesheet" media="(min-width: 500px)" href="large-screen.css" /&gt;
           to
           your page will apply the contents of the large-screen.css file to the page only if the min-width media query
           is true. Note that the stylesheet will always download, regardless of the width of the viewport, so this is
@@ -1759,29 +1821,31 @@
     </section>
     <section id="Responsive_Images">
       <h1 class="Title">II. Responsive images</h1>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           The best practice is to create a few copies of an image, each at a different resolution. <br><br>
           Use the srcset attribute (short for “source set”). This attribute is a newer addition to HTML. It allows you
-          to specify multiple image URLs for one <font color="blue">&lt;img&gt;</font> tag, specifying the resolution of
+          to specify multiple image URLs for one &lt;img&gt; tag, specifying the resolution of
           each. The browser will then figure out which image it needs and download that one. <br><br>
           Most browsers now support srcset, but those that don't will fall back to the specified src, loading whichever
           URL is specified there. This
         </p>
       </div>
-      <div class="HTML_demo">
+      <div class="HTML_Code">
         <h2 class="opening_tag">HTML</h2>
-        <font color="blue">&lt;img alt="Oran-pic" <br>
-          src="IMAGES/Oran.jpg"<br>
-          srcset="IMAGES/Oran-small.jpg 560w,<br>
-          IMAGES/Oran-medium.jpg 800w,<br>
-          IMAGES/Oran-big.jpg 1280w"<br>
-          /&gt;</font>
+        <pre class="prettyprint lang-html">
+        &lt;img alt="Oran-pic" <br>
+        src="IMAGES/Oran.jpg"<br>
+        srcset="IMAGES/Oran-small.jpg 560w,<br>
+        IMAGES/Oran-medium.jpg 800w,<br>
+        IMAGES/Oran-big.jpg 1280w"<br>
+        /&gt;
+      </pre>
       </div>
     </section>
     <section id="Backgrounds">
       <h1 class="Title">III. Example</h1>
-      <div class="Definitions HTML_demo">
+      <div class="Definitions">
         <p>
           In this example, we will create a responsive navigation bar. <br><br>
           The navigation bar will have a logo on the right, and menu items on the left. When the viewport is wide, the
@@ -1796,75 +1860,79 @@
             href="https://github.com/ENSIA-AI/Web_Development_2023/blob/main/SRC/Labs/Lab_5/Drop_Down_Menu.js">here.</a>
         </p>
       </div>
-      <div class="card">
-        <div class="HTML_demo">
-          <h2 class="opening_tag">HTML</h2>
-          <font color="blue">&lt;nav class="Nav_Bar_Items"&gt;</font><br>
-          <font color="blue">&lt;h1 class="Nav_Bar_Logo"&gt;</font>سياحة<font color="blue">&lt;/h1&gt;</font><br>
-          <font color="blue">&lt;div class="Menu_Icon" id="Menu_Icon_ID"&gt;</font><br>
-          <font color="blue">&lt;i class="fas fa-bars" id="Burger_Icon_ID"&gt;</font>
-          <font color="blue">&lt;/i&gt;</font><br>
-          <font color="blue">&lt;/div&gt;</font><br>
-          <font color="blue">&lt;ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID"&gt;</font><br>
-          <font color="blue">&lt;li&gt;</font><br>
-          <font color="blue">&lt;a href="#" class="Nav_Bar_Menu_Item"&gt;</font><br>
-          <font color="blue">&lt;span&gt;</font>إتصل بنا<font color="blue">&lt;/span&gt;</font><br>
-          <font color="blue">&lt;i class="fa-solid fa-envelope"&gt;</font>
-          <font color="blue">&lt;/i&gt;</font><br>
-          <font color="blue">&lt;/a&gt;</font><br>
-          <font color="blue">&lt;/li&gt;</font><br>
-          <font color="blue">&lt;li&gt;</font><br>
-          <font color="blue">&lt;a href="#" class="Nav_Bar_Menu_Item"&gt;</font><br>
-          <font color="blue">&lt;span&gt;</font>جميع الخدمات<font color="blue">&lt;/span&gt;</font><br>
-          <font color="blue">&lt;i class="fa-solid fa-briefcase"&gt;</font>
-          <font color="blue">&lt;/i&gt;</font><br>
-          <font color="blue">&lt;/a&gt;</font><br>
-          <font color="blue">&lt;/li&gt;</font><br>
-          <font color="blue">&lt;li&gt;</font><br>
-          <font color="blue">&lt;a href="#" class="Nav_Bar_Menu_Item"&gt;</font><br>
-          <font color="blue">&lt;span&gt;</font>من نحن؟<font color="blue">&lt;/span&gt;</font><br>
-          <font color="blue">&lt;i class="fa-solid fa-circle-info"&gt;</font>
-          <font color="blue">&lt;/i&gt;</font><br>
-          <font color="blue">&lt;/a&gt;</font><br>
-          <font color="blue">&lt;/li&gt;</font><br>
-          <font color="blue">&lt;li&gt;</font><br>
-          <font color="blue">&lt;a href="#" class="Nav_Bar_Menu_Item"&gt;</font><br>
-          <font color="blue">&lt;span&gt;</font>الرئيسية<font color="blue">&lt;/span&gt;</font><br>
-          <font color="blue">&lt;i class="fa-solid fa-house"&gt;</font>
-          <font color="blue">&lt;/i&gt;</font><br>
-          <font color="blue">&lt;/a&gt;</font><br>
-          <font color="blue">&lt;/li&gt;</font><br>
-          <font color="blue">&lt;/ul&gt;</font><br>
-          <font color="blue">&lt;/nav&gt;</font><br>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+          &lt;nav class="Nav_Bar_Items"&gt;<br>
+          &lt;h1 class="Nav_Bar_Logo"&gt;سياحة&lt;/h1&gt;<br>
+          &lt;div class="Menu_Icon" id="Menu_Icon_ID"&gt;<br>
+          &lt;i class="fas fa-bars" id="Burger_Icon_ID"&gt;
+          &lt;/i&gt;<br>
+          &lt;/div&gt;<br>
+          &lt;ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID"&gt;<br>
+          &lt;li&gt;<br>
+          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
+          &lt;span&gt;إتصل بنا&lt;/span&gt;<br>
+          &lt;i class="fa-solid fa-envelope"&gt;
+          &lt;/i&gt;<br>
+          &lt;/a&gt;<br>
+          &lt;/li&gt;<br>
+          &lt;li&gt;<br>
+          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
+          &lt;span&gt;جميع الخدمات&lt;/span&gt;<br>
+          &lt;i class="fa-solid fa-briefcase"&gt;
+          &lt;/i&gt;<br>
+          &lt;/a&gt;<br>
+          &lt;/li&gt;<br>
+          &lt;li&gt;<br>
+          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
+          &lt;span&gt;من نحن؟&lt;/span&gt;<br>
+          &lt;i class="fa-solid fa-circle-info"&gt;
+          &lt;/i&gt;<br>
+          &lt;/a&gt;<br>
+          &lt;/li&gt;<br>
+          &lt;li&gt;<br>
+          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
+          &lt;span&gt;الرئيسية&lt;/span&gt;<br>
+          &lt;i class="fa-solid fa-house"&gt;
+          &lt;/i&gt;<br>
+          &lt;/a&gt;<br>
+          &lt;/li&gt;<br>
+          &lt;/ul&gt;<br>
+          &lt;/nav&gt;<br>
+          </pre>
         </div>
-        <div class="HTML_demo">
-          <h2 class="opening_tag">CSS</h2>
-          <font color="green">@media screen and (max-width: 850px)</font>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <pre class="prettyprint  lang-css">
+          @media screen and (max-width: 850px)
           { <br>
-          <font color="green">Nav_Bar_Menu</font>
+          Nav_Bar_Menu
           { <br>
-          <font color="green">display</font>: flex; <br>
-          <font color="green">flex-direction</font>: column; <br>
-          <font color="green">right</font>: -100%; <br>
-          <font color="green">opacity</font>: 0; <br>
+          display: flex; <br>
+          flex-direction: column; <br>
+          right: -100%; <br>
+          opacity: 0; <br>
           } <br><br>
-          <font color="green">.Menu_Icon</font>
+          .Menu_Icon
           { <br>
-          <font color="green">display</font>: block; <br>
-          <font color="green">cursor</font>: pointer; <br>
+          display: block; <br>
+          cursor: pointer; <br>
           }<br><br>
-          <font color="green">.Nav_Bar_Menu.active</font>
+          .Nav_Bar_Menu.active
           { <br>
-          <font color="green">right</font>: 0; <br>
-          <font color="green">opacity</font>: 1; <br>
+          right: 0; <br>
+          opacity: 1; <br>
           }<br><br>
+          </pre>
         </div>
-      </div>
-      <div class="Definitions HTML_demo">
-        <h2 class="opening_tag">Result</h2>
-        <a href="SRC/Labs/Lab_2/Lab_2_Page.html">
-          <h3>See result here</h3>
-        </a>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <a href="SRC/Labs/Lab_2/Lab_2_Page.html">
+            <h3>See result here</h3>
+          </a>
+        </div>
       </div>
       <p class="Description_Big">You can find the CSS code of the responsiveness for this example, <a
           href="https://github.com/ENSIA-AI/Web_Development_2023/tree/main/SRC/Labs/Lab_3">here.</a></p>
@@ -1879,7 +1947,12 @@
       <h1>Introduction to JavaScript</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+  <script src="SRC/Labs/Lab_4+/Lab_2.js" type="module"></script>
 </body>
 
 </html>

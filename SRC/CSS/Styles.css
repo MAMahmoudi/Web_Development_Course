@@ -155,11 +155,9 @@ td {
   border: 3px solid green;
   grid-column: 1;
   grid-row: 1;
-  background-color: #1e1e1e;
-  color: #ffffff;
+  background-color: #000;
   overflow: auto;
-  padding: 2rem;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 .Tag {
@@ -173,22 +171,18 @@ td {
   border: 3px solid green;
   grid-column: 1;
   grid-row: 2;
-  background-color: #1e1e1e;
-  color: green;
+  background-color: #000;
   overflow: auto;
-  padding: 2rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .JS_Code {
   border: 3px solid green;
   grid-column: 1;
   grid-row: 2;
-  background-color: #1e1e1e;
-  color: green;
+  background-color: #000000;
   overflow: auto;
-  padding: 2rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .Result_Demo {
