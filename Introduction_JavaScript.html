@@ -17,7 +17,7 @@
 <body>
   <main>
     <h1 class="Title">Introduction to JavaScript</h1>
-    <section>
+    <section id="Script_Tag">
       <div class="Definitions">
         <p>
           To call JavaScript code, you place it between opening <font color="blue">&lt;script&gt;</font> and closing
@@ -52,183 +52,229 @@
           <li>There is no set limit on variable name lengths.</li>
         </ul>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>Variable</strong></td>
-            <td><strong>Description</strong></td>
-            <td><strong>Example</strong></td>
-          </tr>
-          <tr>
-            <td><strong>var</strong></td>
-            <td>Used to initialize to value, redeclared and its value can be reassigned.</td>
-            <td>var x= value;</td>
-          </tr>
-          <tr>
-            <td><strong>let</strong></td>
-            <td>Similar to var but is block scoped</td>
-            <td>let y= value;</td>
-          </tr>
-          <tr>
-            <td><strong>const</strong></td>
-            <td>Used to declare a fixed value that cannot be changed.</td>
-            <td>const z= value;</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2 class="Sub_Section_Title">Variable declaration</h2>
+      <div class="Definitions">
+        <ol>
+          <li><strong>var: </strong> Used to initialize to value, redeclared and its value can be reassigned.
+            <pre class="prettyprint lang-js">
+      var age = 55;
+      var Teacher_Name = "Karim";
+      var isStudent = false;
+      console.log(Teacher_Name + " is " + age + " years old");
+    </pre>
+          </li>
+          <li><strong>let: </strong> Similar to var but is block scoped.
+            <pre class="prettyprint lang-js">
+{
+let age = 18;
+let Student_Name = "Amel";
+let isStudent = false;
+console.log("Inside the block: "+Student_Name + " is " + age + " years old");
+}
+console.log("Outside the block: "+Student_Name + " is " + age + " years old");
+    </pre>
+          </li>
+          <li><strong>const: </strong> Used to declare a fixed value that cannot be changed.
+            <pre class="prettyprint lang-js">
+              const Pi = 3.14;
+              Pi = 3.14159; // This will throw an error
+              </pre>
+          </li>
+        </ol>
+      </div>
     </section>
-
     <section id="Datatypes">
       <h2 class="Section_Title">II. Datatypes</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>Datatype</strong></td>
-            <td><strong>Description</strong></td>
-            <td><strong>Example</strong></td>
-          </tr>
-          <tr>
-            <td><strong>Number</strong></td>
-            <td>Numeric values can be real number or integers.</td>
-            <td>var x= number;</td>
-          </tr>
-          <tr>
-            <td><strong>String</strong></td>
-            <td>Series of multiple characters written in quotes.</td>
-            <td>var x= “characters”;</td>
-          </tr>
-          <tr>
-            <td><strong>Boolean</strong></td>
-            <td>Has only two values true or false.</td>
-            <td>var x= true/false;</td>
-          </tr>
-          <tr>
-            <td><strong>Null</strong></td>
-            <td>Special value that represents that the variable is empty.</td>
-            <td>var x= null;</td>
-          </tr>
-          <tr>
-            <td><strong>Undefined</strong></td>
-            <td>Represents a variable which is declared but not assigned any value.</td>
-            <td>let x; / let x= undefined;</td>
-          </tr>
-          <tr>
-            <td><strong>Object</strong></td>
-            <td>Complex data type that allows us to store a collection of data.</td>
-            <td>var x= {<br>&nbsp; &nbsp; key: “value”;<br>&nbsp; &nbsp; key: “value”;<br>}</td>
-          </tr>
-          <tr>
-            <td><strong>Array</strong></td>
-            <td>Stores multiple values of same type in a single variable.</td>
-            <td>
-              <p>var x =['y1', 'y2','y3','y4'];</p>
-              <p>y: any datatype</p>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Function</strong></td>
-            <td>Functions are objects that can be called to execute a block of code.</td>
-            <td>
-              <p>function x(arguments){</p>
-              <p>&nbsp; &nbsp; block of code</p>
-              <p>}</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ol>
+        <li>
+          <strong>Number</strong>
+          <pre class="prettyprint lang-js">
+            var WebDev_Grade = 0.000001;
+          </pre>
+        </li>
+        <li>
+          <strong>String</strong>
+          <pre class="prettyprint lang-js">
+            var Student_Name = "Ahmed";
+            var Student_Name2 = 'Ahmed';
+          </pre>
+        </li>
+        <li>
+          <strong>Boolean</strong>
+          <pre class="prettyprint lang-js">
+            var isStudent = true;
+          </pre>
+        </li>
+        <li>
+          <strong>Null</strong>
+          <pre class="prettyprint lang-js">
+            var x = null;
+            console.log("The value of x is: " + x);
+            // Output: The value of x is: null
+          </pre>
+        </li>
+        <li>
+          <strong>Undefined</strong>
+          <pre class="prettyprint lang-js">
+            var y;
+            let z = undefined;
+            console.log("The value of y is: " + y);
+            // Output: The value of y is: undefined
+            console.log("The value of z is: " + z);
+            // Output: The value of z is: undefined
+          </pre>
+        </li>
+        <li>
+          <strong>Object</strong>
+          <pre class="prettyprint lang-js">
+            var Student = {
+              Name: "Ahmed",
+              Age: 20,
+              isStudent: true
+            };
+            console.log(Student.Name + " is " + Student.Age + " years old");
+          </pre>
+        </li>
+      </ol>
     </section>
-
     <section id="Operators">
       <h2 class="Section_Title">III. Operators</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>Operators</strong></td>
-            <td><strong>Description</strong></td>
-            <td><strong>Symbols</strong></td>
-          </tr>
-          <tr>
-            <td><strong>Arithmetic</strong> </td>
-            <td>Used to perform basic arithmetic operations on variables(operands).</td>
-            <td>+ Addition j <br>
-              - Subtraction <br>
-              * Multiplication <br>
-              / Division j / 3.13
-              % Modulus (division remainder) <br>
-              ++ Increment <br>
-              -- Decrement</td>
-          </tr>
-          <tr>
-            <td><strong>Comparison</strong></td>
-            <td>Comparison operator is used to compare two operands.</td>
-            <td>
-              == Is equal to <br>
-              != Is not equal to <br>
-              &gt; Is greater than <br>
-              &lt; Is less than <br>
-              >= Is greater than or equal to <br>
-              &lt;= Is less than or equal to <br>
-              === Is equal to (and of the same type) <br>
-              !== Is not equal to (and of the same type)</td>
-          </tr>
-          <tr>
-            <td><strong>Bitwise</strong></td>
-            <td>Used to perform bitwise operations.</td>
-            <td>&amp;, | , ^,~,&lt;&lt;, &gt;&gt;, &gt;&gt;&gt;</td>
-          </tr>
-          <tr>
-            <td><strong>Logical</strong></td>
-            <td>
-              <p>There are three logical operators in javascript.</p>
-              <ul>
-                <li>logical AND: When all the operands are true.</li>
-                <li>logical OR: When one or more than one operands are true.</li>
-                <li>logical NOT: Converts true to false.</li>
-              </ul>
-            </td>
-            <td>&& And <br>
-              || Or <br>
-              ! Not
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Assignment</strong></td>
-            <td>Assignment operators assign values to JavaScript variables.</td>
-            <td>= <br> += <br> -= <br> *= <br> /= <br> %=</td>
-          </tr>
-        </tbody>
-      </table>
+      <ol>
+        <li>
+          <strong>Arithmetic</strong>
+          <pre class="prettyprint lang-js">
+            var x = 5;
+            var y = 2;
+            console.log(x + y); // Addition
+            console.log(x - y); // Subtraction
+            console.log(x * y); // Multiplication
+            console.log(x / y); // Division
+            console.log(x % y); // Modulus
+            console.log(++x); // Increment
+            console.log(x++); // It will print 6, beacuse it will increment after printing
+            console.log(--x); // Decrement
+            console.log(x--); // It will print 6, beacuse it will decrement after printing
+          </pre>
+        </li>
+        <li>
+          <strong>Comparison</strong>
+          <pre class="prettyprint lang-js">
+            var x = 5;
+            var x2 = "5";
+            var y = 2;
+            console.log("Is x equal to y: ", x == y); // Equal to
+            console.log("Is x equal to x2: ", x == x2); // Equal to
+            console.log("x is not equal to y: ", x != y); // Not equal to
+            console.log("Is x greater than y: ", x > y); // Greater than
+            console.log("Is x less than y: ", x &lt; y); // Less than
+            console.log("Is x greater than or equal to y: ", x >= y); // Greater than or equal to
+            console.log("Is x less than or equal to y: ", x &lt;= y); // Less than or equal to
+            console.log("Is x equal to (and of the same type) y: ", x === y); // Equal to (and of the same type)
+            console.log("Is x equal to (and of the same type) x2: ", x === x2); // Equal to (and of the same type)
+            console.log("x is not equal to (and of the same type) y: ", x !== y); // Not equal to (and of the same type)
+            console.log("x is not equal to (and of the same type) x2: ", x !== x2); // Not equal to (and of the same type)
+          </pre>
+        </li>
+        <li>
+          <strong>Bitwise</strong>
+          <pre class="prettyprint lang-js">
+            var x = 5; // 101
+            var y = 2; // 010
+            var z = -1; // 111
+            console.log("x Bitwise AND y: ", x & y); // It will return 0
+            console.log("x Bitwise OR y: ", x | y); // It will return 7
+            console.log("x Bitwise XOR y: ", x ^ y); // It will return 7
+            console.log("Bitwise NOT x: ", ~x); // It will return -6
+            console.log("Bitwise Left Shift x by 1: ", x << 1); // It will return 10
+            console.log("Bitwise Right Shift x by 1: ", x >> 1); // It will return 2
+            console.log("Bitwise Right Shift x with Zero", z >>> 1); // It will return 2147483647
+          </pre>
+        </li>
+        <li>
+          <strong>Logical</strong>
+          <pre class="prettyprint lang-js">
+            var x = true;
+            var y = false;
+            console.log("x AND y: ", x && y); // And
+            console.log("x OR y: ", x || y); // Or
+            console.log("NOT x: ", !x); // Not
+          </pre>
+        </li>
+        <li>
+          <strong>Assignment</strong>
+          <pre class="prettyprint lang-js">
+            var x = 5;
+            x += 2; // x = x + 2
+            console.log(x); // It will print 7
+            x -= 2; // x = x - 2
+            console.log(x); // It will print 5
+            x *= 2; // x = x * 2
+            console.log(x); // It will print 10
+            x /= 2; // x = x / 2
+            console.log(x); // It will print 5
+            x %= 2; // x = x % 2
+            console.log(x); // It will print 1
+          </pre>
+        </li>
+      </ol>
     </section>
-
     <section id="Scope">
       <h2 class="Section_Title">IV. Scope</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>scope</strong></td>
-            <td><strong>Description</strong></td>
-          </tr>
-          <tr>
-            <td><strong>function</strong></td>
-            <td>Variables declared inside a function is inside the function scope also known as local scope. <br><br>
-              Parameters passed to a function automatically have local scope. <br><br>
-              To define a local variable that has scope only within the current function, and has not been passed as a
-              parameter, use the var keyword.
-            </td>
-          </tr>
-          <tr>
-            <td><strong>global</strong></td>
-            <td>The variables in global scope can be accessed from anywhere in the program. <br><br>
-              Global variables are ones defined outside of any functions (or defined within functions but without the
-              var keyword).
-            </td>
-          </tr>
-          <tr>
-            <td><strong>block</strong></td>
-            <td>Block scope restricts the access of a variable outside its scope</td>
-          </tr>
-        </tbody>
-      </table>
+      <ol>
+        <li>
+          <strong>Global Scope</strong>
+          <div class="Definition">
+            The variables in global scope can be accessed from anywhere in the program. <br><br>
+            Global variables are ones defined outside of any functions (or defined within functions but without the
+            var keyword).
+          </div>
+          <pre class="prettyprint lang-js">
+            var x = 5;
+            let y = 10;
+            function myFunction() {
+              console.log(x);
+              console.log(y);
+              // global scope variable
+              y = 7;
+            }
+            myFunction(); // It will print 5
+            console.log(y); // It will print 7
+          </pre>
+        </li>
+        <li>
+          <strong>Local Scope</strong>
+          <div class="Definition">
+            Variables declared inside a function is inside the function scope also known as local scope. <br><br>
+            Parameters passed to a function automatically have local scope. <br><br>
+            To define a local variable that has scope only within the current function, and has not been passed as a
+            parameter, use the var keyword.
+          </div>
+          <pre class="prettyprint lang-js">
+            function myFunction() {
+              var x = 5;
+              console.log(x);
+            }
+            myFunction(); // It will print 5
+            console.log(x); // It will throw an error
+          </pre>
+        </li>
+        <li>
+          <strong>Block Scope</strong>
+          <div class="Definition">
+            Block scope restricts the access of a variable outside its scope
+          </div>
+          <pre class="prettyprint lang-js">
+            {
+              let x = 5;
+              var y = 10;
+              console.log(x);
+              console.log(y);
+            }
+            console.log(y); // It will print 10
+            console.log(x); // It will throw an error
+          </pre>
+        </li>
+      </ol>
       <div class="Definitions">
         <p>
           With the let keyword you cannot redeclare a variable once you have done so with let. <br><br>
@@ -251,7 +297,6 @@
         </p>
       </div>
     </section>
-
     <section id="Functions">
       <h2 class="Section_Title">V. Functions</h2>
       <div class="Definitions">
@@ -283,26 +328,33 @@
         </p>
       </div>
     </section>
-
     <section id="Arrays">
       <h2 class="Section_Title">VI. Arrays</h2>
       <div class="Definitions">
         <p>
           To create a new array, use the following syntax:
         <pre class="prettyprint lang-js">
-            arrayname = new Array()
+            // arrayname = new Array()
+            Teachers = new Array("Karim", "Kamel", "Ahmed", "Khaled");
+            console.log(Teachers[2]); // It will print Ahmed
           </pre>
         Or you can use the shorthand form, as follows:
         <pre class="prettyprint lang-js">
-          arrayname = []
-          arrayname[0] = value_1
-          arrayname[1] = value_2
+          Modules = [];
+          Modules[0] = "Web Development";
+          Modules[1] = "Mobile Development";
+          Modules[2] = "Data Science";
+          Modules[3] = "AI";
+          Modules[4] = "Cyber Security";
+          console.log(Modules[1]); // It will print Mobile Development
           </pre>
         You can also create an array together with some initial elements by using the Array keyword, like this:
         <pre class="prettyprint lang-js">
-          Team_G_12_1 = Array("Omar", "Kamel", "Manel", "Nour", "Hana", "Sami", "Sara")
+          Team_G_12_1 = Array("Omar", "Kamel", "Manel", "Nour", "Hana", "Sami", "Sara");
         </pre>
         There is nothing stopping you from adding more elements afterward as well. <br> <br>
+        Arrays can hold any type of data, including numbers, strings, and objects. We can even have arrays with multiple
+        types of data.
         </p>
       </div>
       <h2 class="Sub_Section_Title">Popular methods for arrays</h2>
@@ -383,135 +435,117 @@
 
     <section id="Loops">
       <h2 class="Section_Title">VII. Loops</h2>
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>Loop</strong></td>
-            <td><strong>Description</strong></td>
-            <td><strong>Syntax</strong></td>
-          </tr>
-          <tr>
-            <td><strong>for</strong></td>
-            <td>Loops over a block of with conditions specified in the beginning.</td>
-            <td>
-              <pre class="prettyprint lang-js">
-for (initialization condition; testing condition;increment/decrement)
-              {
-                statement(s)
-              }
-            </pre>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>while</strong></td>
-            <td>Entry control loop which executes after checking the condition.</td>
-            <td>while (boolean condition)<br>{<br>&nbsp; &nbsp; loop statements…<br>}</td>
-          </tr>
-          <tr>
-            <td><strong>do-while</strong>
-            </td>
-            <td>Exit Control Loop which executes once before checking the condition.</td>
-            <td>
-              <p>do<br>{<br>&nbsp; &nbsp; statements..<br>}</p>
-              <p>while (condition);</p>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>for-in</strong></td>
-            <td>Another version of for loop to provide a simpler way to iterate.</td>
-            <td>for (variableName in Object)<br>{<br>&nbsp; &nbsp; statement(s)<br>}</td>
-          </tr>
-          <tr>
-            <td><strong>break</strong></td>
-            <td>Breaks out from a loop.</td>
-            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
-              statement(s)<br>&nbsp; &nbsp;
-              if (found) break;<br>}</td>
-          </tr>
-          <tr>
-            <td><strong>continue</strong></td>
-            <td>Sometimes you don't want to entirely exit from a loop but instead wish to skip the <br>
-              remaining statements just for this iteration of the loop. In such cases, you can use the <br>
-              continue command</td>
-            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
-              statement(s)<br>&nbsp; &nbsp;
-              if (not found) continue;<br>&nbsp; &nbsp;
-              statement(s)<br>
-              }</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2 class="Sub_Section_Title">For loop</h2>
+      <pre class="prettyprint lang-js">
+        for (let i = 0; i &lt; 4; i++) {
+          console.log(Teachers[i]);
+        }
+                    </pre>
+      <h2 class="Sub_Section_Title">While loop</h2>
+      <pre class="prettyprint lang-js">
+        while (students.length > 0) {
+          console.log(students.pop());
+        }
+        </pre>
+      <h2 class="Sub_Section_Title">Do...While loop</h2>
+      <pre class="prettyprint lang-js">
+        i = 0;
+        do {
+          console.log(Modules[i]);
+          i++;
+        } while (i &lt; Modules.length);
+          </pre>
+      <h2 class="Sub_Section_Title">For...in</h2>
+      <pre class="prettyprint lang-js">
+        for (let index in Teachers) {
+          console.log(Teachers[index]);
+        }
+          </pre>
+      <h2 class="Sub_Section_Title">Break</h2>
+      <pre class="prettyprint lang-js">
+        for (let index in Modules) {
+          if (index == 2) break;
+          console.log(Modules[index]);
+        }
+        </pre>
+      <h2 class="Sub_Section_Title">Continue</h2>
+      <pre class="prettyprint lang-js">
+        for (let index in Modules) {
+          if (index == 2) continue;
+          console.log(Modules[index]);
+        }
+        </pre>
     </section>
-
-    <section id="If_else">
+    <section id="Conditionals">
       <h2 class="Section_Title">VIII. Conditionals</h2>
       <div class="Definitions">
         <p>
           There are three types of nonlooping conditionals: the if statement, the switch statement, and the ? operator.
         </p>
       </div>
-
-      <table>
-        <tbody>
-          <tr>
-            <td><strong>Conditionals</strong></td>
-            <td><strong>Description</strong></td>
-            <td><strong>Syntax</strong></td>
-          </tr>
-          <tr>
-            <td><strong>if...else</strong></td>
-            <td>
-              The code within such a statement is executed only if the given expression evaluates to true. <br>
-              When a condition has not been met, you can execute an alternative by using an else statement. <br>
-              JavaScript has no elseif statement.
-            </td>
-            <td>if (Condition)<br>{<br>&nbsp; &nbsp;
-              statement(s)<br>}
-              else{ <br>&nbsp; &nbsp; statement(s)<br>}</td>
-          </tr>
-          <tr>
-            <td><strong>switch</strong></td>
-            <td>The switch statement is useful when one variable or the result of an expression can have multiple values
-              <br>
-              and you want to perform a different function for each value. <br>
-              The break command allows your code to break out of the switch statement once a condition has been <br>
-              satisfied. <br>
-              When no condition is satisfied, you can specify a default action for a switch statement <br>
-              by using the default keyword.
-            </td>
-            <td>
-              switch (variable) <br>
-              {<br>&nbsp; &nbsp;
-              case value_1: <br>&nbsp; &nbsp;&nbsp; &nbsp;
-              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
-              break <br>&nbsp; &nbsp;
-              case value_2: <br>&nbsp; &nbsp;&nbsp; &nbsp;
-              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
-              break <br>&nbsp; &nbsp;
-              default: <br>&nbsp; &nbsp;&nbsp; &nbsp;
-              statement(s)<br>&nbsp; &nbsp;&nbsp; &nbsp;
-              break <br>
-              }
-              <br>
-            </td>
-          </tr>
-          <tr>
-            <td><strong>The ? Operator</strong>
-            </td>
-            <td>The ternary operator (?), combined with the : character, provides a quick way of
-              doing if...else tests. <br> With it you can write an expression to evaluate and then follow
-              it with a ? symbol and the code to execute if the expression is true. <br> After that,
-              place a : and the code to execute if the expression evaluates to false.
-            </td>
-            <td>
-              <p> Variable = Condition ? value if true : value if false</p>
-              <br>
-              EX: Pass = (Exam >= 10) ? true : false;
-
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <h2 class="Sub_Section_Title">if...else</h2>
+      <div class="Definitions">
+        The code within such a statement is executed only if the given expression evaluates to true. <br>
+        When a condition has not been met, you can execute an alternative by using an else statement. <br>
+        JavaScript has no elseif statement.
+      </div>
+      <pre class="prettyprint lang-js">
+var Grade = 5;
+if (Grade >= 10) {
+  console.log("You passed the exam");
+} else {
+  console.log("You failed the exam");
+}
+      </pre>
+      <h2 class="Sub_Section_Title">switch</h2>
+      <div class="Definitions">
+        The switch statement is useful when one variable or the result of an expression can have multiple
+        values
+        <br>
+        and you want to perform a different function for each value. <br>
+        The break command allows your code to break out of the switch statement once a condition has been <br>
+        satisfied. <br>
+        When no condition is satisfied, you can specify a default action for a switch statement <br>
+        by using the default keyword.
+      </div>
+      <pre class="prettyprint lang-js">
+        var day = 3;
+switch (day) {
+  case 1:
+    console.log("Sunday");
+    break;
+  case 2:
+    console.log("Monday");
+    break;
+  case 3:
+    console.log("Tuesday");
+    break;
+  case 4:
+    console.log("Wednesday");
+    break;
+  case 5:
+    console.log("Thursday");
+    break;
+  case 6:
+    console.log("Friday");
+    break;
+  case 7:
+    console.log("Saturday");
+    break;
+  default:
+    console.log("Invalid Day");
+}
+</pre>
+      <h2 class="Sub_Section_Title">The ? Operator</h2>
+      <div class="Definitions">
+        The ternary operator (?), combined with the : character, provides a quick way of
+        doing if...else tests. <br> With it you can write an expression to evaluate and then follow
+        it with a ? symbol and the code to execute if the expression is true. <br> After that,
+        place a : and the code to execute if the expression evaluates to false.
+      </div>
+      <pre class="prettyprint lang-js">
+        var Pass = (Exam >= 10) ? true : false;
+      </pre>
     </section>
 
     <section id="Strings">
