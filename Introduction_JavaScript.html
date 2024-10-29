@@ -29,12 +29,15 @@
             &lt;head&gt;</font> section, which is
           the ideal place if you wish to execute a script when a page loads. <br><br>
           You can include files of JavaScript code either from your website or from anywhere on the internet: <br><br>
-          <font color="blue">&lt;script type="text/javascript" src="./path/script.js"&gt;</font>
-          <font color="blue">&lt;/script&gt;</font> <br><br>
-          <font color="blue">&lt;script src="http://My_Server.dz/script.js"&gt;</font>
-          <font color="blue">&lt;/script&gt;</font> <br><br>
+
         </p>
       </div>
+      <pre class="prettyprint lang-js">
+        &lt;script type="text/javascript" src="./path/script.js"&gt;
+        &lt;/script&gt; <br><br>
+        &lt;script src="http://My_Server.dz/script.js"&gt;
+        &lt;/script&gt;
+      </pre>
     </section>
     <section id="Variables">
       <h2 class="Section_Title">I. Variables</h2>
@@ -253,15 +256,17 @@
       <h2 class="Section_Title">V. Functions</h2>
       <div class="Definitions">
         <p>
-          The general syntax for a function is: <br><br>
-          function function_name([parameter [, ...]]) <br>
-          { <br>&nbsp;
-          statements <br>
-          } <br>
+          The general syntax for a function is:
         </p>
+        <pre class="prettyprint lang-js">
+          function function_name([parameter [, ...]])
+          { 
+            &nbsp; statements
+          }
+        </pre>
         <p>
         <ul>
-          <li>A definition starts with the word function.</li>
+          <li>A definition starts with the word <strong>function</strong>.</li>
           <li>A name follows that must start with a letter or underscore, followed by any number of letters, digits,
             dollar signs, or underscores.</li>
           <li>The parentheses are required.</li>
@@ -283,17 +288,24 @@
       <h2 class="Section_Title">VI. Arrays</h2>
       <div class="Definitions">
         <p>
-          To create a new array, use the following syntax: <br> <br>
-          arrayname = new Array() <br> <br>
-          Or you can use the shorthand form, as follows: <br> <br>
-          arrayname = [] <br> <br>
-          arrayname[0] = value_1 <br> <br>
-          You can also create an array together with some initial elements by using the Array keyword, like this: <br>
-          <br>
-          Team_G_12_1 = Array("Omar", "Kamel", "Manel", "Nour", "Hana", "Sami", "Sara") <br> <br>
-          There is nothing stopping you from adding more elements afterward as well. <br> <br>
+          To create a new array, use the following syntax:
+        <pre class="prettyprint lang-js">
+            arrayname = new Array()
+          </pre>
+        Or you can use the shorthand form, as follows:
+        <pre class="prettyprint lang-js">
+          arrayname = []
+          arrayname[0] = value_1
+          arrayname[1] = value_2
+          </pre>
+        You can also create an array together with some initial elements by using the Array keyword, like this:
+        <pre class="prettyprint lang-js">
+          Team_G_12_1 = Array("Omar", "Kamel", "Manel", "Nour", "Hana", "Sami", "Sara")
+        </pre>
+        There is nothing stopping you from adding more elements afterward as well. <br> <br>
         </p>
       </div>
+      <h2 class="Sub_Section_Title">Popular methods for arrays</h2>
       <table>
         <tbody>
           <tr>
@@ -381,8 +393,14 @@
           <tr>
             <td><strong>for</strong></td>
             <td>Loops over a block of with conditions specified in the beginning.</td>
-            <td>for (initialization condition; testing condition;increment/decrement)<br>{<br>&nbsp; &nbsp;
-              statement(s)<br>}</td>
+            <td>
+              <pre class="prettyprint lang-js">
+for (initialization condition; testing condition;increment/decrement)
+              {
+                statement(s)
+              }
+            </pre>
+            </td>
           </tr>
           <tr>
             <td><strong>while</strong></td>
@@ -621,6 +639,8 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
 </body>
 
 </html>
