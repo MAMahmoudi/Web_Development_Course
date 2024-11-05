@@ -40,11 +40,16 @@
         <p>
           The global document property refers to the Document object,
           and the Document object has head and body properties that refer to the Element
-          objects for the &lt;head&gt; and &lt;body&gt; tags, respectively. <br><br>
-          let My_DIV = document.getElementById("DIV_ID"); <br><br>
-          let My_Input = document.getElementsByName("Input_Name"); <br><br>
-          let The_H1 = document.getElementsByTagName("h1"); <br><br>
-          let Btn = document.getElementsByClassName("Btn_Class"); <br><br>
+          objects for the &lt;head&gt; and &lt;body&gt; tags, respectively. </p>
+      </div>
+      <pre class="prettyprint lang-js">
+      let My_DIV = document.getElementById("DIV_ID"); <br><br>
+      let My_Input = document.getElementsByName("Input_Name"); <br><br>
+      let The_H1 = document.getElementsByTagName("h1"); <br><br>
+      let Btn = document.getElementsByClassName("Btn_Class"); 
+    </pre>
+      <div class="Definitions">
+        <p>
           <font color="red">These selection methods that are more or less obsolete now.</font>
         </p>
       </div>
@@ -64,13 +69,16 @@
           The NodeList returned by querySelectorAll() will have a length property set to 0 if
           there are not any elements in the document that match the specified selector. <br><br>
           querySelector() and querySelectorAll() will only return elements that are descendants of that element.
-          <br><br>
-          <font color="red">document.getElementById("DIV_ID");</font>= document.querySelector("#DIV_ID") <br><br>
-          <font color="red">document.getElementsByName("Input_Name");</font>
-          =document.querySelectorAll('*[name="Input_Name"]'); <br><br>
-          <font color="red">document.getElementsByTagName("h1");</font>=document.querySelectorAll("h1") <br><br>
-          <font color="red">document.getElementsByClassName("Btn_Class"); </font>
-          =document.querySelectorAll(".Btn_Class")<br><br>
+        </p>
+      </div>
+      <pre class="prettyprint lang-js">
+        let MY_DIV = document.querySelector("#DIV_ID") <br><br>
+        let Input_Name = document.querySelectorAll('*[name="Input_Name"]'); <br><br>
+        let The_H1 = document.querySelectorAll("h1") <br><br>
+        let Btn = document.querySelectorAll(".Btn_Class")
+        </pre>
+      <div class="Definitions">
+        <p>
           <font color="red">Unlike querySelectorAll(), however, the NodeLists returned by these older selection methods
             are “live,”
             which means that the length and content of the list can change if the document content or structure changes.
@@ -102,10 +110,10 @@
             immediately before or immediately
             after an Element, or null if there is no such sibling.</li>
         </ul>
-        <font color="green">
-          document.children[0].children[1] <br><br>
-          document.firstElementChild.firstElementChild.nextElementSibling
-        </font>
+        <pre class="prettyprint lang-js">
+          let MY_ELEMENT  = document.children[0].children[1] <br><br>
+          let MY_OTHER_ELEMENT  = document.firstElementChild.firstElementChild.nextElementSibling
+        </pre>
       </div>
       <div class="Definitions">
         <h1>Documents as trees of nodes</h1>
@@ -127,8 +135,9 @@
           <li>nodeValue: The textual content of a Text or Comment node.</li>
           <li>nodeName: The HTML tag name of an Element, converted to uppercase.</li>
         </ul>
-        <font color="green">document.childNodes[0].childNodes[1] <br><br>
-          document.firstChild.firstChild.nextSibling</font><br><br>
+        <pre class="prettyprint lang-js">
+          let MY_ELEMENT  = document.childNodes[0].childNodes[1] <br><br>
+          let MY_ELEMENT2  = document.firstChild.firstChild.nextSibling</pre><br><br>
         Then the second child of the first child is the &lt;body&gt; element. It has a nodeType of 1 and a nodeName of
         “BODY”.
       </div>
@@ -227,11 +236,15 @@
           location, not copied. <br><br>
           If you do want to make a copy of an element, use the cloneNode() method, passing
           true to copy all of its content: <br><br>
-          Parent_Div.after(DIV.cloneNode(true)); <br><br>
-          You can remove an Element or Text node from the document by calling its remove()
-          method, or you can replace it by calling replaceWith() instead. remove() takes no
-          arguments, and replaceWith() takes any number of strings and elements just like
-          before() and after() do. <br><br>
+        <pre class="prettyprint lang-js">
+            let DIV = document.createElement("div"); 
+            let Parent_Div = document.getElementById("Parent_Div"); 
+            Parent_Div.after(DIV.cloneNode(true));
+        </pre>
+        You can remove an Element or Text node from the document by calling its remove()
+        method, or you can replace it by calling replaceWith() instead. remove() takes no
+        arguments, and replaceWith() takes any number of strings and elements just like
+        before() and after() do. <br><br>
         </p>
       </div>
       <h1 class="Section_Title">CSS Classes</h1>
@@ -269,6 +282,8 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
 </body>
 
 </html>

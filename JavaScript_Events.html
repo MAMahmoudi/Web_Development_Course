@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Events, and Geometry.</title>
+    <title>Events and Geometry</title>
 </head>
 
 <body>
     <main>
-        <h1 class="Title">Events, and Geometry.</h1>
+        <h1 class="Title">Events and Geometry</h1>
         <section id="Events">
             <h3 class="Sub_Section_Title">I. Events</h3>
             <div class="Definitions">
@@ -64,13 +64,13 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        Properties.onclick = function (event) {<br>
-                        let H1 = document.createElement("h1"); <br>
-                        H1.innerHTML = "You clicked on Properties";<br>
-                        Properties_Result.appendChild(H1); <br>
-                        }; <br><br>
-                    </font>
+                    <pre class="prettyprint lang-js">
+Properties.onclick = function (event) {<br>
+let H1 = document.createElement("h1"); <br>
+H1.innerHTML = "You clicked on Properties";<br>
+Properties_Result.appendChild(H1); <br>
+};
+                </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Properties_Result">
@@ -93,12 +93,11 @@
             <div class="card">
                 <h2 class="Code_Tag">HTML</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        &lt;button
-                        onclick=" <br>
-                        Attributes_Result.appendChild(H2); <br>
-                        "&gt;Attributes&lt;/button&gt;
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js lang HTML">
+&lt;button
+onclick="Attributes_Result.appendChild(H2);"&gt;Attributes
+&lt;/button&gt;
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Attributes_Result">
@@ -136,13 +135,13 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        Add_Event.addEventListener("click", function (event) { <br>
-                        let H1 = document.createElement("h1"); <br>
-                        H1.innerHTML = "You clicked on Add Event"; <br>
-                        Add_Event_Result.appendChild(H1);<br>
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+Add_Event.addEventListener("click", function (event) { <br>
+let H1 = document.createElement("h1");  <br>
+H1.innerHTML = "You clicked on Add Event";  <br>
+Add_Event_Result.appendChild(H1); <br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Add_Event_Result">
@@ -181,17 +180,17 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        let H1 = document.createElement("h1"); <br>
-                        H1.innerHTML = <br>
-                        "top :" + Localize_Me.getBoundingClientRect().top + <br>
-                        "left :" + Localize_Me.getBoundingClientRect().left + <br>
-                        "right :" + Localize_Me.getBoundingClientRect().right + <br>
-                        "bottom :" + Localize_Me.getBoundingClientRect().bottom + <br>
-                        "width :" + Localize_Me.getBoundingClientRect().width + <br>
-                        "height :" + Localize_Me.getBoundingClientRect().height; <br>
-                        Localize_Me_Result.appendChild(H1);
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+let H1 = document.createElement("h1"); <br>
+H1.innerHTML = <br>
+"top :" + Localize_Me.getBoundingClientRect().top + <br>
+"left :" + Localize_Me.getBoundingClientRect().left + <br>
+"right :" + Localize_Me.getBoundingClientRect().right + <br>
+"bottom :" + Localize_Me.getBoundingClientRect().bottom + <br>
+"width :" + Localize_Me.getBoundingClientRect().width + <br>
+"height :" + Localize_Me.getBoundingClientRect().height; <br>
+Localize_Me_Result.appendChild(H1);
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Localize_Me_Result">
@@ -210,7 +209,7 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
+                    <pre class="prettyprint lang-js">
                         let H1 = document.createElement("h1"); <br>
                         H1.innerHTML = <br>
                         "top :" + Localize_Me.getBoundingClientRect().top + <br>
@@ -220,7 +219,7 @@
                         "width :" + Localize_Me.getBoundingClientRect().width + <br>
                         "height :" + Localize_Me.getBoundingClientRect().height; <br>
                         Localize_Me_Result.appendChild(H1);
-                    </font> <br><br>
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Localize_B_Result">
@@ -244,12 +243,12 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        Btn_1_2_3_Result.addEventListener("mouseover", function (event) { <br>
-                        H3.innerHTML = document.elementFromPoint(event.clientX, event.clientY).id; <br>
-                        Btn_1_2_3_Result.appendChild(H3); <br>
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+Btn_1_2_3_Result.addEventListener("mouseover", function (event) { <br>
+H3.innerHTML = document.elementFromPoint(event.clientX, event.clientY).id; <br>
+Btn_1_2_3_Result.appendChild(H3); <br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Btn_1_2_3_Result">
@@ -269,17 +268,17 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        Top.addEventListener("click", function (event) { <br>
-                        window.scrollTo(0, 0); <br>
-                        }); <br><br>
+                    <pre class="prettyprint lang-js">
+Top.addEventListener("click", function (event) { <br>
+window.scrollTo(0, 0); <br>
+}); <br><br>
 
-                        Bottom.addEventListener("click", function (event) { <br>
-                        let documentHeight = document.documentElement.offsetHeight; <br>
-                        let viewportHeight = window.innerHeight; <br>
-                        window.scrollTo(0, documentHeight - viewportHeight);<br>
-                        });
-                    </font> <br><br>
+Bottom.addEventListener("click", function (event) { <br>
+let documentHeight = document.documentElement.offsetHeight; <br>
+let viewportHeight = window.innerHeight; <br>
+window.scrollTo(0, documentHeight - viewportHeight);<br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Scrolling_Result">
@@ -298,15 +297,14 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-
-                        Smooth_Top.addEventListener("click", function (event) { <br>
-                        setInterval(() => { <br>
-                        if (window.scrollY > 2000) <br>
-                        window.scrollBy({ left: 0, top: -500, behavior: "smooth" }); <br>
-                        }, 1000); <br>
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+Smooth_Top.addEventListener("click", function (event) { <br>
+setInterval(() => { <br>
+if (window.scrollY > 2000) <br>
+window.scrollBy({ left: 0, top: -500, behavior: "smooth" }); <br>
+}, 1000); <br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Scrolling_Result">
@@ -328,11 +326,11 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        To_Attributes.addEventListener("click", function (event) { <br>
-                        Attributes.scrollIntoView(); <br>
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+To_Attributes.addEventListener("click", function (event) { <br>
+Attributes.scrollIntoView(); <br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Scrolling_Result">
@@ -354,21 +352,21 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-                        Document_Rect.addEventListener("click", function (event) { <br>
-                        let H1 = document.createElement("h1"); <br>
-                        H1.innerHTML =<br>
-                        "width :" +
-                        document.documentElement.getBoundingClientRect().width +<br>
-                        "height :" +
-                        document.documentElement.getBoundingClientRect().height +<br>
-                        "offsetWidth :" +
-                        document.documentElement.offsetWidth +<br>
-                        "offsetHeight :" +
-                        document.documentElement.offsetHeight;<br>
-                        Document_Rect_Result.appendChild(H1);<br>
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+Document_Rect.addEventListener("click", function (event) { <br>
+let H1 = document.createElement("h1"); <br>
+H1.innerHTML =<br>
+"width :" +
+document.documentElement.getBoundingClientRect().width +<br>
+"height :" +
+document.documentElement.getBoundingClientRect().height +<br>
+"offsetWidth :" +
+document.documentElement.offsetWidth +<br>
+"offsetHeight :" +
+document.documentElement.offsetHeight;<br>
+Document_Rect_Result.appendChild(H1);<br>
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Document_Rect_Result">
@@ -412,53 +410,52 @@
             <div class="card">
                 <h2 class="Code_Tag">JavaScript</h2>
                 <div class="HTML_Code">
-                    <font color="green">
-
-                        Element_Rect.addEventListener("click", function (event) {
-                        let H1 = document.createElement("h1");
-                        H1.innerHTML =
-                        "offsetWidth :" +
-                        Element_Rect.offsetWidth +
-                        <br>
-                        "offsetHeight :" +
-                        Element_Rect.offsetHeight +
-                        <br>
-                        "offsetLeft :" +
-                        Element_Rect.offsetLeft +
-                        <br>
-                        "offsetTop :" +
-                        Element_Rect.offsetTop +
-                        <br>
-                        "offsetParent :" +
-                        Element_Rect.offsetParent +
-                        <br>
-                        "clientWidth :" +
-                        Element_Rect.clientWidth +
-                        <br>
-                        "clientHeight :" +
-                        Element_Rect.clientHeight +
-                        <br>
-                        "clientLeft :" +
-                        Element_Rect.clientLeft +
-                        <br>
-                        "clientTop :" +
-                        Element_Rect.clientTop +
-                        <br>
-                        "scrollWidth :" +
-                        Element_Rect.scrollWidth +
-                        <br>
-                        "scrollHeight :" +
-                        Element_Rect.scrollHeight +
-                        <br>
-                        "scrollLeft :" +
-                        Element_Rect.scrollLeft +
-                        <br>
-                        "scrollTop :" +
-                        Element_Rect.scrollTop;
-                        console.log(Element_Rect.offsetParent);
-                        Element_Rect_Result.appendChild(H1);
-                        });
-                    </font> <br><br>
+                    <pre class="prettyprint lang-js">
+Element_Rect.addEventListener("click", function (event) {
+let H1 = document.createElement("h1");
+H1.innerHTML =
+"offsetWidth :" +
+Element_Rect.offsetWidth +
+<br>
+"offsetHeight :" +
+Element_Rect.offsetHeight +
+<br>
+"offsetLeft :" +
+Element_Rect.offsetLeft +
+<br>
+"offsetTop :" +
+Element_Rect.offsetTop +
+<br>
+"offsetParent :" +
+Element_Rect.offsetParent +
+<br>
+"clientWidth :" +
+Element_Rect.clientWidth +
+<br>
+"clientHeight :" +
+Element_Rect.clientHeight +
+<br>
+"clientLeft :" +
+Element_Rect.clientLeft +
+<br>
+"clientTop :" +
+Element_Rect.clientTop +
+<br>
+"scrollWidth :" +
+Element_Rect.scrollWidth +
+<br>
+"scrollHeight :" +
+Element_Rect.scrollHeight +
+<br>
+"scrollLeft :" +
+Element_Rect.scrollLeft +
+<br>
+"scrollTop :" +
+Element_Rect.scrollTop;
+console.log(Element_Rect.offsetParent);
+Element_Rect_Result.appendChild(H1);
+});
+                    </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Element_Rect_Result">
@@ -478,6 +475,9 @@
     </footer>
     <script src="SRC/JS/Script.js" type="module"></script>
     <script src="SRC/JS/DOM_Events.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+        </script>
 </body>
 
 </html>
