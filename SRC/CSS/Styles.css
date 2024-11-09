@@ -87,17 +87,17 @@ td {
   border: 3px solid green;
   grid-column: 2;
   grid-row: 1;
-  background-color: #1e1e1e;
+  background-color: #000;
   color: green;
   overflow: auto;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .card > .JS_Code {
   border: 3px solid green;
   grid-column: 2;
   grid-row: 1;
-  background-color: #1e1e1e;
+  background-color: #000;
   color: yellow;
   overflow: auto;
   padding: 2rem;
@@ -158,6 +158,7 @@ td {
   background-color: #000;
   overflow: auto;
   font-size: 1.2em;
+  max-height: 100vh;
 }
 
 .Tag {
@@ -192,6 +193,7 @@ td {
   background-color: #ffffff;
   overflow: auto;
   padding: 2rem;
+  max-height: 90vh;
 }
 
 .Result_Demo iframe {

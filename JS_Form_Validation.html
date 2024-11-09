@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Javascript form validation</title>
+</head>
+
+<body>
+    <main>
+        <h1 class="Title">Javascript form validation</h1>
+        <section>
+            <h1 class="Section_Title">Instructions</h1>
+            <p class="description">
+                In this course, we will see how to validate some of the most common inputs and return an error message
+                before sending data to the server. Here is a simple example of a <a
+                    href="SRC/Labs/Lab_4/Form_Validation.html">form.</a>
+                <br>
+                We won't discuss the HTML/CSS part, but if you are interested you can find the complete code <a
+                    href="https://github.com/ENSIA-AI/Web_Development_2023/tree/main/SRC/Labs/Lab_4">here.</a>
+            </p>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+let Name = document.querySelector("#Name"), <br>
+User_Name = document.querySelector("#User_Name"), <br>
+Password = document.querySelector("#Password"), <br>
+Confirm_Password = document.querySelector("#Confirm_Password"), <br>
+Birthdate = document.querySelector("#Birthdate"), <br>
+Email = document.querySelector("#Email"), <br>
+Phone_Number = document.querySelector("#Phone_Number"), <br>
+Submit_Btn = document.querySelector("#Submit_Btn"), <br>
+small = document.querySelector("small");
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    <ul>
+                        <li>First, we have to fetch all the inputs that we want to check their inputs.</li>
+                        <li>We also have to fetch the button to change its default behavior.</li>
+                        <li>Finally, a small tag is added at the end (under the submit button) to show eventual errors.
+                        </li>
+                        <li>At first, this small tag is empty.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+Submit_Btn.addEventListener("click", (event) => { <br>
+event.preventDefault(); <br>
+checkInputs(); <br>
+});
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    <ul>
+                        <li>Here, we are just registering an event on the submit button.</li>
+                        <li>It will first stop the default behavior on this button (using event.preventDefault();) which
+                            is sending
+                            data to the server.</li>
+                        <li>Then, it will call a function (using checkInputs();) that we implemented below to check all
+                            the input
+                            fields.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+function checkInputs() { <br>
+// get the values from the inputs <br>
+const NameValue = Name.value.trim(); <br>
+const User_NameValue = User_Name.value.trim(); <br>
+const PasswordValue = Password.value.trim(); <br>
+const Confirm_PasswordValue = Confirm_Password.value.trim(); <br>
+const BirthdateValue = Birthdate.value.trim(); <br>
+const EmailValue = Email.value.trim(); <br>
+const Phone_NumberValue = Phone_Number.value.trim(); <br>
+.........
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    <ul>
+                        <li>At the beginning of the checkInputs() function, we will retrieve the values inside the input
+                            fields.
+                        </li>
+                        <li>After that, we use the built-in trim() method to delete the blank space before and after the
+                            text.</li>
+                        <li>We declared these values as constants, so they won't be altered before checking them.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+if (NameValue === "") { <br>
+// show error <br>
+// add error class <br>
+setErrorFor(Name, "Name cannot be blank"); <br>
+} else { <br>
+// add success class <br>
+setSuccessFor(Name); <br>
+}
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    We will start by checking the Name input field. If it is empty, we will call a function (using
+                    setErrorFor();)
+                    to show an error message and add an error class to the input field. Otherwise, we will call another
+                    function
+                    (using setSuccessFor();) to add a success class to the input field. <br>
+                    <ul>
+                        <li>These functions are implemented below.</li>
+                        <li>They will add a class to the input field to change its color and show an error message.</li>
+                        <li>They will also change the small tag to show the error message.</li>
+                    </ul>
+                    See the details in the code below.
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+function setErrorFor(input, message) { <br>
+// add error message inside small <br>
+small.innerText += "\n" + message; <br>
+<br>
+// add error class <br>
+input.className += " error"; <br>
+} <br>
+<br>
+function setSuccessFor(input) { <br>
+input.className += " success"; <br>
+}
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    Here is the implementation of the setErrorFor() and setSuccessFor() functions. <br>
+                    <ul>
+                        <li>They will add a class to the input field to change its color and show an error message.</li>
+                        <li>They will also change the small tag to show the error message.</li>
+                    </ul>
+                    The error class will change the color of the input field to red and the success class will change it
+                    to green.
+                    <br>
+                    See the details in the code below.
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+.error { <br>
+color: red; <br>
+background-color: rgb(255 0 0/ 0.1); <br>
+border: 1px solid red; <br>
+} <br>
+
+.success { <br>
+color: green; <br>
+background-color: rgb(0 255 0/ 0.1); <br>
+border: 1px solid green; <br>
+}
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    Here the two classes that we will add to the input fields. <br>
+                    They will change the border color and the background color of the input field, as well as the text
+                    color. <br>
+                </div>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+if (EmailValue === "") { <br>
+setErrorFor(Email, "Email cannot be blank"); <br>
+} else if (!isEmail(EmailValue)) { <br>
+setErrorFor(Email, "Email is not valid"); <br>
+} else { <br>
+setSuccessFor(Email); <br>
+}
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    In the case of the email and the phone number, we will use a regular expression to check if the
+                    input is
+                    valid. <br>
+                    These regular expressions are implemented with the isEmail() function and isPhone_Number()
+                    function. <br>
+                    <ul>
+                        <li>These functions will return true if the input is valid and false otherwise.</li>
+                        <li>They are implemented below.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="Definitions">
+                The .test() method is a built-in method that will return true if the input matches the regular
+                expression and false otherwise. <br>
+                Here, we are using regular expressions to check the email and the phone number. <br>
+                The regular expression for the email is /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
+                and for the phone number is /^([0]{1}[5-7]{1}[0-9]{8})$/. <br>
+                In the case of the email, we are checking if it contains a-z, A-Z, 0-9, _, -, and . Then an @, then
+                the same thing, then a dot and 2 to 5 characters. <br>
+                The /^ and $/ are used to indicate the beginning and the end of the string. <br>
+                The parantheses are used to group the characters. <br>
+                The brackets are used to indicate a range of characters. <br>
+                The + is used to indicate that the previous character can be repeated one or more times. <br>
+                The {2,5} is used to indicate that the previous character can be repeated 2 to 5 times. <br>
+                In the case of the phone number, we are checking if it starts with 05, 06, or 07 and has 8 digits
+                after that. <br>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JS</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+function isEmail(Email) { <br>
+return /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test( Email ); <br>
+} <br>
+
+function isPhone_Number(Phone_Number) { <br>
+return /^([0]{1}[5-7]{1}[0-9]{8})$/.test(Phone_Number); <br>
+}
+                    </pre>
+                </div>
+                <h2 class="Code_Tag">Explanation</h2>
+                <div class="Result_Demo">
+                    These functions will return true if the input is valid and false otherwise. <br>
+                    They use regular expressions to check the input. <br>
+                    .test() is a built-in method that will return true if the input matches the regular expression and
+                    false
+                    otherwise. <br>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="Inter_Pages">
+        <a href="JavaScript_Events.html" class="Arrow">
+            <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+            <h1>JS Events</h1>
+        </a>
+        <a href="React_JS.html" class="Arrow">
+            <h1>React</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+        </a>
+    </footer>
+    <script src="SRC/JS/Script.js" type="module"></script>
+    <script src="SRC/JS/DOM_Events.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+        </script>
+</body>
+
+</html>

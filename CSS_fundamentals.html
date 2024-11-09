@@ -39,29 +39,29 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <pre class="prettyprint lang-html">
-          &lt; link rel="stylesheet" href="SRC/CSS/Styles.css" /&gt; <br><br>
-          <h1>OR</h1>
-          &lt; style type="text/css" &gt; <br>
-          body
-          { <br>
-          font-family: arial;<br>
-          background-color: rgb(185,179,175);<br>
-          } <br>
-          h1
-          { <br>
-          color: rgb(255,255,255);<br>
-          } <br>
-          &lt;/style &gt;
+          <pre class="prettyprint lang-html lang-css">
+&lt;link rel="stylesheet" href="SRC/CSS/Styles.css"/&gt;
+<h1>OR</h1>
+&lt;style type="text/css"&gt; <br>
+body
+{ <br>
+font-family: arial;<br>
+background-color: rgb(185,179,175);<br>
+} <br>
+h1
+{ <br>
+color: rgb(255,255,255);<br>
+} <br>
+&lt;/style&gt;
 </pre>
         </div>
         <h2 class="Code_Tag">Styles.css</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Selector <br>
-          { <br>
-          Property: Value; /* This is a CSS rule */<br>
-          }
+.Selector
+{
+Property: Value; /* This is a CSS rule */
+}
         </div>
       </div>
     </section>
@@ -84,29 +84,33 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;h4&gt;
-          tagname—Type selector or tag selector: This selector matches the
-          tag name of the elements to target.
-          &lt;/h4&gt;<br /><br />
-          &lt;h4 class="My_class"&gt;
-          Class selector: Targets elements that have the specified class
-          name as part of their class attribute.
-          &lt;/h4&gt;<br /><br />
-          &lt;h4 id="My_ID"&gt;
-          ID selector. Targets the element with the specified ID attribute.
-          &lt;/h4&gt;<br /><br />
-          &lt;h4&gt;
-          * Universal selector. Targets all elements.
-          &lt;/h4&gt;
+&lt;h4&gt;
+tagname—Type selector or tag selector: This selector matches the tag name of the elements to target.
+&lt;/h4&gt;
+
+&lt;h4 class="My_class"&gt;
+Class selector: Targets elements that have the specified class name as part of their class attribute.
+&lt;/h4&gt;
+
+&lt;h4 id="My_ID"&gt;
+ID selector. Targets the element with the specified ID attribute.
+&lt;/h4&gt;
+
+&lt;h4&gt;
+* Universal selector. Targets all elements.
+&lt;/h4&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          h4 { color: #8c1515; } <br /><br />
-          .My_class{ color:green; } <br /><br />
-          #My_ID { color: blue; } <br /><br />
-          *{ color: purple;}
+h4 { color: #8c1515; } 
+
+.My_class{ color:green; } 
+
+#My_ID { color: blue; } 
+
+*{ color: purple;}
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -154,68 +158,55 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="My_Div" &gt; <br />
-          &lt; h4 &gt;Syllabus
-          &lt; /h4 &gt;<br />
-          &lt; ol &gt;<br />
-          &lt; li &gt; <br />
-          &lt; h4 &gt;Chapter 1
-          &lt; /h4 &gt;<br />
-          &lt; ol &gt;<br />
-          &lt; li &gt;Section 1.1
-          &lt; /li &gt;<br />
-          &lt; li &gt;Section 1.2
-          &lt; /li &gt;<br />
-          &lt; /ol &gt;<br />
-          &lt; h4 &gt;Lab 1
-          &lt; /h4 &gt;<br />
-          &lt; h4 &gt;Test 1
-          &lt; /h4 &gt;<br />
-          &lt; /li &gt;<br />
-          &lt; li &gt; <br />
-          &lt; h4 &gt;Chapter 2
-          &lt; /h4 &gt;<br />
-          &lt; ol &gt;<br />
-          &lt; li &gt;Section 2.1
-          &lt; /li &gt;<br />
-          &lt; li &gt;Section 2.2
-          &lt; /li &gt;<br />
-          &lt; /ol &gt;<br />
-          &lt; h4 &gt;Lab 2
-          &lt; /h4 &gt;<br />
-          &lt; h4 &gt;Test 2
-          &lt; /h4 &gt;<br />
-          &lt; /li &gt;<br />
-          &lt; li &gt; <br />
-          &lt; h4 &gt;Chapter 3
-          &lt; /h4 &gt;<br />
-          &lt; ol &gt;<br />
-          &lt; li &gt;Section 3.1
-          &lt; /li &gt;<br />
-          &lt; li &gt;Section 3.2
-          &lt; /li &gt;<br />
-          &lt; /ol &gt;<br />
-          &lt; h4 &gt;Lab 3
-          &lt; /h4 &gt;<br />
-          &lt; h4 &gt;Test 3
-          &lt; /h4 &gt;<br />
-          &lt; /li &gt;<br />
-          &lt; li &gt; <br />
-          &lt; h4 &gt;Chapter 4
-          &lt; /h4 &gt;<br />
-          &lt; ol &gt;<br />
-          &lt; li &gt;Section 4.1
-          &lt; /li &gt;<br />
-          &lt; li &gt;Section 4.2
-          &lt; /li &gt;<br />
-          &lt; /ol &gt;<br />
-          &lt; h4 &gt;Lab 4
-          &lt; /h4 &gt;<br />
-          &lt; h4 &gt;Test 4
-          &lt; /h4 &gt;<br />
-          &lt; /li &gt;<br />
-          &lt; /ol &gt;<br />
-          &lt; /div &gt;<br />
+&lt;div class="My_Div"&gt;
+&lt;h4&gt;Syllabus&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt; 
+&lt;h4&gt;Chapter 1&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;Section 1.1
+&lt;/li&gt;
+&lt;li&gt;Section 1.2
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;Lab 1&lt;/h4&gt;
+&lt;h4&gt;Test 1&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt; 
+&lt;h4&gt;Chapter 2&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;Section 2.1
+&lt;/li&gt;
+&lt;li&gt;Section 2.2
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;Lab 2&lt;/h4&gt;
+&lt;h4&gt;Test 2&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt; 
+&lt;h4&gt;Chapter 3&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;Section 3.1
+&lt;/li&gt;
+&lt;li&gt;Section 3.2
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;Lab 3&lt;/h4&gt;
+&lt;h4&gt;Test 3&lt;/h4&gt;
+&lt;/li&gt;
+&lt;li&gt; 
+&lt;h4&gt;Chapter 4&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;Section 4.1
+&lt;/li&gt;
+&lt;li&gt;Section 4.2
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;Lab 4&lt;/h4&gt;
+&lt;h4&gt;Test 4&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -380,7 +371,7 @@
           </li>
           <li>
             <h4>:root</h4>
-            Targets the root element of the document. In HTML, this is the &lt; html &gt;
+            Targets the root element of the document. In HTML, this is the &lt;html&gt;
             element. But CSS can be applied to other XML or XML-like documents, such as
             SVG; in which case, this selector works more generically.
           </li>
@@ -390,18 +381,18 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="Squares" &gt;<br>
-          &lt; div &gt;
-          &lt; /div &gt;<br>
-          &lt; div &gt;
-          &lt; /div &gt;<br>
-          &lt; div &gt;
-          &lt; /div &gt;<br>
-          &lt; div &gt;
-          &lt; /div &gt;<br>
-          &lt; div &gt;
-          &lt; /div &gt;<br>
-          &lt; /div &gt;<br>
+          &lt;div class="Squares"&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;div&gt;
+          &lt;/div&gt;<br>
+          &lt;/div&gt;<br>
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -607,9 +598,9 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; h1 &gt;
+          &lt;h1&gt;
           Nothing was there before.
-          &lt; /h1 &gt;
+          &lt;/h1&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -672,9 +663,9 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="My_class" &gt; <br><br>
+          &lt;div class="My_class"&gt; <br><br>
           Some content... <br><br>
-          &lt;/div &gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -856,12 +847,12 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; p class="My_Font_Class" &gt;<br>
+          &lt;p class="My_Font_Class"&gt;<br>
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi nostrum commodi,
           possimus vitae rerum
           voluptate, facilis explicabo assumenda veritatis inventore eaque ipsa, sed libero ipsam non voluptatibus
           facere id dolorum. <br>
-          &lt; /p &gt;
+          &lt;/p&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -980,12 +971,12 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; h1 class="My_RGB_Class" &gt;
+          &lt;h1 class="My_RGB_Class"&gt;
           My_RGB_Class
-          &lt;/h1 &gt; <br><br>
-          &lt; h1 class="My_Other_RGB_Class" &gt;
+          &lt;/h1&gt; <br><br>
+          &lt;h1 class="My_Other_RGB_Class"&gt;
           My_Other_RGB_Class
-          &lt;/h1 &gt;
+          &lt;/h1&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1023,12 +1014,12 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; h1 class="Blue" &gt;
+          &lt;h1 class="Blue"&gt;
           This is blue
-          &lt;/h1 &gt; <br><br>
-          &lt; h1 class="Darker_Blue" &gt;
+          &lt;/h1&gt; <br><br>
+          &lt;h1 class="Darker_Blue"&gt;
           This is Darker Blue
-          &lt;/h1 &gt;
+          &lt;/h1&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1066,18 +1057,18 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="Alpha_HEX_4" &gt;
-          &lt; /div &gt; <br> <br>
-          &lt; div class="Alpha_HEX_8" &gt;
-          &lt; /div &gt; <br> <br>
-          &lt; div class="Alpha_HSL" &gt;
-          &lt; /div &gt; <br> <br>
-          &lt; div class="Alpha_HSL_Percent" &gt;
-          &lt; /div &gt; <br> <br>
-          &lt; div class="Alpha_RGB" &gt;
-          &lt; /div &gt; <br><br>
-          &lt; div class="Alpha_RGB_Space_Separated" &gt;
-          <>&lt; /div &gt;
+          &lt;div class="Alpha_HEX_4"&gt;
+          &lt;/div&gt; <br> <br>
+          &lt;div class="Alpha_HEX_8"&gt;
+          &lt;/div&gt; <br> <br>
+          &lt;div class="Alpha_HSL"&gt;
+          &lt;/div&gt; <br> <br>
+          &lt;div class="Alpha_HSL_Percent"&gt;
+          &lt;/div&gt; <br> <br>
+          &lt;div class="Alpha_RGB"&gt;
+          &lt;/div&gt; <br><br>
+          &lt;div class="Alpha_RGB_Space_Separated"&gt;
+          <>&lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1133,8 +1124,8 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="Display_P3" &gt;
-          <pre>&lt; /div &gt;
+          &lt;div class="Display_P3"&gt;
+          <pre>&lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1170,8 +1161,8 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="LCH" &gt;
-          &lt; /div &gt;</font>
+          &lt;div class="LCH"&gt;
+          &lt;/div&gt;</font>
           </font></pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1204,8 +1195,8 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="Pixels" &gt;
-          &lt; /div &gt;</font></font></pre>
+          &lt;div class="Pixels"&gt;
+          &lt;/div&gt;</font></font></pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
@@ -1262,12 +1253,12 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="EMS Small_EMS" &gt;<br>
+          &lt;div class="EMS Small_EMS"&gt;<br>
           This text is 20px large and the padding is 1em <br>
-          &lt; /div &gt;<br>
-          &lt; div class="EMS Large_EMS" &gt;<br>
+          &lt;/div&gt;<br>
+          &lt;div class="EMS Large_EMS"&gt;<br>
           This text is 40px large and the padding is 1em <br>
-          &lt; /div &gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
@@ -1311,9 +1302,9 @@
         <p>
           When the browser parses an HTML document, it creates a representation in memory of all the elements on the
           page. This representation is called the DOM (Document Object Model). It's a tree structure, where each
-          element is represented by a node. The &lt; html &gt; element is the top-level (or
-          root) node. Beneath it are its child nodes, &lt; head &gt; and 
-            &lt; body &gt;. And beneath those are their children, then their children, and so on. The root node
+          element is represented by a node. The &lt;html&gt; element is the top-level (or
+          root) node. Beneath it are its child nodes, &lt;head&gt; and 
+            &lt;body&gt;. And beneath those are their children, then their children, and so on. The root node
           is the ancestor of all other elements in the document. It has a special pseudo-class selector (:root) that
           you can use to target it. <br><br>
           Rem is short for root em. Instead of being relative to the current element, rems are relative to the root
@@ -1325,12 +1316,12 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt; div class="REMS Small_REMS" &gt;<br>
+          &lt;div class="REMS Small_REMS"&gt;<br>
           This text is 20px large and the padding is 1rem <br>
-          &lt; /div &gt;<br>
-          &lt; div class="REMS Large_REMS" &gt;<br>
+          &lt;/div&gt;<br>
+          &lt;div class="REMS Large_REMS"&gt;<br>
           This text is 40px large and the padding is 1rem <br>
-          &lt; /div &gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>

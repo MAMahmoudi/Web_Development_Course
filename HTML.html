@@ -34,13 +34,15 @@
           These elements are denoted by angle brackets, and most come in pairs: an opening tag and a closing tag.
           The opening tag denotes the start of a piece of content; the closing tag denotes the end.
           For instance, a paragraph element would look like this:
-          <font color="blue">&lt;p&gt;</font> This is a paragraph <font color="blue">&lt;/p&gt;</font>
+          &lt;p&gt; This is a paragraph &lt;/p&gt;
         </p>
       </div>
     </section>
     <section id="The_structure_of_HTML_pages">
       <h1 class="Title">I. The structure of HTML pages</h1>
-      <pre class="prettyprint">
+      <div class="HTML_Code">
+        <pre class="prettyprint lang-html">
+        <pre class="prettyprint">
         &lt;!DOCTYPE html>
         &lt;html lang="en">
 
@@ -51,29 +53,30 @@
         &lt;title>Basics&lt;/title>
         &lt;/head>
       </pre>
+      </div>
       <div class="Definitions">
         <ul>
           <li>
-            The HTML 5 document starts with the <font color="blue">&lt;!DOCTYPE html&gt;</font> declaration. This
+            The HTML 5 document starts with the &lt;!DOCTYPE html&gt; declaration. This
             declaration is not an HTML tag; it is an instruction to the web browser about what version of HTML the page
             is written in.
           </li>
           <li>
-            The <font color="blue">&lt;html&gt;</font> element is the root element of an HTML page.
+            The &lt;html&gt; element is the root element of an HTML page.
           </li>
           <li>
-            The lang attribute inside the <font color="blue">&lt;html&gt;</font> tag sets the language of the document.
+            The lang attribute inside the &lt;html&gt; tag sets the language of the document.
           </li>
           <li>
-            The <font color="blue">&lt;head&gt;</font> element contains meta-information about the document, such as its
+            The &lt;head&gt; element contains meta-information about the document, such as its
             title, scripts, and style sheets.
           </li>
           <li>
-            Character encoding is specified with the <font color="blue">&lt;meta charset="UTF-8"&gt;</font> tag. It
+            Character encoding is specified with the &lt;meta charset="UTF-8"&gt; tag. It
             tells the browser how to interpret the characters in your HTML document.
           </li>
           <li>
-            The <font color="blue">&lt;title&gt;</font> element specifies a title for the document.
+            The &lt;title&gt; element specifies a title for the document.
           </li>
         </ul>
       </div>
@@ -88,18 +91,18 @@
           <p class="description">
             This contains information about the page (rather than information
             that is shown within the main part of the browser window). You
-            will usually find a <font color="blue">&lt;title&gt;</font> element inside the <font color="blue">
-              &lt;head&gt;</font>
+            will usually find a &lt;title&gt; element inside the
+            &lt;head&gt;
             element.
           </p>
           <p class="description">
-            <font color="blue">&lt;title&gt;</font>
+            &lt;title&gt;
             The contents of the &lt;title&gt; element are either shown in the
             top of the browser, above where you usually type in the URL of the
             page you want to visit, or on the tab for that page (if your
             browser uses tabs to allow you to view multiple pages at the same
             time).
-            <font color="blue">&lt;/title&gt;</font>
+            &lt;/title&gt;
           </p>
           <h2 class="closing_tag">&lt;/head&gt;</h2>
         </div>
@@ -139,36 +142,25 @@
       <h2 class="Title">II.1 Headings</h2>
       <div class="Definitions">
         <p>
-          HTML has six levels of headings, which use the elements <font color="blue">&lt;h1&gt;</font> through
-          <font color="blue">&lt;h6&gt;</font>. Headings are used to represent the hierarchical structure of the
+          HTML has six levels of headings, which use the elements &lt;h1&gt; through
+          &lt;h6&gt;. Headings are used to represent the hierarchical structure of the
           content, and are displayed in a larger font size than the surrounding text.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;h1&gt;</font>
-          This is a Level 1 Heading
-          <font color="blue">&lt;/h1&gt;</font><br /><br />
-          <font color="blue">&lt;h2&gt;</font>
-          This is a Level 2 Heading
-          <font color="blue">&lt;/h2&gt;</font><br /><br />
-          <font color="blue">&lt;h3&gt;</font>
-          This is a Level 3 Heading
-          <font color="blue">&lt;/h3&gt;</font><br /><br />
-          <font color="blue">&lt;h4&gt;</font>
-          This is a Level 4 Heading
-          <font color="blue">&lt;/h4&gt;</font><br /><br />
-          <font color="blue">&lt;h5&gt;</font>
-          This is a Level 5 Heading
-          <font color="blue">&lt;/h5&gt;</font><br /><br />
-          <font color="blue">&lt;h6&gt;</font>
-          This is a Level 6 Heading
-          <font color="blue">&lt;/h6&gt;</font><br /><br />
+          <pre class="prettyprint lang-html">
+&lt;h1&gt; This is a Level 1 Heading &lt;/h1&gt;<br /><br />
+&lt;h2&gt; This is a Level 2 Heading &lt;/h2&gt;<br /><br />
+&lt;h3&gt; This is a Level 3 Heading &lt;/h3&gt;<br /><br />
+&lt;h4&gt; This is a Level 4 Heading &lt;/h4&gt;<br /><br />
+&lt;h5&gt; This is a Level 5 Heading &lt;/h5&gt;<br /><br />
+&lt;h6&gt; This is a Level 6 Heading &lt;/h6&gt;<br /><br />
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-
           <h1>This is a Level 1 Heading</h1>
           <h2>This is a Level 2 Heading</h2>
           <h3>This is a Level 3 Heading</h3>
@@ -180,25 +172,27 @@
       <h2 class="Title">II.2 Paragraphs</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;p&gt;</font> element is used to create a paragraph. Browsers automatically add some
-          space (margin) before and after each <font color="blue">&lt;p&gt;</font> element. The margins can be modified
+          The &lt;p&gt; element is used to create a paragraph. Browsers automatically add some
+          space (margin) before and after each &lt;p&gt; element. The margins can be modified
           using CSS.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;p&gt;</font><br />
-          A paragraph consists of one or more sentences that form a
-          self-contained unit of discourse. The start of a paragraph is
-          indicated by a new line.<br />
-          <font color="blue">&lt;/p&gt;</font><br /><br />
-          <font color="blue">&lt;p&gt;</font><br />
-          Text is easier to understand when it is split up into units of text.
-          For example, a book may have chapters. Chapters can have
-          subheadings. Under each heading there will be one or more
-          paragraphs<br />
-          <font color="blue">&lt;/p&gt;</font><br /><br />
+          <pre class="prettyprint lang-html">
+&lt;p&gt;
+A paragraph consists of one or more sentences that form a
+self-contained unit of discourse. The start of a paragraph is
+indicated by a new line.
+&lt;/p&gt;<br /><br />
+&lt;p&gt;
+Text is easier to understand when it is split up into units of text.
+For example, a book may have chapters. Chapters can have
+subheadings. Under each heading there will be one or more
+paragraphs
+&lt;/p&gt;<br /><br />
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -218,23 +212,21 @@
       <h2 class="Title">II.3 Bold and Italic</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;b&gt;</font> element is used to represent text in a bold format. The <font
-            color="blue">&lt;i&gt;</font> element is used to represent text in an italic format.
+          The &lt;b&gt; element is used to represent text in a bold format. The &lt;i&gt; element is
+          used to represent text in an italic format.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;p&gt;</font><br />
-          This is how we make a word appear
-          <font color="blue">&lt;b&gt;</font>bold.
-          <font color="blue">&lt;/b&gt;</font><br />
-          <font color="blue">&lt;/p&gt;</font><br /><br />
-          <font color="blue">&lt;p&gt;</font><br />
-          This is how we make a word appear
-          <font color="blue">&lt;i&gt;</font>italic.
-          <font color="blue">&lt;/i&gt;</font><br />
-          <font color="blue">&lt;/p&gt;</font><br /><br />
+          <pre class="prettyprint lang-html">
+&lt;p&gt;
+This is how we make a word appear &lt;b&gt;bold. &lt;/b&gt;<br />
+&lt;/p&gt;<br /><br />
+&lt;p&gt;<br />
+This is how we make a word appear &lt;i&gt;italic.&lt;/i&gt;<br />
+&lt;/p&gt;<br /><br />
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -248,29 +240,20 @@
       <h2 class="Title">II.4 Superscript and Subscript</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;sup&gt;</font> element is used to represent superscript text. The <font
-            color="blue">&lt;sub&gt;</font> element is used to represent subscript text.
+          The &lt;sup&gt; element is used to represent superscript text. The &lt;sub&gt; element is
+          used to represent subscript text.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;p&gt;</font><br />
-          On the 10
-          <font color="blue">&lt;sup&gt;</font>th
-          <font color="blue">&lt;/sup&gt;</font>
-          of February, you will have the most difficult exam. Your grade
-          <font color="blue">&lt;sup&gt;</font>3
-          <font color="blue">&lt;/sup&gt;</font>
-          will be less than 10.
-          <font color="blue">&lt;/p&gt;</font><br /><br />
-          <font color="blue">&lt;p&gt;</font><br />
-          The first ten students (student
-          <font color="blue">&lt;sub&gt;</font>1
-          <font color="blue">&lt;/sub&gt;</font> to student
-          <font color="blue">&lt;sub&gt;</font>10
-          <font color="blue">&lt;/sub&gt;</font>) will have gifts.
-          <font color="blue">&lt;/p&gt;</font><br /><br />
+          <pre class="prettyprint lang-html">
+&lt;p&gt;<br />
+On the 10&lt;sup&gt;th &lt;/sup&gt; of February, you will have the most difficult exam. Your grade &lt;sup&gt;3 &lt;/sup&gt; will be less than 10. &lt;/p&gt;<br />
+&lt;p&gt;<br />
+The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;10 &lt;/sub&gt;) will have gifts.
+&lt;/p&gt;<br /><br />
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -287,19 +270,21 @@
       <h2 class="Title">II.5 Line Breaks and Horizontal Rules</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;br /&gt;</font> element is used to add a line break in a paragraph. The <font
-            color="blue">&lt;hr /&gt;</font> element is used to add a horizontal rule.
+          The &lt;br /&gt; element is used to add a line break in a paragraph. The &lt;hr /&gt;
+          element is used to add a horizontal rule.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;p&gt;</font><br />
+          <pre class="prettyprint lang-html">
+          &lt;p&gt;<br />
           We can break a line by using the
-          <font color="blue">&lt;br /&gt;</font> tag. <br /><br />
+          &lt;br /&gt; tag. <br /><br />
           We can add a horizontal rule by using the
-          <font color="blue">&lt;hr /&gt;</font> tag. <br />
+          &lt;hr /&gt; tag. <br />
           <br />
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -336,8 +321,8 @@
       <h2 class="Title">III.1 Ordered Lists</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;ol&gt;</font> element is used to create an ordered list. This list will be
-          displayed with numbers by default. The <font color="blue">&lt;li&gt;</font> element is used to create each
+          The &lt;ol&gt; element is used to create an ordered list. This list will be
+          displayed with numbers by default. The &lt;li&gt; element is used to create each
           item in the list.
         <ol>
           <li>We can change the numbering style using the type attribute. The type attribute can take
@@ -370,12 +355,14 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;ol&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>HTML<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>CSS<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>JavaScript<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>PHP<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;/ol&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;ol&gt;<br />
+          &lt;li&gt;HTML&lt;/li&gt;<br />
+          &lt;li&gt;CSS&lt;/li&gt;<br />
+          &lt;li&gt;JavaScript&lt;/li&gt;<br />
+          &lt;li&gt;PHP&lt;/li&gt;<br />
+          &lt;/ol&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -390,20 +377,22 @@
       <h2 class="Title">III.2 Unordered Lists</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;ul&gt;</font> element is used to create an unordered list. This list will be
-          displayed with bullets by default. The <font color="blue">&lt;li&gt;</font> element is used to create each
+          The &lt;ul&gt; element is used to create an unordered list. This list will be
+          displayed with bullets by default. The &lt;li&gt; element is used to create each
           item in the list.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;ul&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>HTML<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>CSS<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>JavaScript<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>PHP<font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;/ul&gt;</font>
+          <pre class="prettyprint lang-html">
+          &lt;ul&gt;<br />
+          &lt;li&gt;HTML&lt;/li&gt;<br />
+          &lt;li&gt;CSS&lt;/li&gt;<br />
+          &lt;li&gt;JavaScript&lt;/li&gt;<br />
+          &lt;li&gt;PHP&lt;/li&gt;<br />
+          &lt;/ul&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -418,27 +407,26 @@
       <h2 class="Title">III.3 Definition Lists</h2>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;dl&gt;</font> element is used to create a definition list. This list will be
-          displayed with terms and their definitions. The <font color="blue">&lt;dt&gt;</font> element is used to create
-          each term in the list, and the <font color="blue">&lt;dd&gt;</font> element is used to create each definition.
+          The &lt;dl&gt; element is used to create a definition list. This list will be
+          displayed with terms and their definitions. The &lt;dt&gt; element is used to create
+          each term in the list, and the &lt;dd&gt; element is used to create each definition.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;dl&gt;</font><br />
-          <font color="blue">&lt;dt&gt;</font>HTML<font color="blue">&lt;/dt&gt;</font><br />
-          <font color="blue">&lt;dd&gt;</font>Hyper Text Markup Language<font color="blue">&lt;/dd&gt;</font><br />
-          <font color="blue">&lt;dt&gt;</font>CSS<font color="blue">&lt;/dt&gt;</font><br />
-          <font color="blue">&lt;dd&gt;</font>Cascading Style Sheets<font color="blue">&lt;/dd&gt;</font><br />
-          <font color="blue">&lt;dt&gt;</font>JavaScript<font color="blue">&lt;/dt&gt;</font><br />
-          <font color="blue">&lt;dd&gt;</font>JavaScript is a programming language that enables you to create
-          dynamically updating content, control multimedia, animate images, and much more.<font color="blue">&lt;/dd&gt;
-          </font><br />
-          <font color="blue">&lt;dt&gt;</font>PHP<font color="blue">&lt;/dt&gt;</font><br />
-          <font color="blue">&lt;dd&gt;</font>PHP is a server-side scripting language designed for web development but
-          also used as a general-purpose programming language.<font color="blue">&lt;/dd&gt;</font><br />
-          <font color="blue">&lt;/dl&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;dl&gt;<br />
+&lt;dt&gt;HTML&lt;/dt&gt;<br />
+&lt;dd&gt;Hyper Text Markup Language&lt;/dd&gt;<br />
+&lt;dt&gt;CSS&lt;/dt&gt;<br />
+&lt;dd&gt;Cascading Style Sheets&lt;/dd&gt;<br />
+&lt;dt&gt;JavaScript&lt;/dt&gt;<br />
+&lt;dd&gt;JavaScript is a programming language that enables you to create dynamically updating content, control multimedia, animate images, and much more.&lt;/dd&gt;
+&lt;dt&gt;PHP&lt;/dt&gt;<br />
+&lt;dd&gt;PHP is a server-side scripting language designed for web development but also used as a general-purpose programming language.&lt;/dd&gt;<br />
+&lt;/dl&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -467,10 +455,10 @@
         Text&lt;/a>.
         <p>
           Links are created using the
-          <font color="blue">&lt;a&gt;</font> element.
+          &lt;a&gt; element.
           Users can click on anything between the opening
-          <font color="blue">&lt;a&gt;</font> tag and the closing
-          <font color="blue">&lt;/a&gt;</font> tag.
+          &lt;a&gt; tag and the closing
+          &lt;/a&gt; tag.
           You specify which page you want to link to using the
           href attribute.
         </p>
@@ -486,9 +474,9 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;a href="https://ensia.edu.dz/"&gt;</font> The National School of Artificial
-          Intelligence<font color="blue">&lt;/a&gt;</font>
-
+          <pre class="prettyprint lang-html">
+&lt;a href="https://ensia.edu.dz/"&gt; The National School of Artificial Intelligence&lt;/a&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -505,20 +493,22 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;ul&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>
-          <font color="blue">&lt;a href="index.html"&gt;</font>Home<font color="blue">&lt;/a&gt;</font>
-          <font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>
-          <font color="blue">&lt;a href="CSS.html"&gt;</font>CSS<font color="blue">&lt;/a&gt;</font>
-          <font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>
-          <font color="blue">&lt;a href="JAVASCRIPT.html"&gt;</font>JavaScript<font color="blue">&lt;/a&gt;</font>
-          <font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;li&gt;</font>
-          <font color="blue">&lt;a href="PHP.html"&gt;</font>PHP<font color="blue">&lt;/a&gt;</font>
-          <font color="blue">&lt;/li&gt;</font><br />
-          <font color="blue">&lt;/ul&gt;</font><br />
+          <pre class="prettyprint lang-html">
+&lt;ul&gt;<br />
+&lt;li&gt;
+&lt;a href="index.html"&gt;Home&lt;/a&gt;
+&lt;/li&gt;<br />
+&lt;li&gt;
+&lt;a href="CSS.html"&gt;CSS&lt;/a&gt;
+&lt;/li&gt;<br />
+&lt;li&gt;
+&lt;a href="JAVASCRIPT.html"&gt;JavaScript&lt;/a&gt;
+&lt;/li&gt;<br />
+&lt;li&gt;
+&lt;a href="PHP.html"&gt;PHP&lt;/a&gt;
+&lt;/li&gt;<br />
+&lt;/ul&gt;<br />
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -533,7 +523,7 @@
       <h2 class="Title">IV.3 Linking to a specific part of the same page</h2>
       <div class="Definitions">
         <p>
-          To link to an element that uses an id attribute you use the <font color="blue">&lt;a&gt;</font> element
+          To link to an element that uses an id attribute you use the &lt;a&gt; element
           again, but the value of the href attribute starts with the # symbol, followed by the value of the id
           attribute of the element you want to link to. <br />
         </p>
@@ -541,16 +531,15 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;a href="#Text"&gt;</font>Text section<font color="blue">&lt;/a&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;a href="#Text"&gt;Text section&lt;/a&gt;
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
           <a href="#Text">Text section</a>
         </div>
       </div>
-
-
-
       <h2 class="Title">IV.4 Linking to a specific part of another page</h2>
       <div class="Definitions">
         <p>
@@ -563,9 +552,10 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;a href="https://ensia.edu.dz/#colophon"&gt;</font>ENSIA Footer<font color="blue">
-            &lt;/a&gt;
-          </font>
+          <pre class="prettyprint lang-html">
+&lt;a href="https://ensia.edu.dz/#colophon"&gt;ENSIA Footer &lt;/a&gt;
+          
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -579,16 +569,16 @@
       <h2 class="Title">IV.5 Opening links in a new window</h2>
       <div class="Definitions">
         <p>
-          If you want a link to open in a new window, you can use the target attribute on the opening <font
-            color="blue">&lt;a&gt;</font> tag. The value of this attribute should be _blank.
+          If you want a link to open in a new window, you can use the target attribute on the opening &lt;a&gt; tag. The
+          value of this attribute should be _blank.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-
-          <font color="blue">&lt;a href="https://ensia.edu.dz/" target="_blank" rel="noopener noreferrer"&gt;</font>The
-          National School of Artificial Intelligence<font color="blue">&lt;/a&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;a href="https://ensia.edu.dz/" target="_blank" rel="noopener noreferrer"&gt;The National School of Artificial Intelligence&lt;/a&gt;
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -607,15 +597,16 @@
       <div class="Definitions">
         <p>
           To create a link that starts up the user's email program and addresses an email to a specified email
-          address, you use the <font color="blue">&lt;a&gt;</font><br /> element. However, this time the value of the
+          address, you use the &lt;a&gt;<br /> element. However, this time the value of the
           href attribute starts with mailto: and is followed by the email address you want the email to be sent to.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;a href="mailto:mohamed.mahmoudi@ensia.edu.dz"&gt;</font>Contact me<font color="blue">
-            &lt;a&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;a href="mailto:mohamed.mahmoudi@ensia.edu.dz"&gt;Contact me&lt;a&gt;
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -627,28 +618,30 @@
       <h1 class="Title">V. Images</h1>
       <div class="Definitions">
         <p>
-          To add an image into the page you need to use an <font color="blue">&lt;img&gt;</font> element. It must
+          To add an image into the page you need to use an &lt;img&gt; element. It must
           carry the following attributes:
         </p>
         <ul>
           <li>
-            <font color="blue">src:</font> tells the browser where it can find the image file. <br />
+            src: tells the browser where it can find the image file. <br />
           </li>
           <li>
-            <font color="blue">alt:</font> provides a text description if the image cannot be loaded. <br />
+            alt: provides a text description if the image cannot be loaded. <br />
           </li>
           <li>
-            <font color="blue">height:</font> specifies the height of the image in pixels. <br />
+            height: specifies the height of the image in pixels. <br />
           </li>
           <li>
-            <font color="blue">width:</font> specifies the width of the image in pixels. <br /><br />
+            width: specifies the width of the image in pixels. <br /><br />
           </li>
         </ul>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;img src="./SRC/IMAGES/Oran.jpg" alt="Oran" width="500" height="300"&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;img src="./SRC/IMAGES/Oran.jpg" alt="Oran" width="500" height="300"&gt;
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -660,38 +653,40 @@
       <h1 class="Title">VI. Tables</h1>
       <div class="Definitions">
         <p>
-          The <font color="blue">&lt;table&gt;</font> element is used to create a table. The contents of the table are
+          The &lt;table&gt; element is used to create a table. The contents of the table are
           written out row by row. <br /><br />
-          The <font color="blue">&lt;th&gt;</font> element is used to represent the heading for either a column or a
+          The &lt;th&gt; element is used to represent the heading for either a column or a
           row.<br /><br />
-          You indicate the start of each row using the opening <font color="blue">&lt;tr&gt;</font> tag.<br /><br />
-          Each cell of a table is represented using a <font color="blue">&lt;td&gt;</font> element
+          You indicate the start of each row using the opening &lt;tr&gt; tag.<br /><br />
+          Each cell of a table is represented using a &lt;td&gt; element
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
           <p>
-            <font color="blue">&lt;table&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font><br />
-            <font color="blue">&lt;th&gt;</font>First name<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;th&gt;</font>Last name<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;th&gt;</font>Grade<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>Amrani<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>Omar<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>5/20<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;th scope="row"&gt;</font>Postponed<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>Mokhtari<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>Mokhtar<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;td&gt;</font>0/20<font color="blue">&lt;/td&gt;</font><br />
-            <font color="blue">&lt;th scope="row"&gt;</font>Postponed<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;/table&gt;</font><br />
+&lt;table&gt;<br />
+&lt;tr&gt;<br />
+&lt;th&gt;First name&lt;/th&gt;<br />
+&lt;th&gt;Last name&lt;/th&gt;<br />
+&lt;th&gt;Grade&lt;/th&gt;<br />
+&lt;/tr&gt;<br />
+&lt;tr&gt;<br />
+&lt;td&gt;Amrani&lt;/td&gt;<br />
+&lt;td&gt;Omar&lt;/td&gt;<br />
+&lt;td&gt;5/20&lt;/td&gt;<br />
+&lt;th scope="row"&gt;Postponed&lt;/th&gt;<br />
+&lt;/tr&gt;<br />
+&lt;tr&gt;<br />
+&lt;td&gt;Mokhtari&lt;/td&gt;<br />
+&lt;td&gt;Mokhtar&lt;/td&gt;<br />
+&lt;td&gt;0/20&lt;/td&gt;<br />
+&lt;th scope="row"&gt;Postponed&lt;/th&gt;<br />
+&lt;/tr&gt;<br />
+&lt;/table&gt;<br />
           </p>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -719,54 +714,55 @@
       <h2 class="Title">VI.1 Spanning columns and rows</h2>
       <div class="Definitions">
         <p>
-          The colspan and rowspan attributes can be used on a <font color="blue">&lt;th&gt;</font> or <font
-            color="blue">&lt;td&gt;
-          </font> elements and indicates how many columns or rows that cell should run across.
+          The colspan and rowspan attributes can be used on a &lt;th&gt; or &lt;td&gt;
+          elements and indicates how many columns or rows that cell should run across.
         </p>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
           <p>
-            <font color="blue">&lt;table&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font><br />
-            <font color="blue">&lt;th&gt;</font>Days<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Morning<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Afternoon<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Night<font color="blue">&lt;/th&gt;</font><br />
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font><br />
-            <font color="blue">&lt;th&gt;</font>Sunday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Study<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;td rowspan="5"&gt;</font>Sleep<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Monday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Study<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Tuesday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Study<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Wednesday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Study<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Thursday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Study<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Friday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="3"&gt;</font>Relax<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;tr&gt;</font>
-            <font color="blue">&lt;th&gt;</font>Saturday<font color="blue">&lt;/th&gt;</font>
-            <font color="blue">&lt;td colspan="2"&gt;</font>Relax<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;td&gt;</font>Sleep<font color="blue">&lt;/td&gt;</font>
-            <font color="blue">&lt;/tr&gt;</font><br />
-            <font color="blue">&lt;/table&gt;</font><br />
+&lt;table&gt;<br />
+&lt;tr&gt;<br />
+&lt;th&gt;Days&lt;/th&gt;
+&lt;th&gt;Morning&lt;/th&gt;
+&lt;th&gt;Afternoon&lt;/th&gt;
+&lt;th&gt;Night&lt;/th&gt;<br />
+&lt;/tr&gt;<br />
+&lt;tr&gt;<br />
+&lt;th&gt;Sunday&lt;/th&gt;
+&lt;td colspan="2"&gt;Study&lt;/td&gt;
+&lt;td rowspan="5"&gt;Sleep&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Monday&lt;/th&gt;
+&lt;td colspan="2"&gt;Study&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Tuesday&lt;/th&gt;
+&lt;td colspan="2"&gt;Study&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Wednesday&lt;/th&gt;
+&lt;td colspan="2"&gt;Study&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Thursday&lt;/th&gt;
+&lt;td colspan="2"&gt;Study&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Friday&lt;/th&gt;
+&lt;td colspan="3"&gt;Relax&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;tr&gt;
+&lt;th&gt;Saturday&lt;/th&gt;
+&lt;td colspan="2"&gt;Relax&lt;/td&gt;
+&lt;td&gt;Sleep&lt;/td&gt;
+&lt;/tr&gt;<br />
+&lt;/table&gt;<br />
           </p>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -816,119 +812,119 @@
       <div class="Definitions">
         <ul>
           <li>
-            We create forms using the <font color="blue">&lt;form&gt;</font> tag. This element should always carry the
+            We create forms using the &lt;form&gt; tag. This element should always carry the
             action attribute and will usually have a method and id attribute too.
           </li>
           <li>
-            <font color="blue">action:</font> its value is the URL for the page on the server that will receive the
+            action: its value is the URL for the page on the server that will receive the
             information in the form when it is submitted.
           </li>
           <li>
-            <font color="blue">method:</font> Forms can be sent using one of two methods: get or post.
+            method: Forms can be sent using one of two methods: get or post.
           </li>
           <li>
-            <font color="blue">&lt;label&gt;</font> element should be associated with every control element. It should
+            &lt;label&gt; element should be associated with every control element. It should
             carry the for attribute that should match the id attribute of the control element.
           </li>
           <li>
-            <font color="blue">&lt;input&gt;</font> element is used to create several different form controls. The value
+            &lt;input&gt; element is used to create several different form controls. The value
             of
             the type attribute determines what kind of input they will be creating. <br />
             <ul>
               <li>
-                <font color="blue">type="text":</font> creates a singleline text input.
+                type="text": creates a singleline text input.
               </li>
               <li>
-                <font color="blue">type="password":</font> creates a single-line text input where the characters are
+                type="password": creates a single-line text input where the characters are
                 blocked
                 out (hidden).
               </li>
               <li>
-                <font color="blue">type="date":</font> create a date input.
+                type="date": create a date input.
               </li>
               <li>
-                <font color="blue">type="email":</font> browsers in the validation will check that the user has provided
+                type="email": browsers in the validation will check that the user has provided
                 information in the correct format of an email address.
               </li>
               <li>
-                <font color="blue">type="url":</font> browsers in the validation will check that the user has provided
+                type="url": browsers in the validation will check that the user has provided
                 information in the correct format of an URL.
               </li>
               <li>
-                <font color="blue">type="search":</font> a single line text box for search queries,
+                type="search": a single line text box for search queries,
               </li>
               <li>
-                <font color="blue">type="radio":</font> creates radio buttons.
+                type="radio": creates radio buttons.
               </li>
               <li>
-                <font color="blue">type="checkbox":</font> allow users to select (and unselect) one or more options.
+                type="checkbox": allow users to select (and unselect) one or more options.
               </li>
               <li>
-                <font color="blue">type="file":</font> creates a box followed by a browse button.
+                type="file": creates a box followed by a browse button.
               </li>
               <li>
-                <font color="blue">type="submit":</font> creates a submit button that is used to send a form to the
+                type="submit": creates a submit button that is used to send a form to the
                 server.
               </li>
               <li>
-                <font color="blue">type="image"":</font> creates an image submit button.
+                type="image"": creates an image submit button.
               </li>
               <li>
-                <font color="blue">name:</font> the value of this attribute identifies the form control and is sent
+                name: the value of this attribute identifies the form control and is sent
                 along
                 with the information they enter to the server.
               </li>
               <li>
-                <font color="blue">value:</font> is used to control the text that appears on a button
+                value: is used to control the text that appears on a button
               </li>
               <li>
-                <font color="blue">required:</font> can be used on any form element that the user is expected to fill
+                required: can be used on any form element that the user is expected to fill
               </li>
               <li>
-                <font color="blue">maxlength:</font> limit the number of characters a user may enter into the text
+                maxlength: limit the number of characters a user may enter into the text
                 field.
               </li>
               <li>
-                <font color="blue">size:</font> the number of characters that would be seen.
+                size: the number of characters that would be seen.
               </li>
               <li>
-                <font color="blue">checked:</font> when type="radio", indicate which value (if any) should be selected
+                checked: when type="radio", indicate which value (if any) should be selected
                 when
                 the page loads.
               </li>
             </ul>
           </li>
           <li>
-            <font color="blue">&lt;select&gt;</font> allows to select one option from a drop down list.<br />
+            &lt;select&gt; allows to select one option from a drop down list.<br />
             <ul>
               <li>
-                <font color="blue">&lt;option&gt;</font> element is used to specify the options of the drop down list.
+                &lt;option&gt; element is used to specify the options of the drop down list.
                 <ul>
                   <li>
-                    <font color="blue">&lt;option&gt;</font> element uses the <font color="blue">value</font> attribute
+                    &lt;option&gt; element uses the value attribute
                     to
                     indicate the value that is sent to the server along with the name of the control if this option is
                     selected.
                   </li>
-                  <li>The <font color="blue">selected</font> attribute can be used to indicate the option that should be
+                  <li>The selected attribute can be used to indicate the option that should be
                     selected when the page loads.</li>
                 </ul>
               </li>
               <li>
-                <font color="blue">multiple:</font> allow to select multiple options from the list by adding the
+                multiple: allow to select multiple options from the list by adding the
                 multiple
                 attribute with a value of multiple.
               </li>
             </ul>
           </li>
           <li>
-            <font color="blue">&lt;textarea&gt;</font> element is used to create a mutli-line text input. <br />
+            &lt;textarea&gt; element is used to create a mutli-line text input. <br />
             <ul>
               <li>
-                <font color="blue">cols:</font> attribute indicates how wide the text area should be.
+                cols: attribute indicates how wide the text area should be.
               </li>
               <li>
-                <font color="blue">rows:</font> indicates how many rows the text area should take up vertically.
+                rows: indicates how many rows the text area should take up vertically.
               </li>
             </ul>
           </li>
@@ -939,63 +935,64 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;form action="#" method="post"&gt;</font><br />
-          <font color="blue">&lt;label for="username"&gt;</font>User name<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="text" name="username" id="username" size="15" maxlength="30" required /&gt;
-          </font><br />
-          <font color="blue">&lt;label for="password"&gt;</font>Password<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="password" name="password" id="password" size="15" maxlength="30"
-            required/&gt;</font><br>
-          <font color="blue">&lt;label for="birthdate"&gt;</font>Birthdate<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="date" name="birthdate" id="birthdate" size="15" maxlength="30"
-            required/&gt;</font><br />
-          <font color="blue">&lt;label for="email"&gt;</font>Email<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="email" name="email" id="email" size="15" maxlength="30" required/&gt;
-          </font><br />
-          <font color="blue">&lt;label for="personnal_page"&gt;</font>Personnal page<font color="blue">&lt;/label&gt;
-          </font><br />
-          <font color="blue">&lt;input type="url" name="personnal_page" id="personnal_page" size="15" maxlength="30"
-            required/&gt;</font><br />
-          <font color="blue">&lt;p&gt;</font>What are you?<font color="blue">&lt;/p&gt;</font><br />
-          <font color="blue">&lt;input type="radio" name="Profession" id="Student" value="Student" checked="checked"
-            /&gt;</font><br />
-          <font color="blue">&lt;label for="Student"&gt;</font>Student<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="radio" name="Profession" id="Teacher" value="Teacher" /&gt;</font><br />
-          <font color="blue">&lt;label for="Teacher"&gt;</font>Teacher<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;p&gt;</font>What are your hobbies?<font color="blue">&lt;/p&gt;</font><br />
-          <font color="blue">&lt;input type="checkbox" name="hobby" value="Sport" id="Sport" checked="checked" /&gt;
-          </font><br />
-          <font color="blue">&lt;label for="Sport"&gt;</font>Sport<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="checkbox" name="hobby" value="Painting" id="Painting" /&gt;</font><br />
-          <font color="blue">&lt;label for="Painting"&gt;</font>Painting<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="checkbox" name="hobby" value="traveling" id="traveling" /&gt;</font><br />
-          <font color="blue">&lt;label for="traveling"&gt;</font>traveling<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;label for="sex"&gt;</font>sex: <font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;select name="sex" id="sex" title="sex"&gt;</font><br />
-          <font color="blue">&lt;option value="male"&gt;</font>Male<font color="blue">&lt;/option&gt;</font><br />
-          <font color="blue">&lt;option value="female" selected&gt;</font>Female<font color="blue">&lt;/option&gt;
-          </font><br />
-          <font color="blue">&lt;/select&gt;</font><br />
-          <font color="blue">&lt;p&gt;</font>What device do you need?<font color="blue">&lt;/p&gt;</font><br />
-          <font color="blue">&lt;select name="instruments" size="3" multiple="multiple" title="Device"&gt;</font><br />
-          <font color="blue">&lt;option value="Laptop" selected="selected"&gt;</font>Laptop<font color="blue">
-            &lt;/option&gt;</font><br />
-          <font color="blue">&lt;option value="Phone"&gt;</font>Phone<font color="blue">&lt;/option&gt;</font><br />
-          <font color="blue">&lt;option value="keyboard" selected="selected"&gt;</font>Keyboard<font color="blue">
-            &lt;/option&gt;</font><br />
-          <font color="blue">&lt;option value="GPU"&gt;</font>GPU<font color="blue">&lt;/option&gt;</font><br />
-          <font color="blue">&lt;/select&gt;</font><br />
-          <font color="blue">&lt;label for="comments"&gt;</font>Comments<font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;textarea name="comments" id="comments" cols="20" rows="4"&gt;</font>Enter your
-          comments...<font color="blue">&lt;/textarea&gt;</font><br />
-          <font color="blue">&lt;label for="cv"&gt;</font>Upload your CV <font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="file" name="cv" id="cv"/&gt;</font><br />
-          <font color="blue">&lt;label for="image"&gt;</font>Save <font color="blue">&lt;/label&gt;</font><br />
-          <font color="blue">&lt;input type="image" id="image" src="./SRC/IMAGES/save.svg" alt="" title="image"
-            width="100" height="40" /&gt;</font><br />
-          <font color="blue">&lt;input type="submit" value="Submit" /&gt;</font><br />
-          <font color="blue">&lt;/form&gt;</font><br />
-
+          <pre class="prettyprint lang-html">
+&lt;form action="#" method="post"&gt;<br />
+&lt;label for="username"&gt;User name&lt;/label&gt;<br />
+&lt;input type="text" name="username" id="username" size="15" maxlength="30" required /&gt;
+<br />
+&lt;label for="password"&gt;Password&lt;/label&gt;<br />
+&lt;input type="password" name="password" id="password" size="15" maxlength="30"
+  required/&gt;<br>
+&lt;label for="birthdate"&gt;Birthdate&lt;/label&gt;<br />
+&lt;input type="date" name="birthdate" id="birthdate" size="15" maxlength="30"
+  required/&gt;<br />
+&lt;label for="email"&gt;Email&lt;/label&gt;<br />
+&lt;input type="email" name="email" id="email" size="15" maxlength="30" required/&gt;
+<br />
+&lt;label for="personnal_page"&gt;Personnal page&lt;/label&gt;
+<br />
+&lt;input type="url" name="personnal_page" id="personnal_page" size="15" maxlength="30"
+  required/&gt;<br />
+&lt;p&gt;What are you?&lt;/p&gt;<br />
+&lt;input type="radio" name="Profession" id="Student" value="Student" checked="checked"
+  /&gt;<br />
+&lt;label for="Student"&gt;Student&lt;/label&gt;<br />
+&lt;input type="radio" name="Profession" id="Teacher" value="Teacher" /&gt;<br />
+&lt;label for="Teacher"&gt;Teacher&lt;/label&gt;<br />
+&lt;p&gt;What are your hobbies?&lt;/p&gt;<br />
+&lt;input type="checkbox" name="hobby" value="Sport" id="Sport" checked="checked" /&gt;
+<br />
+&lt;label for="Sport"&gt;Sport&lt;/label&gt;<br />
+&lt;input type="checkbox" name="hobby" value="Painting" id="Painting" /&gt;<br />
+&lt;label for="Painting"&gt;Painting&lt;/label&gt;<br />
+&lt;input type="checkbox" name="hobby" value="traveling" id="traveling" /&gt;<br />
+&lt;label for="traveling"&gt;traveling&lt;/label&gt;<br />
+&lt;label for="sex"&gt;sex: &lt;/label&gt;<br />
+&lt;select name="sex" id="sex" title="sex"&gt;<br />
+&lt;option value="male"&gt;Male&lt;/option&gt;<br />
+&lt;option value="female" selected&gt;Female&lt;/option&gt;
+<br />
+&lt;/select&gt;<br />
+&lt;p&gt;What device do you need?&lt;/p&gt;<br />
+&lt;select name="instruments" size="3" multiple="multiple" title="Device"&gt;<br />
+&lt;option value="Laptop" selected="selected"&gt;Laptop
+  &lt;/option&gt;<br />
+&lt;option value="Phone"&gt;Phone&lt;/option&gt;<br />
+&lt;option value="keyboard" selected="selected"&gt;Keyboard
+  &lt;/option&gt;<br />
+&lt;option value="GPU"&gt;GPU&lt;/option&gt;<br />
+&lt;/select&gt;<br />
+&lt;label for="comments"&gt;Comments&lt;/label&gt;<br />
+&lt;textarea name="comments" id="comments" cols="20" rows="4"&gt;Enter your
+comments...&lt;/textarea&gt;<br />
+&lt;label for="cv"&gt;Upload your CV &lt;/label&gt;<br />
+&lt;input type="file" name="cv" id="cv"/&gt;<br />
+&lt;label for="image"&gt;Save &lt;/label&gt;<br />
+&lt;input type="image" id="image" src="./SRC/IMAGES/save.svg" alt="" title="image"
+  width="100" height="40" /&gt;<br />
+&lt;input type="submit" value="Submit" /&gt;<br />
+&lt;/form&gt;<br />
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -1047,41 +1044,42 @@
       <h1 class="Title">VIII Videos</h1>
       <div class="Definitions">
         <p>
-          To add a video into the page you need to use an <font color="blue">&lt;video&gt;</font> element. It must
+          To add a video into the page you need to use an &lt;video&gt; element. It must
           carry the following attributes:
         </p>
         <ul>
           <li>
-            <font color="blue">src:</font> tells the browser where it can find the video file. <br />
+            src: tells the browser where it can find the video file. <br />
           </li>
           <li>
-            <font color="blue">controls:</font> adds a set of controls to the video player. <br />
+            controls: adds a set of controls to the video player. <br />
           </li>
           <li>
-            <font color="blue">autoplay:</font> the video will start playing as soon as it is ready. <br />
+            autoplay: the video will start playing as soon as it is ready. <br />
           </li>
           <li>
-            <font color="blue">loop:</font> the video will start playing again when it finishes. <br />
+            loop: the video will start playing again when it finishes. <br />
           </li>
           <li>
-            <font color="blue">muted:</font> the audio will be muted. <br />
+            muted: the audio will be muted. <br />
           </li>
           <li>
-            <font color="blue">poster:</font> a placeholder image that is displayed before the video plays. <br />
+            poster: a placeholder image that is displayed before the video plays. <br />
           </li>
           <li>
-            <font color="blue">width:</font> specifies the width of the video in pixels. <br />
+            width: specifies the width of the video in pixels. <br />
           </li>
           <li>
-            <font color="blue">height:</font> specifies the height of the video in pixels. <br /><br />
+            height: specifies the height of the video in pixels. <br /><br />
           </li>
         </ul>
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font color="blue">&lt;video src="./SRC/VIDEOS/Video.mp4" controls autoplay loop muted
-            poster="./SRC/IMAGES/Oran.jpg" width="500" height="300"&gt;</font>
+          <pre class="prettyprint lang-html">
+&lt;video src="./SRC/VIDEOS/Video.mp4" controls autoplay loop muted poster="./SRC/IMAGES/Oran.jpg" width="500" height="300"&gt;
+            </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
