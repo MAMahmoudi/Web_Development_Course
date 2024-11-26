@@ -31,13 +31,14 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          Including PHP in a File: <br />
-          <font color="green">
-            &lt;?php <br> echo "Salem"; <br> ?> <br></font>
-          Or <br>
-          <font color="green">
-            &lt;? <br> echo "Salem"; <br> ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+//Including PHP in a File: <br />
+          
+&lt;?php <br> echo "Salem"; <br> ?> <br>
+          // Or <br>
+          
+&lt;? <br> echo "Salem"; <br> ?> <br>          
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -69,17 +70,18 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br> echo "Salem Aleykum"; <br>
-            // This is a single-line comment <br>
-            # This is also a single-line comment <br>
-            /* <br>
-            This is a multiple-lines comment block <br>
-            that spans over multiple <br>
-            lines <br>
-            */ <br>
-            ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br> echo "Salem Aleykum"; <br>
+          // This is a single-line comment <br>
+          # This is also a single-line comment <br>
+          /* <br>
+          This is a multiple-lines comment block <br>
+          that spans over multiple <br>
+          lines <br>
+          */ <br>
+          ?> <br>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -105,12 +107,13 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_Variable = "Introduction to PHP"; <br>
-            echo $My_Variable;
-            <br> ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $My_Variable = "Introduction to PHP"; <br>
+          echo $My_Variable;
+          <br> ?> <br>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -129,19 +132,20 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
+          <pre class="prettyprint lang-php">
           Declare a global variable in a separate file: <br>
-          <font color="green">
-            &lt;?php <br>
-            global $The_Global_Variable;
-            <br> ?>
-          </font><br>
+
+          &lt;?php <br>
+          global $The_Global_Variable;
+          <br> ?>
+          <br>
           Then access it in another file: <br>
-          <font color="green">
-            &lt;?php <br>
-            $The_Global_Variable = "I am a global variable"; <br>
-            echo $The_Global_Variable;
-            <br> ?> <br>
-          </font>
+
+          &lt;?php <br>
+          $The_Global_Variable = "I am a global variable"; <br>
+          echo $The_Global_Variable;
+          <br> ?> <br>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -163,22 +167,23 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            function test() <br>
-            { <br>
-            static $count = 0; <br>
-            echo $count; <br>
-            echo "<br>"; <br>
-            $count++; <br>
-            } <br>
-            test();<br>
-            test();<br>
-            test();<br>
-            test();<br>
-            test();
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          function test() <br>
+          { <br>
+          static $count = 0; <br>
+          echo $count; <br>
+          echo "<br>"; <br>
+          $count++; <br>
+          } <br>
+          test();<br>
+          test();<br>
+          test();<br>
+          test();<br>
+          test();
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -215,12 +220,13 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            define("ROOT_LOCATION", "/usr/local/www/"); <br>
-            echo ROOT_LOCATION;
-            <br> ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          define("ROOT_LOCATION", "/usr/local/www/"); <br>
+          echo ROOT_LOCATION;
+          <br> ?> <br>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -250,20 +256,21 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_Variable = "Introduction to PHP &lt;br>"; <br>
-            echo $My_Variable; <br>
-            $Single_Quote_String = 'This is a string declared with single quotes $My_Variable &lt;br>'; <br>
-            echo $Single_Quote_String; <br>
-            $Double_Quote_String = "This is a string declared with double quotes $My_Variable &lt;br>"; <br>
-            echo $Double_Quote_String; <br>
-            $Concatenated_String = '$My_Variable contains the follwing value: ' . $My_Variable; <br>
-            echo $Concatenated_String; <br>
-            $My_Variable .= $My_Variable; <br>
-            echo $My_Variable;
-            <br> ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $My_Variable = "Introduction to PHP &lt;br>"; <br>
+          echo $My_Variable; <br>
+          $Single_Quote_String = 'This is a string declared with single quotes $My_Variable &lt;br>'; <br>
+          echo $Single_Quote_String; <br>
+          $Double_Quote_String = "This is a string declared with double quotes $My_Variable &lt;br>"; <br>
+          echo $Double_Quote_String; <br>
+          $Concatenated_String = '$My_Variable contains the follwing value: ' . $My_Variable; <br>
+          echo $Concatenated_String; <br>
+          $My_Variable .= $My_Variable; <br>
+          echo $My_Variable;
+          <br> ?> <br>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -288,15 +295,16 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            echo "&lt;pre>"; <br>
-            echo 'It\'s a beautiful day! &lt;br>'; <br>
-            echo "He said:\n \"It's \ta \tbeautiful \tday!\" &lt;br>"; <br>
-            echo 'He said:\n \"It\'s \ta \tbeautiful \tday!\" &lt;br>'; <br>
-            echo "&lt;/pre>";
-            <br> ?> <br>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          echo "&lt;pre>"; <br>
+          echo 'It\'s a beautiful day! &lt;br>'; <br>
+          echo "He said:\n \"It's \ta \tbeautiful \tday!\" &lt;br>"; <br>
+          echo 'He said:\n \"It\'s \ta \tbeautiful \tday!\" &lt;br>'; <br>
+          echo "&lt;/pre>";
+          <br> ?> <br>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -357,7 +365,7 @@
                   sense to it. A rarely used identity operator,<br> which consists of three equals signs in a<br>
                   row, can be used to compare items without doing conversion.<br> See example below.
                 </b>
-              </font>
+
             </td>
             <td>
               $j == 4 <br>
@@ -381,7 +389,7 @@
               ! Not <br>
               xor Exclusive or <br>
               <font color="red"><b>A lower precedence force a second <br> statement to execute if the first fails.</b>
-              </font>
+
             </td>
             <td>
               $j == 3 && $k == 2 <br>
@@ -431,14 +439,15 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $a = "1000"; <br>
-            $b = "+1000"; <br>
-            if ($a == $b) echo "1"; <br>
-            if ($a === $b) echo "2";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $a = "1000"; <br>
+          $b = "+1000"; <br>
+          if ($a == $b) echo "1"; <br>
+          if ($a === $b) echo "2";
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -465,11 +474,12 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            for ($count = 1; $count &lt;= 10; ++$count) <br> { <br> echo "Salem for the $count time &lt;br>" ; <br>}
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          for ($count = 1; $count &lt;= 10; ++$count) <br> { <br> echo "Salem for the $count time &lt;br>" ; <br>}
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -504,15 +514,16 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $count = 10; <br>
-            while ($count > 1) { <br>
-            echo "Salem &lt;br>"; <br>
-            $count--; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $count = 10; <br>
+          while ($count > 1) { <br>
+          echo "Salem &lt;br>"; <br>
+          $count--; <br>
+          }
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -539,14 +550,15 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $count = 1; <br>
-            do <br>
-            echo "Salem for the $count time &lt;br>"; <br>
-            while (++$count &lt;= 12);
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $count = 1; <br>
+          do <br>
+          echo "Salem for the $count time &lt;br>"; <br>
+          while (++$count &lt;= 12);
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -585,19 +597,20 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            if (condition) { <br>
-            // code to execute if condition is met <br>
-            } <br>
-            elseif (another condition) { <br>
-            // code to execute if this condition is met <br>
-            } <br>
-            else { <br>
-            // code to execute if none of the conditions are met <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          if (condition) { <br>
+          // code to execute if condition is met <br>
+          } <br>
+          elseif (another condition) { <br>
+          // code to execute if this condition is met <br>
+          } <br>
+          else { <br>
+          // code to execute if none of the conditions are met <br>
+          }
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -615,22 +628,23 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            switch (n) { <br>
-            case x: <br>
-            code to execute if n=x; <br>
-            break; <br>
-            case y: <br>
-            code to execute if n=y; <br>
-            break; <br>
-            // add more cases as needed <br>
-            default: <br>
-            code to execute if n is neither of the above; <br>
-            }
-            <br> ?> <br>
+          <pre class="prettyprint lang-php">
 
-          </font>
+          &lt;?php <br>
+          switch (n) { <br>
+          case x: <br>
+          code to execute if n=x; <br>
+          break; <br>
+          case y: <br>
+          code to execute if n=y; <br>
+          break; <br>
+          // add more cases as needed <br>
+          default: <br>
+          code to execute if n is neither of the above; <br>
+          }
+          <br> ?> <br>
+
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -642,11 +656,12 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Variable = $Condition ? <br> "Value to return when true" : <br> "Value to return when false";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $Variable = $Condition ? <br> "Value to return when true" : <br> "Value to return when false";
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -676,12 +691,13 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
+          <pre class="prettyprint lang-php">
 
-            <br> ?> <br>
+          &lt;?php <br>
 
-          </font>
+          <br> ?> <br>
+
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -708,25 +724,26 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Student[] = "Karim"; <br>
-            $Student[] = "Amel"; <br>
-            $Student[] = "Nour"; <br>
-            $Student[] = "Ahmed"; <br>
-            print_r($Student);
-            <br> ?>
-          </font><br>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $Student[] = "Karim"; <br>
+          $Student[] = "Amel"; <br>
+          $Student[] = "Nour"; <br>
+          $Student[] = "Ahmed"; <br>
+          print_r($Student);
+          <br> ?>
+          <br>
           Or <br>
-          <font color="green">
-            &lt;?php <br>
-            $Student[0] = "Karim"; <br>
-            $Student[1] = "Amel"; <br>
-            $Student[2] = "Nour"; <br>
-            $Student[3] = "Ahmed"; <br>
-            print_r($Student);
-            <br> ?>
-          </font>
+
+          &lt;?php <br>
+          $Student[0] = "Karim"; <br>
+          $Student[1] = "Amel"; <br>
+          $Student[2] = "Nour"; <br>
+          $Student[3] = "Ahmed"; <br>
+          print_r($Student);
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -744,15 +761,16 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Student["Karim"] = "First Year Student"; <br>
-            $Student["Amel"] = " Second Year Student"; <br>
-            $Student["Nour"] = " Third Year Student"; <br>
-            $Student["Ahmed"] = " Fourth Year Student"; <br>
-            print_r($Student);
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $Student["Karim"] = "First Year Student"; <br>
+          $Student["Amel"] = " Second Year Student"; <br>
+          $Student["Nour"] = " Third Year Student"; <br>
+          $Student["Ahmed"] = " Fourth Year Student"; <br>
+          print_r($Student);
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -770,17 +788,18 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_Array = array("Karim", "Amel", "Nour", "Ahmed"); <br>
-            print_r($My_Array); <br>
-            echo "&lt;br>"; <br>
-            $My_Second_Array = array("Karim" => "First Year Student", <br> "Amel" => "Second Year Student",<br> "Nour"
-            => "Third
-            Year Student",<br> "Ahmed" => "Fourth Year Student");<br>
-            print_r($My_Second_Array);<br>
-            ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $My_Array = array("Karim", "Amel", "Nour", "Ahmed"); <br>
+          print_r($My_Array); <br>
+          echo "&lt;br>"; <br>
+          $My_Second_Array = array("Karim" => "First Year Student", <br> "Amel" => "Second Year Student",<br> "Nour"
+          => "Third
+          Year Student",<br> "Ahmed" => "Fourth Year Student");<br>
+          print_r($My_Second_Array);<br>
+          ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -802,20 +821,21 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Students = array("Karim", "Amel", "Nour", "Ahmed"); <br> <br>
-            foreach ($Students as $Student) { <br>
-            echo $Student . "&lt;br>"; <br>
-            } <br>
-            echo "&lt;br>"; <br>
-            $Students_Year = array( <br>"Karim" => "First Year Student", <br> "Amel" => "Second Year Student", <br>
-            "Nour" => "Third Year Student", <br> "Ahmed" => "Fourth Year Student"); <br> <br>
-            foreach ($Students_Year as $Student => $Year) { <br>
-            echo $Student . " is a " . $Year . "&lt;br>"; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $Students = array("Karim", "Amel", "Nour", "Ahmed"); <br> <br>
+          foreach ($Students as $Student) { <br>
+          echo $Student . "&lt;br>"; <br>
+          } <br>
+          echo "&lt;br>"; <br>
+          $Students_Year = array( <br>"Karim" => "First Year Student", <br> "Amel" => "Second Year Student", <br>
+          "Nour" => "Third Year Student", <br> "Ahmed" => "Fourth Year Student"); <br> <br>
+          foreach ($Students_Year as $Student => $Year) { <br>
+          echo $Student . " is a " . $Year . "&lt;br>"; <br>
+          }
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -839,23 +859,24 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $University_Staff = array(<br>
-            'Students_Year' => array("Karim" => "First Year Student",<br> "Amel" => "Second Year Student",<br>
-            "Nour" => "Third
-            Year Student",<br> "Ahmed" => "Fourth Year Student"),<br>
-            'Teachers' => array("Mohamed" => "DSA",<br> "Hassan" => "DB",<br> "Ali" => "OS",<br> "Omar" =>
-            "AI"),<br>
-            'Courses' => array("DSA" => "Data Structure",<br> "DB" => "Data Base",<br> "OS" => "Operating
-            System",<br> "AI" =>
-            "Artificial Intelligence")<br>
-            );<br>
-            print_r($University_Staff); <br>
-            echo "&lt;br>"; <br>
-            echo $University_Staff['Courses']['DSA'];
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          $University_Staff = array(<br>
+          'Students_Year' => array("Karim" => "First Year Student",<br> "Amel" => "Second Year Student",<br>
+          "Nour" => "Third
+          Year Student",<br> "Ahmed" => "Fourth Year Student"),<br>
+          'Teachers' => array("Mohamed" => "DSA",<br> "Hassan" => "DB",<br> "Ali" => "OS",<br> "Omar" =>
+          "AI"),<br>
+          'Courses' => array("DSA" => "Data Structure",<br> "DB" => "Data Base",<br> "OS" => "Operating
+          System",<br> "AI" =>
+          "Artificial Intelligence")<br>
+          );<br>
+          print_r($University_Staff); <br>
+          echo "&lt;br>"; <br>
+          echo $University_Staff['Courses']['DSA'];
+          <br> ?>
+        </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -970,6 +991,8 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
 </body>
 
 </html>
