@@ -34,10 +34,9 @@
           <pre class="prettyprint lang-php">
 //Including PHP in a File: <br />
           
-&lt;?php <br> echo "Salem"; <br> ?> <br>
+&lt;?php  echo "Salem";  ?> <br>
           // Or <br>
-          
-&lt;? <br> echo "Salem"; <br> ?> <br>          
+&lt;?  echo "Salem";  ?> <br>          
         </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
@@ -71,16 +70,15 @@
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-php">
-
-          &lt;?php <br> echo "Salem Aleykum"; <br>
-          // This is a single-line comment <br>
-          # This is also a single-line comment <br>
-          /* <br>
-          This is a multiple-lines comment block <br>
-          that spans over multiple <br>
-          lines <br>
-          */ <br>
-          ?> <br>
+&lt;?php echo "Salem Aleykoum"; 
+// This is a single-line comment <br>
+# This is also a single-line comment <br>
+/* <br>
+This is a multiple-lines comment block <br>
+that spans over multiple <br>
+lines <br>
+*/ <br>
+?> <br>
 </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
@@ -101,18 +99,19 @@
           <li>Variable names can contain only the characters a-z, A-Z, 0-9, and _ (underscore).</li>
           <li>Variable names should not contain spaces.</li>
           <li>Variable names are case-sensitive.</li>
-          <li>PHP also supports the bytes from 127 through 255 in variable names.</li>
+          <li>PHP also supports the bytes from 127 through 255 in variable names. This means that you can use the
+            characters with accents, tildes, and other diacritical marks in your variable names. For example, you could
+            use the variable name $café.</li>
         </ul>
       </div>
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-php">
-
-          &lt;?php <br>
-          $My_Variable = "Introduction to PHP"; <br>
-          echo $My_Variable;
-          <br> ?> <br>
+&lt;?php 
+$My_Variable = "Introduction to PHP"; <br>
+echo $My_Variable;<br> 
+?>
         </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
@@ -133,7 +132,7 @@
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-php">
-          Declare a global variable in a separate file: <br>
+// Declare a global variable in a separate file: <br>
 
           &lt;?php <br>
           global $The_Global_Variable;
@@ -174,7 +173,7 @@
           { <br>
           static $count = 0; <br>
           echo $count; <br>
-          echo "<br>"; <br>
+          echo "&lt;br>"; <br>
           $count++; <br>
           } <br>
           test();<br>
@@ -203,6 +202,32 @@
             and only capital letters. <a href="https://www.php.net/manual/en/language.variables.superglobals.php">Here
               is the complete list.</a></li>
         </ul>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          function test()
+          {
+              $foo = "local variable";
+          
+              echo '$foo in global scope: ' . $GLOBALS["foo"] . "\n";
+              echo '$foo in current scope: ' . $foo . "\n";
+          }
+          
+          $foo = "Example content";
+          test();
+          
+          ?>
+        </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          $foo in global scope: Example content <br>
+          $foo in current scope: local variable
+        </div>
       </div>
       <h1 class="Section_Title">Constants</h1>
       <div class="Definitions">
@@ -257,18 +282,17 @@
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-php">
-
-          &lt;?php <br>
-          $My_Variable = "Introduction to PHP &lt;br>"; <br>
-          echo $My_Variable; <br>
-          $Single_Quote_String = 'This is a string declared with single quotes $My_Variable &lt;br>'; <br>
-          echo $Single_Quote_String; <br>
-          $Double_Quote_String = "This is a string declared with double quotes $My_Variable &lt;br>"; <br>
-          echo $Double_Quote_String; <br>
-          $Concatenated_String = '$My_Variable contains the follwing value: ' . $My_Variable; <br>
-          echo $Concatenated_String; <br>
-          $My_Variable .= $My_Variable; <br>
-          echo $My_Variable;
+&lt;?php <br>
+$My_Variable = "Introduction to PHP &lt;br>"; <br>
+echo $My_Variable; <br>
+$Single_Quote_String = 'This is a string declared with single quotes $My_Variable &lt;br>'; <br>
+echo $Single_Quote_String; <br>
+$Double_Quote_String = "This is a string declared with double quotes $My_Variable &lt;br>"; <br>
+echo $Double_Quote_String; <br>
+$Concatenated_String = '$My_Variable contains the follwing value: ' . $My_Variable; <br>
+echo $Concatenated_String; <br>
+$My_Variable .= $My_Variable; <br>
+echo $My_Variable;
           <br> ?> <br>
         </pre>
         </div>
@@ -296,13 +320,12 @@
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-php">
-
-          &lt;?php <br>
-          echo "&lt;pre>"; <br>
-          echo 'It\'s a beautiful day! &lt;br>'; <br>
-          echo "He said:\n \"It's \ta \tbeautiful \tday!\" &lt;br>"; <br>
-          echo 'He said:\n \"It\'s \ta \tbeautiful \tday!\" &lt;br>'; <br>
-          echo "&lt;/pre>";
+&lt;?php <br>
+echo "&lt;pre>"; <br>
+echo 'It\'s a beautiful day! &lt;br>'; <br>
+echo "He said:\n \"It's \ta \tbeautiful \tday!\" &lt;br>"; <br>
+echo 'He said:\n \"It\'s \ta \tbeautiful \tday!\" &lt;br>'; <br>
+echo "&lt;/pre>";
           <br> ?> <br>
         </pre>
         </div>
@@ -477,7 +500,7 @@
           <pre class="prettyprint lang-php">
 
           &lt;?php <br>
-          for ($count = 1; $count &lt;= 10; ++$count) <br> { <br> echo "Salem for the $count time &lt;br>" ; <br>}
+for ($count = 1; $count &lt;= 10; ++$count) <br> { <br> echo "Salem for the $count time &lt;br>" ; <br>}
           <br> ?>
         </pre>
         </div>
@@ -581,6 +604,31 @@
         if you have code nested more than one layer deep that you need to break out of, you can follow the break command
         with a number to indicate how many levels to break out of: <br> <br>
         break 2;
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">PHP</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-php">
+
+          &lt;?php <br>
+          for ($i = 0; $i &lt; 10; $i++) {
+            for ($j = 0; $j &lt; 10; $j++) {
+                echo $i . " " . $j . "&lt;br>";
+                if ($j == 5) {
+                    break 2;
+                }
+            }
+            if ($i == 4) {
+                break;
+            }
+            echo $i . "&lt;br>";
+        }
+        </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <h1>??????</h1>
+        </div>
       </div>
     </section>
     <h1 class="Title">VI. Conditional statements</h1>
@@ -694,7 +742,11 @@
           <pre class="prettyprint lang-php">
 
           &lt;?php <br>
-
+          function myFunction()
+          {
+              echo "Hello World!";
+          }
+          myFunction();
           <br> ?> <br>
 
         </pre>
@@ -791,13 +843,12 @@
           <pre class="prettyprint lang-php">
 
           &lt;?php <br>
-          $My_Array = array("Karim", "Amel", "Nour", "Ahmed"); <br>
-          print_r($My_Array); <br>
-          echo "&lt;br>"; <br>
-          $My_Second_Array = array("Karim" => "First Year Student", <br> "Amel" => "Second Year Student",<br> "Nour"
-          => "Third
-          Year Student",<br> "Ahmed" => "Fourth Year Student");<br>
-          print_r($My_Second_Array);<br>
+$My_Array = array("Karim", "Amel", "Nour", "Ahmed"); <br>
+print_r($My_Array); <br>
+echo "&lt;br>"; <br>
+$My_Second_Array = array("Karim" => "First Year Student", <br> "Amel" => "Second Year Student",<br> "Nour"=> "Third
+Year Student",<br> "Ahmed" => "Fourth Year Student");<br>
+print_r($My_Second_Array);<br>
           ?>
         </pre>
         </div>
@@ -824,16 +875,15 @@
           <pre class="prettyprint lang-php">
 
           &lt;?php <br>
-          $Students = array("Karim", "Amel", "Nour", "Ahmed"); <br> <br>
-          foreach ($Students as $Student) { <br>
-          echo $Student . "&lt;br>"; <br>
-          } <br>
-          echo "&lt;br>"; <br>
-          $Students_Year = array( <br>"Karim" => "First Year Student", <br> "Amel" => "Second Year Student", <br>
-          "Nour" => "Third Year Student", <br> "Ahmed" => "Fourth Year Student"); <br> <br>
-          foreach ($Students_Year as $Student => $Year) { <br>
-          echo $Student . " is a " . $Year . "&lt;br>"; <br>
-          }
+$Students = array("Karim", "Amel", "Nour", "Ahmed"); <br> <br>
+foreach ($Students as $Student) { <br>
+echo $Student . "&lt;br>"; <br>
+} <br>
+echo "&lt;br>"; <br>
+$Students_Year = array( <br>"Karim" => "First Year Student", <br> "Amel" => "Second Year Student", <br>"Nour" => "Third Year Student", <br> "Ahmed" => "Fourth Year Student"); <br> <br>
+foreach ($Students_Year as $Student => $Year) { <br>
+echo $Student . " is a " . $Year . "&lt;br>"; <br>
+}
           <br> ?>
         </pre>
         </div>
@@ -862,19 +912,19 @@
           <pre class="prettyprint lang-php">
 
           &lt;?php <br>
-          $University_Staff = array(<br>
-          'Students_Year' => array("Karim" => "First Year Student",<br> "Amel" => "Second Year Student",<br>
-          "Nour" => "Third
-          Year Student",<br> "Ahmed" => "Fourth Year Student"),<br>
-          'Teachers' => array("Mohamed" => "DSA",<br> "Hassan" => "DB",<br> "Ali" => "OS",<br> "Omar" =>
-          "AI"),<br>
-          'Courses' => array("DSA" => "Data Structure",<br> "DB" => "Data Base",<br> "OS" => "Operating
-          System",<br> "AI" =>
-          "Artificial Intelligence")<br>
-          );<br>
-          print_r($University_Staff); <br>
-          echo "&lt;br>"; <br>
-          echo $University_Staff['Courses']['DSA'];
+$University_Staff = array(<br>
+'Students_Year' => array("Karim" => "First Year Student",<br> "Amel" => "Second Year Student",<br>
+"Nour" => "Third
+Year Student",<br> "Ahmed" => "Fourth Year Student"),<br>
+'Teachers' => array("Mohamed" => "DSA",<br> "Hassan" => "DB",<br> "Ali" => "OS",<br> "Omar" =>
+"AI"),<br>
+'Courses' => array("DSA" => "Data Structure",<br> "DB" => "Data Base",<br> "OS" => "Operating
+System",<br> "AI" =>
+"Artificial Intelligence")<br>
+);<br>
+print_r($University_Staff); <br>
+echo "&lt;br>"; <br>
+echo $University_Staff['Courses']['DSA'];
           <br> ?>
         </pre>
         </div>

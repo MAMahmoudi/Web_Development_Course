@@ -25,11 +25,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            if (file_exists("page.php")) echo "File exists";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+  if (file_exists("page.php")) echo "File exists";<br>
+?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -56,13 +56,13 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_File = fopen("test.txt", 'w') or die("Failed to create file"); <br>
-            // some code to be executed... <br>
-            fclose($My_File);
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$My_File = fopen("test.txt", 'w') or die("Failed to create file"); <br>
+// some code to be executed... <br>
+fclose($My_File);
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -124,16 +124,16 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_File = fopen("test.txt", 'r') or die("Failed to create file"); <br>
-            $line = fgets($My_File); <br>
-            $text = fread($My_File, 3); // 3 is the number of characters to read. <br>
-            fclose($My_File); <br>
-            echo '$line ' . $line . ' &lt;br>'; <br>
-            echo '$text ' . $text . ' &lt;br>';
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$My_File = fopen("test.txt", 'r') or die("Failed to create file"); <br>
+$line = fgets($My_File); <br>
+$text = fread($My_File, 3); // 3 is the number of characters to read. <br>
+fclose($My_File); <br>
+echo '$line ' . $line . ' &lt;br>'; <br>
+echo '$text ' . $text . ' &lt;br>';
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -151,12 +151,12 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            copy('test.txt', 'test2.txt') or die("Could not copy file"); <br>
-            echo "File successfully copied to 'test2.txt'";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+copy('test.txt', 'test2.txt') or die("Could not copy file"); <br>
+echo "File successfully copied to 'test2.txt'";
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -173,11 +173,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            rename('test.txt', 'Another_Location/test.txt') or die("Could not move file"); <br>
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+rename('test.txt', 'Another_Location/test.txt') or die("Could not move file"); <br>
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -194,11 +194,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            unlink('test2.txt') or die("Could not delete file"); <br>
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+unlink('test2.txt') or die("Could not delete file"); <br>
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -227,20 +227,20 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
-            $text = "This is some text that we will write to the file"; <br>
-            fseek($My_File, -20, SEEK_END); <br>
-            fwrite($My_File, "\n$text") or die("Could not write to file"); <br>
-            fseek($My_File, 30, SEEK_SET); <br>
-            fwrite($My_File, "This text should be written at the position 30 ") or die("Could not write to file"); <br>
-            fseek($My_File, 5, SEEK_CUR); <br>
-            fwrite($My_File, "This text should be written at the position 30 + 5 ") or die("Could not write to file");
-            <br>
-            fclose($My_File);
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
+$text = "This is some text that we will write to the file"; <br>
+fseek($My_File, -20, SEEK_END); <br>
+fwrite($My_File, "\n$text") or die("Could not write to file"); <br>
+fseek($My_File, 30, SEEK_SET); <br>
+fwrite($My_File, "This text should be written at the position 30 ") or die("Could not write to file"); <br>
+fseek($My_File, 5, SEEK_CUR); <br>
+fwrite($My_File, "This text should be written at the position 30 + 5 ") or die("Could not write to file");
+<br>
+fclose($My_File);
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -268,19 +268,19 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
-            $text = "This is a test that will be written at the end. \n"; <br>
-            if (flock($My_File, LOCK_EX)) { <br>
-            fseek($My_File, 0, SEEK_END); <br>
-            fwrite($My_File, "$text") or die("Could not write to file"); <br>
-            flock($My_File, LOCK_UN); <br>
-            } <br>
-            fclose($My_File); <br>
-            echo "File 'test.txt' successfully updated";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$My_File = fopen("test.txt", 'r+') or die("Failed to open file"); <br>
+$text = "This is a test that will be written at the end. \n"; <br>
+if (flock($My_File, LOCK_EX)) { <br>
+fseek($My_File, 0, SEEK_END); <br>
+fwrite($My_File, "$text") or die("Could not write to file"); <br>
+flock($My_File, LOCK_UN); <br>
+} <br>
+fclose($My_File); <br>
+echo "File 'test.txt' successfully updated";
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -297,11 +297,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            echo file_get_contents("https://www.ensia.edu.dz/");
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+echo file_get_contents("https://www.ensia.edu.dz/");
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -319,26 +319,27 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          &lt;form method='post' action='index.php' enctype='multipart/form-data'> <br>
-          &lt;label for="File_Input">Select File: &lt;/label> <br>
-          &lt;input type='file' name='filename' size='10' id="File_Input"> <br>
-          &lt;input type='submit' value='Upload'> <br>
-          &lt;/form> <br>
-          <font color="green">
-            &lt;?php <br>
-            if ($_FILES) { // Checks if empty<br>
-            $name = $_FILES['filename']['name']; <br>
-            move_uploaded_file($_FILES['filename']['tmp_name'], $name); <br>
-            echo "Uploaded image '$name'&lt;br>&lt;img src='$name'> &lt;br>"; <br>
-            foreach ($_FILES as $key => $value) { <br>
-            echo " $key : &lt;br>"; <br>
-            foreach ($value as $key2 => $value2) { <br>
-            echo " $key2 : $value2 &lt;br>"; <br>
-            }
-            }
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;form method='post' action='index.php' enctype='multipart/form-data'> <br>
+&lt;label for="File_Input">Select File: &lt;/label> <br>
+&lt;input type='file' name='filename' size='10' id="File_Input"> <br>
+&lt;input type='submit' value='Upload'> <br>
+&lt;/form> <br>
+
+&lt;?php <br>
+if ($_FILES) { // Checks if empty<br>
+$name = $_FILES['filename']['name']; <br>
+move_uploaded_file($_FILES['filename']['tmp_name'], $name); <br>
+echo "Uploaded image '$name'&lt;br>&lt;img src='$name'> &lt;br>"; <br>
+foreach ($_FILES as $key => $value) { <br>
+echo " $key : &lt;br>"; <br>
+foreach ($value as $key2 => $value2) { <br>
+echo " $key2 : $value2 &lt;br>"; <br>
+}
+}
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -435,31 +436,31 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            @$My_Connection = new mysqli('localhost', 'root', '', 'my_db'); <br>
-            if (mysqli_connect_errno()) { <br>
-            echo 'Error: Could not connect to database. Please try again later.'; <br>
-            exit; <br>
-            } else { <br>
-            echo 'Connected to database. &lt;br />'; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+@$My_Connection = new mysqli('localhost', 'root', '', 'my_db'); <br>
+if (mysqli_connect_errno()) { <br>
+echo 'Error: Could not connect to database. Please try again later.'; <br>
+exit; <br>
+} else { <br>
+echo 'Connected to database. &lt;br />'; <br>
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            @$My_Connection = mysqli_connect('localhost', 'root', '', 'my_db', 3366); <br>
-            if (mysqli_connect_errno()) { <br>
-            echo 'Error: Could not connect to database. Please try again later.'; <br>
-            exit; <br>
-            } else { <br>
-            echo 'Connected to database. Procedural &lt;br />'; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+@$My_Connection = mysqli_connect('localhost', 'root', '', 'my_db', 3366); <br>
+if (mysqli_connect_errno()) { <br>
+echo 'Error: Could not connect to database. Please try again later.'; <br>
+exit; <br>
+} else { <br>
+echo 'Connected to database. Procedural &lt;br />'; <br>
+}
+<br> ?>
+          </pre>
         </div>
       </div>
       <div class="Definitions">
@@ -488,19 +489,19 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $My_Connection->select_db('my_db2');
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$My_Connection->select_db('my_db2');
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            mysqli_select_db($My_Connection, 'my_db2');
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+mysqli_select_db($My_Connection, 'my_db2');
+<br> ?>
+          </pre>
         </div>
       </div>
       <h4 class="Sub_Section_Title">Querying the Database</h4>
@@ -536,26 +537,26 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Number = 10; <br>
-            $stmt = $My_Connection->prepare($query); <br>
-            $stmt->bind_param('i', $Number); <br>
-            $stmt->execute();
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$Number = 10; <br>
+$stmt = $My_Connection->prepare($query); <br>
+$stmt->bind_param('i', $Number); <br>
+$stmt->execute();
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Number = 10; <br>
-            $stmt = mysqli_stmt_init($My_Connection); <br>
-            mysqli_stmt_prepare($stmt, $query); <br>
-            mysqli_stmt_bind_param($stmt, 'i', $Number); <br>
-            mysqli_stmt_execute($stmt);
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$Number = 10; <br>
+$stmt = mysqli_stmt_init($My_Connection); <br>
+mysqli_stmt_prepare($stmt, $query); <br>
+mysqli_stmt_bind_param($stmt, 'i', $Number); <br>
+mysqli_stmt_execute($stmt);
+<br> ?>
+          </pre>
         </div>
       </div>
       <h4 class="Sub_Section_Title">Retrieving the Query Results</h4>
@@ -569,35 +570,35 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $stmt->store_result(); <br>
-            echo "Number of rows found: " . $stmt->num_rows . "&lt;br />"; <br>
-            $stmt->bind_result($User_ID, $Name, $Birthdate, $Address); <br>
-            while ($stmt->fetch()) { <br>
-            echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
-            echo "&lt;br />Name: " . $Name; <br>
-            echo "&lt;br />Birthdate: " . $Birthdate; <br>
-            echo "&lt;br />Address: " . $Address; <br>
-            echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$stmt->store_result(); <br>
+echo "Number of rows found: " . $stmt->num_rows . "&lt;br />"; <br>
+$stmt->bind_result($User_ID, $Name, $Birthdate, $Address); <br>
+while ($stmt->fetch()) { <br>
+echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
+echo "&lt;br />Name: " . $Name; <br>
+echo "&lt;br />Birthdate: " . $Birthdate; <br>
+echo "&lt;br />Address: " . $Address; <br>
+echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            mysqli_stmt_bind_result($stmt, $User_ID, $Name, $Birthdate, $Address); <br>
-            while (mysqli_stmt_fetch($stmt)) { <br>
-            echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
-            echo "&lt;br />Name: " . $Name; <br>
-            echo "&lt;br />Birthdate: " . $Birthdate; <br>
-            echo "&lt;br />Address: " . $Address; <br>
-            echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+mysqli_stmt_bind_result($stmt, $User_ID, $Name, $Birthdate, $Address); <br>
+while (mysqli_stmt_fetch($stmt)) { <br>
+echo "&lt;p>&lt;strong>User_ID: " . $User_ID . "&lt;/strong>"; <br>
+echo "&lt;br />Name: " . $Name; <br>
+echo "&lt;br />Birthdate: " . $Birthdate; <br>
+echo "&lt;br />Address: " . $Address; <br>
+echo "&lt;br />-------------------------------------------&lt;/p>"; <br>
+}
+<br> ?>
+          </pre>
         </div>
       </div>
       <div class="Definitions">
@@ -611,22 +612,22 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $stmt->store_result(); <br>
-            echo "Number of rows found: " . $stmt->num_rows . "&lt;br />";
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$stmt->store_result(); <br>
+echo "Number of rows found: " . $stmt->num_rows . "&lt;br />";
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            $result = mysqli_stmt_get_result($stmt); <br>
-            $num_results = mysqli_num_rows($result); <br>
-            echo 'Number of records found: ' . $num_results . '&lt;br />';
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$result = mysqli_stmt_get_result($stmt); <br>
+$num_results = mysqli_num_rows($result); <br>
+echo 'Number of records found: ' . $num_results . '&lt;br />';
+<br> ?>
+          </pre>
         </div>
       </div>
       <div class="Definitions">
@@ -653,31 +654,31 @@
       <div class="card">
         <h2 class="Code_Tag">Object-oriented</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            //After execute <br>
-            $result = $stmt->get_result(); <br>
-            while ($row = mysqli_fetch_assoc($result)) { <br>
-            foreach ($row as $key => $value) { <br>
-            echo $key . ' : ' . $value . '&lt;br />'; <br>
-            } <br>
-            echo '---------------------------------&lt;br />'; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+//After execute <br>
+$result = $stmt->get_result(); <br>
+while ($row = mysqli_fetch_assoc($result)) { <br>
+foreach ($row as $key => $value) { <br>
+echo $key . ' : ' . $value . '&lt;br />'; <br>
+} <br>
+echo '---------------------------------&lt;br />'; <br>
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Procedural</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            while ($row = mysqli_fetch_assoc($result)) { <br>
-            foreach ($row as $key => $value) { <br>
-            echo $key . ' : ' . $value . '&lt;br />'; <br>
-            } <br>
-            echo '---------------------------------&lt;br />'; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+while ($row = mysqli_fetch_assoc($result)) { <br>
+foreach ($row as $key => $value) { <br>
+echo $key . ' : ' . $value . '&lt;br />'; <br>
+} <br>
+echo '---------------------------------&lt;br />'; <br>
+}
+<br> ?>
+          </pre>
         </div>
       </div>
       <h4 class="Sub_Section_Title">Inserting data into the Database</h4>
@@ -687,46 +688,46 @@
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <font>
-            &lt;!DOCTYPE html> <br>
-            &lt;html lang="en"> <br>
-            &lt;head> <br>
-            &lt;meta charset="UTF-8"> <br>
-            &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"> <br>
-            &lt;title>Document&lt;/title> <br>
-            &lt;/head> <br>
-            &lt;body> <br>
-            &lt;form action="index.php" method="post"> <br>
-            &lt;label for="Name">Name&lt;/label> <br>
-            &lt;input type="text" name="Name" id="Name"> &lt;br> <br>
-            &lt;label for="Birthdate">Birthdate&lt;/label> <br>
-            &lt;input type="date" name="Birthdate" id="Birthdate"> &lt;br> <br>
-            &lt;label for="Address">Address&lt;/label> <br>
-            &lt;input type="text" name="Address" id="Address"> &lt;br> <br>
-            &lt;input type="submit" value="submit" name="submit"> <br>
-            &lt;/form> <br>
-            &lt;/body> <br>
-            &lt;/html>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;!DOCTYPE html> <br>
+&lt;html lang="en"> <br>
+&lt;head> <br>
+&lt;meta charset="UTF-8"> <br>
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"> <br>
+&lt;title>Document&lt;/title> <br>
+&lt;/head> <br>
+&lt;body> <br>
+&lt;form action="index.php" method="post"> <br>
+&lt;label for="Name">Name&lt;/label> <br>
+&lt;input type="text" name="Name" id="Name"> &lt;br> <br>
+&lt;label for="Birthdate">Birthdate&lt;/label> <br>
+&lt;input type="date" name="Birthdate" id="Birthdate"> &lt;br> <br>
+&lt;label for="Address">Address&lt;/label> <br>
+&lt;input type="text" name="Address" id="Address"> &lt;br> <br>
+&lt;input type="submit" value="submit" name="submit"> <br>
+&lt;/form> <br>
+&lt;/body> <br>
+&lt;/html>
+            </pre>
         </div>
         <h2 class="Code_Tag">PHP</h2>
         <div class="JS_Code">
-          <font color="green">
-            &lt;?php <br>
-            if (!isset($_POST['Name']) || !isset($_POST['Birthdate']) || !isset($_POST['Address'])) { <br>
-            echo '&lt;h1>Please fill all the fields&lt;/h1>'; <br>
-            exit(); <br>
-            } <br>
-            $Name = $_POST['Name']; <br>
-            $Birthdate = $_POST['Birthdate']; <br>
-            $Address = $_POST['Address']; <br>
-            @$My_Connection = new mysqli('localhost', 'root', '', 'my_db', 3366); <br>
-            $query = "INSERT INTO `user` ( `Name`, `BirthDate`, `Address`) VALUES (?, ?,?)"; <br>
-            $stmt = $My_Connection->prepare($query); <br>
-            $stmt->bind_param('sss', $Name, $Birthdate, $Address); <br>
-            $stmt->execute();
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+if (!isset($_POST['Name']) || !isset($_POST['Birthdate']) || !isset($_POST['Address'])) { <br>
+echo '&lt;h1>Please fill all the fields&lt;/h1>'; <br>
+exit(); <br>
+} <br>
+$Name = $_POST['Name']; <br>
+$Birthdate = $_POST['Birthdate']; <br>
+$Address = $_POST['Address']; <br>
+@$My_Connection = new mysqli('localhost', 'root', '', 'my_db', 3366); <br>
+$query = "INSERT INTO `user` ( `Name`, `BirthDate`, `Address`) VALUES (?, ?,?)"; <br>
+$stmt = $My_Connection->prepare($query); <br>
+$stmt->bind_param('sss', $Name, $Birthdate, $Address); <br>
+$stmt->execute();
+<br> ?>
+          </pre>
         </div>
       </div>
       <h4 class="Sub_Section_Title">Disconnecting from the Database</h4>
@@ -761,17 +762,17 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            try { <br>
-            $Connection = new PDO("mysql:host=localhost;dbname=my_db;port=3366", "root", ""); <br>
-            echo "Connected successfully"; <br>
-            } catch (PDOException $e) { <br>
-            throw new PDOException($e->getMessage(), (int)$e->getCode()); <br>
-            }
-            <br> ?>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+  try { <br>
+  $Connection = new PDO("mysql:host=localhost;dbname=my_db;port=3366", "root", ""); <br>
+  echo "Connected successfully"; <br>
+  } catch (PDOException $e) { <br>
+  throw new PDOException($e->getMessage(), (int)$e->getCode()); <br>
+  }
+  <br> ?>
 
-          </font>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -807,18 +808,18 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $query = "SELECT * FROM User where User_Id&lt;=10"; <br>
-            $result = $Connection->query($query); <br>
-            while ($row = $result->fetch()) { <br>
-            echo 'Name: ' . htmlspecialchars($row['Name']) . "&lt;br>"; <br>
-            echo 'Birthdate: ' . htmlspecialchars($row['BirthDate']) . "&lt;br>"; <br>
-            echo 'Address: ' . htmlspecialchars($row['Address']) . "&lt;br>"; <br>
-            echo "---------------------------------------------&lt;br />"; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$query = "SELECT * FROM User where User_Id&lt;=10"; <br>
+$result = $Connection->query($query); <br>
+while ($row = $result->fetch()) { <br>
+echo 'Name: ' . htmlspecialchars($row['Name']) . "&lt;br>"; <br>
+echo 'Birthdate: ' . htmlspecialchars($row['BirthDate']) . "&lt;br>"; <br>
+echo 'Address: ' . htmlspecialchars($row['Address']) . "&lt;br>"; <br>
+echo "---------------------------------------------&lt;br />"; <br>
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -841,22 +842,22 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $Number = 10; <br>
-            $query = "SELECT * FROM User where User_Id &lt;=?"; <br>
-            $stmt=$Connection->prepare($query); <br>
-            $stmt->bindParam(1, $Number, PDO::PARAM_INT); <br>
-            $stmt->execute([$Number]); <br>
-            echo "Number of rows: " . $stmt->rowCount() . "&lt;br>"; <br>
-            while ($My_Results = $stmt->fetch(PDO::FETCH_ASSOC)) { <br>
-            echo 'Name: ' . htmlspecialchars($My_Results['Name']) . "&lt;br>"; <br>
-            echo 'Birthdate: ' . htmlspecialchars($My_Results['BirthDate']) . "&lt;br>"; <br>
-            echo 'Address: ' . htmlspecialchars($My_Results['Address']) . "&lt;br>"; <br>
-            echo "---------------------------------------------&lt;br />"; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-php">
+&lt;?php <br>
+$Number = 10; <br>
+$query = "SELECT * FROM User where User_Id &lt;=?"; <br>
+$stmt=$Connection->prepare($query); <br>
+$stmt->bindParam(1, $Number, PDO::PARAM_INT); <br>
+$stmt->execute([$Number]); <br>
+echo "Number of rows: " . $stmt->rowCount() . "&lt;br>"; <br>
+while ($My_Results = $stmt->fetch(PDO::FETCH_ASSOC)) { <br>
+echo 'Name: ' . htmlspecialchars($My_Results['Name']) . "&lt;br>"; <br>
+echo 'Birthdate: ' . htmlspecialchars($My_Results['BirthDate']) . "&lt;br>"; <br>
+echo 'Address: ' . htmlspecialchars($My_Results['Address']) . "&lt;br>"; <br>
+echo "---------------------------------------------&lt;br />"; <br>
+}
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -876,6 +877,8 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
 </body>
 
 </html>
