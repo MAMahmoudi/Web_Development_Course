@@ -507,9 +507,12 @@ mysqli_select_db($My_Connection, 'my_db2');
       <h4 class="Sub_Section_Title">Querying the Database</h4>
       <div class="Definitions">
         To actually perform the query, you can use the mysqli_query() function. Before doing this, however, it's a good
-        idea to set up the query you want to run: <br> <br>
-        $query = "SELECT * FROM user WHERE user.User_ID&lt;=?";
-        <br> <br>
+        idea to set up the query you want to run:
+      </div>
+      <pre class="prettyprint lang-php">
+$query = "SELECT * FROM user WHERE user.User_ID&lt;=?";
+        </pre>
+      <div class="Definitions">
         The reason we have a question mark in the query is that we're going to use a type of query known as a prepared
         statement. The question mark is a placeholder. This tells MySQL, "whatever we replace the question mark with
         should be treated as data only, and not code." <br>
