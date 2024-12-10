@@ -148,11 +148,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            setcookie('location', 'Algeria', time() + 60 * 60 * 24 * 7, '/');
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+setcookie('location', 'Algeria', time() + 60 * 60 * 24 * 7, '/');
+<br> ?>
+      </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -177,11 +177,12 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            if (isset($_COOKIE['location'])) <br> $location = $_COOKIE['location'];
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+if (isset($_COOKIE['location'])) <br> 
+      $location = $_COOKIE['location'];
+<br> ?>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -209,11 +210,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            setcookie('location', '', time() - 3600, '/');
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+setcookie('location', '', time() - 3600, '/');
+<br> ?>
+          </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -281,11 +282,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            session_start();
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+session_start();
+<br> ?>
+         </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -309,12 +310,11 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $_SESSION['myvar'] = "Any value you want";
-            <br> ?>
-
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+$_SESSION['myvar'] = "Any value you want";
+<br> ?>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -336,16 +336,16 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            // Another page <br>
-            session_start(); <br>
-            if (isset($_SESSION['myvar'])) <br>
-            { <br>
-            echo $_SESSION['myvar']; <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+// Another page <br>
+session_start(); <br>
+if (isset($_SESSION['myvar'])) <br>
+    { <br>
+      echo $_SESSION['myvar']; <br>
+     }
+<br> ?>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -374,28 +374,28 @@
           <li>
             To do this, use the ini_set function as follows. This example sets the timeout to
             exactly one day (the letters gc standing for garbage collection): <br>
-            <font color="green">ini_set('session.gc_maxlifetime', 60 * 60 * 24);</font>
+            ini_set('session.gc_maxlifetime', 60 * 60 * 24);
           </li>
           <li>
             If you wish to know what the current timeout period is, you can display it using the following: <br>
-            <font color="green">echo ini_get('session.gc_maxlifetime');</font>
+            echo ini_get('session.gc_maxlifetime');
           </li>
         </ul>
       </div>
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            //unset a single variable <br>
-            unset($_SESSION['myvar']); <br>
-            /*To unset all the session variables at once, you can clear out the existing elements in the $_SESSION
-            superglobal. */<br>
-            $_SESSION = array(); <br>
-            //To destroy the session. <br>
-            session_destroy();
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+//unset a single variable <br>
+unset($_SESSION['myvar']); <br>
+/*To unset all the session variables at once, you can clear out the existing elements in the $_SESSION
+superglobal. */<br>
+$_SESSION = array(); <br>
+//To destroy the session. <br>
+session_destroy();
+<br> ?>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -431,27 +431,27 @@
       <div class="card">
         <h2 class="Code_Tag">PHP</h2>
         <div class="HTML_Code">
-          <font color="green">
-            &lt;?php <br>
-            $username = 'admin'; <br>
-            $password = '123'; <br>
-            if (
-            isset($_SERVER['PHP_AUTH_USER']) && <br>
-            isset($_SERVER['PHP_AUTH_PW'])
-            ) { <br>
-            if (
-            $_SERVER['PHP_AUTH_USER'] === $username && <br>
-            $_SERVER['PHP_AUTH_PW'] === $password
-            ) <br>
-            echo "You are now logged in"; <br>
-            else die("Invalid username/password combination"); <br>
-            } else { <br>
-            header('WWW-Authenticate: Basic realm="Restricted Area"'); <br>
-            header('HTTP/1.0 401 Unauthorized'); <br>
-            die("Please enter your username and password"); <br>
-            }
-            <br> ?>
-          </font>
+          <pre class="prettyprint lang-js">
+&lt;?php <br>
+$username = 'admin'; <br>
+$password = '123'; <br>
+if (
+    isset($_SERVER['PHP_AUTH_USER']) && <br>
+    isset($_SERVER['PHP_AUTH_PW'])
+    ) { <br>
+      if (
+          $_SERVER['PHP_AUTH_USER'] === $username && <br>
+          $_SERVER['PHP_AUTH_PW'] === $password
+          ) <br>
+          echo "You are now logged in"; <br>
+          else die("Invalid username/password combination"); <br>
+          } else { <br>
+          header('WWW-Authenticate: Basic realm="Restricted Area"'); <br>
+          header('HTTP/1.0 401 Unauthorized'); <br>
+          die("Please enter your username and password"); <br>
+          }
+<br> ?>
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
@@ -469,6 +469,8 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
 </body>
 
 </html>
