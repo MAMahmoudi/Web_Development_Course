@@ -1,2 +1,2 @@
 This is the content of My_File.txt.
-It should be displayed inside the "demo" paragraph.
+It should be displayed inside the "demo" paragraph when the button is clicked.

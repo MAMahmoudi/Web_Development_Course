@@ -15,7 +15,7 @@
 
 <body>
     <main>
-        <h1 class="Title">Introduction TO AJAX</h1>
+        <h1 class="Title">Introduction to AJAX</h1>
         <section id="XMLHttpRequest">
             <h3 class="Sub_Section_Title">I. XMLHttpRequest</h3>
             <div class="Definitions">
@@ -47,7 +47,7 @@
             </div>
             <div class="Definitions">
                 <p>
-                    In the example below, when a user clicks on the button, the content of the file "ajax_info.txt" will
+                    In the example below, when a user clicks on the button, the content of the file "My_File.txt" will
                     be loaded into the div element with the id "demo":
                 </p>
             </div>
@@ -64,7 +64,7 @@ function loadDoc() {
         document.getElementById("demo").innerHTML = this.responseText;
         }
         };
-        xhttp.open("GET", "ajax_info.txt", true);
+        xhttp.open("GET", "My_File.txt", true);
         xhttp.send();
         }
 &lt;/script&gt;
@@ -90,7 +90,7 @@ function loadDoc() {
                     property changes. <br>
                     The function checks if the readyState property is 4 and the status property is 200. If true, it
                     will
-                    write the content of the file "ajax_info.txt" into the div element with the id "demo". <br>
+                    write the content of the file "My_File.txt" into the div element with the id "demo". <br>
                     The readyState property holds the status of the XMLHttpRequest. It is an integer from 0 to 4 and
                     it
                     is updated by the XMLHttpRequest object when the request is in progress:<br>
@@ -122,6 +122,245 @@ function loadDoc() {
                 The responseXML property returns the response data as XML data. <br>
                 The response property returns the response data. <br>
                 </p>
+            </div>
+            <h3 class="Sub_Section_Title">XMLHttpRequest Object Properties</h3>
+            <div class="Definitions">
+                <p>
+                    The following table lists the most important properties of the XMLHttpRequest object:
+                </p>
+            </div>
+            <table class="Table">
+                <tr>
+                    <th>Property</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>onload</td>
+                    <td>Defines a function to be called when the request is received (loaded)</td>
+                </tr>
+                <tr>
+                    <td>onreadystatechange</td>
+                    <td>Stores a function (or the name of a function) to be called automatically each time the
+                        readyState property changes</td>
+                </tr>
+                <tr>
+                    <td>readyState</td>
+                    <td>Holds the status of the XMLHttpRequest. Changes from 0 to 4: <br>
+                        0: request not initialized <br>
+                        1: server connection established <br>
+                        2: request received <br>
+                        3: processing request <br>
+                        4: request finished and response is ready</td>
+                </tr>
+                <tr>
+                    <td>responseText</td>
+                    <td>Returns the response data as a string</td>
+                </tr>
+                <tr>
+                    <td>responseXML</td>
+                    <td>Returns the response data as XML data</td>
+                </tr>
+                <tr>
+                    <td>status</td>
+                    <td>Returns the status-number of a request</td>
+                </tr>
+                <tr>
+                    <td>statusText</td>
+                    <td>Returns the status-text (e.g. "OK" or "Not Found")</td>
+                </tr>
+            </table>
+            <div class="Definitions">
+                <p>
+                    Bellow is an example of how to use the onload property of the XMLHttpRequest object:
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js lang-html">
+                        <code>
+&lt;script&gt;
+var xhttp = new XMLHttpRequest();
+xhttp.onload = function() {
+    if (this.status == 200) {
+        document.getElementById("demo").innerHTML = this.responseText;
+    }
+};
+xhttp.open("GET", "My_File2.txt", true);
+xhttp.send();
+&lt;/script&gt;
+&lt;div id="demo"&gt;&lt;/div&gt;
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <p id="demo2"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the onload property is used to define a function to be called when the request
+                    is received. <br>
+                    The function checks if the status property is 200 (OK). If true, it writes the content of the file
+                    "My_File2.txt" into the div element with the id "demo". <br>
+                </p>
+            </div>
+            <h3 class="Sub_Section_Title">XMLHttpRequest Object Methods</h3>
+            <div class="Definitions">
+                <p>
+                    The following table lists the most important methods of the XMLHttpRequest object:
+                </p>
+            </div>
+            <table class="Table">
+                <tr>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>abort()</td>
+                    <td>Cancels the current request</td>
+                </tr>
+                <tr>
+                    <td>getAllResponseHeaders()</td>
+                    <td>Returns header information</td>
+                </tr>
+                <tr>
+                    <td>getResponseHeader()</td>
+                    <td>Returns specific header information</td>
+                </tr>
+                <tr>
+                    <td>open(method, url, async, user, psw)</td>
+                    <td>Specifies the type of request: method: GET or POST, url: the server (file) location, async:
+                        true (asynchronous) or false (synchronous), user: optional user name, psw: optional password
+                    </td>
+                </tr>
+                <tr>
+                    <td>send()</td>
+                    <td>Sends the request to the server (used for GET)</td>
+                </tr>
+                <tr>
+                    <td>setRequestHeader()</td>
+                    <td>Adds a label/value pair to the header to be sent</td>
+                </tr>
+            </table>
+            <div class="Definitions">
+                <p>
+                    Bellow is an example on how to use the abort() method of the XMLHttpRequest object:
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js lang-html">
+                        <code>
+&lt;script&gt;
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("demo").innerHTML = this.responseText;
+    }
+};
+xhttp.open("GET", "My_File.txt", true);
+xhttp.send();
+function abortFunction() {
+    xhttp.abort();
+}
+&lt;/script&gt;
+&lt;button type="button" onclick="abortFunction()"&gt;Abort request&lt;/button&gt;
+&lt;div id="demo"&gt;&lt;/div&gt;
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <button type="button" onclick="Start()">Start</button>
+                    <button type="button" onclick="abortFunction()">Abort request</button>
+                    <p id="demo3"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the abort() method is used to cancel the current request. <br>
+                    The function abortFunction() is triggered by the button click. <br>
+                    The function will call the abort() method on the XMLHttpRequest object. <br>
+                </p>
+            </div>
+            <div class="Definitions">
+                <p>
+                    Bellow is an example on how to use getAllResponseHeaders() method of the XMLHttpRequest object:
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js lang-html">
+                        <code>
+&lt;script&gt;
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("demo").innerHTML = this.getAllResponseHeaders();
+    }
+};
+xhttp.open("GET", "My_File.txt", true);
+xhttp.send();
+&lt;/script&gt;
+&lt;div id="demo"&gt;&lt;/div&gt;
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <p id="demo4"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the getAllResponseHeaders() method is used to return the header information of
+                    the response. <br>
+                    The function will write the header information into the div element with the id "demo". <br>
+                </p>
+            </div>
+            <div class="Definitions">
+                <p>
+                    Bellow is an example on how to use getResponseHeader() method of the XMLHttpRequest object:
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js lang-html">
+                        <code>
+&lt;script&gt;
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("demo").innerHTML = this.getResponseHeader("Content-Type");
+    }
+};
+xhttp.open("GET", "My_File.txt", true);
+xhttp.send();
+&lt;/script&gt;
+&lt;div id="demo"&gt;&lt;/div&gt;
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <p id="demo5"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the getResponseHeader() method is used to return the specific header
+                    information of the response. <br>
+                    The function will write the specific header information into the div element with the id "demo".
+                    <br>
+                </p>
+            </div>
+
+
         </section>
         <section id="Fetch API">
             <h3 class="Sub_Section_Title">II. Fetch API</h3>
@@ -147,7 +386,7 @@ function loadDoc() {
                 <div class="HTML_Code">
                     <pre class="prettyprint lang-js">
                         <code>
-fetch('ajax_info.txt')
+fetch('My_File.txt')
     .then(response => response.text())
     .then(data => {
         document.getElementById("demo").innerHTML = data;
@@ -162,7 +401,7 @@ fetch('ajax_info.txt')
             </div>
             <div class="Definitions">
                 <p>
-                    In the example above, the fetch() method is used to fetch the content of the file "ajax_info.txt".
+                    In the example above, the fetch() method is used to fetch the content of the file "My_File.txt".
                     <br>
                     The fetch() method returns a Promise. When the promise is resolved, it returns the response object.
                     <br>
