@@ -7,6 +7,7 @@ if (isset($_POST['userid']) && isset($_POST['password'])) {
     if ($userid == 'admin' && $password == '123') {
         // if they are in the database register the user id
         $_SESSION['valid_user'] = $userid;
+        $_SESSION['pic'] = $path;
     }
 }
 ?>

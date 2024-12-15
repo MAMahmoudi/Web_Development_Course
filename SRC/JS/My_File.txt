@@ -1,0 +1,2 @@
+This is the content of My_File.txt.
+It should be displayed inside the "demo" paragraph.

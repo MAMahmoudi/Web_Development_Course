@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+    <link rel="stylesheet" href="SRC/CSS/Styles.css">
+    <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>AJAX</title>
+</head>
+
+<body>
+    <main>
+        <h1 class="Title">Introduction TO AJAX</h1>
+        <section id="XMLHttpRequest">
+            <h3 class="Sub_Section_Title">I. XMLHttpRequest</h3>
+            <div class="Definitions">
+                <p>
+                    AJAX stands for Asynchronous JavaScript and XML. AJAX is a new technique for creating better,
+                    faster, and more interactive web applications with the help of XML, HTML, CSS, and JavaScript.
+                    AJAX uses XHTML for content, CSS for presentation, along with Document Object Model and JavaScript
+                    for dynamic content display. <br>
+                    AJAX allows web pages to be updated asynchronously by exchanging small amounts of data with the
+                    server behind the scenes. This means that it is possible to update parts of a web page, without
+                    reloading the whole page. <br>
+                    AJAX is not a programming language. AJAX is a technique for accessing web servers from a web page.
+                    <br>
+                </p>
+            </div>
+            <img src="SRC/IMAGES/AJAX/pic_ajax.gif" alt="pic_ajax" class="Smaller_Image">
+            <div class="Definitions">
+                <p>
+                <ol>
+                    <li>An event occurs in a web page (the page is loaded, a button is clicked)</li>
+                    <li>An XMLHttpRequest object is created by JavaScript</li>
+                    <li>The XMLHttpRequest object sends a request to a web server</li>
+                    <li>The server processes the request</li>
+                    <li>The server sends a response back to the web page</li>
+                    <li>The response is read by JavaScript</li>
+                    <li>Proper action (like page update) is performed by JavaScript</li>
+                </ol>
+                </p>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example below, when a user clicks on the button, the content of the file "ajax_info.txt" will
+                    be loaded into the div element with the id "demo":
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+                        <code>
+&lt;script&gt;                            
+function loadDoc() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("demo").innerHTML = this.responseText;
+        }
+        };
+        xhttp.open("GET", "ajax_info.txt", true);
+        xhttp.send();
+        }
+&lt;/script&gt;
+&lt;button type="button" onclick="loadDoc()"&gt;Change Content&lt;/button&gt;
+&lt;div id="demo"&gt;&lt;/div&gt;
+        
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <button type="button" onclick="loadDoc()">Change Content</button>
+                    <p id="demo"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the JavaScript function loadDoc() is triggered by the button click. <br>
+                    The function will first create an XMLHttpRequest object <strong>(var xhttp = new
+                        XMLHttpRequest();)</strong> <br>
+                    The xhttp.onreadystatechange property specifies a function to be executed every time the
+                    readyState
+                    property changes. <br>
+                    The function checks if the readyState property is 4 and the status property is 200. If true, it
+                    will
+                    write the content of the file "ajax_info.txt" into the div element with the id "demo". <br>
+                    The readyState property holds the status of the XMLHttpRequest. It is an integer from 0 to 4 and
+                    it
+                    is updated by the XMLHttpRequest object when the request is in progress:<br>
+                <ul>
+                    <li>0: request not initialized</li>
+                    <li>1: server connection established</li>
+                    <li>2: request received</li>
+                    <li>3: processing request</li>
+                    <li>4: request finished and response is ready</li>
+                </ul>
+                The status property holds the status of the XMLHttpRequest. <br>
+                An HTTP status code is returned by the server in response to the request made by the XMLHttpRequest
+                object. <br>
+                The status property is an integer from 200 to 599:
+                <ul>
+                    <li>200: "OK"</li>
+                    <li>403: "Forbidden"</li>
+                    <li>404: "Page not found"</li>
+                </ul>
+                The open() method specifies the type of request, the URL, and if the request should be handled
+                asynchronously or not. <br>
+                <ul>
+                    <li>The type of request: GET or POST</li>
+                    <li>The URL of the server the request is sent to</li>
+                    <li>Optional: true (asynchronous) or false (synchronous)</li>
+                </ul>
+                The send() method sends the request to the server (used for GET requests). <br>
+                The responseText property returns the response data as a string. <br>
+                The responseXML property returns the response data as XML data. <br>
+                The response property returns the response data. <br>
+                </p>
+        </section>
+        <section id="Fetch API">
+            <h3 class="Sub_Section_Title">II. Fetch API</h3>
+            <div class="Definitions">
+                <p>
+                    The Fetch API provides an interface for fetching resources (including across the network). It will
+                    seem familiar to anyone who has used XMLHttpRequest, but the new API provides a more powerful and
+                    flexible feature set. <br>
+                    The fetch() method is available in the global window scope, which means that you can call fetch()
+                    directly, without having to create an instance of it. <br>
+                    The fetch() method takes one mandatory argument, the path to the resource you want to fetch. It
+                    returns a Promise that resolves to the Response to that request, whether it is successful or not.
+                    You can also optionally pass in an init options object as the second argument (see Request
+                    for more details). <br>
+                    The fetch() method returns a Promise. When the promise is resolved, it returns the response object.
+                    The response object has a number of methods and properties available to it. <br>
+                    The fetch() method can optionally accept a second parameter, an init object that allows you to
+                    control a number of different settings:
+                </p>
+            </div>
+            <div class="card">
+                <h2 class="Code_Tag">JavaScript</h2>
+                <div class="HTML_Code">
+                    <pre class="prettyprint lang-js">
+                        <code>
+fetch('ajax_info.txt')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("demo").innerHTML = data;
+    });
+                        </code>
+                </pre>
+                </div>
+                <h2 class="Code_Tag">Result</h2>
+                <div class="Result_Demo" id="Properties_Result">
+                    <p id="demo"></p>
+                </div>
+            </div>
+            <div class="Definitions">
+                <p>
+                    In the example above, the fetch() method is used to fetch the content of the file "ajax_info.txt".
+                    <br>
+                    The fetch() method returns a Promise. When the promise is resolved, it returns the response object.
+                    <br>
+                    The response object has a text() method that returns a promise that resolves with the result of
+                    parsing the body text as text. <br>
+                    The response object has a json() method that returns a promise that resolves with the result of
+                    parsing the body text as JSON. <br>
+                    The response object has a blob() method that returns a promise that resolves with the result of
+                    parsing the body as a Blob. <br>
+                    The response object has a formData() method that returns a promise that resolves with the result of
+                    parsing the body text as FormData. <br>
+                    The response object has a arrayBuffer() method that returns a promise that resolves with the result
+                    of parsing the body as an ArrayBuffer. <br>
+                </p>
+            </div>
+
+
+        </section>
+    </main>
+    <footer class="Inter_Pages">
+        <a href="DOM.html" class="Arrow">
+            <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+            <h1>DOM</h1>
+        </a>
+        <a href="JS_Form_Validation.html" class="Arrow">
+            <h1>JS Form Validation</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+        </a>
+    </footer>
+    <script src="SRC/JS/Script.js" type="module"></script>
+    <script src="SRC/JS/AJAX.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+        </script>
+</body>
+
+</html>
