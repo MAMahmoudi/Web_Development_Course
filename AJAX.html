@@ -244,182 +244,196 @@ xhttp.send();
                     <td>Adds a label/value pair to the header to be sent</td>
                 </tr>
             </table>
+            <h3 class="Sub_Section_Title">Example</h3>
             <div class="Definitions">
                 <p>
-                    Bellow is an example on how to use the abort() method of the XMLHttpRequest object:
+                    To illustrate the use of AJAX, we will create a simple example that will fetch data from a MySQL
+                    database using PHP. You can find the complete code <a
+                        href="https://github.com/MAMahmoudi/AJAX_PHP_EXAMPLE">here.</a> <br>
+                    In the example bellow, we will create a database "ajax_php_example" with a table "product" with the
+                    following structure:
                 </p>
             </div>
-            <div class="card">
-                <h2 class="Code_Tag">JavaScript</h2>
-                <div class="HTML_Code">
-                    <pre class="prettyprint lang-js lang-html">
+            <img src="SRC/IMAGES/AJAX/Product.png" alt="Product.png" class="Smaller_Image">
+            <div class="Definitions">
+                <p>
+                    In the index.php file, we put a table that will display the data from the "product" table and a
+                    button to add new products. <br>
+                    We have only declared a table without defining its structure. We will the Read.php file to do that.
+                </p>
+            </div>
+
+            <pre class="prettyprint lang-php">
                         <code>
-&lt;script&gt;
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("demo").innerHTML = this.responseText;
+&lt;h1>Product List&lt;/h1>
+&lt;button type="button" class="btn btn-primary" id="Add_Btn">Add &lt;/button>
+&lt;table class="table table-striped" id="Product_Table">
+&lt;?php require_once 'Read.php'; ?>
+&lt;/table>
+        </code>
+        </pre>
+
+            <div class="Definitions">
+                <p>
+                    In the Read.php file, we will write the PHP code that will fetch the data from the "product" table
+                    and display it in the table. <br>
+                    This code create a table with the headers for the columns and then selects all the data from the
+                    Product table. <br>
+                    An additional column is added to the table for the actions (Edit and Delete). <br>
+                    The Delete button will call the Delete() function with the Product_ID as a parameter. <br>
+                    The Edit button will call the Edit() function with the Product_ID as a parameter. <br>
+                    This is is the easiest way to keep track of the product that we want to edit or delete. <br>
+                </p>
+            </div>
+
+            <pre class="prettyprint lang-php">
+                    <code>
+&lt;?php
+/*
+    * This file is used to read data from the database and display it in the table.
+    * It is included in index.php.
+    */
+// It start by requiring the Connect.php file to establish a connection to the database.    
+require_once "Connect.php";
+// It then creates a table with the headers for the columns.
+echo " &lt;tr>
+&lt;th>Product code&lt;/th>
+&lt;th>Product name&lt;/th>
+&lt;th>Description&lt;/th>
+&lt;th>Price&lt;/th>
+&lt;th>Actions&lt;/th>
+&lt;/tr>";
+// It then selects all the data from the Product table.
+$sql = "SELECT * FROM Product";
+$result = mysqli_query($My_Connection, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        // It then creates a row for each product in the table.
+        echo "&lt;tr>";
+        echo "&lt;td>" . $row["Product_ID"] . "&lt;/td>";
+        echo "&lt;td>" . $row["Product_Name"] . "&lt;/td>";
+        echo "&lt;td>" . $row["Product_Description"] . "&lt;/td>";
+        echo "&lt;td>" . $row["Price"] . "&lt;/td>";
+        echo "&lt;td>&lt;button type='button' class='btn btn-danger' onclick='Delete(" . $row["Product_ID"] . ")'>Delete&lt;/button>";
+        echo "&lt;button type='button' class='btn btn-success' onclick='Edit(" . $row["Product_ID"] . ")'>Edit&lt;/button>&lt;/td>";
+        echo "&lt;/tr>";
     }
-};
-xhttp.open("GET", "My_File.txt", true);
-xhttp.send();
-function abortFunction() {
-    xhttp.abort();
+} else {
+    echo "0 results";
 }
-&lt;/script&gt;
-&lt;button type="button" onclick="abortFunction()"&gt;Abort request&lt;/button&gt;
-&lt;div id="demo"&gt;&lt;/div&gt;
+
                         </code>
-                </pre>
-                </div>
-                <h2 class="Code_Tag">Result</h2>
-                <div class="Result_Demo" id="Properties_Result">
-                    <button type="button" onclick="Start()">Start</button>
-                    <button type="button" onclick="abortFunction()">Abort request</button>
-                    <p id="demo3"></p>
-                </div>
-            </div>
+                        </pre>
             <div class="Definitions">
                 <p>
-                    In the example above, the abort() method is used to cancel the current request. <br>
-                    The function abortFunction() is triggered by the button click. <br>
-                    The function will call the abort() method on the XMLHttpRequest object. <br>
+                    When the user clicks on the Add button, a modal will pop up with a form to add a new product.
+                    <br>
+                    The form will have fields for the Product Name, Description, and Price. <br>
+                    When the user submits the form, the data will be sent to the server using AJAX. <br>
+                    The data will be sent to the add.php file, which will insert the data into the Product table. <br>
+                    The add.php file will then call the Read.php file to display the updated table. <br>
                 </p>
             </div>
-            <div class="Definitions">
-                <p>
-                    Bellow is an example on how to use getAllResponseHeaders() method of the XMLHttpRequest object:
-                </p>
-            </div>
-            <div class="card">
-                <h2 class="Code_Tag">JavaScript</h2>
-                <div class="HTML_Code">
-                    <pre class="prettyprint lang-js lang-html">
-                        <code>
-&lt;script&gt;
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("demo").innerHTML = this.getAllResponseHeaders();
+            <pre class="prettyprint lang-js">
+                                <code>
+// We add an event listener to the Add_Form
+Add_Form.addEventListener("submit", function (event) {
+  // We prevent the default behavior of the form
+  event.preventDefault();
+  // We create a new XMLHttpRequest object
+  const xhr = new XMLHttpRequest();
+  // We open a new POST request to the add.php file
+  xhr.open("POST", "add.php");
+  // We set the Content-Type header to "application/x-www-form-urlencoded"
+  // This header is used to specify the type of data that is being sent to the server
+  // In this case, we are sending form data to the server in the format of key-value pairs
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  // We add an event listener to the xhr object
+  // This event listener is called every time the readyState property of the xhr object changes
+  // The readyState property of the xhr object represents the state of the request
+  // The onreadystatechange event is triggered when the readyState property changes
+  xhr.onreadystatechange = function () {
+    // We check if the readyState property is equal to XMLHttpRequest.DONE
+    // This means that the request has been completed
+    // We also check if the status property is equal to 200
+    // This means that the request was successful
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      // If the request was successful,
+      // we set the innerHTML of the Table element to the responseText of the xhr object
+      // The xhr.responseText property contains the result of Read.php file since it is called
+      // at the end of add.php
+      Table.innerHTML = xhr.responseText;
     }
-};
-xhttp.open("GET", "My_File.txt", true);
-xhttp.send();
-&lt;/script&gt;
-&lt;div id="demo"&gt;&lt;/div&gt;
-                        </code>
-                </pre>
-                </div>
-                <h2 class="Code_Tag">Result</h2>
-                <div class="Result_Demo" id="Properties_Result">
-                    <p id="demo4"></p>
-                </div>
-            </div>
+  };
+  // We get the values of the input fields in the Add_Form
+  // We use the encodeURIComponent function to encode the values
+  // so that they can be sent as part of the URL
+  const Product_ID = encodeURIComponent(
+    document.getElementById("Product_ID").value
+  );
+  const Product_Name = encodeURIComponent(
+    document.getElementById("Product_Name").value
+  );
+  const Product_Description = encodeURIComponent(
+    document.getElementById("Product_Description").value
+  );
+  const Price = encodeURIComponent(document.getElementById("Price").value);
+  // The following are the parameters that will be sent to the server
+  // They are in the format of key-value pairs
+  const snd = `Product_ID=${Product_ID}&Product_Name=${Product_Name}&Product_Description=${Product_Description}&Price=${Price}`;
+  // We send the parameters to the server
+  xhr.send(snd);
+  // We hide the Dark_Background and Add_Form
+  Dark_Background.classList = "Hidden";
+  Add_Form.classList = "Hidden";
+});
+</code>
+</pre>
             <div class="Definitions">
                 <p>
-                    In the example above, the getAllResponseHeaders() method is used to return the header information of
-                    the response. <br>
-                    The function will write the header information into the div element with the id "demo". <br>
+                    In other words, the "Table.innerHTML = xhr.responseText;" will wait untill the file that we called
+                    earlier with the "xhr.open("POST", "add.php");" is done and then take its response (which is
+                    "xhr.responseText") and put it in the
+                    innerHTML of the Table element. <br>
+                    That is why we called Read.php at the end of the add.php file. <br>
                 </p>
             </div>
-            <div class="Definitions">
-                <p>
-                    Bellow is an example on how to use getResponseHeader() method of the XMLHttpRequest object:
-                </p>
-            </div>
-            <div class="card">
-                <h2 class="Code_Tag">JavaScript</h2>
-                <div class="HTML_Code">
-                    <pre class="prettyprint lang-js lang-html">
-                        <code>
-&lt;script&gt;
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("demo").innerHTML = this.getResponseHeader("Content-Type");
+            <pre class="prettyprint lang-php">
+    <code>
+        &lt;?php
+// This file is used to add data to the database.
+// It starts by requiring the Connect.php file to establish a connection to the database.
+require_once "Connect.php";
+// It then checks if the request method is POST.
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // It then gets the data from the form and assigns it to variables.
+    $Product_ID = $_POST["Product_ID"];
+    $Product_Name = $_POST["Product_Name"];
+    $Description = $_POST["Product_Description"];
+    $Price = $_POST["Price"];
+    // It then inserts the data into the Product table.
+    $sql = "INSERT INTO Product (Product_ID, Product_Name, Product_Description, Price) VALUES (?, ?, ?, ?)";
+    $stmt = mysqli_stmt_init($My_Connection);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        echo "SQL statement failed";
+    } else {
+        mysqli_stmt_bind_param($stmt, "isss", $Product_ID, $Product_Name, $Description, $Price);
+        mysqli_stmt_execute($stmt);
     }
-};
-xhttp.open("GET", "My_File.txt", true);
-xhttp.send();
-&lt;/script&gt;
-&lt;div id="demo"&gt;&lt;/div&gt;
-                        </code>
-                </pre>
-                </div>
-                <h2 class="Code_Tag">Result</h2>
-                <div class="Result_Demo" id="Properties_Result">
-                    <p id="demo5"></p>
-                </div>
-            </div>
+}
+// It then calls the Read.php file to display the updated table.
+require_once "Read.php";
+</code>
+</pre>
             <div class="Definitions">
                 <p>
-                    In the example above, the getResponseHeader() method is used to return the specific header
-                    information of the response. <br>
-                    The function will write the specific header information into the div element with the id "demo".
-                    <br>
+                    For the Edit and Delete functionalities, we will use the same approach. <br>
+                    The only thing that changes in the Edit.php and Delete.php files is the SQL query. <br>
                 </p>
             </div>
-
-
         </section>
-        <section id="Fetch API">
-            <h3 class="Sub_Section_Title">II. Fetch API</h3>
-            <div class="Definitions">
-                <p>
-                    The Fetch API provides an interface for fetching resources (including across the network). It will
-                    seem familiar to anyone who has used XMLHttpRequest, but the new API provides a more powerful and
-                    flexible feature set. <br>
-                    The fetch() method is available in the global window scope, which means that you can call fetch()
-                    directly, without having to create an instance of it. <br>
-                    The fetch() method takes one mandatory argument, the path to the resource you want to fetch. It
-                    returns a Promise that resolves to the Response to that request, whether it is successful or not.
-                    You can also optionally pass in an init options object as the second argument (see Request
-                    for more details). <br>
-                    The fetch() method returns a Promise. When the promise is resolved, it returns the response object.
-                    The response object has a number of methods and properties available to it. <br>
-                    The fetch() method can optionally accept a second parameter, an init object that allows you to
-                    control a number of different settings:
-                </p>
-            </div>
-            <div class="card">
-                <h2 class="Code_Tag">JavaScript</h2>
-                <div class="HTML_Code">
-                    <pre class="prettyprint lang-js">
-                        <code>
-fetch('My_File.txt')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("demo").innerHTML = data;
-    });
-                        </code>
-                </pre>
-                </div>
-                <h2 class="Code_Tag">Result</h2>
-                <div class="Result_Demo" id="Properties_Result">
-                    <p id="demo"></p>
-                </div>
-            </div>
-            <div class="Definitions">
-                <p>
-                    In the example above, the fetch() method is used to fetch the content of the file "My_File.txt".
-                    <br>
-                    The fetch() method returns a Promise. When the promise is resolved, it returns the response object.
-                    <br>
-                    The response object has a text() method that returns a promise that resolves with the result of
-                    parsing the body text as text. <br>
-                    The response object has a json() method that returns a promise that resolves with the result of
-                    parsing the body text as JSON. <br>
-                    The response object has a blob() method that returns a promise that resolves with the result of
-                    parsing the body as a Blob. <br>
-                    The response object has a formData() method that returns a promise that resolves with the result of
-                    parsing the body text as FormData. <br>
-                    The response object has a arrayBuffer() method that returns a promise that resolves with the result
-                    of parsing the body as an ArrayBuffer. <br>
-                </p>
-            </div>
 
-
-        </section>
     </main>
     <footer class="Inter_Pages">
         <a href="DOM.html" class="Arrow">
