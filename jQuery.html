@@ -1,19 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
-    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
-    <title>jQuery, JS / jQuery Plugins</title>
-  </head>
-  <body>
-    <main>
-      <section>
-        <h1 class="Title">jQuery, JS / jQuery Plugins</h1>
-      </section>
-    </main>
-    <script src="SRC/JS/Script.js" type="module"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+  <link rel="stylesheet" href="SRC/CSS/Styles.css">
+  <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>jQuery</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">jQuery</h1>
+    <section>
+
+      <div class="Definitions">
+        <p>
+          jQuery is a fast, small, and feature-rich JavaScript library. It
+          makes things like HTML document traversal and manipulation, event
+          handling, and animation much simpler with an easy-to-use API that
+          works across a multitude of browsers. With a combination of
+          versatility and extensibility, jQuery has changed the way that
+          millions of people write JavaScript. <br>
+          The jQuery library contains the following features: <br>
+        <ul>
+          <li>HTML/DOM manipulation</li>
+          <li>CSS manipulation</li>
+          <li>HTML event methods</li>
+          <li>Effects and animations</li>
+          <li>AJAX</li>
+          <li>Utilities</li>
+        </ul>
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Adding jQuery to Your Web Pages</h3>
+      <div class="Definitions">
+        <p>
+          There are several ways to start using jQuery on your web site. You
+          can: <br>
+        <ul>
+          <li>Download the jQuery library from jQuery.com</li>
+          <li>Include jQuery from a CDN, like Google</li>
+        </ul>
+        </p>
+      </div>
+      <pre class="prettyprint lang-js">
+        <code>
+          &lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+        </code>
+      </pre>
+      <h3 class="Sub_Section_Title">jQuery Syntax</h3>
+      <div class="Definitions">
+        <p>
+          The jQuery syntax is tailor-made for selecting HTML elements and
+          performing some action on the element(s). Basic syntax is: <br>
+          <code>$(selector).action()</code> <br>
+          A $ sign to define/access jQuery <br>
+          A (selector) to "query (or find)" HTML elements <br>
+          A jQuery action() to be performed on the element(s) <br>
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+                  $("#div1").ready(function(){
+                  $("#button").click(function(){
+                  $("#p").hide();
+                  });
+                  });
+
+                </code>
+            </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button type="button" id="button">Click me to hide paragraphs</button>
+          <div id="div1">
+            <p id="p">If you click on the "Hide" button, I will disappear.</p>
+            <p>Click me away!</p>
+          </div>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">jQuery Selectors</h3>
+      <div class="Definitions">
+        <p>
+          jQuery selectors allow you to select and manipulate HTML element(s).
+          jQuery selectors are used to "find" (or select) HTML elements based
+          on their name, id, classes, types, attributes, values of attributes,
+          and much more. It's based on the existing CSS Selectors, and in
+          addition, it has some custom selectors. <br>
+          All selectors in jQuery start with the dollar sign and parentheses:
+          $(). <br>
+          The jQuery element selector selects elements based on the element
+          name. <br>
+          The jQuery #id selector uses the id attribute of an HTML tag to find
+          the specific element. <br>
+          The jQuery .class selector finds elements with a specific class. <br>
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">jQuery Events</h3>
+      <div class="Definitions">
+        <p>
+          jQuery events are actions that can be detected by your web page. Any
+          event that happens in the browser can be detected and used to run
+          JavaScript code. <br>
+          Here are some examples of jQuery events: <br>
+        <ul>
+          <li>Mouse events</li>
+          <li>Keyboard events</li>
+          <li>Form events</li>
+          <li>Document/Window events</li>
+          <li>Event methods</li>
+        </ul>
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">jQuery Effects</h3>
+      <div class="Definitions">
+        <p>
+          jQuery comes with various effects methods that can be used to create
+          animations easily on your web page. <br>
+          The following table lists all the jQuery methods for creating
+          animation effects: <br>
+        </p>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>hide()</td>
+            <td>Hides the selected elements</td>
+          </tr>
+          <tr>
+            <td>show()</td>
+            <td>Shows the selected elements</td>
+          </tr>
+          <tr>
+            <td>toggle()</td>
+            <td>Toggles between hide() and show() for the selected elements</td>
+          </tr>
+          <tr>
+            <td>fadeIn()</td>
+            <td>Fades in the selected elements</td>
+          </tr>
+          <tr>
+            <td>fadeOut()</td>
+            <td>Fades out the selected elements</td>
+          </tr>
+          <tr>
+            <td>fadeToggle()</td>
+            <td>Toggles between fadeIn() and fadeOut() for the selected elements</td>
+          </tr>
+          <tr>
+            <td>slideDown()</td>
+            <td>Slides down the selected elements</td>
+          </tr>
+          <tr>
+            <td>slideUp()</td>
+            <td>Slides up the selected elements</td>
+          </tr>
+          <tr>
+            <td>slideToggle()</td>
+            <td>Toggles between slideDown() and slideUp() for the selected elements</td>
+          </tr>
+        </table>
+      </div>
+      <h3 class="Sub_Section_Title">jQuery AJAX</h3>
+      <div class="Definitions">
+        <p>
+          jQuery AJAX methods allow you to send and retrieve data from the
+          server without reloading the entire page. <br>
+          The following table lists the most important methods for AJAX: <br>
+        </p>
+        <table>
+          <tr>
+            <th>Method</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>$.ajax()</td>
+            <td>Performs an async AJAX request</td>
+          </tr>
+          <tr>
+            <td>$.get()</td>
+            <td>Loads data from the server using a HTTP GET request</td>
+          </tr>
+          <tr>
+            <td>$.post()</td>
+            <td>Loads data from the server using a HTTP POST request</td>
+          </tr>
+          <tr>
+            <td>$.getJSON()</td>
+            <td>Loads JSON-encoded data from the server using a HTTP GET
+              request</td>
+          </tr>
+        </table>
+      </div>
+      <pre class="prettyprint lang-js">
+        <code>
+          $.ajax({
+          url: "demo_test.txt",
+          success: function(result){
+          $("#div1").html(result);
+          }
+          });
+        </code>
+      </pre>
+
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="AJAX.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Ajax</h1>
+    </a>
+    <a href="Security.html" class="Arrow">
+      <h1>Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script src="SRC/JS/AJAX.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
+  </script>
+</body>
+
 </html>
