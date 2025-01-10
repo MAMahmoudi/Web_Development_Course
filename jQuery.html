@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
   <link rel="stylesheet" href="SRC/CSS/Styles.css">
   <link rel="stylesheet" href="SRC/CSS/Lab_2.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -69,24 +70,42 @@
         <div class="HTML_Code">
           <pre class="prettyprint lang-js">
                 <code>
-                  $("#div1").ready(function(){
-                  $("#button").click(function(){
-                  $("#p").hide();
-                  });
-                  });
-
+$(document).ready(function () {
+$("#button").click(function () {
+$("#p").hide();
+});
+});        
+&lt;button id="button" type="button">Hide Text&lt;/button>
+&lt;p id="p"> This text will disapear when you click on the button.&lt;/p>          
                 </code>
-            </pre>
+              </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <button type="button" id="button">Click me to hide paragraphs</button>
-          <div id="div1">
-            <p id="p">If you click on the "Hide" button, I will disappear.</p>
-            <p>Click me away!</p>
-          </div>
+          <button id="button" type="button">Click Me</button>
+          <p id="p">This text will disapear when you click on the button.</p>
         </div>
       </div>
+
+      <h3 class="Sub_Section_Title">jQuery Document Ready</h3>
+      <div class="Definitions">
+        <p>
+          The document ready event occurs when the HTML document has been
+          loaded and the DOM is ready, even if all the images have not loaded
+          yet. <br>
+          The document ready event is a jQuery event that occurs when the DOM
+          is fully loaded. <br>
+          This event is already explained in the jQuery Syntax chapter. <br>
+        </p>
+      </div>
+      <pre class="prettyprint lang-js">
+        <code>
+          $(document).ready(function(){
+          // jQuery methods go here...
+          });
+        </code>
+      </pre>
+
       <h3 class="Sub_Section_Title">jQuery Selectors</h3>
       <div class="Definitions">
         <p>
@@ -171,7 +190,9 @@
           </tr>
         </table>
       </div>
-      <h3 class="Sub_Section_Title">jQuery AJAX</h3>
+    </section>
+    <section>
+      <h1 class="Title">jQuery AJAX</h1>
       <div class="Definitions">
         <p>
           jQuery AJAX methods allow you to send and retrieve data from the
@@ -212,6 +233,156 @@
           });
         </code>
       </pre>
+      <h2 class="Section_Title">jQuery load() Method</h2>
+      <div class="Definitions">
+        <p>
+          The jQuery load() method is a simple, but powerful AJAX method. The
+          load() method loads data from a server and puts the returned data
+          into the selected element. <br>
+          The load() method loads data from the server and places the returned
+          HTML into the matched element. This method provides a simple way to
+          load data asynchronous from a web server. <br>
+          The syntax for the load() method is: <br>
+          <code>$(selector).load(URL,data,callback);</code><br>
+          The required URL parameter specifies the URL you wish to load. The
+          optional data parameter specifies a set of querystring key/value
+          pairs to send along with the request. The optional callback
+          parameter is the name of a function to be executed after the load()
+          method is completed. <br>
+
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function(){
+  $("#button2").click(function(){
+  $("#div2").load("demo_test.txt");
+  });});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button2" type="button">Test</button>
+          <div id="div2"></div>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The previous example loads the content of the file "demo_test.txt"
+          into a specific &lt;div> element with id="div2" after clicking on "Test" button <br>
+          It is also possible to add a jQuery selector to the URL parameter:
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function () {
+  $("#button3").click(function () {
+    $("#div3").load("index.html #Course_Objectives");
+  });
+});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button3" type="button">Test</button>
+          <div id="div3"></div>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
+          into a specific &lt;div> element with id="div3" after clicking on "Test" button <br>
+          In the next example, we will do the same thing and a callback function will be executed after the load()
+          method is completed:
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function () {
+  $("#button4").click(function () {
+    $("#div4").load("index.html #Course_Objectives", function (responseTxt, statusTxt, xhr) {
+      if (statusTxt == "success")
+        alert("External content loaded successfully!");
+      if (statusTxt == "error")
+        alert("Error: " + xhr.status + ": " + xhr.statusText);
+    });
+  });
+});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button4" type="button">test</button>
+          <div id="div4"></div>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
+          into a specific &lt;div> element with id="div4" after clicking on "Test" button <br>
+          A callback function will be executed after the load() method is completed. The function will display a message
+          according to the status of the load() method.
+          The callback function can have different parameters: <br>
+        <ul>
+          <li>responseTxt - contains the resulting content if the call succeeds</li>
+          <li>statusTxt - contains the status of the call</li>
+          <li>xhr - contains the XMLHttpRequest object</li>
+        </ul>
+        </p>
+      </div>
+      <h2 class="Section_Title">jQuery - AJAX get() and post() Methods</h2>
+      <div class="Definitions">
+        <p>
+          Two commonly used methods for a request-response between a client and server are: GET and POST. <br>
+        <ul>
+          <li>GET - Requests data from a specified resource</li>
+          <li>POST - Submits data to be processed to a specified resource</li>
+        </ul>
+        The jQuery get() and post() methods are used to request data from the server with an HTTP GET or POST request.
+        <br>
+        The following example uses the $.get() method to retrieve data from a file on the server:
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>  
+$(document).ready(function(){
+  $("#button10").click(function(){
+    $.get("demo_test.txt", function(data, status){
+      alert("Data: " + data + "\nStatus: " + status);
+    });
+  });
+});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button10" type="button">Test</button>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The previous example uses the $.get() method to retrieve data from a file on the server. <br>
+          The function(data, status) specifies a callback function to be run when the $.get() method is successful. The
+          function(data, status) parameters specify the data returned from the server and the status of the call.
+        </p>
+      </div>
+
 
     </section>
   </main>
@@ -225,7 +396,7 @@
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
-  <script src="SRC/JS/AJAX.js"></script>
+  <script src="SRC/JS/JQuery.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst">
   </script>
 </body>
