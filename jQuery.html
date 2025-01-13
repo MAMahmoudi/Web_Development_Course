@@ -17,7 +17,7 @@
 <body>
   <main>
     <h1 class="Title">jQuery</h1>
-    <section>
+    <>
 
       <div class="Definitions">
         <p>
@@ -45,7 +45,7 @@
           can: <br>
         <ul>
           <li>Download the jQuery library from jQuery.com</li>
-          <li>Include jQuery from a CDN, like Google</li>
+          <li>Include jQuery from a CDN (Content Delivery Network), like Google</li>
         </ul>
         </p>
       </div>
@@ -86,7 +86,66 @@ $("#p").hide();
           <p id="p">This text will disapear when you click on the button.</p>
         </div>
       </div>
-
+      <div class="Definitions">
+        <p>
+          It is possible to use jQuery function instead of the $ sign. <br>
+          The following example does the same as the example above. <br>
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+jQuery(document).ready(function () {
+  jQuery("#button").click(function () {
+  jQuery("#p").hide();
+  });
+  });
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button101" type="button">Click Me</button>
+          <p id="p101">This text will disapear when you click on the button.</p>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          To avoiding Library conflicts with other JavaScript libraries, jQuery
+          provides a noConflict() method. <br>
+          This method releases the hold on the $ shortcut identifier, so that
+          other scripts can use it. <br>
+          You can use the jQuery name directly in place of $, as shown in the
+          following example: <br>
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function () {
+  $("#button102").click(function () {
+    jq = $.noConflict();
+    jq("#p102").hide();
+  });
+  jq("#button103").click(function () {
+    $ = jq.noConflict();
+    alert("Off");
+  });
+});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button102" type="button">Click Me</button>
+          <p id="p102">This text will disapear when you click on the button.</p>
+          <button id="button103" type="button">Stop</button>
+        </div>
+      </div>
       <h3 class="Sub_Section_Title">jQuery Document Ready</h3>
       <div class="Definitions">
         <p>
@@ -100,9 +159,14 @@ $("#p").hide();
       </div>
       <pre class="prettyprint lang-js">
         <code>
-          $(document).ready(function(){
-          // jQuery methods go here...
-          });
+$(document).ready(function(){
+// jQuery methods go here...
+});
+// OR
+$(function()
+{
+// Your code goes here
+})
         </code>
       </pre>
 
@@ -123,6 +187,77 @@ $("#p").hide();
           The jQuery .class selector finds elements with a specific class. <br>
         </p>
       </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+&lt;button id="button81" type="button">ID btn&lt;/button>
+&lt;button class="button82" type="button">Class Btn&lt;/button>
+$(document).ready(function(){
+  $("#button81").click(function(){
+  alert("ID Button Clicked");
+  });
+  $(".button82").click(function(){
+  alert("Class Button Clicked");
+  });
+  });
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button81" type="button">ID btn</button>
+          <button class="button82" type="button">Class Btn</button>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          jQuery objects (created with either the $ or jQuery methods) are
+          not the same as JavaScript objects created with getElementById. In
+          plain JavaScript, you can use a statement like object =
+          document.getElementById('result') followed by (for example)
+          object.innerHTML = 'something'. But in the preceding example,
+          $('#result').innerHTML would not work, because innerHTML is
+          not a property of a jQuery object.
+        </p>
+      </div>
+      <h3 class="Section_Title">CSS Method</h3>
+      <div class="Definitions">
+        <p>
+          It takes two arguments, the property name to be accessed and a value to be applied. <br>
+          You can also use the css method to return (rather than set) a computed value by supplying only a property name
+          (and no second argument). <br>
+          Remember that the value returned is the computed value. In other words, jQuery will compute and return the
+          value as used by the browser at the moment the method is called. <br>
+          This computed value, though, will always be in a form that can be assigned back to the element (or any other
+          element) via the second argument of the css method.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+&lt;button id="button11" type="button">Click Me&lt;/button>
+&lt;p id="p11">This text will change color and slide up and down when you click on the button.&lt;/p>
+
+$(document).ready(function(){
+  $("#button11").click(function(){
+    $("#p11").css("color", "red");
+    color = $("#p11").css("color");
+    alert(color);
+  });
+});
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button11" type="button">Click Me</button>
+          <p id="p11">This text will change color and slide up and down when you click on the button.</p>
+        </div>
+      </div>
       <h3 class="Sub_Section_Title">jQuery Events</h3>
       <div class="Definitions">
         <p>
@@ -137,8 +272,88 @@ $("#p").hide();
           <li>Document/Window events</li>
           <li>Event methods</li>
         </ul>
+        When accessing an event with jQuery, omit the on prefix that you would use in standard JavaScript
         </p>
       </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function(){
+  $("#button112").click(function(){
+    $("#p112").hide();
+  });
+  $("#button113").click(function(){
+    $("#p112").show();
+  });
+});
+&lt;button id="button112" type="button">Hide&lt;/button>
+&lt;button id="button113" type="button">Show&lt;/button>
+&lt;p id="p112">This text will disapear when you click on the button.&lt;/p>
+
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button112" type="button">Hide</button>
+          <button id="button113" type="button">Show</button>
+          <p id="p112">This text will disapear when you click on the button.</p>
+
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The following table lists the most important jQuery methods for event handling: <br>
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>click()</td>
+          <td>Triggers the click event</td>
+        </tr>
+        <tr>
+          <td>dblclick()</td>
+          <td>Triggers the dblclick event</td>
+        </tr>
+        <tr>
+          <td>mouseenter()</td>
+          <td>Triggers the mouseenter event</td>
+        </tr>
+        <tr>
+          <td>mouseleave()</td>
+          <td>Triggers the mouseleave event</td>
+        </tr>
+        <tr>
+          <td>mousedown()</td>
+          <td>Triggers the mousedown event</td>
+        </tr>
+        <tr>
+          <td>mouseup()</td>
+          <td>Triggers the mouseup event</td>
+        </tr>
+        <tr>
+          <td>hover()</td>
+          <td>Triggers the mouseenter and mouseleave events</td>
+        </tr>
+        <tr>
+          <td>focus()</td>
+          <td>Triggers the focus event</td>
+        </tr>
+        <tr>
+          <td>blur()</td>
+          <td>Triggers the blur event</td>
+        </tr>
+        <tr>
+          <td>on()</td>
+          <td>Attaches one or more event handlers to the selected elements</td>
+        </tr>
+      </table>
       <h3 class="Sub_Section_Title">jQuery Effects</h3>
       <div class="Definitions">
         <p>
@@ -147,83 +362,143 @@ $("#p").hide();
           The following table lists all the jQuery methods for creating
           animation effects: <br>
         </p>
-        <table>
-          <tr>
-            <th>Method</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>hide()</td>
-            <td>Hides the selected elements</td>
-          </tr>
-          <tr>
-            <td>show()</td>
-            <td>Shows the selected elements</td>
-          </tr>
-          <tr>
-            <td>toggle()</td>
-            <td>Toggles between hide() and show() for the selected elements</td>
-          </tr>
-          <tr>
-            <td>fadeIn()</td>
-            <td>Fades in the selected elements</td>
-          </tr>
-          <tr>
-            <td>fadeOut()</td>
-            <td>Fades out the selected elements</td>
-          </tr>
-          <tr>
-            <td>fadeToggle()</td>
-            <td>Toggles between fadeIn() and fadeOut() for the selected elements</td>
-          </tr>
-          <tr>
-            <td>slideDown()</td>
-            <td>Slides down the selected elements</td>
-          </tr>
-          <tr>
-            <td>slideUp()</td>
-            <td>Slides up the selected elements</td>
-          </tr>
-          <tr>
-            <td>slideToggle()</td>
-            <td>Toggles between slideDown() and slideUp() for the selected elements</td>
-          </tr>
-        </table>
       </div>
-    </section>
-    <section>
-      <h1 class="Title">jQuery AJAX</h1>
-      <div class="Definitions">
+      <table>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>hide()</td>
+          <td>Hides the selected elements</td>
+        </tr>
+        <tr>
+          <td>show()</td>
+          <td>Shows the selected elements</td>
+        </tr>
+        <tr>
+          <td>toggle()</td>
+          <td>Toggles between hide() and show() for the selected elements</td>
+        </tr>
+        <tr>
+          <td>fadeIn()</td>
+          <td>Fades in the selected elements</td>
+        </tr>
+        <tr>
+          <td>fadeOut()</td>
+          <td>Fades out the selected elements</td>
+        </tr>
+        <tr>
+          <td>fadeToggle()</td>
+          <td>Toggles between fadeIn() and fadeOut() for the selected elements</td>
+        </tr>
+        <tr>
+          <td>slideDown()</td>
+          <td>Slides down the selected elements</td>
+        </tr>
+        <tr>
+          <td>slideUp()</td>
+          <td>Slides up the selected elements</td>
+        </tr>
+        <tr>
+          <td>slideToggle()</td>
+          <td>Toggles between slideDown() and slideUp() for the selected elements</td>
+        </tr>
+      </table>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                  <code>
+$(document).ready(function(){
+  $("#button114").click(function(){
+    $("#p114").slideUp();
+  });
+  $("#button115").click(function(){
+    $("#p114").slideDown();
+  });
+});
+&lt;button id="button114" type="button">Slide Up&lt;/button>
+&lt;button id="button115" type="button">Slide Down&lt;/button>
+&lt;p id="p114">This text will slide up and down when you click on the button.&lt;/p>
+
+                  </code>
+                </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button114" type="button">Slide Up</button>
+          <button id="button115" type="button"> Slide Down</button>
+          <p id="p114">This text will slide up and down when you click on the button.</p>
+        </div>
+      </div>
+      <div class="Deifinitions">
         <p>
-          jQuery AJAX methods allow you to send and retrieve data from the
-          server without reloading the entire page. <br>
-          The following table lists the most important methods for AJAX: <br>
+          The jQuery animate() method is used to create custom animations. <br>
+          The following example demonstrates the animate() method. It animates a div element. <br>
+          The div element gradually changes from width: 250px to width: 500px, and from height: 500px to height: 1000px.
         </p>
-        <table>
-          <tr>
-            <th>Method</th>
-            <th>Description</th>
-          </tr>
-          <tr>
-            <td>$.ajax()</td>
-            <td>Performs an async AJAX request</td>
-          </tr>
-          <tr>
-            <td>$.get()</td>
-            <td>Loads data from the server using a HTTP GET request</td>
-          </tr>
-          <tr>
-            <td>$.post()</td>
-            <td>Loads data from the server using a HTTP POST request</td>
-          </tr>
-          <tr>
-            <td>$.getJSON()</td>
-            <td>Loads JSON-encoded data from the server using a HTTP GET
-              request</td>
-          </tr>
-        </table>
       </div>
-      <pre class="prettyprint lang-js">
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+                <code>
+$(document).ready(function(){
+  $("#button116").click(function(){
+    $("#div116").animate({
+      width: "200px",
+      height: "200px"
+    });
+  });
+});
+&lt;button id="button116" type="button">Animate&lt;/button>
+&lt;div id="div116" style="background-color:lightblue;height:100px;width:100px;"></div>
+
+                </code>
+              </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button id="button116" type="button">Animate</button>
+          <div id="div116" style="background-color: lightblue; height: 100px; width: 100px;"></div>
+
+        </div>
+      </div>
+      </section>
+      <section>
+        <h1 class="Title">jQuery AJAX</h1>
+        <div class="Definitions">
+          <p>
+            jQuery AJAX methods allow you to send and retrieve data from the
+            server without reloading the entire page. <br>
+            The following table lists the most important methods for AJAX: <br>
+          </p>
+          <table>
+            <tr>
+              <th>Method</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>$.ajax()</td>
+              <td>Performs an async AJAX request</td>
+            </tr>
+            <tr>
+              <td>$.get()</td>
+              <td>Loads data from the server using a HTTP GET request</td>
+            </tr>
+            <tr>
+              <td>$.post()</td>
+              <td>Loads data from the server using a HTTP POST request</td>
+            </tr>
+            <tr>
+              <td>$.getJSON()</td>
+              <td>Loads JSON-encoded data from the server using a HTTP GET
+                request</td>
+            </tr>
+          </table>
+        </div>
+        <pre class="prettyprint lang-js">
         <code>
           $.ajax({
           url: "demo_test.txt",
@@ -233,29 +508,29 @@ $("#p").hide();
           });
         </code>
       </pre>
-      <h2 class="Section_Title">jQuery load() Method</h2>
-      <div class="Definitions">
-        <p>
-          The jQuery load() method is a simple, but powerful AJAX method. The
-          load() method loads data from a server and puts the returned data
-          into the selected element. <br>
-          The load() method loads data from the server and places the returned
-          HTML into the matched element. This method provides a simple way to
-          load data asynchronous from a web server. <br>
-          The syntax for the load() method is: <br>
-          <code>$(selector).load(URL,data,callback);</code><br>
-          The required URL parameter specifies the URL you wish to load. The
-          optional data parameter specifies a set of querystring key/value
-          pairs to send along with the request. The optional callback
-          parameter is the name of a function to be executed after the load()
-          method is completed. <br>
+        <h2 class="Section_Title">jQuery load() Method</h2>
+        <div class="Definitions">
+          <p>
+            The jQuery load() method is a simple, but powerful AJAX method. The
+            load() method loads data from a server and puts the returned data
+            into the selected element. <br>
+            The load() method loads data from the server and places the returned
+            HTML into the matched element. This method provides a simple way to
+            load data asynchronous from a web server. <br>
+            The syntax for the load() method is: <br>
+            <code>$(selector).load(URL,data,callback);</code><br>
+            The required URL parameter specifies the URL you wish to load. The
+            optional data parameter specifies a set of querystring key/value
+            pairs to send along with the request. The optional callback
+            parameter is the name of a function to be executed after the load()
+            method is completed. <br>
 
-        </p>
-      </div>
-      <div class="card">
-        <h2 class="Code_Tag">JavaScript</h2>
-        <div class="HTML_Code">
-          <pre class="prettyprint lang-js">
+          </p>
+        </div>
+        <div class="card">
+          <h2 class="Code_Tag">JavaScript</h2>
+          <div class="HTML_Code">
+            <pre class="prettyprint lang-js">
                 <code>
 $(document).ready(function(){
   $("#button2").click(function(){
@@ -263,24 +538,24 @@ $(document).ready(function(){
   });});
                 </code>
               </pre>
+          </div>
+          <h2 class="Code_Tag">Result</h2>
+          <div class="Result_Demo">
+            <button id="button2" type="button">Test</button>
+            <div id="div2"></div>
+          </div>
         </div>
-        <h2 class="Code_Tag">Result</h2>
-        <div class="Result_Demo">
-          <button id="button2" type="button">Test</button>
-          <div id="div2"></div>
+        <div class="Definitions">
+          <p>
+            The previous example loads the content of the file "demo_test.txt"
+            into a specific &lt;div> element with id="div2" after clicking on "Test" button <br>
+            It is also possible to add a jQuery selector to the URL parameter:
+          </p>
         </div>
-      </div>
-      <div class="Definitions">
-        <p>
-          The previous example loads the content of the file "demo_test.txt"
-          into a specific &lt;div> element with id="div2" after clicking on "Test" button <br>
-          It is also possible to add a jQuery selector to the URL parameter:
-        </p>
-      </div>
-      <div class="card">
-        <h2 class="Code_Tag">JavaScript</h2>
-        <div class="HTML_Code">
-          <pre class="prettyprint lang-js">
+        <div class="card">
+          <h2 class="Code_Tag">JavaScript</h2>
+          <div class="HTML_Code">
+            <pre class="prettyprint lang-js">
                 <code>
 $(document).ready(function () {
   $("#button3").click(function () {
@@ -289,25 +564,25 @@ $(document).ready(function () {
 });
                 </code>
               </pre>
+          </div>
+          <h2 class="Code_Tag">Result</h2>
+          <div class="Result_Demo">
+            <button id="button3" type="button">Test</button>
+            <div id="div3"></div>
+          </div>
         </div>
-        <h2 class="Code_Tag">Result</h2>
-        <div class="Result_Demo">
-          <button id="button3" type="button">Test</button>
-          <div id="div3"></div>
+        <div class="Definitions">
+          <p>
+            The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
+            into a specific &lt;div> element with id="div3" after clicking on "Test" button <br>
+            In the next example, we will do the same thing and a callback function will be executed after the load()
+            method is completed:
+          </p>
         </div>
-      </div>
-      <div class="Definitions">
-        <p>
-          The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
-          into a specific &lt;div> element with id="div3" after clicking on "Test" button <br>
-          In the next example, we will do the same thing and a callback function will be executed after the load()
-          method is completed:
-        </p>
-      </div>
-      <div class="card">
-        <h2 class="Code_Tag">JavaScript</h2>
-        <div class="HTML_Code">
-          <pre class="prettyprint lang-js">
+        <div class="card">
+          <h2 class="Code_Tag">JavaScript</h2>
+          <div class="HTML_Code">
+            <pre class="prettyprint lang-js">
                 <code>
 $(document).ready(function () {
   $("#button4").click(function () {
@@ -321,44 +596,45 @@ $(document).ready(function () {
 });
                 </code>
               </pre>
+          </div>
+          <h2 class="Code_Tag">Result</h2>
+          <div class="Result_Demo">
+            <button id="button4" type="button">test</button>
+            <div id="div4"></div>
+          </div>
         </div>
-        <h2 class="Code_Tag">Result</h2>
-        <div class="Result_Demo">
-          <button id="button4" type="button">test</button>
-          <div id="div4"></div>
+        <div class="Definitions">
+          <p>
+            The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
+            into a specific &lt;div> element with id="div4" after clicking on "Test" button <br>
+            A callback function will be executed after the load() method is completed. The function will display a
+            message
+            according to the status of the load() method.
+            The callback function can have different parameters: <br>
+          <ul>
+            <li>responseTxt - contains the resulting content if the call succeeds</li>
+            <li>statusTxt - contains the status of the call</li>
+            <li>xhr - contains the XMLHttpRequest object</li>
+          </ul>
+          </p>
         </div>
-      </div>
-      <div class="Definitions">
-        <p>
-          The previous example loads the content of the element with id="Course_Objectives" from the file "index.html"
-          into a specific &lt;div> element with id="div4" after clicking on "Test" button <br>
-          A callback function will be executed after the load() method is completed. The function will display a message
-          according to the status of the load() method.
-          The callback function can have different parameters: <br>
-        <ul>
-          <li>responseTxt - contains the resulting content if the call succeeds</li>
-          <li>statusTxt - contains the status of the call</li>
-          <li>xhr - contains the XMLHttpRequest object</li>
-        </ul>
-        </p>
-      </div>
-      <h2 class="Section_Title">jQuery - AJAX get() and post() Methods</h2>
-      <div class="Definitions">
-        <p>
-          Two commonly used methods for a request-response between a client and server are: GET and POST. <br>
-        <ul>
-          <li>GET - Requests data from a specified resource</li>
-          <li>POST - Submits data to be processed to a specified resource</li>
-        </ul>
-        The jQuery get() and post() methods are used to request data from the server with an HTTP GET or POST request.
-        <br>
-        The following example uses the $.get() method to retrieve data from a file on the server:
-        </p>
-      </div>
-      <div class="card">
-        <h2 class="Code_Tag">JavaScript</h2>
-        <div class="HTML_Code">
-          <pre class="prettyprint lang-js">
+        <h2 class="Section_Title">jQuery - AJAX get() and post() Methods</h2>
+        <div class="Definitions">
+          <p>
+            Two commonly used methods for a request-response between a client and server are: GET and POST. <br>
+          <ul>
+            <li>GET - Requests data from a specified resource</li>
+            <li>POST - Submits data to be processed to a specified resource</li>
+          </ul>
+          The jQuery get() and post() methods are used to request data from the server with an HTTP GET or POST request.
+          <br>
+          The following example uses the $.get() method to retrieve data from a file on the server:
+          </p>
+        </div>
+        <div class="card">
+          <h2 class="Code_Tag">JavaScript</h2>
+          <div class="HTML_Code">
+            <pre class="prettyprint lang-js">
                 <code>  
 $(document).ready(function(){
   $("#button10").click(function(){
@@ -369,22 +645,23 @@ $(document).ready(function(){
 });
                 </code>
               </pre>
+          </div>
+          <h2 class="Code_Tag">Result</h2>
+          <div class="Result_Demo">
+            <button id="button10" type="button">Test</button>
+          </div>
         </div>
-        <h2 class="Code_Tag">Result</h2>
-        <div class="Result_Demo">
-          <button id="button10" type="button">Test</button>
+        <div class="Definitions">
+          <p>
+            The previous example uses the $.get() method to retrieve data from a file on the server. <br>
+            The function(data, status) specifies a callback function to be run when the $.get() method is successful.
+            The
+            function(data, status) parameters specify the data returned from the server and the status of the call.
+          </p>
         </div>
-      </div>
-      <div class="Definitions">
-        <p>
-          The previous example uses the $.get() method to retrieve data from a file on the server. <br>
-          The function(data, status) specifies a callback function to be run when the $.get() method is successful. The
-          function(data, status) parameters specify the data returned from the server and the status of the call.
-        </p>
-      </div>
 
 
-    </section>
+      </section>
   </main>
   <footer class="Inter_Pages">
     <a href="AJAX.html" class="Arrow">

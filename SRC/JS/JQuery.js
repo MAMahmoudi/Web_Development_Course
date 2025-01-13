@@ -37,3 +37,62 @@ $(document).ready(function () {
     });
   });
 });
+/////////////////////////////////////////
+$(document).ready(function () {
+  $("#button11").click(function () {
+    $("#p11").css("color", "red");
+    color = $("#p11").css("color");
+    alert(color);
+  });
+});
+/////////////////////////////////////////
+$(document).ready(function () {
+  $("#button81").click(function () {
+    alert("ID Button Clicked");
+  });
+  $(".button82").click(function () {
+    alert("Class Button Clicked");
+  });
+});
+/////////////////////////////////////////
+jQuery(document).ready(function () {
+  jQuery("#button101").click(function () {
+    jQuery("#p101").hide();
+  });
+});
+/////////////////////////////////////////
+
+$(document).ready(function () {
+  $("#button102").click(function () {
+    jq = $.noConflict();
+    jq("#p102").hide();
+  });
+});
+/////////////////////////////////////////
+$(document).ready(function () {
+  $("#button112").click(function () {
+    $("#p112").hide();
+  });
+  $("#button113").click(function () {
+    $("#p112").show();
+  });
+});
+/////////////////////////////////////////
+$(document).ready(function () {
+  $("#button114").click(function () {
+    $("#p114").slideUp();
+  });
+  $("#button115").click(function () {
+    $("#p114").slideDown();
+  });
+});
+/////////////////////////////////////////
+$(document).ready(function () {
+  $("#button116").click(function () {
+    $("#div116").animate({
+      width: "200px",
+      height: "200px",
+    });
+  });
+});
+/////////////////////////////////////////
