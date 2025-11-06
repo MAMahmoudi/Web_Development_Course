@@ -82,37 +82,15 @@
       </div>
       <div class="html">
         <h2 class="opening_tag">&lt;html&gt;</h2>
-        <p class="description">
-          The opening &lt;html&gt; tag indicates that anything between it and
-          a closing &lt;/html&gt; tag is HTML code.
-        </p>
+
         <div class="head">
           <h2 class="opening_tag">&lt;head&gt;</h2>
-          <p class="description">
-            This contains information about the page (rather than information
-            that is shown within the main part of the browser window). You
-            will usually find a &lt;title&gt; element inside the
-            &lt;head&gt;
-            element.
-          </p>
-          <p class="description">
-            &lt;title&gt;
-            The contents of the &lt;title&gt; element are either shown in the
-            top of the browser, above where you usually type in the URL of the
-            page you want to visit, or on the tab for that page (if your
-            browser uses tabs to allow you to view multiple pages at the same
-            time).
-            &lt;/title&gt;
-          </p>
+
           <h2 class="closing_tag">&lt;/head&gt;</h2>
         </div>
         <div class="body">
           <h2 class="opening_tag">&lt;body&gt;</h2>
-          <p class="description">
-            The &lt;body&gt; tag indicates that anything between it and the
-            closing &lt;/body&gt; tag should be shown inside the main browser
-            window.
-          </p>
+
           <div class="header">
             <h2 class="opening_tag">&lt;header&gt;</h2>
             <h2 class="closing_tag">&lt;/header&gt;</h2>
@@ -129,6 +107,31 @@
         </div>
         <h2 class="closing_tag">&lt;/html&gt;</h2>
       </div>
+      <p class="description">
+        The opening &lt;html&gt; tag indicates that anything between it and
+        a closing &lt;/html&gt; tag is HTML code.
+      </p>
+      <p class="description">
+        This contains information about the page (rather than information
+        that is shown within the main part of the browser window). You
+        will usually find a &lt;title&gt; element inside the
+        &lt;head&gt;
+        element.
+      </p>
+      <p class="description">
+        &lt;title&gt;
+        The contents of the &lt;title&gt; element are either shown in the
+        top of the browser, above where you usually type in the URL of the
+        page you want to visit, or on the tab for that page (if your
+        browser uses tabs to allow you to view multiple pages at the same
+        time).
+        &lt;/title&gt;
+      </p>
+      <p class="description">
+        The &lt;body&gt; tag indicates that anything between it and the
+        closing &lt;/body&gt; tag should be shown inside the main browser
+        window.
+      </p>
     </section>
     <section id="Text">
       <h1 class="Title">II. Text</h1>
@@ -144,8 +147,11 @@
         <p>
           HTML has six levels of headings, which use the elements &lt;h1&gt; through
           &lt;h6&gt;. Headings are used to represent the hierarchical structure of the
-          content, and are displayed in a larger font size than the surrounding text.
+          content, and are displayed in a larger font size than the surrounding text. The
+          &lt;h1&gt; element represents the highest level of heading, while the &lt;h6&gt;
+          element represents the lowest level of heading.
         </p>
+
       </div>
       <div class="card">
         <h2 class="Code_Tag">HTML</h2>
@@ -175,6 +181,7 @@
           The &lt;p&gt; element is used to create a paragraph. Browsers automatically add some
           space (margin) before and after each &lt;p&gt; element. The margins can be modified
           using CSS.
+
         </p>
       </div>
       <div class="card">
@@ -213,7 +220,8 @@ paragraphs
       <div class="Definitions">
         <p>
           The &lt;b&gt; element is used to represent text in a bold format. The &lt;i&gt; element is
-          used to represent text in an italic format.
+          used to represent text in an italic format. The following example demonstrates how to use these elements.
+
         </p>
       </div>
       <div class="card">
@@ -271,7 +279,8 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
       <div class="Definitions">
         <p>
           The &lt;br /&gt; element is used to add a line break in a paragraph. The &lt;hr /&gt;
-          element is used to add a horizontal rule.
+          element is used to add a horizontal rule. Both elements are empty elements, meaning they do not
+          have a closing tag.
         </p>
       </div>
       <div class="card">
@@ -289,12 +298,12 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
           <p>
-            We can break a line by using the &lt;br /&gt; <br />
+            We can break a line by using the <br />
             tag.
           </p>
           <p>
             We can add a horizontal rule by using the
-            <hr /> &lt;hr /&gt; tag.
+            <hr /> tag.
           </p>
         </div>
       </div>
@@ -358,6 +367,11 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
           <pre class="prettyprint lang-html">
           &lt;ol&gt;<br />
           &lt;li&gt;HTML&lt;/li&gt;<br />
+          &lt;ol type="A"&gt;<br />
+          &lt;li&gt;Course 1&lt;/li&gt;<br />
+          &lt;li&gt;Course 2&lt;/li&gt;<br />
+          &lt;li&gt;Course 3&lt;/li&gt;<br />
+           &lt;/ol&gt;  
           &lt;li&gt;CSS&lt;/li&gt;<br />
           &lt;li&gt;JavaScript&lt;/li&gt;<br />
           &lt;li&gt;PHP&lt;/li&gt;<br />
@@ -368,6 +382,11 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
         <div class="Result_Demo">
           <ol>
             <li>HTML</li>
+            <ol type="A">
+              <li>Course 1</li>
+              <li>Course 2</li>
+              <li>Course 3</li>
+            </ol>
             <li>CSS</li>
             <li>JavaScript</li>
             <li>PHP</li>
@@ -452,7 +471,7 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
         The a tag (short for anchor tag) is arguably the most important and defining tag of HTML. The
         anchor tag is the tag used to link from the document a user is on to another document elsewhere
         on the internet, or another point in the same document. The anchor tag is written as &lt;a href="URL">Link
-        Text&lt;/a>.
+        Text&lt;/a>. 
         <p>
           Links are created using the
           &lt;a&gt; element.
@@ -462,13 +481,13 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
           You specify which page you want to link to using the
           href attribute.
         </p>
-
       </div>
       <h2 class="Title">IV.1 Absolute Links</h2>
       <div class="Definitions">
         <p>
           When you link to a different website, the value of the href attribute will be the full web address for the
-          site, which is known as an absolute URL.
+          site, which is known as an absolute URL. 
+
         </p>
       </div>
       <div class="card">
@@ -487,7 +506,7 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
       <div class="Definitions">
         <p>
           When you are linking to other pages within the same site, you do not need to specify the domain name in the
-          URL. You can use a shorthand known as a relative URL.
+          URL. You can use a shorthand known as a relative URL. 
         </p>
       </div>
       <div class="card">
@@ -938,20 +957,20 @@ The first ten students (student &lt;sub&gt;1&lt;/sub&gt; to student &lt;sub&gt;1
           <pre class="prettyprint lang-html">
 &lt;form action="#" method="post"&gt;<br />
 &lt;label for="username"&gt;User name&lt;/label&gt;<br />
-&lt;input type="text" name="username" id="username" size="15" maxlength="30" required /&gt;
+&lt;input type="text" name="username" id="username" size="50" maxlength="30" required /&gt;
 <br />
 &lt;label for="password"&gt;Password&lt;/label&gt;<br />
-&lt;input type="password" name="password" id="password" size="15" maxlength="30"
+&lt;input type="password" name="password" id="password" size="50" maxlength="30"
   required/&gt;<br>
 &lt;label for="birthdate"&gt;Birthdate&lt;/label&gt;<br />
-&lt;input type="date" name="birthdate" id="birthdate" size="15" maxlength="30"
+&lt;input type="date" name="birthdate" id="birthdate" size="50" maxlength="30"
   required/&gt;<br />
 &lt;label for="email"&gt;Email&lt;/label&gt;<br />
-&lt;input type="email" name="email" id="email" size="15" maxlength="30" required/&gt;
+&lt;input type="email" name="email" id="email" size="50" maxlength="30" required/&gt;
 <br />
 &lt;label for="personnal_page"&gt;Personnal page&lt;/label&gt;
 <br />
-&lt;input type="url" name="personnal_page" id="personnal_page" size="15" maxlength="30"
+&lt;input type="url" name="personnal_page" id="personnal_page" size="50" maxlength="30"
   required/&gt;<br />
 &lt;p&gt;What are you?&lt;/p&gt;<br />
 &lt;input type="radio" name="Profession" id="Student" value="Student" checked="checked"
@@ -998,15 +1017,15 @@ comments...&lt;/textarea&gt;<br />
         <div class="Result_Demo">
           <form action="#" method="post">
             <label for="username">User name</label>
-            <input type="text" name="username" id="username" size="15" maxlength="30" required /><br /><br />
+            <input type="text" name="username" id="username" size="50" maxlength="30" required /><br /><br />
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" size="15" maxlength="30" required /><br /><br />
+            <input type="password" name="password" id="password" size="50" maxlength="30" required /><br /><br />
             <label for="birthdate">Birthdate</label>
-            <input type="date" name="birthdate" id="birthdate" size="15" maxlength="30" required /><br /><br />
+            <input type="date" name="birthdate" id="birthdate" size="50" maxlength="30" required /><br /><br />
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" size="15" maxlength="30" required /><br /><br />
+            <input type="email" name="email" id="email" size="50" maxlength="30" required /><br /><br />
             <label for="personnal_page">Personnal page</label>
-            <input type="url" name="personnal_page" id="personnal_page" size="15" maxlength="30" required /><br /><br />
+            <input type="url" name="personnal_page" id="personnal_page" size="50" maxlength="30" required /><br /><br />
             <p>What are you?</p>
             <input type="radio" name="Profession" id="Student" value="Student" checked="checked" /> <label
               for="Student">Student</label>

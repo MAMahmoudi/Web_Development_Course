@@ -181,9 +181,18 @@
           has properties that correspond to the data- attributes with their prefix removed.
           Thus, dataset.x would hold the value of the data-x attribute. Hyphenated attributes
           map to camelCase property names: the attribute data-section-number becomes the
-          property dataset.sectionNumber. <br><br>
+          property dataset.sectionNumber. For example, we can access the value of the data-section-number
+          attribute like this: <br><br>
         </p>
       </div>
+      <pre class="prettyprint lang-html">
+        &lt;div id="Section1" data-section-number="1"&gt;...&lt;/div&gt;
+      </pre>
+      <pre class="prettyprint lang-js">
+        let sectionNumber = element.dataset.sectionNumber;
+        console.log(sectionNumber);
+
+      </pre>
       <h1 class="Section_Title">Element Content</h1>
       <div class="Definitions">
         <p>

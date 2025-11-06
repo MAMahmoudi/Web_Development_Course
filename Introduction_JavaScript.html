@@ -662,6 +662,39 @@ switch (day) {
         </tbody>
       </table>
     </section>
+    <section id="Files">
+      <h2 class="Section_Title">XI. Files</h2>
+      <div class="Definitions">
+        <p>
+          JavaScript can read and write files using the File API. <br><br>
+          The File API makes it possible to access the file system on the client side. <br><br>
+          The File API includes a FileList object, which represents the file list of files selected with the <br>
+          <font color="blue">&lt;input type="file"&gt;</font> element. <br><br>
+          The FileList object is returned by the <font color="blue">files</font> property of the <font color="blue">
+            HTMLInputElement</font> object.
+        </p>
+      </div>
+      <h2 class="Sub_Section_Title">Opening files</h2>
+      <div class="Definitions">
+        <p>
+          To open a file, use the <font color="blue">FileReader</font> object. <br><br>
+          The following example demonstrates how to open a file and read its content into an HTML element.
+        </p>
+      </div>
+      <pre class="prettyprint lang-js">
+        function openFile(event) {
+          var input = event.target;
+          var reader = new FileReader();
+          reader.onload = function () {
+            var text = reader.result;
+            var node = document.getElementById('output');
+            node.innerText = text;
+          };
+          reader.readAsText(input.files[0]);
+        }
+      </pre>
+
+    </section>
   </main>
   <footer class="Inter_Pages">
     <a href="CSS_Layout.html" class="Arrow">
