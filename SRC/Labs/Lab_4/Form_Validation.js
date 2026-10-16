@@ -14,6 +14,9 @@ Submit_Btn.addEventListener("click", (event) => {
 });
 
 function checkInputs() {
+  // clear the messages of the previous attempt
+  small.innerText = "";
+
   // get the values from the inputs
   const NameValue = Name.value.trim();
   const User_NameValue = User_Name.value.trim();

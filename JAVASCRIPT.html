@@ -1,9 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JavaScript</title>
-  </head>
-  <body></body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>JavaScript</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">JavaScript</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          JavaScript is the programming language of the Web. It runs in the browser, reads and changes the page through the Document Object Model, reacts to user events, validates forms and talks to the server without reloading the page (AJAX).
+        </p>
+      </div>
+    </section>
+    <section id="Lectures">
+      <h2 class="Section_Title">Lectures</h2>
+      <div class="Hub_Grid">
+        <a href="Introduction_JavaScript.html" class="Hub_Card">
+          <i class="fa-brands fa-js fa-2xl"></i>
+          <h3>Introduction to JavaScript</h3>
+          <p>Variables, types, operators, functions, arrays and objects.</p>
+        </a>
+        <a href="DOM.html" class="Hub_Card">
+          <i class="fa-solid fa-sitemap fa-2xl"></i>
+          <h3>The Document Object Model</h3>
+          <p>Selecting, creating and modifying elements of the page.</p>
+        </a>
+        <a href="JavaScript_Events.html" class="Hub_Card">
+          <i class="fa-solid fa-hand-pointer fa-2xl"></i>
+          <h3>Events and geometry</h3>
+          <p>Event listeners, event propagation and element geometry.</p>
+        </a>
+        <a href="JS_Form_Validation.html" class="Hub_Card">
+          <i class="fa-solid fa-square-check fa-2xl"></i>
+          <h3>Form validation</h3>
+          <p>Checking user input in the browser before it is sent.</p>
+        </a>
+        <a href="React_JS.html" class="Hub_Card">
+          <i class="fa-brands fa-react fa-2xl"></i>
+          <h3>React JS (optional)</h3>
+          <p>Components, props and state with a modern front-end library.</p>
+        </a>
+        <a href="AJAX.html" class="Hub_Card">
+          <i class="fa-solid fa-arrows-rotate fa-2xl"></i>
+          <h3>Ajax</h3>
+          <p>XMLHttpRequest and fetch: exchanging data with the server.</p>
+        </a>
+        <a href="jQuery.html" class="Hub_Card">
+          <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+          <h3>jQuery</h3>
+          <p>Selectors, effects, DOM manipulation and Ajax with jQuery.</p>
+        </a>
+        <a href="Integration.html" class="Hub_Card">
+          <i class="fa-solid fa-plug fa-2xl"></i>
+          <h3>Integration &amp; Extension</h3>
+          <p>REST APIs, JSON, third-party services and Composer packages.</p>
+        </a>
+      </div>
+    </section>
+    <section id="Labs">
+      <h2 class="Section_Title">Related labs</h2>
+      <div class="Hub_Grid">
+        <a href="Lab_4.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 4: JavaScript form validation</h3>
+          <p>Validate every form of your project in the browser.</p>
+        </a>
+        <a href="Lab_7.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 7: JavaScript scripting CSS</h3>
+          <p>Menus, sliders, dialogs and a theme switcher.</p>
+        </a>
+        <a href="Lab_11.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 11: AJAX and JSON APIs</h3>
+          <p>Load and update data without reloading the page.</p>
+        </a>
+      </div>
+    </section>
+    <section id="Examples">
+      <h2 class="Section_Title">Examples</h2>
+      <div class="Hub_Grid">
+        <a href="SRC/Labs/Lab_4/Form_Validation.html" class="Hub_Card">
+          <i class="fa-solid fa-file-signature fa-2xl"></i>
+          <h3>Form validation demo</h3>
+          <p>A sign-up form validated with JavaScript.</p>
+        </a>
+        <a href="SRC/Extra/To_Do_App/To_Do.html" class="Hub_Card">
+          <i class="fa-solid fa-list-check fa-2xl"></i>
+          <h3>To-do app</h3>
+          <p>Add, check and delete tasks using the DOM.</p>
+        </a>
+        <a href="SRC/Extra/Analog_Clock/Analog_Clock.html" class="Hub_Card">
+          <i class="fa-solid fa-clock fa-2xl"></i>
+          <h3>Analog clock</h3>
+          <p>CSS transforms driven by JavaScript timers.</p>
+        </a>
+        <a href="SRC/Extra/Code_Editor/Code_Editor.html" class="Hub_Card">
+          <i class="fa-solid fa-code fa-2xl"></i>
+          <h3>Code editor</h3>
+          <p>A tiny live HTML/CSS/JS editor.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="HTML.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>HTML</h1>
+    </a>
+    <a href="Introduction_JavaScript.html" class="Arrow">
+      <h1>Introduction to JavaScript</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
 </html>

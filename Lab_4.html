@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 4: JavaScript form validation</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Lab 4: JavaScript form validation</h1>
+    <section>
+      <h2 class="Section_Title">Instructions</h2>
+      <div class="Instructions">
+        <p>
+          In this lab, you will validate the forms of your team project before their data is sent to the server. <br>
+          You will start with the validation built into HTML5 (<code>required</code>, <code>type</code>,
+          <code>pattern</code>, <code>min</code>/<code>max</code>, ...), then control it from JavaScript with the
+          Constraint Validation API, and finally write your own validation with clear error messages, regular
+          expressions (emails, Algerian phone numbers), password rules and real-time feedback. <br>
+          Before you start, read the lecture <a href="JS_Form_Validation.html">JavaScript form validation</a> and try
+          the <a href="SRC/Labs/Lab_4/Form_Validation.html">demo form</a> (its code:
+          <a href="SRC/Labs/Lab_4/Form_Validation.js">Form_Validation.js</a>,
+          <a href="SRC/Labs/Lab_4/Form_Validation.css">Form_Validation.css</a>).
+        </p>
+      </div>
+    </section>
+    <section id="Why_Validate">
+      <h2 class="Section_Title">I. Why validate forms, and where?</h2>
+      <div class="Definitions">
+        <p>
+          Every web service of your project (create, update, search, login, ...) receives data from a form. Validating
+          this data means checking that it is <strong>present</strong>, has the right <strong>format</strong>
+          (email, phone, date, ...) and respects your <strong>business rules</strong> (the user is at least 18, the
+          quantity is between 1 and 10, the two passwords are the same, ...).
+        </p>
+        <ul>
+          <li><strong>Client-side validation</strong> (HTML5 + JavaScript, this lab) runs in the browser. Its goal is
+            the <em>user experience</em>: the user sees the error immediately, next to the field, without waiting for
+            a page reload.</li>
+          <li><strong>Server-side validation</strong> (PHP, later labs) runs on the server. Its goal is
+            <em>security and data integrity</em>.</li>
+        </ul>
+      </div>
+      <div class="Note"><strong>Warning:</strong> Client-side validation <em>never</em> replaces server-side
+        validation. Anyone can disable JavaScript, remove the <code>required</code> attribute with the DevTools, or
+        send a request directly to your PHP script with tools such as Postman or <code>curl</code>. The browser is
+        under the user's control, so your PHP code must check every value again before using it (and use prepared
+        statements for SQL; see the <a href="Security.html">Security</a> lecture).</div>
+      <div class="Definitions">
+        <p>For example, the same email and phone rules on the server side will look like this:</p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+$errors = [];
+$email = trim($_POST["Email"] ?? "");
+$phone = trim($_POST["Phone_Number"] ?? "");
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors["Email"] = "Email is not valid";
+}
+if (!preg_match('/^0[5-7][0-9]{8}$/', $phone)) {
+    $errors["Phone_Number"] = "Phone number is not valid";
+}
+
+if (count($errors) &gt; 0) {
+    http_response_code(422);   // Unprocessable Content
+    // ... display the form again with the error messages
+}
+        </pre>
+      </div>
+    </section>
+    <section id="HTML5_Validation">
+      <h2 class="Section_Title">II. HTML5 constraint validation</h2>
+      <div class="Definitions">
+        <p>
+          Before writing any JavaScript, use the right input types and attributes. The browser then refuses to submit
+          the form and shows a message when a constraint is not respected. On phones, the <code>type</code> also
+          displays the appropriate keyboard (a number pad for <code>tel</code>, an "@" key for <code>email</code>).
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Attribute</th>
+          <th>Meaning</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>required</td>
+          <td>The field cannot be empty</td>
+          <td><code>&lt;input name="Name" required&gt;</code></td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>The value must have the format of the type (email, url, number, date, ...)</td>
+          <td><code>&lt;input type="email"&gt;</code></td>
+        </tr>
+        <tr>
+          <td>minlength / maxlength</td>
+          <td>Minimum / maximum number of characters</td>
+          <td><code>&lt;input minlength="3" maxlength="30"&gt;</code></td>
+        </tr>
+        <tr>
+          <td>min / max / step</td>
+          <td>Range and step of numbers and dates</td>
+          <td><code>&lt;input type="number" min="1" max="10" step="1"&gt;</code></td>
+        </tr>
+        <tr>
+          <td>pattern</td>
+          <td>The value must match a regular expression (the whole value)</td>
+          <td><code>&lt;input type="tel" pattern="0[5-7][0-9]{8}"&gt;</code></td>
+        </tr>
+      </table>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;form id="Signup_Form" action="signup.php" method="POST"&gt;
+  &lt;label for="Full_Name"&gt;Full name&lt;/label&gt;
+  &lt;input type="text" id="Full_Name" name="Full_Name" required minlength="3" maxlength="50" /&gt;
+
+  &lt;label for="Email"&gt;Email&lt;/label&gt;
+  &lt;input type="email" id="Email" name="Email" required autocomplete="email" /&gt;
+
+  &lt;label for="Phone_Number"&gt;Phone number (05/06/07 followed by 8 digits)&lt;/label&gt;
+  &lt;input type="tel" id="Phone_Number" name="Phone_Number" required
+         pattern="0[5-7][0-9]{8}" maxlength="10" inputmode="numeric"
+         title="Example: 0555123456" /&gt;
+
+  &lt;label for="Quantity"&gt;Number of tickets&lt;/label&gt;
+  &lt;input type="number" id="Quantity" name="Quantity" min="1" max="10" value="1" /&gt;
+
+  &lt;label for="Birthdate"&gt;Birthdate&lt;/label&gt;
+  &lt;input type="date" id="Birthdate" name="Birthdate" required /&gt;
+
+  &lt;button type="submit"&gt;Sign up&lt;/button&gt;
+&lt;/form&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The file <a href="SRC/Labs/Lab_3/Phone.html">Phone.html</a> is a minimal working example: a
+          <code>tel</code> input with <code>required</code> and <code>pattern="[0]{1}[5-7]{1}[0-9]{8}"</code> (the
+          same rule as <code>0[5-7][0-9]{8}</code>). Open it and try to submit "0812345678" or "055512".
+        </p>
+        <p>
+          You can style valid and invalid fields with CSS pseudo-classes. <code>:invalid</code> applies immediately
+          (even before the user has typed anything), so prefer <code>:user-invalid</code>, which applies only after the
+          user has interacted with the field:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+input:user-invalid {
+  border: 2px solid red;
+}
+
+input:user-valid {
+  border: 2px solid green;
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> The default browser messages depend on the browser and its language,
+        and their look cannot be styled. When you display your own messages with JavaScript (sections III to VII), add
+        the <code>novalidate</code> attribute to the <code>&lt;form&gt;</code>: the HTML5 constraints still work (and
+        you can read them from JavaScript), but the browser no longer shows its own bubbles.</div>
+    </section>
+    <section id="Validation_API">
+      <h2 class="Section_Title">III. The Constraint Validation API</h2>
+      <div class="Definitions">
+        <p>
+          Every form field has properties and methods that give JavaScript access to the HTML5 validation:
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Property / method</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><code>input.checkValidity()</code></td>
+          <td>Returns <code>true</code> if the field respects all its constraints (also exists on the form:
+            <code>form.checkValidity()</code>)</td>
+        </tr>
+        <tr>
+          <td><code>input.reportValidity()</code></td>
+          <td>Same as <code>checkValidity()</code>, and also shows the browser's message to the user</td>
+        </tr>
+        <tr>
+          <td><code>input.validationMessage</code></td>
+          <td>The message the browser would display (in the browser's language)</td>
+        </tr>
+        <tr>
+          <td><code>input.setCustomValidity(message)</code></td>
+          <td>Marks the field as invalid with your own message; <code>setCustomValidity("")</code> marks it valid
+            again</td>
+        </tr>
+        <tr>
+          <td><code>input.validity</code></td>
+          <td>A <code>ValidityState</code> object with one boolean per constraint (see below)</td>
+        </tr>
+      </table>
+      <div class="Definitions">
+        <p>The properties of <code>input.validity</code> tell you <em>which</em> constraint failed:</p>
+        <ul>
+          <li><code>valueMissing</code>: a <code>required</code> field is empty</li>
+          <li><code>typeMismatch</code>: the value does not match the <code>type</code> (email, url)</li>
+          <li><code>patternMismatch</code>: the value does not match the <code>pattern</code></li>
+          <li><code>tooShort</code> / <code>tooLong</code>: <code>minlength</code> / <code>maxlength</code> not
+            respected</li>
+          <li><code>rangeUnderflow</code> / <code>rangeOverflow</code>: smaller than <code>min</code> / larger than
+            <code>max</code></li>
+          <li><code>stepMismatch</code>: the value does not respect <code>step</code></li>
+          <li><code>badInput</code>: the browser cannot convert the input (letters in a number field)</li>
+          <li><code>customError</code>: a message was set with <code>setCustomValidity()</code></li>
+          <li><code>valid</code>: <code>true</code> when none of the above is true</li>
+        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">Example: a custom message for the phone number</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const phone = document.querySelector("#Phone_Number");
+
+const updatePhoneMessage = () =&gt; {
+  phone.setCustomValidity("");   // reset first, otherwise the field stays invalid forever
+
+  if (phone.validity.valueMissing) {
+    phone.setCustomValidity("Please enter your phone number.");
+  } else if (phone.validity.patternMismatch) {
+    phone.setCustomValidity("An Algerian mobile number starts with 05, 06 or 07, followed by 8 digits.");
+  }
+};
+
+phone.addEventListener("input", updatePhoneMessage);
+updatePhoneMessage();   // set the right message when the page loads
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Always call <code>setCustomValidity("")</code> before testing again. As
+        long as a custom message is set, <code>validity.customError</code> is <code>true</code> and the field is
+        invalid, even if the user has corrected the value.</div>
+    </section>
+    <section id="Custom_Validation">
+      <h2 class="Section_Title">IV. Custom validation with error messages</h2>
+      <div class="Definitions">
+        <p>
+          The <a href="SRC/Labs/Lab_4/Form_Validation.html">demo form</a> uses a pattern with two helper functions:
+          <code>setErrorFor(input, message)</code> marks a field as wrong and displays a message, and
+          <code>setSuccessFor(input)</code> marks it as correct. The demo writes all the messages in a single
+          <code>&lt;small&gt;</code> under the button. It is clearer for the user to show each message <em>next to its
+            field</em>, so we wrap every field in a <code>.Form_Control</code> with its own <code>&lt;small&gt;</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;form id="Signup_Form" action="signup.php" method="POST" novalidate&gt;
+  &lt;div class="Form_Control"&gt;
+    &lt;label for="Full_Name"&gt;Full name&lt;/label&gt;
+    &lt;input type="text" id="Full_Name" name="Full_Name" required aria-describedby="Full_Name_Error" /&gt;
+    &lt;small class="Error_Message" id="Full_Name_Error" aria-live="polite"&gt;&lt;/small&gt;
+  &lt;/div&gt;
+
+  &lt;div class="Form_Control"&gt;
+    &lt;label for="Email"&gt;Email&lt;/label&gt;
+    &lt;input type="email" id="Email" name="Email" required aria-describedby="Email_Error" /&gt;
+    &lt;small class="Error_Message" id="Email_Error" aria-live="polite"&gt;&lt;/small&gt;
+  &lt;/div&gt;
+
+  &lt;!-- ... same structure for Phone_Number, Password, Confirm_Password, Birthdate ... --&gt;
+
+  &lt;button type="submit"&gt;Sign up&lt;/button&gt;
+&lt;/form&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Form_Control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.Form_Control input.error {
+  border: 2px solid red;
+  background-color: rgb(255 0 0 / 0.1);
+}
+
+.Form_Control input.success {
+  border: 2px solid green;
+  background-color: rgb(0 255 0 / 0.1);
+}
+
+.Error_Message {
+  color: red;
+  min-height: 1.2em;   /* reserve space so the form does not jump */
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const setErrorFor = (input, message) =&gt; {
+  const control = input.closest(".Form_Control");
+  control.querySelector(".Error_Message").textContent = message;
+  input.classList.remove("success");
+  input.classList.add("error");
+  input.setAttribute("aria-invalid", "true");   // announced by screen readers
+};
+
+const setSuccessFor = (input) =&gt; {
+  const control = input.closest(".Form_Control");
+  control.querySelector(".Error_Message").textContent = "";
+  input.classList.remove("error");
+  input.classList.add("success");
+  input.removeAttribute("aria-invalid");
+};
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Use <code>textContent</code> (not <code>innerHTML</code>) to display messages: it inserts plain text, so a
+          value typed by the user can never be interpreted as HTML. Notice also that, unlike the demo, the message is
+          <em>replaced</em> each time, not appended with <code>+=</code>; otherwise the same error would be repeated
+          every time the user clicks the button.
+        </p>
+      </div>
+    </section>
+    <section id="Regular_Expressions">
+      <h2 class="Section_Title">V. Regular expressions for emails and Algerian phone numbers</h2>
+      <div class="Definitions">
+        <p>
+          A <strong>regular expression</strong> (regex) describes a text pattern. In JavaScript it is written between
+          slashes, and its <code>test()</code> method returns <code>true</code> if a string matches. The most useful
+          symbols are:
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Symbol</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td><code>^</code> and <code>$</code></td>
+          <td>Start and end of the string (without them, the pattern can match anywhere inside the value)</td>
+        </tr>
+        <tr>
+          <td><code>[5-7]</code>, <code>[a-zA-Z]</code></td>
+          <td>One character from the set or range</td>
+        </tr>
+        <tr>
+          <td><code>[^0-9]</code></td>
+          <td>One character that is <em>not</em> in the set</td>
+        </tr>
+        <tr>
+          <td><code>\d</code>, <code>\w</code>, <code>\s</code></td>
+          <td>A digit, a "word" character (letter, digit or _), a white space</td>
+        </tr>
+        <tr>
+          <td><code>.</code></td>
+          <td>Any character (write <code>\.</code> for a real dot)</td>
+        </tr>
+        <tr>
+          <td><code>+</code>, <code>*</code>, <code>?</code></td>
+          <td>One or more, zero or more, zero or one of the previous item</td>
+        </tr>
+        <tr>
+          <td><code>{8}</code>, <code>{2,}</code>, <code>{3,30}</code></td>
+          <td>Exactly 8, at least 2, between 3 and 30 of the previous item</td>
+        </tr>
+        <tr>
+          <td><code>(...)</code>, <code>a|b</code></td>
+          <td>A group, and "a or b"</td>
+        </tr>
+      </table>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Algerian mobile number: 0, then 5, 6 or 7, then exactly 8 digits (10 digits in total)
+const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
+
+// Optional: also accept the international format +213 5x xx xx xx
+const PHONE_INTL_REGEX = /^(0|\+213)[5-7][0-9]{8}$/;
+
+// Email: characters before @, a domain, a dot, and an extension of at least 2 letters
+const EMAIL_REGEX = /^[\w.+-]+@[\w-]+(\.[\w-]+)*\.[a-zA-Z]{2,}$/;
+
+// Username: 3 to 20 letters, digits or underscores
+const USERNAME_REGEX = /^\w{3,20}$/;
+
+const isPhoneNumber = (value) =&gt; PHONE_REGEX.test(value);
+const isEmail = (value) =&gt; EMAIL_REGEX.test(value);
+
+console.log(isPhoneNumber("0555123456"));   // true
+console.log(isPhoneNumber("0812345678"));   // false: 08 is not a mobile prefix
+console.log(isPhoneNumber("055512345"));    // false: only 9 digits
+console.log(isEmail("student@ensia.edu.dz")); // true
+console.log(isEmail("student@ensia"));        // false: no extension
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> In the HTML <code>pattern</code> attribute, do not write the slashes nor
+        <code>^</code> and <code>$</code>: the browser always compares the <em>whole</em> value. So
+        <code>/^0[5-7][0-9]{8}$/</code> in JavaScript becomes <code>pattern="0[5-7][0-9]{8}"</code> in HTML. You can
+        test your regular expressions on <a href="https://regex101.com/">regex101.com</a> (choose the ECMAScript
+        flavor). No regex can check that an email address really exists: only sending a confirmation email can.</div>
+    </section>
+    <section id="Passwords">
+      <h2 class="Section_Title">VI. Password strength and confirmation (and other rules)</h2>
+      <h3 class="Sub_Section_Title">1. Password strength</h3>
+      <div class="Definitions">
+        <p>
+          Instead of one long and unreadable regex, test each rule separately. This lets you tell the user exactly
+          what is missing and display a strength meter. Add a <code>&lt;meter&gt;</code> under the password field:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;div class="Form_Control"&gt;
+  &lt;label for="Password"&gt;Password&lt;/label&gt;
+  &lt;input type="password" id="Password" name="Password" required minlength="8" autocomplete="new-password" /&gt;
+  &lt;meter id="Password_Strength" min="0" max="5" low="3" high="4" optimum="5" value="0"&gt;&lt;/meter&gt;
+  &lt;small class="Error_Message"&gt;&lt;/small&gt;
+&lt;/div&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const PASSWORD_RULES = [
+  { regex: /.{8,}/, message: "at least 8 characters" },
+  { regex: /[a-z]/, message: "a lowercase letter" },
+  { regex: /[A-Z]/, message: "an uppercase letter" },
+  { regex: /[0-9]/, message: "a digit" },
+  { regex: /[^A-Za-z0-9]/, message: "a special character (!, @, #, ...)" },
+];
+
+// Returns the list of rules that the password does not respect yet
+const getMissingRules = (password) =&gt;
+  PASSWORD_RULES.filter((rule) =&gt; !rule.regex.test(password)).map((rule) =&gt; rule.message);
+
+const passwordInput = document.querySelector("#Password");
+const strengthMeter = document.querySelector("#Password_Strength");
+
+passwordInput.addEventListener("input", () =&gt; {
+  const missing = getMissingRules(passwordInput.value);
+  strengthMeter.value = PASSWORD_RULES.length - missing.length;   // 0 (weak) to 5 (strong)
+});
+
+const validatePassword = (value) =&gt; {
+  if (value === "") return "Password cannot be blank";
+  const missing = getMissingRules(value);
+  if (missing.length &gt; 0) return `Password must contain ${missing.join(", ")}`;
+  return "";   // empty string = no error
+};
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">2. Password confirmation</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const validateConfirmPassword = (value) =&gt; {
+  if (value === "") return "Please confirm your password";
+  if (value !== passwordInput.value) return "Passwords do not match";
+  return "";
+};
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Do not <code>trim()</code> passwords: a space can be a valid character
+        of a password. On the server, never store the password itself; store its hash with PHP's
+        <code>password_hash()</code> and check it with <code>password_verify()</code>.</div>
+      <h3 class="Sub_Section_Title">3. Business rules: the minimum age</h3>
+      <div class="Definitions">
+        <p>
+          Some rules cannot be written with HTML attributes because they depend on the current date or on another
+          field. The demo checks that the birthdate is not in the future and that the user is at least 18. Comparing
+          dates is more precise than dividing milliseconds by 365 days (which ignores leap years):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const validateBirthdate = (value) =&gt; {
+  if (value === "") return "Birthdate cannot be blank";
+
+  const birthdate = new Date(value);
+  const today = new Date();
+  if (birthdate &gt; today) return "You can't be born in the future";
+
+  // The date of the 18th birthday
+  const adultDate = new Date(birthdate);
+  adultDate.setFullYear(birthdate.getFullYear() + 18);
+  if (adultDate &gt; today) return "You must be 18 years old or older";
+
+  return "";
+};
+        </pre>
+      </div>
+    </section>
+    <section id="Real_Time_Validation">
+      <h2 class="Section_Title">VII. Real-time validation and submission</h2>
+      <div class="Definitions">
+        <p>
+          The demo validates only when the button is clicked. Users prefer immediate feedback, but showing "Email is
+          not valid" after the first letter is annoying. A good compromise:
+        </p>
+        <ul>
+          <li>on <code>blur</code> (the user leaves the field): validate it and remember that it was "touched";</li>
+          <li>on <code>input</code> (each key typed): re-validate only fields that were already touched, so the error
+            disappears as soon as the value is correct;</li>
+          <li>on <code>submit</code>: validate every field, and cancel the submission with
+            <code>event.preventDefault()</code> only if at least one field is invalid.</li>
+        </ul>
+        <p>
+          Listen to the <code>submit</code> event of the form rather than the <code>click</code> event of the button:
+          <code>submit</code> also fires when the user presses Enter in a field.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const form = document.querySelector("#Signup_Form");
+
+// One validation function per field name. Each returns "" when the value is valid,
+// otherwise the error message to display.
+const validators = {
+  Full_Name: (value) =&gt; (value.trim().length &lt; 3 ? "Name must contain at least 3 characters" : ""),
+  Email: (value) =&gt; {
+    if (value.trim() === "") return "Email cannot be blank";
+    return isEmail(value.trim()) ? "" : "Email is not valid";
+  },
+  Phone_Number: (value) =&gt; {
+    if (value.trim() === "") return "Phone number cannot be blank";
+    return isPhoneNumber(value.trim()) ? "" : "Use 05, 06 or 07 followed by 8 digits";
+  },
+  Password: validatePassword,
+  Confirm_Password: validateConfirmPassword,
+  Birthdate: validateBirthdate,
+};
+
+const validateField = (input) =&gt; {
+  const message = validators[input.name](input.value);
+  if (message === "") {
+    setSuccessFor(input);
+    return true;
+  }
+  setErrorFor(input, message);
+  return false;
+};
+
+const fields = Object.keys(validators).map((name) =&gt; form.elements[name]);
+
+fields.forEach((input) =&gt; {
+  input.addEventListener("blur", () =&gt; {
+    input.dataset.touched = "true";
+    validateField(input);
+  });
+
+  input.addEventListener("input", () =&gt; {
+    if (input.dataset.touched === "true") validateField(input);
+  });
+});
+
+// When the password changes, the confirmation must be checked again
+form.elements.Password.addEventListener("input", () =&gt; {
+  const confirm = form.elements.Confirm_Password;
+  if (confirm.dataset.touched === "true") validateField(confirm);
+});
+
+form.addEventListener("submit", (event) =&gt; {
+  // map() (not every()) so that ALL the fields show their message, not just the first one
+  const results = fields.map(validateField);
+
+  if (results.includes(false)) {
+    event.preventDefault();                 // stay on the page
+    form.querySelector(".error").focus();   // help the user find the first error
+  }
+  // otherwise the form is sent normally to signup.php, which validates everything again
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> You can combine both worlds: keep the HTML5 attributes
+        (<code>required</code>, <code>pattern</code>, ...) on your inputs, and inside <code>validateField</code> use
+        <code>input.checkValidity()</code> and <code>input.validity</code> (section III) to choose the message. This way
+        the rules are written only once, in the HTML.</div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">VIII. Your turn: validate the forms of your project</h2>
+      <div class="Definitions">
+        <ol>
+          <li><strong>List the forms:</strong> as a team, list every form of your project (sign up, login, contact,
+            and the create/update forms of each CRUD web service) and, for each field, write its rules (required?
+            type? length? format? range?).</li>
+          <li><strong>HTML5 first:</strong> give every input the correct <code>type</code>, a <code>&lt;label&gt;</code>,
+            a <code>name</code>, and the attributes <code>required</code>, <code>minlength</code>/<code>maxlength</code>,
+            <code>min</code>/<code>max</code> and <code>pattern</code> that match your rules. Test the forms
+            without JavaScript.</li>
+          <li><strong>Structure:</strong> wrap each field in a <code>.Form_Control</code> with a
+            <code>&lt;small class="Error_Message"&gt;</code>, add <code>novalidate</code> to the form, and add the
+            <code>.error</code> / <code>.success</code> styles to your CSS (keep them responsive, see Lab 3).</li>
+          <li><strong>Shared helpers:</strong> create one file (for example <code>assets/JS/validation.js</code>)
+            with <code>setErrorFor</code>, <code>setSuccessFor</code>, your regular expressions
+            (<code>isEmail</code>, <code>isPhoneNumber</code>, ...) and <code>validateField</code>, so that every team
+            member reuses the same code.</li>
+          <li><strong>Validators:</strong> for each form, write the <code>validators</code> object with one function
+            and a clear English (or Arabic/French, but consistent) message per field. Include your business rules
+            (dates, ranges, two fields that must match, ...).</li>
+          <li><strong>Passwords:</strong> on the sign-up form, add the strength meter and the confirmation check.</li>
+          <li><strong>Real time:</strong> attach the <code>blur</code>, <code>input</code> and <code>submit</code>
+            listeners as in section VII.</li>
+          <li><strong>Test:</strong> for every field, try an empty value, a value that is too short/too long, a wrong
+            format, and a correct value. Try a phone number starting with 08, an email without a domain, a birthdate
+            in the future, and two different passwords.</li>
+          <li><strong>Bypass test:</strong> in the DevTools, remove <code>required</code> from an input or disable
+            JavaScript, and submit the form. Write down what your server receives: this is what your PHP validation
+            will have to handle.</li>
+        </ol>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Start from the <a href="SRC/Labs/Lab_4/Form_Validation.html">demo
+          form</a>: rewrite <a href="SRC/Labs/Lab_4/Form_Validation.js">Form_Validation.js</a> with
+        <code>const</code>, one message per field and the <code>submit</code> event, then adapt it to your own
+        forms.</div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>Every form of your team project uses the correct input types, labels and HTML5 validation attributes.</li>
+        <li>Every field is validated in JavaScript with a clear error message displayed next to it, and valid fields
+          are visually marked.</li>
+        <li>Email and Algerian phone numbers (05/06/07 followed by 8 digits) are checked with regular expressions.</li>
+        <li>The sign-up form checks the password strength and the password confirmation.</li>
+        <li>Validation happens in real time (<code>blur</code>/<code>input</code>) and the form is not submitted while
+          a field is invalid.</li>
+        <li>The work is committed and pushed to your team repository. It counts toward the <strong>Javascript</strong>
+          milestone ("Input validation + everything related to JS"); see the
+          <a href="Syllabus.html#Deadlines">Deadlines table in the syllabus</a> for the date.</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Lab_3.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 3: Responsive design</h1>
+    </a>
+    <a href="Lab_5.html" class="Arrow">
+      <h1>Lab 5: MySQL</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+</body>
+
+</html>

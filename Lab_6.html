@@ -4,20 +4,652 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
   <link rel="stylesheet" href="SRC/CSS/Styles.css" />
-  <title>Lab 6</title>
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 6: PDO</title>
 </head>
 
 <body>
   <main>
     <h1 class="Title">Lab 6: PDO</h1>
     <section>
+      <h2 class="Section_Title">Instructions</h2>
+      <div class="Instructions">
+        <p>
+          In <a href="Lab_5.html">Lab 5</a> you designed your database and created it in phpMyAdmin. In this lab you
+          connect your PHP code to that database using <strong>PDO</strong> (PHP Data Objects). <br>
+          You will write one reusable connection file, then implement the four CRUD operations (Create, Read, Update,
+          Delete) with <strong>prepared statements</strong>, group several queries in a <strong>transaction</strong>,
+          and display query results safely in an HTML table. <br>
+          At the end of the lab, at least one service of your project must be fully working with PDO. The theory is in
+          the lecture <a href="PHP_MySQL.html">Storing data with PHP</a> (section III. PDO).
+        </p>
+      </div>
+    </section>
+    <section id="Why_PDO">
+      <h2 class="Section_Title">I. Why PDO?</h2>
+      <div class="Definitions">
+        <p>
+          PHP offers two extensions to talk to MySQL: <strong>mysqli</strong> (seen in the lecture) and
+          <strong>PDO</strong>. Both work, but in this course we use PDO for the project because:
+        </p>
+        <ul>
+          <li>
+            <strong>Portability:</strong> PDO is a single API for about a dozen database systems (MySQL/MariaDB,
+            PostgreSQL, SQLite, SQL Server, Oracle...). Changing the database mostly means changing the connection
+            string. mysqli only works with MySQL/MariaDB.
+          </li>
+          <li>
+            <strong>Prepared statements made easy:</strong> PDO supports <em>named</em> placeholders
+            (<code>:email</code>) and <em>positional</em> placeholders (<code>?</code>), and you can pass all values
+            as one array to <code>execute()</code>. mysqli only supports <code>?</code> and needs
+            <code>bind_param()</code> with a type string.
+          </li>
+          <li>
+            <strong>Exceptions:</strong> PDO can throw a <code>PDOException</code> on every error, so you never forget
+            to check a return value.
+          </li>
+          <li>
+            <strong>Flexible fetching:</strong> rows can come back as associative arrays, objects, a single column,
+            etc.
+          </li>
+        </ul>
+        <p>
+          The most important point is security. A prepared statement sends the SQL <em>structure</em> and the
+          <em>data</em> separately to the server, so data typed by a user can never be interpreted as SQL. This is the
+          standard protection against <strong>SQL injection</strong> (see the lecture
+          <a href="Security.html">Security</a>). Compare:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// NEVER do this: the user input is pasted inside the SQL string.
+// If $_GET['id'] is "1 OR 1=1", the query returns every row of the table.
+$sql = "SELECT * FROM products WHERE id = " . $_GET['id'];
+$rows = $pdo-&gt;query($sql)-&gt;fetchAll();
 
+// ALWAYS do this: the SQL has a placeholder, the value is sent separately.
+$stmt = $pdo-&gt;prepare('SELECT * FROM products WHERE id = ?');
+$stmt-&gt;execute([$_GET['id']]);
+$row = $stmt-&gt;fetch();
+        </pre>
+      </div>
+      <div class="Note"><strong>Rule for the whole project:</strong> every query that contains a value coming from
+        outside your code (form, URL, cookie, uploaded file name...) must be a prepared statement. A query with no
+        external value at all may use <code>$pdo-&gt;query()</code>.</div>
+    </section>
+    <section id="Example_Tables">
+      <h2 class="Section_Title">II. The example tables</h2>
+      <div class="Definitions">
+        <p>
+          All the examples of this lab use a small shop database. Open phpMyAdmin, create a database named
+          <code>shop_lab</code> with the collation <code>utf8mb4_unicode_ci</code>, then paste the following script in
+          the <strong>SQL</strong> tab and click <strong>Go</strong> (as in Lab 5). Of course, in your project you
+          will use your own tables; the code will be the same.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+CREATE TABLE products (
+  id          INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(100)  NOT NULL,
+  price       DECIMAL(10,2) NOT NULL,
+  stock       INT UNSIGNED  NOT NULL DEFAULT 0,
+  created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_products_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE orders (
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  product_id  INT UNSIGNED NOT NULL,
+  quantity    INT UNSIGNED NOT NULL,
+  created_at  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_orders_product FOREIGN KEY (product_id) REFERENCES products (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO products (name, price, stock) VALUES
+  ('USB keyboard', 2500.00, 15),
+  ('Wireless mouse', 1800.00, 30),
+  ('27" monitor', 42000.00, 4);
+        </pre>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_6.png" alt="The SQL tab of phpMyAdmin" />
+      <div class="Note"><strong>Why utf8mb4 and InnoDB?</strong> <code>utf8mb4</code> stores every Unicode
+        character (Arabic, accents, emojis), while MySQL's old <code>utf8</code> does not. <code>InnoDB</code> is the
+        storage engine that supports foreign keys and transactions (section V).</div>
+    </section>
+    <section id="Connection">
+      <h2 class="Section_Title">III. A reusable connection file</h2>
+      <div class="Definitions">
+        <p>
+          Do not write <code>new PDO(...)</code> in every page. Put the credentials in one configuration file and the
+          connection code in one function that every page can include. A suggested structure inside your project
+          folder (see <a href="Lab_2.html">Lab 2</a>):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+your_project/
+├── config/
+│   ├── config.php            &lt;- real credentials, NOT committed to Git
+│   └── config.example.php    &lt;- same file with fake values, committed
+├── includes/
+│   ├── db.php                &lt;- getConnection()
+│   └── products_repository.php
+├── products.php
+└── .gitignore                &lt;- contains the line: config/config.php
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">The configuration file</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// config/config.php
+declare(strict_types=1);
+
+const DB_HOST = '127.0.0.1';
+const DB_PORT = 3306;          // change it if your XAMPP MySQL uses another port
+const DB_NAME = 'shop_lab';
+const DB_USER = 'root';        // XAMPP default: OK on your own machine only
+const DB_PASS = '';            // XAMPP default: empty password
+        </pre>
+      </div>
+      <div class="Note"><strong>Warning:</strong> the XAMPP default account (<code>root</code> with no password)
+        is acceptable only for local development. It must <strong>never</strong> be used on a real server. In
+        production, create a dedicated MySQL user with a strong password and only the privileges the application needs
+        (<code>SELECT, INSERT, UPDATE, DELETE</code> on its own database), and keep the configuration file out of the
+        public web folder and out of Git.</div>
+      <h3 class="Sub_Section_Title">The connection function</h3>
+      <div class="Definitions">
+        <p>The DSN (Data Source Name) describes the driver, host, port, database and character set. The options array
+          configures how PDO behaves:</p>
+        <ul>
+          <li><code>PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION</code>: every error throws a
+            <code>PDOException</code> (this is the default since PHP 8, but write it explicitly).</li>
+          <li><code>PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC</code>: rows are returned as associative
+            arrays (<code>$row['name']</code>) instead of arrays indexed twice, by name and by number.</li>
+          <li><code>PDO::ATTR_EMULATE_PREPARES =&gt; false</code>: use real prepared statements of MySQL instead of
+            PDO simulating them, and get integers back as PHP <code>int</code>.</li>
+          <li><code>charset=utf8mb4</code> in the DSN: the connection uses the same encoding as the tables.</li>
+        </ul>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/db.php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../config/config.php';
+
+function getConnection(): PDO
+{
+    static $pdo = null;          // keeps the same connection for the whole request
+
+    if ($pdo instanceof PDO) {
+        return $pdo;
+    }
+
+    $dsn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+
+    $options = [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
+    ];
+
+    try {
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+    } catch (PDOException $e) {
+        // Details go to the server log (xampp/apache/logs/error.log), never to the visitor.
+        error_log('Database connection failed: ' . $e-&gt;getMessage());
+        http_response_code(500);
+        exit('Sorry, the service is temporarily unavailable. Please try again later.');
+    }
+
+    return $pdo;
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Why catch the exception?</strong> An uncaught exception, with
+        <code>display_errors</code> on (the XAMPP default), prints the error message and the stack trace in the page:
+        host name, database name, user name, file paths... Never <code>echo $e-&gt;getMessage()</code> to the visitor.
+        Log it and show a generic message instead.</div>
+      <h3 class="Sub_Section_Title">Test the connection</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// test_connection.php (delete it once it works)
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+
+$pdo = getConnection();
+$count = $pdo-&gt;query('SELECT COUNT(*) FROM products')-&gt;fetchColumn();
+echo 'Connected. The products table contains ' . (int) $count . ' rows.';
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>Open <code>http://localhost/your_project/test_connection.php</code>. You should read
+          <em>Connected. The products table contains 3 rows.</em> If not, check that MySQL is started in the XAMPP
+          control panel, then check the database name, port, user and password.</p>
+      </div>
+    </section>
+    <section id="CRUD">
+      <h2 class="Section_Title">IV. CRUD with prepared statements</h2>
+      <div class="Definitions">
+        <p>
+          A prepared statement is always used in three steps: <code>prepare()</code> the SQL with placeholders,
+          <code>execute()</code> it with the values, then read the result (<code>fetch()</code>,
+          <code>fetchAll()</code>, <code>rowCount()</code>...). We put all the queries of one table in one file of
+          functions, a "repository". Each function receives the PDO connection as a parameter.
+        </p>
+        <ul>
+          <li><strong>Named placeholders</strong> (<code>:name</code>): readable when there are many values; the
+            array keys must match the names.</li>
+          <li><strong>Positional placeholders</strong> (<code>?</code>): short; the values are given in the same order
+            as the question marks.</li>
+          <li>Do not mix both kinds in the same query, and with emulation disabled, do not use the same named
+            placeholder twice in one query (use <code>:qty</code> and <code>:qty2</code>).</li>
+        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">Create: INSERT and lastInsertId()</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/products_repository.php
+declare(strict_types=1);
+
+/** Inserts a product and returns its new id. */
+function createProduct(PDO $pdo, string $name, float $price, int $stock): int
+{
+    $sql = 'INSERT INTO products (name, price, stock) VALUES (:name, :price, :stock)';
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute([
+        ':name'  =&gt; $name,
+        ':price' =&gt; $price,
+        ':stock' =&gt; $stock,
+    ]);
+
+    // lastInsertId() returns the AUTO_INCREMENT value generated by this connection, as a string.
+    return (int) $pdo-&gt;lastInsertId();
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">Read: fetchAll(), fetch() and fetchColumn()</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+/** Returns all products (an empty array if there are none). */
+function getAllProducts(PDO $pdo): array
+{
+    // No external value: query() is enough.
+    $stmt = $pdo-&gt;query('SELECT id, name, price, stock FROM products ORDER BY name');
+    return $stmt-&gt;fetchAll();
+}
+
+/** Returns one product, or false if the id does not exist. */
+function getProductById(PDO $pdo, int $id): array|false
+{
+    $stmt = $pdo-&gt;prepare('SELECT id, name, price, stock FROM products WHERE id = ?');
+    $stmt-&gt;execute([$id]);
+    return $stmt-&gt;fetch();      // one row, or false when there is no (more) row
+}
+
+/** Searches products by name, with a limit. */
+function searchProducts(PDO $pdo, string $term, int $limit = 20): array
+{
+    $stmt = $pdo-&gt;prepare(
+        'SELECT id, name, price, stock FROM products WHERE name LIKE :term ORDER BY name LIMIT :limit'
+    );
+    // bindValue() lets us give the type explicitly: LIMIT needs an integer.
+    $stmt-&gt;bindValue(':term', '%' . $term . '%', PDO::PARAM_STR);
+    $stmt-&gt;bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt-&gt;execute();
+    return $stmt-&gt;fetchAll();
+}
+
+/** Counts the products whose stock is below a threshold. */
+function countLowStock(PDO $pdo, int $threshold): int
+{
+    $stmt = $pdo-&gt;prepare('SELECT COUNT(*) FROM products WHERE stock &lt; ?');
+    $stmt-&gt;execute([$threshold]);
+    return (int) $stmt-&gt;fetchColumn();   // the first column of the first row
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>fetch() or fetchAll()?</strong> Use <code>fetch()</code> when you expect one row
+        (search by primary key) or when you loop over a very large result one row at a time
+        (<code>while ($row = $stmt-&gt;fetch()) { ... }</code>). Use <code>fetchAll()</code> to get all rows in an
+        array at once; it is convenient for small and medium results such as a page of a list.</div>
+      <h3 class="Sub_Section_Title">Update and Delete: rowCount()</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+/** Updates a product. Returns the number of rows changed (0 or 1). */
+function updateProduct(PDO $pdo, int $id, string $name, float $price, int $stock): int
+{
+    $sql = 'UPDATE products SET name = :name, price = :price, stock = :stock WHERE id = :id';
+    $stmt = $pdo-&gt;prepare($sql);
+    $stmt-&gt;execute([
+        ':name'  =&gt; $name,
+        ':price' =&gt; $price,
+        ':stock' =&gt; $stock,
+        ':id'    =&gt; $id,
+    ]);
+    return $stmt-&gt;rowCount();
+}
+
+/** Deletes a product. Returns true if a row was deleted. */
+function deleteProduct(PDO $pdo, int $id): bool
+{
+    $stmt = $pdo-&gt;prepare('DELETE FROM products WHERE id = ?');
+    $stmt-&gt;execute([$id]);
+    return $stmt-&gt;rowCount() === 1;
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Careful with rowCount():</strong> for <code>INSERT</code>, <code>UPDATE</code> and
+        <code>DELETE</code> it returns the number of affected rows. With MySQL, an <code>UPDATE</code> that writes the
+        same values as before returns 0 even though the row exists. Do not rely on <code>rowCount()</code> after a
+        <code>SELECT</code>; count the rows of <code>fetchAll()</code> or use <code>SELECT COUNT(*)</code>.</div>
+      <h3 class="Sub_Section_Title">Using the repository</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// crud_demo.php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/products_repository.php';
+
+$pdo = getConnection();
+
+try {
+    $id = createProduct($pdo, 'HDMI cable', 650.00, 50);
+    echo "Created product #$id&lt;br&gt;";
+
+    $product = getProductById($pdo, $id);
+    if ($product === false) {
+        echo 'Product not found&lt;br&gt;';
+    } else {
+        echo 'Read: ' . htmlspecialchars($product['name']) . '&lt;br&gt;';
+    }
+
+    echo 'Updated rows: ' . updateProduct($pdo, $id, 'HDMI cable 2m', 700.00, 45) . '&lt;br&gt;';
+    echo 'Deleted: ' . (deleteProduct($pdo, $id) ? 'yes' : 'no') . '&lt;br&gt;';
+} catch (PDOException $e) {
+    error_log($e-&gt;getMessage());
+    echo 'A database error occurred.';
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> run <code>crud_demo.php</code> twice without the delete line: the
+        second <code>INSERT</code> fails with a duplicate-entry error because of the <code>UNIQUE</code> key on
+        <code>name</code>. The SQL error code of a duplicate entry is available in
+        <code>$e-&gt;errorInfo[1]</code> (1062), which lets you show a friendly message such as "This product
+        already exists".</div>
+    </section>
+    <section id="Transactions">
+      <h2 class="Section_Title">V. Transactions</h2>
+      <div class="Definitions">
+        <p>
+          Some operations need several queries that must <strong>all</strong> succeed or <strong>all</strong> be
+          cancelled. Example: placing an order decreases the stock <em>and</em> inserts a row in <code>orders</code>.
+          If the second query fails after the first one succeeded, the stock would be wrong. A transaction solves
+          this:
+        </p>
+        <ul>
+          <li><code>$pdo-&gt;beginTransaction()</code> starts the transaction (auto-commit is suspended).</li>
+          <li><code>$pdo-&gt;commit()</code> makes all the changes permanent.</li>
+          <li><code>$pdo-&gt;rollBack()</code> cancels all the changes made since <code>beginTransaction()</code>.</li>
+        </ul>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+/**
+ * Places an order: decreases the stock and records the order, atomically.
+ * Returns the id of the new order.
+ */
+function placeOrder(PDO $pdo, int $productId, int $quantity): int
+{
+    try {
+        $pdo-&gt;beginTransaction();
+
+        // The condition "stock &gt;= :min_stock" prevents a negative stock.
+        $stmt = $pdo-&gt;prepare(
+            'UPDATE products SET stock = stock - :qty WHERE id = :id AND stock &gt;= :min_stock'
+        );
+        $stmt-&gt;execute([':qty' =&gt; $quantity, ':id' =&gt; $productId, ':min_stock' =&gt; $quantity]);
+
+        if ($stmt-&gt;rowCount() === 0) {
+            throw new RuntimeException('Unknown product or not enough stock.');
+        }
+
+        $stmt = $pdo-&gt;prepare('INSERT INTO orders (product_id, quantity) VALUES (?, ?)');
+        $stmt-&gt;execute([$productId, $quantity]);
+        $orderId = (int) $pdo-&gt;lastInsertId();
+
+        $pdo-&gt;commit();
+        return $orderId;
+    } catch (Throwable $e) {
+        if ($pdo-&gt;inTransaction()) {
+            $pdo-&gt;rollBack();       // nothing is changed in the database
+        }
+        throw $e;                   // let the caller decide what to display
+    }
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// order_demo.php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/products_repository.php';
+
+try {
+    $orderId = placeOrder(getConnection(), 3, 10);   // only 4 monitors in stock
+    echo "Order #$orderId placed.";
+} catch (PDOException $e) {                     // must come first (see the note)
+    error_log($e-&gt;getMessage());
+    echo 'A database error occurred.';
+} catch (RuntimeException $e) {
+    echo htmlspecialchars($e-&gt;getMessage());        // our own, safe message
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Note:</strong> transactions only work with InnoDB tables, and a statement such as
+        <code>CREATE TABLE</code> or <code>ALTER TABLE</code> inside a transaction commits it implicitly in MySQL.
+        Keep transactions short and only for data changes. <code>PDOException</code> extends
+        <code>RuntimeException</code>, so its <code>catch</code> block must come before the
+        <code>RuntimeException</code> one, otherwise database errors (with their technical details) would be shown
+        to the user.</div>
+    </section>
+    <section id="Display">
+      <h2 class="Section_Title">VI. Displaying results in an HTML table</h2>
+      <div class="Definitions">
+        <p>
+          Data read from the database was, at some point, typed by a user. Printing it as is lets an attacker inject
+          HTML or JavaScript into your pages (XSS, see <a href="Security.html">Security</a>). Every value printed in
+          HTML must go through <code>htmlspecialchars()</code>, which converts <code>&lt; &gt; &amp; " '</code> into
+          HTML entities. Prepared statements protect the database; <code>htmlspecialchars()</code> protects the
+          page. You need both.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/helpers.php
+declare(strict_types=1);
+
+/** Escapes a value for safe output in HTML (text and attribute values). */
+function e(string|int|float|null $value): string
+{
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// products.php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/helpers.php';
+require_once __DIR__ . '/includes/products_repository.php';
+
+$products = getAllProducts(getConnection());
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Products&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Products&lt;/h1&gt;
+
+  &lt;?php if (count($products) === 0): ?&gt;
+    &lt;p&gt;No products yet.&lt;/p&gt;
+  &lt;?php else: ?&gt;
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;#&lt;/th&gt;
+          &lt;th&gt;Name&lt;/th&gt;
+          &lt;th&gt;Price (DZD)&lt;/th&gt;
+          &lt;th&gt;Stock&lt;/th&gt;
+          &lt;th&gt;Actions&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;?php foreach ($products as $product): ?&gt;
+          &lt;tr&gt;
+            &lt;td&gt;&lt;?= e($product['id']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= e($product['name']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= e(number_format((float) $product['price'], 2, '.', ' ')) ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= e($product['stock']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;
+              &lt;a href="product_edit.php?id=&lt;?= e($product['id']) ?&gt;"&gt;Edit&lt;/a&gt;
+              &lt;form method="post" action="product_delete.php"&gt;
+                &lt;input type="hidden" name="id" value="&lt;?= e($product['id']) ?&gt;"&gt;
+                &lt;button type="submit"&gt;Delete&lt;/button&gt;
+              &lt;/form&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;?php endforeach; ?&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;?php endif; ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Why is Delete a form and not a link?</strong> A link sends a <code>GET</code>
+        request, and <code>GET</code> requests must never modify data: browsers prefetch links, search engines follow
+        them, and a malicious page can trigger them with a simple image tag. Actions that change data use
+        <code>POST</code>.</div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// product_delete.php
+declare(strict_types=1);
+
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/products_repository.php';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit('Method not allowed.');
+}
+
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 1]]);
+if ($id === null || $id === false) {
+    http_response_code(400);
+    exit('Invalid product id.');
+}
+
+deleteProduct(getConnection(), $id);
+header('Location: products.php', true, 303);
+exit;
+        </pre>
+      </div>
+      <div class="Note"><strong>Coming next:</strong> <code>filter_input()</code>, the <code>303</code> redirect
+        and the full validation of form data are explained in <a href="Lab_8.html">Lab 8</a>. Deleting a product
+        that already has orders fails because of the foreign key: catch the <code>PDOException</code> and show a
+        clear message.</div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">VII. Your turn</h2>
+      <div class="Definitions">
+        <p>Apply what you learned to <strong>your own project</strong>, step by step:</p>
+        <ol>
+          <li>Create <code>config/config.php</code> with your database name, and a
+            <code>config/config.example.php</code> with fake values. Add <code>config/config.php</code> to
+            <code>.gitignore</code> and commit the example file only.</li>
+          <li>Copy <code>includes/db.php</code> and <code>includes/helpers.php</code> into your project. Write a
+            <code>test_connection.php</code> that counts the rows of one of your tables, run it, then delete it.</li>
+          <li>Choose one service of your project (for example: products, courses, appointments, posts...). Create
+            <code>includes/&lt;service&gt;_repository.php</code> with five functions: create, get all, get by id,
+            update, delete. Every query that receives a value must be a prepared statement.</li>
+          <li>Write a list page that displays the rows of the service in an HTML table. Every printed value goes
+            through <code>e()</code>.</li>
+          <li>Add a page with a form to create a new row and a page to edit an existing one
+            (<code>?id=...</code> in the URL, pre-filled form). Use <code>lastInsertId()</code> to redirect to the
+            new row and <code>rowCount()</code> to tell the user whether something changed.</li>
+          <li>Add a Delete button (a <code>POST</code> form) on each row of the list.</li>
+          <li>Find one operation in your project that touches two tables (an order and its stock, a reservation and
+            the available seats, a post and its tags...) and implement it with a transaction. Test the rollback by
+            making the second query fail on purpose (for example, a wrong column name), and check in phpMyAdmin
+            that the first query was cancelled.</li>
+          <li>Try to break your pages: type <code>' OR 1=1 --</code> and
+            <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> in your forms and in the URL. Nothing should happen
+            except the text being stored and displayed as plain text.</li>
+          <li>Commit and push your work to your team repository.</li>
+        </ol>
+      </div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>A single connection file (<code>getConnection()</code>) using a DSN with <code>charset=utf8mb4</code>,
+          <code>ERRMODE_EXCEPTION</code>, <code>FETCH_ASSOC</code> and <code>ATTR_EMULATE_PREPARES =&gt; false</code>.
+        </li>
+        <li>Database credentials kept in a configuration file that is not committed; no credentials or error details
+          shown to visitors.</li>
+        <li>Full CRUD (create, list, view/edit, update, delete) for at least one service of your project, written
+          with PDO prepared statements only.</li>
+        <li>At least one multi-query operation protected by a transaction
+          (<code>beginTransaction</code>/<code>commit</code>/<code>rollBack</code>).</li>
+        <li>All database values displayed with <code>htmlspecialchars()</code>.</li>
+        <li>Work pushed to your team repository. This lab counts toward the <strong>PHP/AJAX</strong> milestone of
+          the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
+      </ul>
     </section>
   </main>
+  <footer class="Inter_Pages">
+    <a href="Lab_5.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 5: MySQL</h1>
+    </a>
+    <a href="Lab_7.html" class="Arrow">
+      <h1>Lab 7: JavaScript scripting CSS</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
 
 </html>

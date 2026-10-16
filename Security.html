@@ -17,7 +17,7 @@
   <main>
     <h1 class="Title">Security</h1>
     <h1 class="Section_Title">What is web security ?</h1>
-    <section>
+    <section id="Web_Security">
       <div class="Definitions">
         <ul>
           <li>
@@ -45,7 +45,7 @@
       </div>
     </section>
     <h1 class="Section_Title">What is a Hacker ?</h1>
-    <section>
+    <section id="Hackers">
       <div class="Definitions">
         <ul>
           <li>
@@ -59,7 +59,7 @@
             <h2>White Hat Hacker</h2>
             <p>
               A white hat hacker is a computer security specialist who breaks
-              into protected systems and networks to test and asses their
+              into protected systems and networks to test and assess their
               security.
             </p>
           </li>
@@ -74,7 +74,7 @@
             <h2>Grey Hat Hacker</h2>
             <p>
               A grey hat hacker is a computer security specialist who breaks
-              into protected systems and networks to test and asses their
+              into protected systems and networks to test and assess their
               security, but may also exploit and/or steal data.
             </p>
           </li>
@@ -82,7 +82,7 @@
       </div>
     </section>
     <h1 class="Section_Title">Type of cyber attacks</h1>
-    <section>
+    <section id="Cyber_Attacks">
       <div class="Definitions">
         <ul>
           <li>
@@ -185,7 +185,7 @@
       </div>
     </section>
     <h1 class="Section_Title">General considerations</h1>
-    <section>
+    <section id="General_Considerations">
       <div class="Definitions">
         <ul>
           <li>
@@ -204,7 +204,7 @@
       </div>
     </section>
     <h1 class="Section_Title">Database Security</h1>
-    <section>
+    <section id="Database_Security">
       <div class="Definitions">
         <ul>
           <li>
@@ -311,7 +311,7 @@
       </div>
     </section>
     <h1 class="Section_Title">SQL Injection</h1>
-    <section>
+    <section id="SQL_Injection">
       <div class="Definitions">
         <ul>
           <li>
@@ -398,7 +398,7 @@
       </div>
     </section>
     <h1 class="Section_Title">Cross-Site Scripting (XSS)</h1>
-    <section>
+    <section id="XSS">
       <div class="Definitions">
         XSS PHP Injection is a type of attack in which malicious scripts are injected into otherwise benign and trusted
         websites. XSS attacks occur when an attacker uses a web application to send malicious code, generally in the
@@ -526,7 +526,7 @@
       </div>
     </section>
     <h1 class="Section_Title">Securing Session INI Settings</h1>
-    <section>
+    <section id="Session_Settings">
       <div class="Definitions">
         <ul>
           <li>
@@ -691,7 +691,7 @@
       </div>
     </section>
     <h1 class="Section_Title">Filesystem Security</h1>
-    <section>
+    <section id="Filesystem_Security">
       <div class="Definitions">
         <ul>
           <li>
@@ -709,7 +709,7 @@
             &lt;?php <br>
             // remove a file from the user's home directory <br>
             $username = $_POST['user_submitted_name']; <br>
-            $userfile = $_POST['user_submitted_filname']; <br>
+            $userfile = $_POST['user_submitted_filename']; <br>
             $homedir = "/home/$username"; <br> <br>
             unlink("$homedir/$userfile"); <br> <br>
             echo "The file has been deleted!";
@@ -779,182 +779,825 @@
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-
-
+          This version fixes both problems of the previous examples:
+          <ul>
+            <li><strong>The user comes from authentication, not from the form.</strong> <code>$username</code> is taken
+              from <code>$_SERVER['REMOTE_USER']</code>, which is set by the web server after the user has logged in
+              (in your own applications, use the user id stored in <code>$_SESSION</code> after login). The visitor can
+              no longer choose whose home directory is used, so they can only delete their own files.</li>
+            <li><strong>basename() removes any directory part.</strong> <code>basename("../../etc/passwd")</code>
+              returns <code>"passwd"</code>, so the submitted name can no longer contain <code>../</code> or a
+              <code>/</code> to escape from the user's directory (<em>path traversal</em>). The file is always looked
+              for inside <code>/home/$username</code>.</li>
+            <li><strong>Every attempt is logged.</strong> Successful and failed deletions are written to a log file
+              that the user cannot reach. If someone tries to abuse the script, the administrator can see what was
+              attempted and when, and investigate.</li>
+            <li>The message shown to the user is escaped with <code>htmlentities()</code>, so a file name cannot be
+              used to inject HTML or JavaScript (XSS).</li>
+          </ul>
+          Together with limited permissions for the PHP user, this follows the defence-in-depth idea: even if one
+          check fails, the others still limit the damage.
         </div>
       </div>
     </section>
-    <!--
-    <h1 class="Section_Title"></h1>
-    <section>
+    <h1 class="Section_Title">Cross-Site Request Forgery (CSRF)</h1>
+    <section id="CSRF">
       <div class="Definitions">
         <ul>
           <li>
-            <h2></h2>
+            <h2>What is CSRF?</h2>
             <p>
-
+              Cross-Site Request Forgery (CSRF) is an attack in which a malicious website makes the victim's browser
+              send a request to <em>your</em> website. Because the browser automatically attaches the cookies of your
+              site (including the session cookie), the request looks like it was sent by the logged-in user. <br>
+              The attacker cannot read the response, but they do not need to: the goal is to make the server
+              <em>perform an action</em> on the victim's behalf (transfer money, change an e-mail address, delete an
+              account, post a message...).
             </p>
           </li>
-
-
+          <li>
+            <h2>Example</h2>
+            <p>
+              Suppose <code>bank.example</code> has a form that transfers money with a simple POST request to
+              <code>transfer.php</code>, and only checks that the user is logged in. An attacker publishes the following
+              page on <code>evil.example</code> and sends the link to a victim who is logged in to the bank:
+            </p>
+          </li>
         </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-html">&lt;!-- page hosted on evil.example --&gt;
+&lt;form action="https://bank.example/transfer.php" method="POST" id="f"&gt;
+  &lt;input type="hidden" name="to" value="attacker_account"&gt;
+  &lt;input type="hidden" name="amount" value="50000"&gt;
+&lt;/form&gt;
+&lt;script&gt;
+  document.getElementById("f").submit(); // sent automatically, with the victim's cookies
+&lt;/script&gt;</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Defence 1: the synchronizer token</h2>
+            <p>
+              The server generates a long random secret (the <strong>CSRF token</strong>), stores it in the session and
+              puts it in a hidden field of every form. When the form is submitted, the server compares the received
+              token with the one in the session. The attacker's page cannot know the token (it cannot read your pages
+              because of the Same-Origin Policy), so its forged request is rejected.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// form.php : generate the token once per session and print it in the form
+session_start();
+
+if (empty($_SESSION['csrf_token'])) {
+    // 32 cryptographically secure random bytes -&gt; 64 hexadecimal characters
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+?&gt;
+&lt;form action="transfer.php" method="POST"&gt;
+  &lt;input type="hidden" name="csrf_token"
+         value="&lt;?= htmlspecialchars($_SESSION['csrf_token']) ?&gt;"&gt;
+  &lt;input type="text" name="to"&gt;
+  &lt;input type="number" name="amount"&gt;
+  &lt;button type="submit"&gt;Transfer&lt;/button&gt;
+&lt;/form&gt;</pre>
+        </div>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// transfer.php : verify the token before doing anything
+session_start();
+
+$sent = $_POST['csrf_token'] ?? '';
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST'
+    || !isset($_SESSION['csrf_token'])
+    || !hash_equals($_SESSION['csrf_token'], $sent)) {
+    http_response_code(403);
+    exit('Invalid CSRF token.');
+}
+
+// ... the request is legitimate: perform the transfer ...</pre>
+        </div>
+        <div class="Note"><strong>Tip:</strong> Always compare tokens with <code>hash_equals()</code> instead of
+          <code>==</code> or <code>===</code>. <code>hash_equals()</code> takes the same time whatever the input, so an
+          attacker cannot guess the token character by character by measuring response times (a <em>timing
+          attack</em>). Also, never change data with a GET request: actions such as delete or update must use POST and
+          be protected by a token.</div>
+        <ul>
+          <li>
+            <h2>Defence 2: SameSite cookies</h2>
+            <p>
+              The <code>SameSite</code> attribute tells the browser when to send a cookie with cross-site requests:
+            </p>
+            <ul>
+              <li><strong>Strict</strong>: the cookie is never sent when the request comes from another site.</li>
+              <li><strong>Lax</strong> (the default in modern browsers): the cookie is sent only for top-level GET
+                navigations (clicking a link), not for cross-site POST forms, images or AJAX calls.</li>
+              <li><strong>None</strong>: always sent (requires <code>Secure</code>). Avoid it for session cookies.</li>
+            </ul>
+            <p>
+              SameSite is an excellent second layer, but keep the token: older browsers and some edge cases (requests
+              from a sub-domain, GET requests that change data) are not covered.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// Configure the session cookie before session_start() (PHP 7.3+)
+session_set_cookie_params([
+    'lifetime' =&gt; 0,
+    'path'     =&gt; '/',
+    'secure'   =&gt; true,     // only over HTTPS
+    'httponly' =&gt; true,     // not readable from JavaScript
+    'samesite' =&gt; 'Lax',    // or 'Strict'
+]);
+session_start();
+
+// Same idea for your own cookies
+setcookie('theme', 'dark', [
+    'expires'  =&gt; time() + 86400 * 30,
+    'path'     =&gt; '/',
+    'secure'   =&gt; true,
+    'httponly' =&gt; true,
+    'samesite' =&gt; 'Strict',
+]);</pre>
+        </div>
       </div>
     </section>
-    <h1 class="Section_Title"></h1>
-    <section>
+    <h1 class="Section_Title">Password storage</h1>
+    <section id="Passwords">
       <div class="Definitions">
         <ul>
           <li>
-            <h2></h2>
+            <h2>Why not plain text, MD5 or SHA-1?</h2>
             <p>
-
+              If your database is stolen (SQL injection, leaked backup, stolen server...), every password stored in
+              plain text is immediately usable, and since people reuse passwords, the attacker can also log in to
+              their e-mail, social networks, etc. <br>
+              Fast hash functions such as <code>md5()</code>, <code>sha1()</code> or even <code>sha256</code> are not
+              a solution: they were designed to be <em>fast</em>. A modern GPU can compute billions of MD5 hashes per
+              second, so all common passwords can be tested very quickly, and precomputed tables (<em>rainbow
+              tables</em>) already contain the hashes of millions of passwords. <br>
+              A password hash must be <strong>slow</strong> (adjustable cost) and <strong>salted</strong> (a random
+              value added to each password so that two users with the same password get different hashes). PHP does
+              all of this for you with <code>password_hash()</code>.
             </p>
           </li>
-
-
+          <li>
+            <h2>password_hash() and password_verify()</h2>
+            <p>
+              <code>password_hash($password, PASSWORD_DEFAULT)</code> generates a random salt, hashes the password with
+              the current recommended algorithm (bcrypt today) and returns a string that contains the algorithm, the
+              cost, the salt and the hash. Store this string in a <code>VARCHAR(255)</code> column. <br>
+              <code>password_verify($password, $hash)</code> reads the algorithm and salt from the stored string and
+              checks whether the password matches. You never compare hashes yourself.
+            </p>
+          </li>
         </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// register.php
+$pdo = new PDO('mysql:host=localhost;dbname=shop;charset=utf8mb4', 'shop_app', $dbPassword, [
+    PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,
+]);
+
+$email    = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) &lt; 10) {
+    exit('Invalid e-mail or password too short.');
+}
+
+$hash = password_hash($password, PASSWORD_DEFAULT); // e.g. "$2y$10$..."
+
+$stmt = $pdo-&gt;prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
+$stmt-&gt;execute([$email, $hash]);</pre>
+        </div>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// login.php
+session_start();
+
+$stmt = $pdo-&gt;prepare('SELECT id, password_hash FROM users WHERE email = ?');
+$stmt-&gt;execute([$_POST['email'] ?? '']);
+$user = $stmt-&gt;fetch(PDO::FETCH_ASSOC);
+
+if ($user &amp;&amp; password_verify($_POST['password'] ?? '', $user['password_hash'])) {
+
+    // The algorithm or cost may have changed since the user registered:
+    // upgrade the stored hash transparently while we know the password.
+    if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+        $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $upd = $pdo-&gt;prepare('UPDATE users SET password_hash = ? WHERE id = ?');
+        $upd-&gt;execute([$newHash, $user['id']]);
+    }
+
+    session_regenerate_id(true);       // prevent session fixation
+    $_SESSION['user_id'] = $user['id'];
+    header('Location: dashboard.php');
+    exit;
+}
+
+// Same message whether the e-mail or the password is wrong
+echo 'Invalid e-mail or password.';</pre>
+        </div>
+        <div class="Note"><strong>Tip:</strong> Show the same error message ("Invalid e-mail or password") in every
+          failure case. A message such as "This e-mail does not exist" tells an attacker which accounts exist on your
+          site.</div>
+        <ul>
+          <li>
+            <h2>Rate-limiting login attempts</h2>
+            <p>
+              Even with good hashing, an attacker can try thousands of passwords against the login form (a <em>brute
+              force</em> attack). Limit the number of failed attempts per account and per IP address within a time
+              window, and add a delay or temporary lock when the limit is reached. Below is a simple version that uses
+              a <code>login_attempts</code> table.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// CREATE TABLE login_attempts (email VARCHAR(255), ip VARCHAR(45), attempted_at DATETIME);
+
+const MAX_ATTEMPTS = 5;
+const WINDOW_MINUTES = 15;
+
+$email = $_POST['email'] ?? '';
+$ip    = $_SERVER['REMOTE_ADDR'];
+
+$stmt = $pdo-&gt;prepare(
+    'SELECT COUNT(*) FROM login_attempts
+     WHERE (email = ? OR ip = ?)
+       AND attempted_at &gt; (NOW() - INTERVAL ' . WINDOW_MINUTES . ' MINUTE)'
+);
+$stmt-&gt;execute([$email, $ip]);
+
+if ((int) $stmt-&gt;fetchColumn() &gt;= MAX_ATTEMPTS) {
+    http_response_code(429); // Too Many Requests
+    exit('Too many failed attempts. Please try again in ' . WINDOW_MINUTES . ' minutes.');
+}
+
+// ... check the password as above ...
+// On failure, record the attempt:
+$log = $pdo-&gt;prepare('INSERT INTO login_attempts (email, ip, attempted_at) VALUES (?, ?, NOW())');
+$log-&gt;execute([$email, $ip]);
+// On success, you may delete the attempts for this e-mail.</pre>
+        </div>
       </div>
     </section>
-    <h1 class="Section_Title"></h1>
-    <section>
+    <h1 class="Section_Title">Access control</h1>
+    <section id="Access_Control">
       <div class="Definitions">
         <ul>
           <li>
-            <h2></h2>
+            <h2>Authentication vs authorization</h2>
             <p>
-
+              <strong>Authentication</strong> answers the question "<em>Who are you?</em>" (login with e-mail and
+              password, then a session). <br>
+              <strong>Authorization</strong> answers the question "<em>Are you allowed to do this?</em>" (can this user
+              see this order, edit this article, open the admin page?). <br>
+              Being logged in is not enough: a logged-in student must not be able to read another student's grades.
+              Broken access control is the number one risk in the OWASP Top 10.
             </p>
           </li>
-
-
+          <li>
+            <h2>IDOR: Insecure Direct Object Reference</h2>
+            <p>
+              Many pages receive the identifier of a record in the URL, for example
+              <code>invoice.php?id=1042</code>. If the script only checks that the user is logged in, anyone can change
+              the URL to <code>?id=1043</code>, <code>?id=1044</code>... and read other customers' invoices.
+            </p>
+          </li>
         </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// VULNERABLE: any logged-in user can read any invoice
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$stmt = $pdo-&gt;prepare('SELECT * FROM invoices WHERE id = ?');
+$stmt-&gt;execute([$_GET['id'] ?? 0]);
+$invoice = $stmt-&gt;fetch();</pre>
+        </div>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// SECURE: the query also checks that the invoice belongs to the current user
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if ($id === false || $id === null) {
+    http_response_code(400);
+    exit('Invalid id.');
+}
+
+$stmt = $pdo-&gt;prepare('SELECT * FROM invoices WHERE id = ? AND user_id = ?');
+$stmt-&gt;execute([$id, $_SESSION['user_id']]);
+$invoice = $stmt-&gt;fetch();
+
+if (!$invoice) {
+    http_response_code(404); // do not reveal that the invoice exists
+    exit('Invoice not found.');
+}</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Check on every request</h2>
+            <p>
+              Hiding a button or a menu item is <strong>not</strong> access control: an attacker can send the request
+              directly. Every script (pages, form handlers, AJAX/API endpoints) must check the session and the role or
+              ownership on the server, every time. A good habit is to centralise the check in a function included at the
+              top of each protected script:
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// auth.php
+function require_role(string $role): void
+{
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: login.php');
+        exit;
+    }
+    if (($_SESSION['role'] ?? '') !== $role) {
+        http_response_code(403);
+        exit('Access denied.');
+    }
+}
+
+// admin/delete_user.php
+require __DIR__ . '/../auth.php';
+require_role('admin');
+// ... only admins reach this line ...</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Principle of least privilege for the database</h2>
+            <p>
+              Apply the same idea to the database account used by PHP (see <a href="#Database_Security">Database
+              Security</a>). Never connect as <code>root</code>: create a dedicated user that can only do what the
+              application needs, so that a successful SQL injection cannot drop tables or read other databases.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-sql">-- MySQL / MariaDB
+CREATE USER 'shop_app'@'localhost' IDENTIFIED BY 'a-long-random-password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON shop.* TO 'shop_app'@'localhost';
+-- no DROP, ALTER, GRANT, FILE ... and no access to other databases</pre>
+        </div>
       </div>
     </section>
-    <h1 class="Section_Title"></h1>
-    <section>
+    <h1 class="Section_Title">Securing file uploads</h1>
+    <section id="File_Uploads">
       <div class="Definitions">
         <ul>
           <li>
-            <h2></h2>
+            <h2>Why uploads are dangerous</h2>
             <p>
-
+              An upload form lets strangers put files on your server. If an attacker uploads <code>shell.php</code>
+              into a folder that is served by the web server, they just have to open
+              <code>https://your-site/uploads/shell.php</code> to execute their own PHP code on your server. Other risks
+              are huge files that fill the disk, HTML/SVG files containing JavaScript (XSS), and file names such as
+              <code>../../index.php</code> that overwrite your files.
             </p>
           </li>
-
-
+          <li>
+            <h2>The rules</h2>
+            <ul>
+              <li><strong>Limit the size</strong> (in PHP and in <code>php.ini</code>: <code>upload_max_filesize</code>,
+                <code>post_max_size</code>).</li>
+              <li><strong>Check the real content type</strong> with <code>finfo</code>. Never trust
+                <code>$_FILES['...']['type']</code>: it is sent by the browser and can be anything.</li>
+              <li><strong>Whitelist the extensions</strong> you accept (e.g. jpg, png, pdf) instead of trying to
+                blacklist dangerous ones.</li>
+              <li><strong>Generate a random file name</strong>; never reuse the name chosen by the user.</li>
+              <li><strong>Store the files outside the web root</strong> and serve them through a PHP script that checks
+                access rights.</li>
+            </ul>
+          </li>
         </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// upload.php
+const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+const ALLOWED = [                 // real MIME type =&gt; extension we will use
+    'image/jpeg'      =&gt; 'jpg',
+    'image/png'       =&gt; 'png',
+    'application/pdf' =&gt; 'pdf',
+];
+// Folder OUTSIDE the public directory, e.g. /var/www/storage/uploads
+$uploadDir = __DIR__ . '/../storage/uploads';
+
+$file = $_FILES['document'] ?? null;
+
+if ($file === null || $file['error'] !== UPLOAD_ERR_OK) {
+    exit('Upload failed.');
+}
+if ($file['size'] &gt; MAX_SIZE) {
+    exit('File too large (2 MB maximum).');
+}
+if (!is_uploaded_file($file['tmp_name'])) {
+    exit('Invalid upload.');
+}
+
+// Detect the MIME type from the file content, not from the browser
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$mime  = $finfo-&gt;file($file['tmp_name']);
+
+if (!isset(ALLOWED[$mime])) {
+    exit('File type not allowed.');
+}
+
+// The extension the user gave must also be in the whitelist and match the content
+$userExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+if ($userExt === 'jpeg') {
+    $userExt = 'jpg';
+}
+if ($userExt !== ALLOWED[$mime]) {
+    exit('File extension does not match its content.');
+}
+
+// Random name: impossible to guess, no "../", no ".php"
+$newName = bin2hex(random_bytes(16)) . '.' . ALLOWED[$mime];
+
+if (!move_uploaded_file($file['tmp_name'], $uploadDir . '/' . $newName)) {
+    exit('Could not save the file.');
+}
+
+// Save $newName and the original name (for display only, escaped) in the database
+echo 'File uploaded.';</pre>
+        </div>
+        <div class="Note"><strong>Tip:</strong> To let users download their files, write a small
+          <code>download.php?id=...</code> script that checks the user's rights (see <a href="#Access_Control">Access
+          control</a>), then sends the file with <code>header('Content-Type: ...')</code>,
+          <code>header('Content-Disposition: attachment; filename="..."')</code> and <code>readfile()</code>. If you
+          really must keep uploads inside the web root, disable PHP execution in that folder (for example with an
+          <code>.htaccess</code> containing <code>php_flag engine off</code> on Apache with mod_php).</div>
       </div>
     </section>
-    <h1 class="Section_Title">Keeping PHP code private</h1>
-    <section>
+    <h1 class="Section_Title">Securing PHP includes and configuration</h1>
+    <section id="Includes_Config">
       <div class="Definitions">
+        <ul>
+          <li>
+            <h2>Never include a path coming from the user</h2>
+            <p>
+              <code>include</code> and <code>require</code> <em>execute</em> the file they load. If the file name comes
+              from the request, an attacker can load any file on the server (<em>Local File Inclusion</em>):
+              <code>index.php?page=../../../../etc/passwd</code>, or a file they uploaded earlier. If
+              <code>allow_url_include</code> is enabled, they can even run code from their own server (<em>Remote File
+              Inclusion</em>). The fix is a whitelist of allowed pages.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// VULNERABLE
+include $_GET['page'] . '.php';   // ?page=../../secret  or  ?page=uploads/shell</pre>
+        </div>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// SECURE: only names from the whitelist can be loaded
+$pages = [
+    'home'    =&gt; 'home.php',
+    'about'   =&gt; 'about.php',
+    'contact' =&gt; 'contact.php',
+];
+
+$page = $_GET['page'] ?? 'home';
+
+if (!array_key_exists($page, $pages)) {
+    http_response_code(404);
+    $page = 'home';
+}
+
+require __DIR__ . '/views/' . $pages[$page];</pre>
+        </div>
         <ul>
           <li>
             <h2>Keeping PHP code private</h2>
             <p>
-              PHP code is executed on the server, and the client only receives
-              the output of the PHP code. This means that the client never sees
-              the PHP code, and therefore cannot steal it.
+              PHP code is executed on the server, and the client only receives the <em>output</em> of the script, so
+              visitors normally never see your source code. This protection disappears as soon as a file is
+              <strong>not</strong> executed by PHP: a backup such as <code>config.php.bak</code> or
+              <code>config.php~</code>, a file named <code>config.inc</code>, a <code>.sql</code> dump or a
+              <code>.git</code> folder left in the public directory will be sent as plain text to anyone who requests
+              it. Always give PHP files the <code>.php</code> extension, never leave backups or dumps in the web root,
+              and block access to hidden files and folders.
             </p>
           </li>
-
-
+          <li>
+            <h2>Keep configuration and credentials outside the web root</h2>
+            <p>
+              Put the files that contain passwords and API keys in a folder that the web server does not serve, and
+              only put the public entry points (<code>index.php</code>, CSS, JS, images) in the public folder. A
+              typical structure:
+            </p>
+          </li>
         </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint">my_project/
+├── config/
+│   └── config.php        &lt;-- credentials, NOT reachable from the browser
+├── src/                  &lt;-- models, controllers, includes
+├── storage/uploads/      &lt;-- uploaded files
+├── public/               &lt;-- the ONLY folder exposed (DocumentRoot)
+│   ├── index.php
+│   └── assets/
+└── .gitignore</pre>
+        </div>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// config/config.php (outside public/)
+return [
+    'db_dsn'  =&gt; 'mysql:host=localhost;dbname=shop;charset=utf8mb4',
+    'db_user' =&gt; 'shop_app',
+    'db_pass' =&gt; getenv('DB_PASS') ?: 'change-me',
+];
+
+// public/index.php
+$config = require __DIR__ . '/../config/config.php';
+$pdo = new PDO($config['db_dsn'], $config['db_user'], $config['db_pass']);</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Keep secrets out of Git</h2>
+            <p>
+              Once a password has been pushed to GitHub, consider it public, even if you delete it in a later commit
+              (it stays in the history). Commit a <code>config.example.php</code> with fake values and ignore the real
+              file:
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint"># .gitignore
+config/config.php
+.env
+storage/uploads/
+*.sql
+*.bak</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Error display in production</h2>
+            <p>
+              Error messages reveal file paths, SQL queries and sometimes credentials. Show them on your development
+              machine, but in production hide them from visitors and write them to a log file instead.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint"># php.ini (production)
+display_errors = Off
+display_startup_errors = Off
+log_errors = On
+error_log = /var/log/php/error.log
+error_reporting = E_ALL
+expose_php = Off          ; do not send the "X-Powered-By: PHP/8.x" header
+allow_url_include = Off</pre>
+        </div>
+        <div class="Note"><strong>Tip:</strong> If you cannot edit <code>php.ini</code> (shared hosting), you can call
+          <code>ini_set('display_errors', '0');</code> and <code>ini_set('log_errors', '1');</code> at the top of your
+          front controller, and show visitors a generic "Something went wrong" page.</div>
       </div>
     </section>
-    
-    <h1 class="Section_Title">Securing PHP includes</h1>
-    <section>
-      <div class="Definitions">
-
-      </div>
-    </section>
-    <h1 class="Section_Title">Refactor PHP code</h1>
-    <section>
-      <div class="Definitions">
-
-
-      </div>
-    </section>
-    <h1 class="Section_Title">Securing PHP includes</h1>
-    <section>
-      <div class="Definitions">
-
-      </div>
-    </section>
-    <h1 class="Section_Title">Securing PHP includes</h1>
-    <section>
-      <div class="Definitions">
-
-      </div>
-    </section>
-    <h1 class="Section_Title">Securing PHP includes</h1>
-    <section>
-      <div class="Definitions">
-
-      </div>
-    </section>
-    <h1 class="Section_Title">Securing PHP includes</h1>
-    <section>
-      <div class="Definitions">
-
-      </div>
-    </section>
-    <h1 class="Section_Title">XSS attacks</h1>
-    <section>
+    <h1 class="Section_Title">HTTP security headers and HTTPS</h1>
+    <section id="Security_Headers">
       <div class="Definitions">
         <ul>
           <li>
-            <h2>XSS attacks</h2>
+            <h2>HTTPS first</h2>
             <p>
-              Cross-site scripting (XSS) is a type of security vulnerability
-              typically found in web applications. XSS attacks enable attackers
-              to inject client-side scripts into web pages viewed by other
-              users.
-            </p>
-          </li>
-          <li>
-            <h2>Stored XSS</h2>
-            <p>
-              Stored XSS is an attack in which the malicious script is stored
-              permanently on the target servers, such as in a database, in a
-              message forum, visitor log, comment field, etc. The victim then
-              retrieves the malicious script from the server when it requests
-              data from the server.
-            </p>
-          </li>
-          <li>
-            <h2>Reflected XSS</h2>
-            <p>
-              Reflected XSS is an attack in which the malicious script is
-              reflected off of a web application onto a user's browser. The
-              browser then executes the script because it thinks the script came
-              from a trusted source.
-            </p>
-          </li>
-          <li>
-            <h2>DOM XSS</h2>
-            <p>
-              DOM XSS is an attack in which the malicious script is executed as
-              a result of modifying the DOM environment in the victim's browser
-              used by the original client side script, so that the client side
-              code runs in an "unexpected" manner.
+              Without HTTPS, everything (passwords, session cookies, CSRF tokens) travels in clear text and can be read
+              or modified by anyone on the same Wi-Fi network or along the route. Use HTTPS for the whole site (free
+              certificates from Let's Encrypt), redirect HTTP to HTTPS, and mark cookies as <code>Secure</code>. <br>
+              Security headers are then a cheap extra layer: they tell the browser to enable protections that limit the
+              damage of XSS, clickjacking and other attacks.
             </p>
           </li>
         </ul>
+        <table class="Table">
+          <tr>
+            <th>Header</th>
+            <th>What it does</th>
+          </tr>
+          <tr>
+            <td>Content-Security-Policy</td>
+            <td>Lists the sources from which the page may load scripts, styles, images, frames... An injected
+              <code>&lt;script&gt;</code> from another domain, or an inline script, is blocked. The most effective
+              defence against XSS after output escaping.</td>
+          </tr>
+          <tr>
+            <td>X-Content-Type-Options: nosniff</td>
+            <td>Forbids the browser to "guess" the type of a file. A text file uploaded by a user will not be executed
+              as JavaScript or HTML.</td>
+          </tr>
+          <tr>
+            <td>CSP frame-ancestors / X-Frame-Options</td>
+            <td>Prevents other sites from showing your pages in an <code>&lt;iframe&gt;</code> (clickjacking: the user
+              thinks they click on the attacker's page but actually click on your hidden page).
+              <code>frame-ancestors</code> is the modern version, <code>X-Frame-Options</code> is for older
+              browsers.</td>
+          </tr>
+          <tr>
+            <td>Referrer-Policy</td>
+            <td>Controls how much of the current URL is sent in the <code>Referer</code> header to other sites, so that
+              tokens or ids in your URLs do not leak.</td>
+          </tr>
+          <tr>
+            <td>Strict-Transport-Security (HSTS)</td>
+            <td>Tells the browser to use only HTTPS for your domain for a given time, even if the user types
+              <code>http://</code>. Only send it over HTTPS.</td>
+          </tr>
+        </table>
+        <ul>
+          <li>
+            <h2>Setting the headers with PHP</h2>
+            <p>
+              <code>header()</code> must be called before any output (HTML, spaces, <code>echo</code>). Put these lines
+              in a file included at the top of every page.
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint lang-php">&lt;?php
+// security_headers.php
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; "
+     . "object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+
+if (!empty($_SERVER['HTTPS']) &amp;&amp; $_SERVER['HTTPS'] !== 'off') {
+    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+}</pre>
+        </div>
+        <ul>
+          <li>
+            <h2>Setting the headers with Apache (.htaccess)</h2>
+            <p>
+              With Apache and the <code>mod_headers</code> module enabled, the same headers can be added to every
+              response (including static files) in the <code>.htaccess</code> of the public folder:
+            </p>
+          </li>
+        </ul>
+        <div class="Code_Block">
+          <pre class="prettyprint"># public/.htaccess
+&lt;IfModule mod_headers.c&gt;
+    Header always set Content-Security-Policy "default-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+&lt;/IfModule&gt;
+
+# Redirect every HTTP request to HTTPS (requires mod_rewrite)
+&lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+&lt;/IfModule&gt;</pre>
+        </div>
+        <div class="Note"><strong>Tip:</strong> Start with a strict CSP and check the browser console (F12): every
+          blocked resource is reported there. Inline <code>&lt;script&gt;</code> blocks and <code>onclick="..."</code>
+          attributes are blocked by <code>script-src 'self'</code>, so move your JavaScript into <code>.js</code> files.
+          You can test your headers on <a href="https://securityheaders.com" target="_blank">securityheaders.com</a>.
+        </div>
       </div>
-    </section>-->
+    </section>
+    <h1 class="Section_Title">OWASP Top 10</h1>
+    <section id="OWASP">
+      <div class="Definitions">
+        <p>
+          The <strong>OWASP</strong> (Open Worldwide Application Security Project) is a non-profit community that
+          publishes free security resources. Its <strong>Top 10</strong> lists the most critical risks for web
+          applications and is used everywhere as a reference. The 2021 edition is summarised below; most of the
+          categories are covered on this page. Read the details on
+          <a href="https://owasp.org/Top10/" target="_blank">owasp.org/Top10</a>.
+        </p>
+        <table class="Table">
+          <tr>
+            <th>#</th>
+            <th>Category</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td>A01</td>
+            <td>Broken Access Control</td>
+            <td>Users can act outside their permissions (IDOR, missing role checks). See
+              <a href="#Access_Control">Access control</a>.</td>
+          </tr>
+          <tr>
+            <td>A02</td>
+            <td>Cryptographic Failures</td>
+            <td>Sensitive data not protected: no HTTPS, plain-text or MD5 passwords, weak keys. See
+              <a href="#Passwords">Password storage</a>.</td>
+          </tr>
+          <tr>
+            <td>A03</td>
+            <td>Injection</td>
+            <td>Untrusted data interpreted as code: SQL injection, XSS, command injection. See
+              <a href="#SQL_Injection">SQL Injection</a> and <a href="#XSS">XSS</a>.</td>
+          </tr>
+          <tr>
+            <td>A04</td>
+            <td>Insecure Design</td>
+            <td>The flaw is in the design itself (e.g. no limit on login attempts), not just in the code.</td>
+          </tr>
+          <tr>
+            <td>A05</td>
+            <td>Security Misconfiguration</td>
+            <td>Default passwords, errors displayed in production, missing headers, open directories. See
+              <a href="#Includes_Config">Includes and configuration</a>.</td>
+          </tr>
+          <tr>
+            <td>A06</td>
+            <td>Vulnerable and Outdated Components</td>
+            <td>Using old versions of PHP, libraries or frameworks with known vulnerabilities.</td>
+          </tr>
+          <tr>
+            <td>A07</td>
+            <td>Identification and Authentication Failures</td>
+            <td>Weak passwords allowed, brute force possible, session ids not renewed after login. See
+              <a href="#Session_Settings">Session settings</a>.</td>
+          </tr>
+          <tr>
+            <td>A08</td>
+            <td>Software and Data Integrity Failures</td>
+            <td>Trusting code or data without checking its integrity (unverified updates, CDN scripts,
+              <code>unserialize()</code> on user data).</td>
+          </tr>
+          <tr>
+            <td>A09</td>
+            <td>Security Logging and Monitoring Failures</td>
+            <td>Attacks are not logged or nobody looks at the logs, so breaches go unnoticed.</td>
+          </tr>
+          <tr>
+            <td>A10</td>
+            <td>Server-Side Request Forgery (SSRF)</td>
+            <td>The server fetches a URL supplied by the user and can be tricked into calling internal services.</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+    <h1 class="Section_Title">Security checklist</h1>
+    <section id="Checklist">
+      <div class="Definitions">
+        <p>Use this list to review your own project before you submit it.</p>
+        <ul class="Checklist">
+          <li>All SQL queries use prepared statements (PDO or mysqli) with placeholders; no user input is concatenated
+            into SQL.</li>
+          <li>Every value printed in HTML is escaped with <code>htmlspecialchars()</code>.</li>
+          <li>Passwords are stored with <code>password_hash()</code> and checked with <code>password_verify()</code>;
+            never MD5, SHA-1 or plain text.</li>
+          <li>Failed login attempts are limited, and the error message does not reveal whether the e-mail exists.</li>
+          <li><code>session_regenerate_id(true)</code> is called after login, and the session is destroyed on
+            logout.</li>
+          <li>Session cookies are <code>HttpOnly</code>, <code>Secure</code> and <code>SameSite=Lax</code> (or
+            <code>Strict</code>).</li>
+          <li>Every form that changes data uses POST and contains a CSRF token checked with
+            <code>hash_equals()</code>.</li>
+          <li>Every protected script checks authentication <em>and</em> authorization (role or ownership) on the
+            server.</li>
+          <li>The application connects to the database with a dedicated user that has the minimum privileges.</li>
+          <li>Uploads are size-limited, checked with <code>finfo</code>, whitelisted, renamed randomly and stored
+            outside the web root.</li>
+          <li>No <code>include</code>/<code>require</code> uses a path coming from the user.</li>
+          <li>Credentials are outside the public folder and listed in <code>.gitignore</code>.</li>
+          <li><code>display_errors</code> is Off and <code>log_errors</code> is On in production.</li>
+          <li>The site is served over HTTPS and sends the security headers (CSP, nosniff, frame-ancestors,
+            Referrer-Policy, HSTS).</li>
+          <li>PHP and all libraries are up to date.</li>
+        </ul>
+        <div class="Note"><strong>Tip:</strong> Practise these defences in the security lab:
+          <a href="Lab_12.html">Lab 12</a>, and go through this checklist on your own project.</div>
+      </div>
+    </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Sessions_Cookies.html" class="Arrow">
+    <a href="Integration.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Sessions & Cookies</h1>
+      <h1>Integration &amp; Extension</h1>
     </a>
-    <a href="MVC.html" class="Arrow">
-      <h1>MVC Design Pattern</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_0.html" class="Arrow">
+      <h1>Labs</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
 
 </html>

@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Integration &amp; Extension</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Integration &amp; Extension</h1>
+    <div class="Definitions">
+      <p>
+        Until now, our website was a closed world: PHP pages talking to their own MySQL database. Real
+        applications are <strong>integrated</strong> with other systems (a mobile app, a weather service, a map, an
+        e-mail server, a payment platform...) and <strong>extended</strong> with libraries written by other
+        developers. This chapter shows how: by exposing our data as a JSON API, by consuming the APIs of others,
+        by installing PHP packages with Composer and by embedding external services in our pages.
+      </p>
+    </div>
+
+    <!-- ===================================================================== -->
+    <section id="Web_APIs">
+      <h2 class="Section_Title">I. Web APIs and REST</h2>
+      <div class="Definitions">
+        <p>
+          An <strong>API</strong> (Application Programming Interface) is a contract that lets one program use the
+          services of another. A <strong>Web API</strong> is an API reached over HTTP: instead of returning an HTML
+          page for a human, the server returns <strong>data</strong> (almost always JSON) for a program: our
+          JavaScript code, a mobile application, another server... <br>
+          <br>
+          <strong>REST</strong> (REpresentational State Transfer) is the most common style for designing Web APIs.
+          Its main ideas are:
+        </p>
+        <ul>
+          <li>Everything is a <strong>resource</strong> (a product, a user, an order) identified by a URL:
+            <code>/api/products</code> is the collection of products, <code>/api/products/3</code> is the product
+            number 3.</li>
+          <li>The <strong>HTTP verb</strong> (method) says what we want to do with the resource.</li>
+          <li>The <strong>status code</strong> of the response says how it went.</li>
+          <li>The server is <strong>stateless</strong>: every request contains everything needed to process it
+            (no hidden "current page" stored on the server).</li>
+          <li>Resources are exchanged in a standard format, usually <strong>JSON</strong>.</li>
+        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">HTTP verbs and CRUD operations</h3>
+      <table>
+        <tr>
+          <th>HTTP verb</th>
+          <th>CRUD operation</th>
+          <th>Example</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>Read</td>
+          <td>GET /api/products <br> GET /api/products/3</td>
+          <td>List all products / get product 3. Never modifies data.</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>Create</td>
+          <td>POST /api/products</td>
+          <td>Create a new product; the data is in the request body.</td>
+        </tr>
+        <tr>
+          <td>PUT</td>
+          <td>Update (replace)</td>
+          <td>PUT /api/products/3</td>
+          <td>Replace product 3 with the data of the body.</td>
+        </tr>
+        <tr>
+          <td>PATCH</td>
+          <td>Update (partial)</td>
+          <td>PATCH /api/products/3</td>
+          <td>Modify only some fields of product 3 (e.g. only the price).</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>Delete</td>
+          <td>DELETE /api/products/3</td>
+          <td>Delete product 3.</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">HTTP status codes</h3>
+      <div class="Definitions">
+        <p>
+          The first digit gives the family: <strong>2xx</strong> success, <strong>3xx</strong> redirection,
+          <strong>4xx</strong> the client made a mistake, <strong>5xx</strong> the server failed. The codes you
+          will use the most:
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>When to use it</th>
+        </tr>
+        <tr>
+          <td>200</td>
+          <td>OK</td>
+          <td>Successful GET or PUT.</td>
+        </tr>
+        <tr>
+          <td>201</td>
+          <td>Created</td>
+          <td>Successful POST: a new resource was created.</td>
+        </tr>
+        <tr>
+          <td>204</td>
+          <td>No Content</td>
+          <td>Success with an empty body (typically after DELETE).</td>
+        </tr>
+        <tr>
+          <td>400</td>
+          <td>Bad Request</td>
+          <td>The request is malformed (invalid JSON, missing id...).</td>
+        </tr>
+        <tr>
+          <td>401 / 403</td>
+          <td>Unauthorized / Forbidden</td>
+          <td>Not logged in / logged in but not allowed.</td>
+        </tr>
+        <tr>
+          <td>404</td>
+          <td>Not Found</td>
+          <td>The resource does not exist.</td>
+        </tr>
+        <tr>
+          <td>405</td>
+          <td>Method Not Allowed</td>
+          <td>The verb is not supported by this URL.</td>
+        </tr>
+        <tr>
+          <td>422</td>
+          <td>Unprocessable Content</td>
+          <td>Valid JSON but invalid data (empty name, negative price...).</td>
+        </tr>
+        <tr>
+          <td>500</td>
+          <td>Internal Server Error</td>
+          <td>Unexpected error on the server (database down, bug).</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">JSON</h3>
+      <div class="Definitions">
+        <p>
+          <strong>JSON</strong> (JavaScript Object Notation) is a text format that looks like JavaScript literals.
+          It supports objects <code>{ }</code>, arrays <code>[ ]</code>, strings (always in double quotes),
+          numbers, <code>true</code>, <code>false</code> and <code>null</code>. No comments, no trailing commas,
+          no functions. A list of products returned by <code>GET /api/products</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+[
+    { "id": 1, "name": "Keyboard", "price": 2500.00 },
+    { "id": 2, "name": "Mouse",    "price": 900.00 }
+]</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Each language converts between JSON text and its own data structures:
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th></th>
+          <th>JavaScript</th>
+          <th>PHP</th>
+        </tr>
+        <tr>
+          <td>Data &rarr; JSON text</td>
+          <td>JSON.stringify(object)</td>
+          <td>json_encode($array)</td>
+        </tr>
+        <tr>
+          <td>JSON text &rarr; data</td>
+          <td>JSON.parse(text) or await response.json()</td>
+          <td>json_decode($text, true) (true = associative arrays)</td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Tip:</strong> In the AJAX chapter, the server returned ready-made HTML
+        (<code>Read.php</code> built the table rows). With an API, the server returns only data and the client
+        decides how to display it. The same API can then be used by your website, a mobile app and your
+        teammates' code.
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="REST_API_PHP">
+      <h2 class="Section_Title">II. Building a Small JSON REST API in PHP</h2>
+      <div class="Definitions">
+        <p>
+          We will build a CRUD API for the <code>product</code> table in a single file, <code>api.php</code>. To
+          stay simple (no URL rewriting), the id of the product is passed in the query string:
+        </p>
+        <ul>
+          <li><code>GET api.php</code> &rarr; list of products</li>
+          <li><code>GET api.php?id=3</code> &rarr; product 3</li>
+          <li><code>POST api.php</code> with a JSON body &rarr; create a product</li>
+          <li><code>PUT api.php?id=3</code> with a JSON body &rarr; update product 3</li>
+          <li><code>DELETE api.php?id=3</code> &rarr; delete product 3</li>
+        </ul>
+        <p>The table (database <code>shop</code>, created in phpMyAdmin):</p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+CREATE TABLE product (
+    id    INT AUTO_INCREMENT PRIMARY KEY,
+    name  VARCHAR(100)  NOT NULL,
+    price DECIMAL(10,2) NOT NULL
+);</pre>
+      </div>
+      <h3 class="Sub_Section_Title">The building blocks</h3>
+      <div class="Definitions">
+        <ul>
+          <li><code>$_SERVER['REQUEST_METHOD']</code> contains the HTTP verb: <code>'GET'</code>,
+            <code>'POST'</code>, <code>'PUT'</code>, <code>'DELETE'</code>...</li>
+          <li><code>header('Content-Type: application/json; charset=utf-8')</code> tells the client that the body
+            is JSON.</li>
+          <li><code>http_response_code(201)</code> sets the status code (the default is 200).</li>
+          <li><code>json_encode($data)</code> converts a PHP array into JSON text that we <code>echo</code>.</li>
+          <li><code>$_POST</code> is only filled for HTML forms. A JSON body must be read "raw" from the stream
+            <code>php://input</code> with <code>file_get_contents('php://input')</code>, then decoded with
+            <code>json_decode(..., true)</code>.</li>
+          <li><strong>PDO prepared statements</strong> (<code>prepare</code> + <code>execute</code>) protect us
+            against SQL injection: the values are never pasted into the SQL string.</li>
+        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">api.php</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+header('Content-Type: application/json; charset=utf-8');
+
+// ---------- Helpers ----------
+
+// Sends a JSON response with a status code and stops the script
+function respond(int $status, mixed $data = null): never
+{
+    http_response_code($status);
+    if ($data !== null) {
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+    exit;
+}
+
+// Reads and decodes the JSON body of a POST/PUT request
+function readJsonBody(): array
+{
+    $data = json_decode(file_get_contents('php://input'), true);
+    if (!is_array($data)) {
+        respond(400, ['error' =&gt; 'The body must be a JSON object']);
+    }
+    return $data;
+}
+
+// Validates the fields of a product, answers 422 if they are invalid
+function validateProduct(array $data): array
+{
+    $name  = is_string($data['name'] ?? null) ? trim($data['name']) : '';
+    $price = filter_var($data['price'] ?? null, FILTER_VALIDATE_FLOAT);
+
+    if ($name === '' || mb_strlen($name) &gt; 100 || $price === false || $price &lt; 0) {
+        respond(422, ['error' =&gt; 'A name (1-100 characters) and a positive price are required']);
+    }
+    return ['name' =&gt; $name, 'price' =&gt; $price];
+}
+
+function findProduct(PDO $pdo, int $id): array|false
+{
+    $stmt = $pdo-&gt;prepare('SELECT id, name, price FROM product WHERE id = ?');
+    $stmt-&gt;execute([$id]);
+    return $stmt-&gt;fetch();
+}
+
+// ---------- Request handling ----------
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+$id = null;
+if (isset($_GET['id'])) {
+    $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+    if ($id === false) {
+        respond(400, ['error' =&gt; 'id must be an integer']);
+    }
+}
+
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=shop;charset=utf8mb4', 'root', '', [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+    ]);
+
+    switch ($method) {
+        case 'GET':
+            if ($id === null) {                        // GET api.php
+                $products = $pdo-&gt;query('SELECT id, name, price FROM product ORDER BY id')-&gt;fetchAll();
+                respond(200, $products);
+            }
+            $product = findProduct($pdo, $id);          // GET api.php?id=3
+            if ($product === false) {
+                respond(404, ['error' =&gt; 'Product not found']);
+            }
+            respond(200, $product);
+
+        case 'POST':
+            $product = validateProduct(readJsonBody());
+            $stmt = $pdo-&gt;prepare('INSERT INTO product (name, price) VALUES (?, ?)');
+            $stmt-&gt;execute([$product['name'], $product['price']]);
+            $newId = (int) $pdo-&gt;lastInsertId();
+            header("Location: api.php?id=$newId");    // where the new resource lives
+            respond(201, ['id' =&gt; $newId] + $product);
+
+        case 'PUT':
+            if ($id === null) {
+                respond(400, ['error' =&gt; 'Missing id']);
+            }
+            if (findProduct($pdo, $id) === false) {
+                respond(404, ['error' =&gt; 'Product not found']);
+            }
+            $product = validateProduct(readJsonBody());
+            $stmt = $pdo-&gt;prepare('UPDATE product SET name = ?, price = ? WHERE id = ?');
+            $stmt-&gt;execute([$product['name'], $product['price'], $id]);
+            respond(200, ['id' =&gt; $id] + $product);
+
+        case 'DELETE':
+            if ($id === null) {
+                respond(400, ['error' =&gt; 'Missing id']);
+            }
+            $stmt = $pdo-&gt;prepare('DELETE FROM product WHERE id = ?');
+            $stmt-&gt;execute([$id]);
+            if ($stmt-&gt;rowCount() === 0) {
+                respond(404, ['error' =&gt; 'Product not found']);
+            }
+            respond(204);                              // success, no body
+
+        default:
+            header('Allow: GET, POST, PUT, DELETE');
+            respond(405, ['error' =&gt; "Method $method not allowed"]);
+    }
+} catch (PDOException $e) {
+    error_log($e-&gt;getMessage());                      // details in the server log only
+    respond(500, ['error' =&gt; 'Server error']);
+}</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Every <code>case</code> ends with <code>respond()</code>, whose return type <code>never</code> (PHP 8.1+)
+          means "this function never returns" (it calls <code>exit</code>), so no <code>break</code> is needed.
+          Notice that the error message sent to the client in the <code>catch</code> is generic: never send SQL
+          errors or passwords to the browser.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Testing the API</h3>
+      <div class="Definitions">
+        <p>
+          GET requests can be tested directly in the browser: open
+          <code>http://localhost/shop/api.php</code>. For the other verbs, use a tool such as Postman, the Thunder
+          Client / REST Client extensions of VS Code, or <code>curl</code> (included in Windows 10/11):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+curl -i http://localhost/shop/api.php?id=1
+
+curl -i -X POST -H "Content-Type: application/json" -d "{\"name\":\"Webcam\",\"price\":4200}" http://localhost/shop/api.php
+
+curl -i -X DELETE http://localhost/shop/api.php?id=3</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> The <code>-i</code> option displays the status line and the
+        headers of the response: check that you really get <code>201 Created</code>, <code>404 Not Found</code>,
+        etc. Also note that MySQL returns <code>DECIMAL</code> columns as strings (<code>"2500.00"</code>), so
+        convert them with <code>Number()</code> in JavaScript before computing with them.
+      </div>
+      <div class="Note"><strong>Tip:</strong> Nice URLs such as <code>/api/products/3</code> are obtained with URL
+        rewriting (an <code>.htaccess</code> file with <code>RewriteRule</code>, or the router of a framework such
+        as Laravel or Slim). The logic of the API stays exactly the same. In a real project, the
+        <code>POST</code>, <code>PUT</code> and <code>DELETE</code> routes must also check that the user is logged
+        in and allowed to do the action (see the Web security chapter).
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Fetch_API">
+      <h2 class="Section_Title">III. Consuming the API with fetch() and async/await</h2>
+      <div class="Definitions">
+        <p>
+          <code>fetch()</code> is the modern replacement of <code>XMLHttpRequest</code>. It returns a
+          <strong>Promise</strong> (a value that will be available later). With <code>async</code> /
+          <code>await</code> we can write asynchronous code that reads like normal sequential code:
+          <code>await</code> pauses the <code>async</code> function until the Promise is resolved, without
+          blocking the page.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">GET: reading the list</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+async function loadProducts() {
+    const response = await fetch('api.php');      // 1. send the request, wait for the headers
+    if (!response.ok) {                             // 2. ok is true for status 200-299
+        throw new Error(`HTTP error ${response.status}`);
+    }
+    return await response.json();                  // 3. read the body and parse the JSON
+}
+
+loadProducts()
+    .then((products) =&gt; console.log(products))
+    .catch((error) =&gt; console.error(error));</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> <code>fetch()</code> only rejects its Promise on a
+        <strong>network</strong> error. A <code>404</code> or a <code>500</code> is still a "successful" response
+        for fetch: always check <code>response.ok</code> (or <code>response.status</code>) yourself.
+      </div>
+      <h3 class="Sub_Section_Title">A small reusable helper for all the verbs</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const API_URL = 'api.php';
+
+// Sends a request to the API and returns the decoded JSON (or null for 204)
+async function request(url, options = {}) {
+    const response = await fetch(url, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+    });
+    if (!response.ok) {
+        // Our API returns { "error": "..." } when something goes wrong
+        const problem = await response.json().catch(() =&gt; ({}));
+        throw new Error(problem.error ?? `HTTP error ${response.status}`);
+    }
+    return response.status === 204 ? null : response.json();
+}
+
+const getProducts   = () =&gt; request(API_URL);
+const getProduct    = (id) =&gt; request(`${API_URL}?id=${id}`);
+const createProduct = (product) =&gt;
+    request(API_URL, { method: 'POST', body: JSON.stringify(product) });
+const updateProduct = (id, product) =&gt;
+    request(`${API_URL}?id=${id}`, { method: 'PUT', body: JSON.stringify(product) });
+const deleteProduct = (id) =&gt;
+    request(`${API_URL}?id=${id}`, { method: 'DELETE' });</pre>
+      </div>
+      <h3 class="Sub_Section_Title">Using it in a page</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;form id="product-form"&gt;
+    &lt;input name="name" placeholder="Name" required&gt;
+    &lt;input name="price" type="number" step="0.01" min="0" placeholder="Price" required&gt;
+    &lt;button&gt;Add&lt;/button&gt;
+&lt;/form&gt;
+&lt;p id="message"&gt;&lt;/p&gt;
+&lt;ul id="product-list"&gt;&lt;/ul&gt;</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const form = document.querySelector('#product-form');
+const list = document.querySelector('#product-list');
+const message = document.querySelector('#message');
+
+// GET: display all products
+async function showProducts() {
+    try {
+        const products = await getProducts();
+        list.replaceChildren(...products.map(createItem));
+    } catch (error) {
+        message.textContent = `Could not load the products: ${error.message}`;
+    }
+}
+
+function createItem(product) {
+    const li = document.createElement('li');
+    // textContent (not innerHTML): data coming from the server is never executed as HTML
+    li.textContent = `${product.name} - ${Number(product.price).toFixed(2)} DA `;
+
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit price';
+    editBtn.addEventListener('click', async () =&gt; {
+        const price = prompt('New price', product.price);
+        if (price === null) return;
+        try {
+            await updateProduct(product.id, { name: product.name, price: Number(price) });   // PUT
+            await showProducts();
+        } catch (error) {
+            message.textContent = error.message;
+        }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.addEventListener('click', async () =&gt; {
+        if (!confirm(`Delete ${product.name}?`)) return;
+        try {
+            await deleteProduct(product.id);                                                  // DELETE
+            li.remove();
+        } catch (error) {
+            message.textContent = error.message;
+        }
+    });
+
+    li.append(editBtn, deleteBtn);
+    return li;
+}
+
+// POST: create a product from the form
+form.addEventListener('submit', async (event) =&gt; {
+    event.preventDefault();                                  // no page reload
+    const data = Object.fromEntries(new FormData(form));    // { name: '...', price: '...' }
+    try {
+        const created = await createProduct({ name: data.name, price: Number(data.price) });
+        message.textContent = `Product #${created.id} created`;
+        form.reset();
+        await showProducts();
+    } catch (error) {
+        message.textContent = error.message;                 // e.g. the 422 message of the API
+    }
+});
+
+showProducts();</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Put this code in a file loaded with
+        <code>&lt;script src="products.js" defer&gt;&lt;/script&gt;</code> (or <code>type="module"</code>) so that
+        it runs after the HTML is parsed. Use the <em>Network</em> tab of the developer tools (F12) to see each
+        request, its method, its status code and the JSON that was sent and received.
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Third_Party_APIs">
+      <h2 class="Section_Title">IV. Consuming Third-Party APIs</h2>
+      <div class="Definitions">
+        <p>
+          Thousands of services offer a Web API: weather, maps and geocoding, currency rates, translation,
+          payment, sending SMS or e-mails, AI models... As an example we use
+          <a href="https://open-meteo.com/">Open-Meteo</a>, a free weather API that does not require any key. The
+          current temperature in Algiers (latitude 36.75, longitude 3.06) is given by:
+          <br><br>
+          <code>https://api.open-meteo.com/v1/forecast?latitude=36.75&amp;longitude=3.06&amp;current=temperature_2m</code>
+          <br><br>
+          Open it in your browser; the response looks like this (shortened):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+{
+    "latitude": 36.75,
+    "longitude": 3.0625,
+    "timezone": "GMT",
+    "current_units": { "time": "iso8601", "interval": "seconds", "temperature_2m": "°C" },
+    "current": { "time": "2026-10-16T09:00", "interval": 900, "temperature_2m": 22.4 }
+}</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Always read the documentation of the API: it lists the URL, the parameters, the format of the response,
+          the usage limits (number of requests per day) and the terms of use. There are two ways to call it.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">1. From the browser, with fetch()</h3>
+      <div class="Definitions">
+        <p>Click the button: this demo really calls Open-Meteo from your browser.</p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+const url = 'https://api.open-meteo.com/v1/forecast'
+    + '?latitude=36.75&amp;longitude=3.06'
+    + '&amp;current=temperature_2m,wind_speed_10m'
+    + '&amp;timezone=Africa%2FAlgiers';
+
+async function showAlgiersWeather() {
+    output.textContent = 'Loading...';
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error ${response.status}`);
+        }
+        const data = await response.json();
+        const { current, current_units: units } = data;
+        output.textContent =
+            `Algiers, ${current.time.replace('T', ' ')}: ` +
+            `${current.temperature_2m} ${units.temperature_2m}, ` +
+            `wind ${current.wind_speed_10m} ${units.wind_speed_10m}`;
+    } catch (error) {
+        output.textContent = `Could not load the weather: ${error.message}`;
+    }
+}
+
+button.addEventListener('click', showAlgiersWeather);</pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <button type="button" id="Weather_Btn">
+            <i class="fa-solid fa-cloud-sun"></i> Get the weather in Algiers
+          </button>
+          <p id="Weather_Output">Click the button.</p>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">2. From the server, with PHP</h3>
+      <div class="Definitions">
+        <p>
+          PHP can also send HTTP requests. The simplest way is <code>file_get_contents()</code> with a URL (it
+          requires <code>allow_url_fopen=On</code> and the <code>openssl</code> extension, both enabled in XAMPP).
+          <code>http_build_query()</code> builds the query string and encodes the values for us.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+$url = 'https://api.open-meteo.com/v1/forecast?' . http_build_query([
+    'latitude'  =&gt; 36.75,
+    'longitude' =&gt; 3.06,
+    'current'   =&gt; 'temperature_2m',
+]);
+
+$context = stream_context_create(['http' =&gt; ['timeout' =&gt; 5]]);   // do not wait forever
+$json = file_get_contents($url, false, $context);
+
+if ($json === false) {
+    echo 'The weather service is not available.';
+} else {
+    $data = json_decode($json, true);
+    $temperature = $data['current']['temperature_2m'];
+    echo 'Temperature in Algiers: ' . htmlspecialchars((string) $temperature) . ' °C';
+}</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          For more control (POST requests, custom headers, reading the status code) use the
+          <strong>cURL</strong> extension:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+$ch = curl_init($url);
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER =&gt; true,                 // return the body instead of printing it
+    CURLOPT_TIMEOUT        =&gt; 5,
+    CURLOPT_HTTPHEADER     =&gt; ['Accept: application/json'],
+]);
+$json   = curl_exec($ch);
+$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if ($json === false || $status !== 200) {
+    error_log('Weather API error: ' . curl_error($ch) . " (HTTP $status)");
+    $data = null;
+} else {
+    $data = json_decode($json, true);
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> On Windows, cURL may fail with "SSL certificate problem: unable to
+        get local issuer certificate". The fix is to download <code>cacert.pem</code> from
+        <a href="https://curl.se/docs/caextract.html">curl.se/docs/caextract.html</a> and set
+        <code>curl.cainfo</code> and <code>openssl.cafile</code> to its path in <code>php.ini</code>, then restart
+        Apache. Never "fix" it by disabling <code>CURLOPT_SSL_VERIFYPEER</code>.
+      </div>
+      <h3 class="Sub_Section_Title">Which one to choose? API keys must stay on the server</h3>
+      <div class="Definitions">
+        <p>
+          Most APIs (maps, e-mail, payment, AI...) require an <strong>API key</strong>, a secret string that
+          identifies your account and is billed or rate-limited. Everything sent to the browser (HTML, JS, the
+          requests visible in the Network tab) can be read by any visitor. Therefore:
+        </p>
+        <ul>
+          <li><strong>Keyless public API</strong> (like Open-Meteo): calling it directly from JavaScript is
+            fine.</li>
+          <li><strong>API with a secret key</strong>: the key stays in PHP (in a <code>.env</code> file, see
+            section V). Your JavaScript calls <strong>your own</strong> PHP script, which calls the API and
+            returns the result. This PHP script is called a <strong>proxy</strong>; it can also cache the answers
+            to save your quota.</li>
+        </ul>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// weather.php : the browser calls fetch('weather.php?city=Oran'), never the external API
+require __DIR__ . '/vendor/autoload.php';
+Dotenv\Dotenv::createImmutable(__DIR__)-&gt;load();          // reads the secret key from .env
+
+header('Content-Type: application/json; charset=utf-8');
+
+$city = trim($_GET['city'] ?? '');
+if ($city === '') {
+    http_response_code(400);
+    echo json_encode(['error' =&gt; 'city is required']);
+    exit;
+}
+
+// "api.example.com" stands for any API that needs a key
+$url = 'https://api.example.com/v1/weather?' . http_build_query([
+    'q'   =&gt; $city,
+    'key' =&gt; $_ENV['WEATHER_API_KEY'],                     // never visible to the visitor
+]);
+$json = file_get_contents($url, false, stream_context_create(['http' =&gt; ['timeout' =&gt; 5]]));
+
+if ($json === false) {
+    http_response_code(502);                               // 502 Bad Gateway: the upstream service failed
+    echo json_encode(['error' =&gt; 'Weather service unavailable']);
+    exit;
+}
+echo $json;</pre>
+      </div>
+      <h3 class="Sub_Section_Title">CORS: why some fetch() calls are blocked</h3>
+      <div class="Definitions">
+        <p>
+          An <strong>origin</strong> is the triple <em>protocol + domain + port</em>:
+          <code>http://localhost</code>, <code>http://localhost:5500</code> and
+          <code>https://localhost</code> are three different origins. For security, browsers apply the
+          <strong>same-origin policy</strong>: JavaScript of a page may send a request to another origin, but it
+          is <strong>not allowed to read the response</strong>, unless the other server explicitly allows it.
+          This permission mechanism is <strong>CORS</strong> (Cross-Origin Resource Sharing). <br>
+          <br>
+          The server grants the permission with the response header <code>Access-Control-Allow-Origin</code>.
+          Open-Meteo answers with <code>Access-Control-Allow-Origin: *</code> (any origin), that is why our demo
+          works. An API without this header produces the famous console error <em>"... has been blocked by CORS
+          policy: No 'Access-Control-Allow-Origin' header is present on the requested resource"</em>. <br>
+          <br>
+          For "non-simple" requests (PUT, DELETE, or a JSON <code>Content-Type</code>), the browser first sends an
+          automatic <code>OPTIONS</code> request called a <strong>preflight</strong> to ask the server what is
+          allowed. If your <code>api.php</code> must be used from another origin (for example a front-end served by
+          VS Code Live Server on <code>http://127.0.0.1:5500</code>), add at the top of the file:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Allow ONE known origin (avoid "*" if your API uses cookies / sessions)
+header('Access-Control-Allow-Origin: http://127.0.0.1:5500');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Answer the preflight request and stop
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> CORS is enforced by the <strong>browser</strong> only. PHP,
+        <code>curl</code> or Postman ignore it, which is another reason to call a blocked API from your server (the
+        proxy above). And if your pages and <code>api.php</code> are both served by XAMPP from
+        <code>http://localhost</code>, they share the same origin and you do not need any CORS header.
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Composer_Packages">
+      <h2 class="Section_Title">V. Extending PHP with Composer Packages</h2>
+      <div class="Definitions">
+        <p>
+          Do not reinvent the wheel: sending e-mails, generating PDFs, reading Excel files, resizing images or
+          handling configuration are solved problems. <strong>Composer</strong> (installation explained in the
+          <a href="Unit_Testing.html#Composer">Unit Testing chapter</a>) downloads these libraries from
+          <a href="https://packagist.org/">Packagist</a>, the public repository of PHP packages, together with
+          their own dependencies.
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Command</th>
+          <th>Effect</th>
+        </tr>
+        <tr>
+          <td>composer require vendor/package</td>
+          <td>Adds the package to <code>composer.json</code>, installs it in <code>vendor/</code> and records the
+            exact version in <code>composer.lock</code>.</td>
+        </tr>
+        <tr>
+          <td>composer require --dev vendor/package</td>
+          <td>Same, for a development-only tool (PHPUnit...).</td>
+        </tr>
+        <tr>
+          <td>composer install</td>
+          <td>Installs exactly the versions of <code>composer.lock</code> (run it after cloning the project).</td>
+        </tr>
+        <tr>
+          <td>composer update</td>
+          <td>Updates the packages to the newest versions allowed by <code>composer.json</code>.</td>
+        </tr>
+        <tr>
+          <td>composer remove vendor/package</td>
+          <td>Uninstalls a package.</td>
+        </tr>
+      </table>
+      <div class="Definitions">
+        <p>
+          Whatever the package, you use it by including <strong>one</strong> file at the top of your script:
+          <code>require __DIR__ . '/vendor/autoload.php';</code>. Composer's autoloader then loads each class
+          automatically the first time you use it.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Example 1: configuration and secrets with vlucas/phpdotenv</h3>
+      <div class="Definitions">
+        <p>
+          Database passwords and API keys must not be written in your PHP code (they would end up on GitHub).
+          Put them in a <code>.env</code> file and load it with <code>phpdotenv</code>: <br>
+          <br>
+          <code>composer require vlucas/phpdotenv</code>
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# .env  (never committed: add ".env" to .gitignore)
+DB_HOST=localhost
+DB_NAME=shop
+DB_USER=root
+DB_PASS=
+WEATHER_API_KEY=put-your-secret-key-here</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// config.php : included by every script that needs the database
+require __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv-&gt;load();                                         // fills $_ENV with the values of .env
+$dotenv-&gt;required(['DB_HOST', 'DB_NAME', 'DB_USER']);    // clear error if a variable is missing
+
+$pdo = new PDO(
+    "mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']};charset=utf8mb4",
+    $_ENV['DB_USER'],
+    $_ENV['DB_PASS'] ?? '',
+    [PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION]
+);</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Commit a <code>.env.example</code> file with the same keys but
+        without the real values, so your teammates know what to fill in. The <code>.env</code> file must not be
+        downloadable: keep it outside the public folder, or block it in an <code>.htaccess</code> file with
+        <code>&lt;Files ".env"&gt; Require all denied &lt;/Files&gt;</code>.
+      </div>
+      <h3 class="Sub_Section_Title">Example 2: sending e-mails with phpmailer/phpmailer</h3>
+      <div class="Definitions">
+        <p>
+          PHP's <code>mail()</code> function does not work on XAMPP without configuration and is often treated as
+          spam. PHPMailer sends e-mails through a real SMTP server (Gmail, Outlook, your university...). <br>
+          <br>
+          <code>composer require phpmailer/phpmailer</code>
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+Dotenv\Dotenv::createImmutable(__DIR__)-&gt;load();
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function sendWelcomeEmail(string $to, string $name): bool
+{
+    $mail = new PHPMailer(true);                  // true = throw exceptions on errors
+    try {
+        $mail-&gt;isSMTP();
+        $mail-&gt;Host       = $_ENV['SMTP_HOST'];   // e.g. smtp.gmail.com
+        $mail-&gt;SMTPAuth   = true;
+        $mail-&gt;Username   = $_ENV['SMTP_USER'];
+        $mail-&gt;Password   = $_ENV['SMTP_PASS'];
+        $mail-&gt;SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail-&gt;Port       = 587;
+        $mail-&gt;CharSet    = 'UTF-8';
+
+        $mail-&gt;setFrom($_ENV['SMTP_USER'], 'Our Team Website');
+        $mail-&gt;addAddress($to, $name);
+        $mail-&gt;isHTML(true);
+        $mail-&gt;Subject = 'Welcome!';
+        $mail-&gt;Body    = '&lt;p&gt;Hello ' . htmlspecialchars($name) . ', thank you for registering.&lt;/p&gt;';
+        $mail-&gt;AltBody = "Hello $name, thank you for registering.";
+
+        $mail-&gt;send();
+        return true;
+    } catch (Exception $e) {
+        error_log('Mailer error: ' . $mail-&gt;ErrorInfo);
+        return false;
+    }
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> With Gmail, your normal password will be refused: enable two-step
+        verification on the account and create an <strong>App password</strong>, then put it in
+        <code>SMTP_PASS</code>. Use a dedicated account for the project, never your personal one. Before adding a
+        package, check on Packagist that it is maintained (recent releases, many installs) and read its README.
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Embedding">
+      <h2 class="Section_Title">VI. Embedding External Services</h2>
+      <div class="Definitions">
+        <p>
+          Some services are integrated without writing any API code: they give you an HTML snippet, usually an
+          <code>&lt;iframe&gt;</code>, that displays a page of their site inside yours (a map, a video, a calendar,
+          a form). Useful attributes:
+        </p>
+        <ul>
+          <li><code>title</code>: describes the content for screen readers (required for accessibility).</li>
+          <li><code>loading="lazy"</code>: the iframe is loaded only when the user scrolls near it, so your page
+            loads faster.</li>
+          <li><code>referrerpolicy</code>: controls how much of your page URL is sent to the external site in the
+            <code>Referer</code> header (e.g. <code>no-referrer</code>,
+            <code>strict-origin-when-cross-origin</code>).</li>
+          <li><code>allow</code> / <code>allowfullscreen</code>: features the embedded page may use
+            (full screen, autoplay, clipboard...).</li>
+          <li><code>sandbox</code>: restricts what the embedded page can do (scripts, forms, pop-ups); useful for
+            content you do not fully trust.</li>
+        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">A map with OpenStreetMap</h3>
+      <div class="Definitions">
+        <p>
+          On <a href="https://www.openstreetmap.org/">openstreetmap.org</a>, move to the place you want, click
+          <em>Share</em> and copy the HTML code. The <code>bbox</code> parameter is the visible area
+          (min longitude, min latitude, max longitude, max latitude) and <code>marker</code> places a pin:
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+&lt;iframe
+    title="Map of Algiers"
+    width="100%" height="350"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=2.98,36.70,3.14,36.80&amp;amp;layer=mapnik&amp;amp;marker=36.75,3.06"
+    loading="lazy"
+    referrerpolicy="no-referrer"&gt;
+&lt;/iframe&gt;
+&lt;a href="https://www.openstreetmap.org/?mlat=36.75&amp;amp;mlon=3.06#map=13/36.75/3.06"&gt;
+    View a larger map
+&lt;/a&gt;</pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <iframe title="Map of Algiers" style="height: 350px;"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=2.98,36.70,3.14,36.80&amp;layer=mapnik&amp;marker=36.75,3.06"
+            loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <a href="https://www.openstreetmap.org/?mlat=36.75&amp;mlon=3.06#map=13/36.75/3.06">View a larger map</a>
+        </div>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Google Maps works the same way: <em>Share &rarr; Embed a map
+        &rarr; Copy HTML</em>. For interactive maps controlled by JavaScript (several markers loaded from your
+        database, click events...), use the free <a href="https://leafletjs.com/">Leaflet</a> library with
+        OpenStreetMap tiles, and feed it with the JSON of your own API.
+      </div>
+      <h3 class="Sub_Section_Title">Videos</h3>
+      <div class="Definitions">
+        <p>
+          On YouTube, click <em>Share &rarr; Embed</em>. Replacing <code>youtube.com</code> by
+          <code>youtube-nocookie.com</code> enables the privacy-enhanced mode (no tracking cookies until the
+          visitor plays the video). <code>VIDEO_ID</code> is the code found after <code>v=</code> in the URL of the
+          video:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;iframe
+    width="560" height="315"
+    src="https://www.youtube-nocookie.com/embed/VIDEO_ID"
+    title="Presentation of our project"
+    loading="lazy"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen&gt;
+&lt;/iframe&gt;
+
+&lt;!-- For your own video file, no external service is needed --&gt;
+&lt;video src="SRC/VIDEOS/demo.mp4" controls width="560" preload="metadata"&gt;&lt;/video&gt;</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Many sites forbid being embedded with the header
+        <code>X-Frame-Options: DENY</code> or the CSP directive <code>frame-ancestors</code>: the iframe then
+        stays empty and the console shows "refused to connect". This protects them against
+        <em>clickjacking</em>; you will see in the Web security chapter how to protect your own site the same way.
+        Every embedded service also loads content from a third party: mention it in the privacy policy of your
+        site.
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Beyond">
+      <h2 class="Section_Title">VII. Beyond the Course</h2>
+      <h3 class="Sub_Section_Title">JavaScript on the server: Node.js</h3>
+      <div class="Definitions">
+        <p>
+          <strong>Node.js</strong> is a runtime that executes JavaScript outside the browser, built on Chrome's V8
+          engine. With it you can write the back-end in the same language as the front-end: a Node.js program can
+          play exactly the role of our <code>api.php</code>. Its package manager, <strong>npm</strong>, plays the
+          role of Composer (<code>package.json</code> &harr; <code>composer.json</code>,
+          <code>node_modules/</code> &harr; <code>vendor/</code>).
+        </p>
+      </div>
+      <img class="Smaller_Image" src="SRC/IMAGES/Node_JS.png" alt="Node_JS" />
+      <div class="Definitions">
+        <p>
+          The same "list of products" endpoint, written with Node's built-in <code>http</code> module (save it as
+          <code>server.mjs</code>, run <code>node server.mjs</code> and open
+          <code>http://localhost:3000/api/products</code>):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+import { createServer } from 'node:http';
+
+const products = [
+    { id: 1, name: 'Keyboard', price: 2500 },
+    { id: 2, name: 'Mouse', price: 900 },
+];
+
+const server = createServer((req, res) =&gt; {
+    if (req.method === 'GET' &amp;&amp; req.url === '/api/products') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(products));
+    } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Not found' }));
+    }
+});
+
+server.listen(3000, () =&gt; console.log('Server running on http://localhost:3000'));</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          In practice, Node.js developers use a framework such as <strong>Express</strong>
+          (<code>npm install express</code>) for routing, and a database driver for MySQL or PostgreSQL. Unlike PHP
+          on Apache, a Node.js program is a long-running server process: it is started once and handles all the
+          requests asynchronously.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Front-end frameworks</h3>
+      <div class="Definitions">
+        <p>
+          When an interface becomes large, manipulating the DOM by hand (<code>createElement</code>,
+          <code>textContent</code>, event listeners...) becomes hard to maintain. Front-end frameworks such as
+          <strong>React</strong>, <strong>Vue</strong>, <strong>Angular</strong> or <strong>Svelte</strong> let you
+          describe the interface as reusable <em>components</em> that are re-rendered automatically when the data
+          (the <em>state</em>) changes. They fit perfectly with what we built in this chapter: the framework
+          renders the page in the browser and calls a JSON REST API (written in PHP, Node.js or anything else) with
+          <code>fetch()</code>. An introduction is available in the <a href="React_JS.html">React JS</a> page.
+          <br><br>
+          On the PHP side, frameworks such as <strong>Laravel</strong> and <strong>Symfony</strong> provide
+          routing, an MVC structure, database tools, authentication and security protections out of the box; they
+          are all installed with Composer.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section id="Practice">
+      <h2 class="Section_Title">Practice</h2>
+      <div class="Definitions">
+        <ol>
+          <li>Create the <code>product</code> table and <code>api.php</code>. Test the five operations with
+            <code>curl</code> or Postman and check every status code (200, 201, 204, 400, 404, 405, 422).</li>
+          <li>Write <code>products.html</code> that lists, adds, edits and deletes products using only
+            <code>fetch()</code> and the API (no page reload).</li>
+          <li>Add a search: <code>GET api.php?q=key</code> returns only the products whose name contains
+            <code>key</code> (use <code>LIKE ?</code> with a prepared statement and the value
+            <code>"%$q%"</code>).</li>
+          <li>Display the current temperature of the cities presented in your team project (e.g. Algiers, Oran,
+            Constantine, Tlemcen, Ghardaia, Tipaza) using Open-Meteo. Do it once from JavaScript, once from PHP with
+            cURL.</li>
+          <li>Move your database credentials into a <code>.env</code> file loaded with
+            <code>vlucas/phpdotenv</code>, add <code>.env</code> to <code>.gitignore</code> and commit a
+            <code>.env.example</code>.</li>
+          <li>Send a confirmation e-mail with PHPMailer when a user submits the contact form of your site.</li>
+          <li>Add an OpenStreetMap iframe showing the location of ENSIA on the "Contact" page, with
+            <code>loading="lazy"</code> and a <code>title</code>.</li>
+          <li>Write PHPUnit tests for <code>validateProduct()</code> (move it into a class of
+            <code>src/</code> first).</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="jQuery.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>JQuery</h1>
+    </a>
+    <a href="Security.html" class="Arrow">
+      <h1>Web security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+  <script type="module">
+    // Live demo of section IV: current weather in Algiers from Open-Meteo
+    const button = document.getElementById('Weather_Btn');
+    const output = document.getElementById('Weather_Output');
+    const url = 'https://api.open-meteo.com/v1/forecast'
+      + '?latitude=36.75&longitude=3.06'
+      + '&current=temperature_2m,wind_speed_10m'
+      + '&timezone=Africa%2FAlgiers';
+
+    async function showAlgiersWeather() {
+      output.textContent = 'Loading...';
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        const data = await response.json();
+        const { current, current_units: units } = data;
+        output.textContent =
+          `Algiers, ${current.time.replace('T', ' ')}: ` +
+          `${current.temperature_2m} ${units.temperature_2m}, ` +
+          `wind ${current.wind_speed_10m} ${units.wind_speed_10m}`;
+      } catch (error) {
+        output.textContent = `Could not load the weather: ${error.message}`;
+      }
+    }
+
+    button.addEventListener('click', showAlgiersWeather);
+  </script>
+</body>
+
+</html>

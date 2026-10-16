@@ -1,19 +1,1081 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
-    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
-    <title>Lab 7</title>
-  </head>
-  <body>
-    <main>
-      <section>
-        <h1 class="Title">Lab 7: Javascript Scripting CSS</h1>
-      </section>
-    </main>
-    <script src="SRC/JS/Script.js" type="module"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 7: JavaScript scripting CSS</title>
+  <style>
+    /* Styles used only by the live demo of this page */
+    #L7_Demo {
+      --l7-accent: #8c1515;
+      --l7-bg: #ffffff;
+      --l7-text: #3f3c30;
+      background-color: var(--l7-bg);
+      color: var(--l7-text);
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    #L7_Demo[data-theme="dark"] {
+      --l7-bg: #1e1e1e;
+      --l7-text: #e8e6e3;
+    }
+
+    .L7_Box {
+      padding: 1em;
+      border: 3px solid var(--l7-accent);
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .L7_Box.L7_Highlight {
+      background-color: var(--l7-accent);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .L7_Controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5em;
+      margin: 1em 0;
+    }
+
+    .L7_Btn {
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 6px;
+      background-color: var(--l7-accent);
+      color: #ffffff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .L7_Output {
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+
+    .L7_Dialog {
+      border: none;
+      border-radius: 10px;
+      padding: 0;
+      max-width: 90vw;
+    }
+
+    .L7_Dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .L7_Dialog_Content {
+      padding: 1.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Lab 7: JavaScript scripting CSS</h1>
+    <section>
+      <h2 class="Section_Title">Instructions</h2>
+      <div class="Instructions">
+        <p>
+          In this lab you will learn how JavaScript changes the look of a page by working with CSS: inline styles,
+          classes, CSS custom properties (variables) and computed styles. <br>
+          You will then use these techniques to build the interactive components that almost every website needs:
+          a hamburger menu, a drop-down menu, an image slider, a modal dialog and a dark/light theme toggle. <br>
+          At the end of the lab, you will add these behaviours to your team project. This work counts toward the
+          "Javascript" milestone of the <a href="Syllabus.html#Deadlines">Deadlines table</a>. <br>
+          Before starting, review the lectures <a href="DOM.html">The Document Object Model</a> and
+          <a href="JavaScript_Events.html">JavaScript Events</a>.
+        </p>
+      </div>
+    </section>
+    <section id="Style_vs_Classes">
+      <h2 class="Section_Title">I. element.style vs classList</h2>
+      <div class="Definitions">
+        <p>
+          There are two ways to change the style of an element from JavaScript: <br>
+          1. Write <b>inline styles</b> with the <code>style</code> property. This is the same as writing a
+          <code>style="..."</code> attribute in the HTML, so it overrides the rules of your CSS files. <br>
+          2. Add or remove <b>CSS classes</b> with the <code>classList</code> property. The styles stay in your CSS
+          file and JavaScript only decides which classes an element has. <br>
+          The <code>style</code> property uses camelCase names (<code>backgroundColor</code> for
+          <code>background-color</code>) and its values are always <b>strings with units</b>.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">The style property</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const card = document.querySelector(".Product_Card");
+
+// Write inline styles: camelCase names, string values WITH units
+card.style.backgroundColor = "#8c1515";
+card.style.marginTop = "20px";
+card.style.borderRadius = "10px";
+
+// setProperty / removeProperty accept the real CSS (hyphenated) names
+card.style.setProperty("border-left", "6px solid gold");
+card.style.removeProperty("margin-top");
+
+// Reading only returns what was set INLINE, not what comes from your .css files
+console.log(card.style.color); // "" if the color is defined in Styles.css
+
+// Replace all inline styles at once
+card.style.cssText = "color: white; padding: 1em;";
+        </pre>
+      </div>
+      <div class="Note"><strong>Common mistake:</strong> <code>card.style.width = 200;</code> does nothing because
+        the unit is missing. Write <code>card.style.width = "200px";</code> or
+        <code>card.style.width = size + "px";</code>.</div>
+      <h3 class="Sub_Section_Title">The classList property</h3>
+      <div class="Definitions">
+        <p>
+          <code>classList</code> is a list of the classes of an element with methods to modify it without touching
+          the other classes. This is the preferred way to show, hide, highlight or animate elements.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Product_Card.Selected {
+  box-shadow: 0 0 0 3px #8c1515;
+}
+
+.Hidden {
+  display: none;
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const card = document.querySelector(".Product_Card");
+
+card.classList.add("Selected");            // add a class (or several: add("A", "B"))
+card.classList.remove("Selected");         // remove a class
+card.classList.toggle("Selected");         // add if missing, remove if present; returns true or false
+card.classList.toggle("Hidden", stock === 0); // "force": add when true, remove when false
+card.classList.replace("Small", "Large");  // swap one class for another
+
+if (card.classList.contains("Selected")) {
+  console.log("This card is selected");
+}
+
+// className is the whole class attribute as one string: assigning it REPLACES all classes
+card.className = "Product_Card Selected";
+        </pre>
+      </div>
+      <table>
+        <tr>
+          <th>Use</th>
+          <th>When</th>
+        </tr>
+        <tr>
+          <td><code>classList</code></td>
+          <td>Show/hide, open/close, active/inactive, error/valid, themes: any state you can describe in advance in
+            CSS.</td>
+        </tr>
+        <tr>
+          <td><code>style</code></td>
+          <td>Values computed at run time that cannot be written in advance: a position, a width in pixels, a
+            translation that depends on a counter.</td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Tip:</strong> keep your design in CSS and your logic in JavaScript. If you find
+        yourself writing <code>element.style.display = "none"</code>, create a <code>.Hidden</code> class instead.
+        Your team members can then change the look without reading your JavaScript.</div>
+    </section>
+    <section id="Custom_Properties">
+      <h2 class="Section_Title">II. CSS custom properties and getComputedStyle</h2>
+      <div class="Definitions">
+        <p>
+          CSS custom properties (also called CSS variables) are declared with two dashes and used with
+          <code>var()</code>. When JavaScript changes a variable, <b>every rule that uses it updates at once</b>. <br>
+          Custom properties can only be set with <code>style.setProperty()</code> (not with camelCase), and read with
+          <code>getPropertyValue()</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+:root {
+  --accent: #8c1515;
+  --radius: 8px;
+}
+
+.Btn {
+  background-color: var(--accent);
+  border-radius: var(--radius);
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const root = document.documentElement; // the &lt;html&gt; element, where :root variables live
+
+root.style.setProperty("--accent", "#027b92"); // every element using var(--accent) changes
+root.style.setProperty("--radius", "20px");
+
+// Read the current value (note the leading space that CSS may keep: use trim())
+const accent = getComputedStyle(root).getPropertyValue("--accent").trim();
+
+root.style.removeProperty("--accent"); // back to the value written in the CSS file
+
+// A variable can also be overridden for one element and its children only
+document.querySelector(".Promo").style.setProperty("--accent", "green");
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">getComputedStyle()</h3>
+      <div class="Definitions">
+        <p>
+          <code>element.style</code> only knows inline styles. To know the <b>final</b> value the browser actually
+          uses (after applying all your CSS files, inheritance and media queries), call
+          <code>getComputedStyle(element)</code>. The returned object is <b>read-only</b> and values are resolved:
+          lengths are in <code>px</code> and colors in <code>rgb()</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const title = document.querySelector(".Title");
+const computed = getComputedStyle(title);
+
+console.log(computed.fontSize);  // e.g. "32px" even if the CSS says 2em
+console.log(computed.color);     // e.g. "rgb(140, 21, 21)"
+console.log(computed.display);   // "block"
+
+// To compute with it, convert to a number, then WRITE with element.style
+const size = parseFloat(computed.fontSize);
+title.style.fontSize = size * 1.2 + "px";
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">Live demo</h3>
+      <div class="Definitions">
+        <p>
+          The demo below uses everything from this section (and the theme and dialog of sections VI and VII).
+          Try the buttons and the color picker, then open the browser console and inspect the box.
+        </p>
+      </div>
+      <div class="card">
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-js">
+const demo = document.getElementById("L7_Demo");
+const box = document.getElementById("L7_Box");
+const output = document.getElementById("L7_Output");
+const dialog = document.getElementById("L7_Dialog");
+
+// 1. classList.toggle: the transition is defined in CSS
+document.getElementById("L7_Toggle_Btn").addEventListener("click", () =&gt; {
+  const on = box.classList.toggle("L7_Highlight");
+  output.textContent = "L7_Highlight is " + (on ? "ON" : "OFF");
+});
+
+// 2. setProperty on a custom property
+document.getElementById("L7_Color").addEventListener("input", (event) =&gt; {
+  demo.style.setProperty("--l7-accent", event.target.value);
+});
+
+// 3. getComputedStyle: the final values used by the browser
+document.getElementById("L7_Read_Btn").addEventListener("click", () =&gt; {
+  const cs = getComputedStyle(box);
+  output.textContent =
+    "background-color: " + cs.backgroundColor + "\n" +
+    "border-color: " + cs.borderTopColor + "\n" +
+    "padding: " + cs.padding + "\n" +
+    "inline style: \"" + box.style.cssText + "\"";
+});
+
+// 4. Theme remembered with localStorage
+function applyTheme(theme) {
+  demo.dataset.theme = theme;
+}
+try {
+  applyTheme(localStorage.getItem("lab7-demo-theme") || "light");
+} catch (error) {
+  applyTheme("light"); // storage blocked (private mode...)
+}
+document.getElementById("L7_Theme_Btn").addEventListener("click", () =&gt; {
+  const next = demo.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try {
+    localStorage.setItem("lab7-demo-theme", next);
+  } catch (error) {
+    /* ignore */
+  }
+});
+
+// 5. Native modal dialog
+document.getElementById("L7_Dialog_Btn").addEventListener("click", () =&gt; {
+  dialog.showModal();
+});
+dialog.addEventListener("click", (event) =&gt; {
+  if (event.target === dialog) dialog.close(); // click on the backdrop
+});
+          </pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo" id="L7_Demo">
+          <div class="L7_Box" id="L7_Box">I am styled by JavaScript</div>
+          <div class="L7_Controls">
+            <button type="button" class="L7_Btn" id="L7_Toggle_Btn">Toggle class</button>
+            <label for="L7_Color">Accent</label>
+            <input type="color" id="L7_Color" value="#8c1515" />
+            <button type="button" class="L7_Btn" id="L7_Read_Btn">getComputedStyle</button>
+            <button type="button" class="L7_Btn" id="L7_Theme_Btn">Dark / light</button>
+            <button type="button" class="L7_Btn" id="L7_Dialog_Btn">Open modal</button>
+          </div>
+          <p class="L7_Output" id="L7_Output">Click a button...</p>
+          <dialog class="L7_Dialog" id="L7_Dialog" aria-labelledby="L7_Dialog_Title">
+            <div class="L7_Dialog_Content">
+              <h3 id="L7_Dialog_Title">Hello from a &lt;dialog&gt;</h3>
+              <p>Press Escape, click outside, or use the button to close me.</p>
+              <form method="dialog">
+                <button class="L7_Btn">Close</button>
+              </form>
+            </div>
+          </dialog>
+        </div>
+      </div>
+    </section>
+    <section id="Transitions">
+      <h2 class="Section_Title">III. Transitions triggered by class changes</h2>
+      <div class="Definitions">
+        <p>
+          A CSS <code>transition</code> animates a property every time its value changes. Combined with
+          <code>classList</code>, this gives smooth animations with almost no JavaScript: CSS describes the two
+          states and the animation, JavaScript only switches the class. <br>
+          <b>Important:</b> <code>display</code> cannot be animated. To fade or slide an element in and out, animate
+          <code>opacity</code>, <code>transform</code>, <code>max-height</code> or <code>visibility</code> instead.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Panel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.Panel.Open {
+  max-height: 500px; /* larger than the real content */
+  opacity: 1;
+}
+
+/* Respect users who asked their system to reduce animations */
+@media (prefers-reduced-motion: reduce) {
+  .Panel {
+    transition: none;
+  }
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const panel = document.querySelector(".Panel");
+
+document.querySelector(".Panel_Btn").addEventListener("click", () =&gt; {
+  panel.classList.toggle("Open");
+});
+
+// Optional: run code when the animation is finished
+panel.addEventListener("transitionend", (event) =&gt; {
+  if (event.propertyName === "opacity") {
+    console.log("Panel is now", panel.classList.contains("Open") ? "open" : "closed");
+  }
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> if you create an element and add its "visible" class in the same
+        instant, the browser never sees the first state and there is no transition. Add the class one frame later
+        with <code>requestAnimationFrame(() =&gt; el.classList.add("Open"));</code>.</div>
+    </section>
+    <section id="Menus">
+      <h2 class="Section_Title">IV. Hamburger and drop-down menus</h2>
+      <h3 class="Sub_Section_Title">How this website does it</h3>
+      <div class="Definitions">
+        <p>
+          The navigation bar of this course website is built by <code>SRC/JS/Script.js</code>. On small screens, the
+          menu icon switches the menu between two classes and changes the Font Awesome icon:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Excerpt of SRC/JS/Script.js
+function handle_click() {
+  clicked = !clicked;
+  if (!clicked) {
+    document.getElementById("Nav_Bar_Menu_ID").className = "Nav_Bar_Menu";
+    document.getElementById("Menu_Icon_I_ID").className = "fas fa-bars";
+  } else {
+    document.getElementById("Nav_Bar_Menu_ID").className = "Nav_Bar_Menu_Active";
+    document.getElementById("Menu_Icon_I_ID").className = "fas fa-times";
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          This works, but it keeps the state in a separate <code>clicked</code> variable and uses
+          <code>className</code>, which erases any other class of the element. A cleaner version lets
+          <code>classList.toggle()</code> hold the state (its return value tells you if the menu is now open) and
+          updates <code>aria-expanded</code> so screen readers know the menu state.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">A reusable hamburger menu</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;header class="Site_Header"&gt;
+  &lt;a href="index.php" class="Logo"&gt;MyShop&lt;/a&gt;
+  &lt;button type="button" class="Burger" id="Burger_Btn"
+    aria-label="Open menu" aria-expanded="false" aria-controls="Main_Menu"&gt;
+    &lt;i class="fa-solid fa-bars"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;ul class="Main_Menu" id="Main_Menu"&gt;
+    &lt;li&gt;&lt;a href="index.php"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="products.php"&gt;Products&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="Has_Sub"&gt;
+      &lt;button type="button" class="Sub_Toggle" aria-expanded="false"&gt;
+        Account &lt;i class="fa-solid fa-caret-down"&gt;&lt;/i&gt;
+      &lt;/button&gt;
+      &lt;ul class="Sub_Menu"&gt;
+        &lt;li&gt;&lt;a href="profile.php"&gt;Profile&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="logout.php"&gt;Log out&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/header&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Site_Header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Main_Menu {
+  display: flex;
+  gap: 1em;
+  list-style: none;
+}
+
+.Burger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .Burger {
+    display: block;
+  }
+
+  .Main_Menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    transform: translateY(-150%); /* hidden above the header */
+    transition: transform 0.3s ease;
+  }
+
+  .Main_Menu.Active {
+    transform: translateY(0);
+  }
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const burger = document.getElementById("Burger_Btn");
+const menu = document.getElementById("Main_Menu");
+const burgerIcon = burger.querySelector("i");
+
+burger.addEventListener("click", () =&gt; {
+  const isOpen = menu.classList.toggle("Active");
+  burgerIcon.classList.toggle("fa-bars", !isOpen);
+  burgerIcon.classList.toggle("fa-xmark", isOpen);
+  burger.setAttribute("aria-expanded", isOpen);
+  burger.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+});
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">The drop-down menu</h3>
+      <div class="Definitions">
+        <p>
+          Here is the drop-down code given in previous labs (<code>SRC/Labs/Lab_4+/Drop_Down_Menu.js</code>):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+var clicked = false,
+  Menu_Icon_ID = document.getElementById("Menu_Icon_ID"),
+  Nav_Bar_Menu_ID = document.getElementById("Nav_Bar_Menu_ID"),
+  Burger_Icon_ID = document.getElementById("Burger_Icon_ID");
+
+function Change_State() {
+  this.clicked = !clicked;
+}
+
+Menu_Icon_ID.addEventListener("click", () =&gt; {
+  Change_State();
+  if (!clicked) {
+    Nav_Bar_Menu_ID.classList.remove("active");
+    Burger_Icon_ID.className = "fas fa-bars";
+  } else {
+    Nav_Bar_Menu_ID.classList.toggle("active");
+    Burger_Icon_ID.className = "fas fa-times";
+  }
+});
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The idea is right (a class <code>active</code> opens the menu) but there is a trap:
+          <code>this.clicked = !clicked</code> only works because, in a classic non-strict script, <code>this</code>
+          inside a plain function is <code>window</code> and a top-level <code>var</code> becomes a property of
+          <code>window</code>. In a module (<code>type="module"</code>) or in strict mode, <code>this</code> is
+          <code>undefined</code> and the code crashes. Write <code>clicked = !clicked;</code>, or better, drop the
+          variable and ask the element with <code>classList.contains()</code>. <br>
+          The version below supports several sub-menus, closes the others when one opens, and closes everything on
+          an outside click or the Escape key.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Has_Sub {
+  position: relative;
+}
+
+.Sub_Menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.Has_Sub.Open &gt; .Sub_Menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+function closeAllSubMenus() {
+  document.querySelectorAll(".Has_Sub.Open").forEach((item) =&gt; {
+    item.classList.remove("Open");
+    item.querySelector(".Sub_Toggle").setAttribute("aria-expanded", "false");
+  });
+}
+
+document.querySelectorAll(".Has_Sub").forEach((item) =&gt; {
+  const toggle = item.querySelector(".Sub_Toggle");
+  toggle.addEventListener("click", (event) =&gt; {
+    event.stopPropagation(); // do not let the document listener below close it again
+    const wasOpen = item.classList.contains("Open");
+    closeAllSubMenus();
+    if (!wasOpen) {
+      item.classList.add("Open");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+  });
+});
+
+document.addEventListener("click", closeAllSubMenus);
+document.addEventListener("keydown", (event) =&gt; {
+  if (event.key === "Escape") closeAllSubMenus();
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> a pure CSS drop-down with <code>.Has_Sub:hover &gt; .Sub_Menu</code>
+        works with a mouse but not on touch screens and not with the keyboard. Keep the hover rule if you like it,
+        but always add the click version (you can also add <code>:focus-within</code>).</div>
+    </section>
+    <section id="Slider">
+      <h2 class="Section_Title">V. Image slider (carousel)</h2>
+      <div class="Definitions">
+        <p>
+          The first version of the slider used in previous labs (<code>SRC/Labs/Lab_4+/Image_Slider.js</code>, since
+          fixed) places each slide next to the previous one and moves all of them with <code>transform: translateX()</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+var Counter = 1,
+  Slides = document.querySelectorAll(".Slide");
+
+Slides.forEach((Slide, index) =&gt; {
+  Slide.style.left = index * 100 + "%";   // slide 0 at 0%, slide 1 at 100%, ...
+});
+
+const Slide_Images = () =&gt; {
+  Slides.forEach((Slide) =&gt; {
+    Slide.style.transform = "translateX(-" + (Counter % Slides.length) * 100 + "%)";
+  });
+};
+
+function Slide_Previous(event) { Counter--; Slide_Images(); }
+function Slide_Next(event) { Counter++; Slide_Images(); }
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Note that here <code>style</code> is the right tool: the translation is computed from a counter and cannot
+          be written in advance in CSS. However, the code has two bugs worth understanding: <br>
+          1. <code>Counter</code> starts at 1 while the first slide shown is slide 0, so the first click on "next"
+          jumps directly to slide 2. <br>
+          2. Clicking "previous" on the first slide makes <code>Counter</code> negative. In JavaScript
+          <code>-1 % 3</code> is <code>-1</code>, so the code produces <code>translateX(--100%)</code>, which is
+          invalid CSS. The fix is <code>(index + length) % length</code>. <br>
+          The improved version below moves one "track" instead of every slide, adds navigation dots (whose active
+          state is a class), auto-plays, and pauses when the mouse is over the slider.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;div class="Slider"&gt;
+  &lt;div class="Slides_Track"&gt;
+    &lt;img class="Slide" src="assets/Images/slide_1.jpg" alt="Describe slide 1" /&gt;
+    &lt;img class="Slide" src="assets/Images/slide_2.jpg" alt="Describe slide 2" /&gt;
+    &lt;img class="Slide" src="assets/Images/slide_3.jpg" alt="Describe slide 3" /&gt;
+  &lt;/div&gt;
+  &lt;button type="button" class="Slider_Btn Prev" aria-label="Previous slide"&gt;
+    &lt;i class="fa-solid fa-chevron-left"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="Slider_Btn Next" aria-label="Next slide"&gt;
+    &lt;i class="fa-solid fa-chevron-right"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;div class="Slider_Dots"&gt;&lt;/div&gt;
+&lt;/div&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Slider {
+  position: relative;
+  overflow: hidden; /* hide the slides outside the frame */
+}
+
+.Slides_Track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.Slide {
+  flex: 0 0 100%;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.Slider_Btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.Prev { left: 10px; }
+.Next { right: 10px; }
+
+.Slider_Dots {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.Dot {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.Dot.Active {
+  background-color: #ffffff;
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+function createSlider(slider, delay = 4000) {
+  const track = slider.querySelector(".Slides_Track");
+  const slides = slider.querySelectorAll(".Slide");
+  const dotsBox = slider.querySelector(".Slider_Dots");
+  let current = 0;
+  let timer = null;
+
+  // One dot per slide
+  const dots = Array.from(slides, (slide, index) =&gt; {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "Dot";
+    dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+    dot.addEventListener("click", () =&gt; {
+      goTo(index);
+      restart();
+    });
+    dotsBox.appendChild(dot);
+    return dot;
+  });
+
+  function goTo(index) {
+    current = (index + slides.length) % slides.length; // never negative
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((dot, i) =&gt; dot.classList.toggle("Active", i === current));
+  }
+
+  function start() {
+    timer = setInterval(() =&gt; goTo(current + 1), delay);
+  }
+  function stop() {
+    clearInterval(timer);
+  }
+  function restart() {
+    stop();
+    start();
+  }
+
+  slider.querySelector(".Prev").addEventListener("click", () =&gt; {
+    goTo(current - 1);
+    restart();
+  });
+  slider.querySelector(".Next").addEventListener("click", () =&gt; {
+    goTo(current + 1);
+    restart();
+  });
+  slider.addEventListener("mouseenter", stop);
+  slider.addEventListener("mouseleave", start);
+
+  goTo(0);
+  start();
+}
+
+// Works for every slider of the page
+document.querySelectorAll(".Slider").forEach((slider) =&gt; createSlider(slider));
+        </pre>
+      </div>
+    </section>
+    <section id="Modal">
+      <h2 class="Section_Title">VI. Modal dialog</h2>
+      <div class="Definitions">
+        <p>
+          <code>SRC/JS/Script.js</code> opens its dialog with <code>Dialog.style.display = "block"</code> and closes
+          it with <code>"none"</code>. Today, HTML has a native <code>&lt;dialog&gt;</code> element:
+          <code>showModal()</code> opens it on top of the page with a dark backdrop, blocks the rest of the page,
+          moves the keyboard focus inside, and closes it with the Escape key, all for free. A
+          <code>&lt;form method="dialog"&gt;</code> inside the dialog closes it and puts the value of the clicked
+          button in <code>dialog.returnValue</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;button type="button" class="Btn" id="Open_Delete_Dialog"&gt;Delete my account&lt;/button&gt;
+
+&lt;dialog class="Modal" id="Delete_Dialog" aria-labelledby="Delete_Dialog_Title"&gt;
+  &lt;div class="Modal_Content"&gt;
+    &lt;h2 id="Delete_Dialog_Title"&gt;Are you sure?&lt;/h2&gt;
+    &lt;p&gt;This action cannot be undone.&lt;/p&gt;
+    &lt;form method="dialog"&gt;
+      &lt;button value="cancel"&gt;Cancel&lt;/button&gt;
+      &lt;button value="confirm"&gt;Yes, delete&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Modal {
+  border: none;
+  border-radius: 10px;
+  padding: 0; /* padding goes on .Modal_Content so backdrop clicks are easy to detect */
+  max-width: 90vw;
+}
+
+.Modal_Content {
+  padding: 1.5em;
+}
+
+.Modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.Modal[open] {
+  animation: Pop_In 0.2s ease-out;
+}
+
+@keyframes Pop_In {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const deleteDialog = document.getElementById("Delete_Dialog");
+
+document.getElementById("Open_Delete_Dialog").addEventListener("click", () =&gt; {
+  deleteDialog.showModal();
+});
+
+// A click on the dark backdrop has the dialog itself as target
+deleteDialog.addEventListener("click", (event) =&gt; {
+  if (event.target === deleteDialog) deleteDialog.close("cancel");
+});
+
+deleteDialog.addEventListener("close", () =&gt; {
+  if (deleteDialog.returnValue === "confirm") {
+    console.log("Confirmed: submit the real delete form here (or call your PHP service, Lab 11)");
+  }
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> if you prefer to keep a <code>&lt;div&gt;</code> modal like the one of
+        <code>Script.js</code>, at least use <code>classList.add("Open")</code> instead of
+        <code>style.display</code>, and handle the Escape key and the focus yourself. The live demo in section II
+        uses a native <code>&lt;dialog&gt;</code>.</div>
+    </section>
+    <section id="Theme">
+      <h2 class="Section_Title">VII. Dark/light theme remembered with localStorage</h2>
+      <div class="Definitions">
+        <p>
+          A theme toggle combines everything from this lab: colors are CSS custom properties, the theme is a
+          <code>data-theme</code> attribute on <code>&lt;html&gt;</code>, and JavaScript switches the attribute. <br>
+          <code>localStorage</code> stores strings in the browser, per website, and keeps them after the browser is
+          closed (<code>sessionStorage</code> forgets them when the tab is closed). We use it to remember the
+          choice of the user. When nothing is saved, we follow the system preference
+          (<code>prefers-color-scheme</code>).
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+:root {
+  --bg: #ffffff;
+  --text: #3f3c30;
+  --card-bg: #f5f5f5;
+  --accent: #8c1515;
+}
+
+:root[data-theme="dark"] {
+  --bg: #121212;
+  --text: #e8e6e3;
+  --card-bg: #1e1e1e;
+  --accent: #ff6b6b;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.Card {
+  background-color: var(--card-bg);
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          To avoid a "flash" of the light theme when a dark-theme user loads a page, apply the saved theme with a
+          tiny script in the <code>&lt;head&gt;</code>, before the page is drawn:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;head&gt;
+  ...
+  &lt;script&gt;
+    (function () {
+      let theme = null;
+      try {
+        theme = localStorage.getItem("theme");
+      } catch (error) {
+        // storage may be blocked (private mode): fall back to the system preference
+      }
+      if (theme !== "dark" &amp;&amp; theme !== "light") {
+        theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.dataset.theme = theme;
+    })();
+  &lt;/script&gt;
+&lt;/head&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Then the toggle button (for example in your header component) and its script:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;button type="button" class="Theme_Toggle" id="Theme_Toggle" aria-label="Toggle dark theme" aria-pressed="false"&gt;
+  &lt;i class="fa-solid fa-moon"&gt;&lt;/i&gt;
+&lt;/button&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+const themeBtn = document.getElementById("Theme_Toggle");
+const themeIcon = themeBtn.querySelector("i");
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  themeIcon.classList.toggle("fa-moon", !isDark);
+  themeIcon.classList.toggle("fa-sun", isDark);
+  themeBtn.setAttribute("aria-pressed", isDark);
+}
+
+// Sync the icon with the theme chosen by the &lt;head&gt; script
+applyTheme(document.documentElement.dataset.theme || "light");
+
+themeBtn.addEventListener("click", () =&gt; {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try {
+    localStorage.setItem("theme", next);
+  } catch (error) {
+    // not saved, but the theme still changes for this page
+  }
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Remember:</strong> <code>localStorage</code> only stores strings. To store an object
+        use <code>localStorage.setItem("cart", JSON.stringify(cart))</code> and
+        <code>JSON.parse(localStorage.getItem("cart"))</code>. Never store passwords or anything secret in it. If
+        your PHP code needs to know the theme, use a cookie instead (see
+        <a href="Sessions_Cookies.html">Sessions and Cookies</a>).</div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">VIII. Your turn</h2>
+      <div class="Definitions">
+        <p>Add the interactive behaviours to your team project. Split the steps between team members.</p>
+        <ol>
+          <li>Create a file <code>assets/JS/ui.js</code> and include it on every page, for example at the end of
+            your footer component: <code>&lt;script src="assets/JS/ui.js" defer&gt;&lt;/script&gt;</code>. Each
+            component must check that its elements exist before adding listeners (e.g. <code>if (slider) {...}</code>)
+            because not every page has a slider.</li>
+          <li><b>Hamburger menu:</b> add the burger button to your header component, write the CSS media query and
+            the toggle. Test it with the device toolbar of the browser DevTools (Ctrl+Shift+M).</li>
+          <li><b>Drop-down menu:</b> add at least one sub-menu (categories, account, ...) that opens on click and
+            closes on outside click and Escape.</li>
+          <li><b>Image slider:</b> add a slider with at least 3 of your own images (with meaningful
+            <code>alt</code> text) to your home page or to a product/details page.</li>
+          <li><b>Modal dialog:</b> use a <code>&lt;dialog&gt;</code> to confirm a delete action of one of your CRUD
+            services, or to show a login/details form.</li>
+          <li><b>Theme toggle:</b> move the colors of your main CSS file into custom properties, add a dark theme,
+            the toggle button and the <code>&lt;head&gt;</code> script. Reload the page and check that the choice is
+            remembered (DevTools &gt; Application &gt; Local Storage).</li>
+          <li><b>Clean up:</b> search your JavaScript for <code>.style.display</code> and similar show/hide code and
+            replace it with classes.</li>
+          <li><b>Test:</b> no errors in the console, every component works with the keyboard (Tab, Enter, Escape)
+            and at phone width.</li>
+          <li>Commit and push: <code>git commit -m "Lab 7: menus, slider, modal and theme"</code> then
+            <code>git push</code>.</li>
+        </ol>
+      </div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>A responsive hamburger menu that uses <code>classList</code> and updates <code>aria-expanded</code>.</li>
+        <li>At least one click-based drop-down menu that closes on outside click and Escape.</li>
+        <li>A working image slider (previous/next, dots, auto-play) with your own images.</li>
+        <li>At least one modal dialog used by a real feature of the project.</li>
+        <li>A dark/light theme based on CSS custom properties, remembered with <code>localStorage</code>.</li>
+        <li>Show/hide logic done with classes and CSS transitions, not with inline styles.</li>
+        <li>All the code pushed to your team repository before the "Javascript" milestone of the
+          <a href="Syllabus.html#Deadlines">Deadlines table</a>.</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Lab_6.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 6: PDO</h1>
+    </a>
+    <a href="Lab_8.html" class="Arrow">
+      <h1>Lab 8: PHP forms</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+  <script>
+    // Live demo of section II
+const demo = document.getElementById("L7_Demo");
+const box = document.getElementById("L7_Box");
+const output = document.getElementById("L7_Output");
+const dialog = document.getElementById("L7_Dialog");
+
+// 1. classList.toggle: the transition is defined in CSS
+document.getElementById("L7_Toggle_Btn").addEventListener("click", () => {
+  const on = box.classList.toggle("L7_Highlight");
+  output.textContent = "L7_Highlight is " + (on ? "ON" : "OFF");
+});
+
+// 2. setProperty on a custom property
+document.getElementById("L7_Color").addEventListener("input", (event) => {
+  demo.style.setProperty("--l7-accent", event.target.value);
+});
+
+// 3. getComputedStyle: the final values used by the browser
+document.getElementById("L7_Read_Btn").addEventListener("click", () => {
+  const cs = getComputedStyle(box);
+  output.textContent =
+    "background-color: " + cs.backgroundColor + "\n" +
+    "border-color: " + cs.borderTopColor + "\n" +
+    "padding: " + cs.padding + "\n" +
+    "inline style: \"" + box.style.cssText + "\"";
+});
+
+// 4. Theme remembered with localStorage
+function applyTheme(theme) {
+  demo.dataset.theme = theme;
+}
+try {
+  applyTheme(localStorage.getItem("lab7-demo-theme") || "light");
+} catch (error) {
+  applyTheme("light"); // storage blocked (private mode...)
+}
+document.getElementById("L7_Theme_Btn").addEventListener("click", () => {
+  const next = demo.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try {
+    localStorage.setItem("lab7-demo-theme", next);
+  } catch (error) {
+    /* ignore */
+  }
+});
+
+// 5. Native modal dialog
+document.getElementById("L7_Dialog_Btn").addEventListener("click", () => {
+  dialog.showModal();
+});
+dialog.addEventListener("click", (event) => {
+  if (event.target === dialog) dialog.close(); // click on the backdrop
+});
+  </script>
+</body>
+
 </html>

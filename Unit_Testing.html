@@ -7,13 +7,16 @@
   <link rel="stylesheet" href="SRC/CSS/HTML.css" />
   <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
   <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Unit Testing</title>
 </head>
 
 <body>
   <main>
     <h1 class="Title">Unit Testing</h1>
-    <section>
+    <section id="Composer">
       <h1 class="Section_Title">Composer: A Dependency Manager for PHP </h1>
       <div class="Definitions">
         <p>
@@ -35,109 +38,46 @@
       <h1 class="Sub_Section_Title">How to install Composer?</h1>
       <div class="Definitions">
         <p>
-          Composer offers a convenient installer that you can execute directly
-          from the command line. Feel free to download this file or review it on
-          GitHub if you wish to know more about the inner workings of the
-          installer. <br>
+          <strong>On Windows (with XAMPP)</strong>, the easiest way is the official installer
+          <a href="https://getcomposer.org/Composer-Setup.exe">Composer-Setup.exe</a>. During the installation,
+          it asks for the PHP executable: choose the one shipped with XAMPP, usually
+          <code>C:\xampp\php\php.exe</code>. The installer adds <code>composer</code> to your PATH, so
+          close your terminal, open a new one and check the installation with: <br>
           <br>
-          To install composer, run the following command in your terminal:
-          <br>
-          <br>
-          <code>php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"</code>
+          <code>composer --version</code>
           <br>
           <br>
-          <code>php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo
-            'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"</code>
+          <strong>On any system (command line)</strong>, Composer offers an installer script that you run with PHP.
+          The script is made of 4 commands that, in order:
           <br>
           <br>
-          <code>php composer-setup.php</code>
-          <br>
-          <br>
-          <code>php -r "unlink('composer-setup.php');"</code>
-          <br>
-          <br>
-          This installer script will simply check some php.ini settings, warn you
-          if they are set incorrectly, and then download the latest composer.phar
-          in the current directory. The 4 lines above will, in order: <br>
-          <br>
-          1. Download the installer to the current directory <br>
-          2. Verify the installer SHA-384 which you can also cross-check here <br>
-          3. Run the installer <br>
+          1. Download the installer (<code>composer-setup.php</code>) to the current directory <br>
+          2. Verify the installer with its SHA-384 hash <br>
+          3. Run the installer, which downloads <code>composer.phar</code> <br>
           4. Remove the installer <br>
           <br>
-          You can install Composer to a specific directory by using the --install-dir option and providing a target
-          directory. <br>
+          The hash used in step 2 changes with every new release of the installer, so <strong>do not copy it from
+            an old tutorial (or from this page)</strong>. Always copy the current commands from the official page:
+          <a href="https://getcomposer.org/download/">https://getcomposer.org/download/</a>.
           <br>
-          <code>php composer-setup.php --install-dir=bin</code>
-          <br>
-          <br>
-          Alternatively, you can install Composer globally. <br>
-          <br>
-          <code>php composer-setup.php --install-dir=bin --filename=composer</code>
-          <br>
-          <br>
-          Note: If the above fails due to permissions, you may need to run it
-          again with sudo. <br>
-          <br>
-          Note: Composer requires PHP 5.3.2+ to run. A few sensitive php settings
-          and compile flags are also required, but when using the installer you
-          will be warned about any incompatibilities. <br>
-          <br>
-          Note: If you are running OS X, you can also install Composer by
-          following the instructions here. <br>
-          <br>
-          Note: If you are on Windows and have XAMPP installed, you may need to
-          use the <code>php</code> command instead of <code>php</code> when following the
-          command-line installation instructions above. <br>
-          <br>
-          Note: If the above fails, you can manually download the installer
-          <a href="https://getcomposer.org/installer">here</a> and run the same
-          commands without the first line. <br>
-          <br>
-          Note: Composer will just check a few PHP settings and then download
-          composer.phar to your working directory. This file is the Composer
-          binary. It is a PHAR (PHP archive), which is an archive format for PHP
-          which can be run on the command line, amongst other things. <br>
-          <br>
-          Note: You can place the Composer PHAR anywhere you wish. If you put it
-          in a directory that is part of your PATH, you can access it globally.
-          On unixy systems you can even make it executable and invoke it without
-          directly using the php interpreter. <br>
-          <br>
-          Note: If you want to run Composer from anywhere on your system, you can
-          create a global <code>composer</code> command (on Unix systems) with the
-          following commands: <br>
-          <br>
-          <code>curl -sS https://getcomposer.org/installer | php</code>
-          <br>
-          <br>
-          <code>sudo mv composer.phar /usr/local/bin/composer</code>
-          <br>
-          <br>
-          Note: If the above fails due to permissions, you may need to run it
-          again with sudo. <br>
-          <br>
-          Note: If you prefer a graphical user interface (GUI) instead of the
-          command line, you can try Composer <a href="https://getcomposer.org/doc/03-cli.md#composer-gui">GUI</a>.
-          <br>
-          <br>
-          Note: If you want to install Composer to be used by all users on your
-          system, you may place it in <code>/usr/local/bin</code>. <br>
-          <br>
-          Note: If you are using SELinux, make sure you have set the
-          <code>httpd_execmem</code> permission to allow PHP to execute external
-          programs, otherwise you will get a cryptic error message like
-          <code>Failed to execute the Phar</code> or <code>phar error: exec
-            failed</code>. <br>
-          <br>
-          Note: If you are using cPanel, you will need to use the command line
-          method listed above. <br>
           <br>
         </p>
       </div>
+      <div class="Note"><strong>Tip:</strong> <code>composer.phar</code> is a PHAR (PHP archive): a whole PHP
+        application packed into a single file. If you used the command-line installer, you can run it with
+        <code>php composer.phar ...</code>, or make it global: on Linux/macOS run
+        <code>sudo mv composer.phar /usr/local/bin/composer</code>; on Windows simply prefer Composer-Setup.exe.
+        You can also choose the destination with
+        <code>php composer-setup.php --install-dir=bin --filename=composer</code>.
+      </div>
+      <div class="Note"><strong>Tip:</strong> Composer 2 requires PHP 7.2.5 or newer (XAMPP 8.x is fine). The
+        installer checks your <code>php.ini</code> settings and warns you about anything missing, such as the
+        <code>openssl</code> extension. If the download fails because you are behind a proxy, set the
+        <code>HTTP_PROXY</code> / <code>HTTPS_PROXY</code> environment variables.
+      </div>
       <img class="Smaller_Image" src="SRC/IMAGES/Unit_Test/Composer_Installed.png" alt="Composer_Installed">
     </section>
-    <section>
+    <section id="PHPUnit">
       <h1 class="Section_Title">PHPUnit: The PHP Testing Framework</h1>
       <div class="Definitions">
         <p>
@@ -150,33 +90,47 @@
           <br>
           PHPUnit is distributed through <a href="https://phar.phpunit.de/">PHAR</a>
           and available on <a href="https://packagist.org/packages/phpunit/phpunit">Packagist</a>.
-          It can be installed globally in seconds and is then available to check
-          your application. <br>
-          <br>
-          PHPUnit 9.0 supports PHP 7.3, PHP 7.4, and PHP 8.0. <br>
-          <br>
-          PHPUnit 8.5 supports PHP 7.2, PHP 7.3, and PHP 7.4. <br>
-          <br>
-          PHPUnit 7.5 supports PHP 7.1, PHP 7.2, and PHP 7.3. <br>
-          <br>
-          PHPUnit 6.5 supports PHP 7.0, PHP 7.1, and PHP 7.2. <br>
-          <br>
-          PHPUnit 5.7 supports PHP 5.6, PHP 7.0, and PHP 7.1. <br>
-          <br>
+          Each major version of PHPUnit supports a range of PHP versions:
         </p>
-        <p>
-
-        </p>
+      </div>
+      <table>
+        <tr>
+          <th>PHPUnit version</th>
+          <th>Required PHP version</th>
+        </tr>
+        <tr>
+          <td>PHPUnit 12</td>
+          <td>PHP 8.3 or newer</td>
+        </tr>
+        <tr>
+          <td>PHPUnit 11</td>
+          <td>PHP 8.2 or newer</td>
+        </tr>
+        <tr>
+          <td>PHPUnit 10</td>
+          <td>PHP 8.1 or newer</td>
+        </tr>
+        <tr>
+          <td>PHPUnit 9</td>
+          <td>PHP 7.3 to PHP 8.x</td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Tip:</strong> Check your PHP version with <code>php --version</code>. You do not
+        need to pick the PHPUnit version yourself: Composer chooses the newest version compatible with your PHP.
       </div>
       <h1 class="Sub_Section_Title">PHPUnit installation with Composer</h1>
       <div class="Definitions">
         <p>
-          The recommended way to install PHPUnit is via Composer. <br>
+          The recommended way to install PHPUnit is via Composer, as a <strong>development</strong> dependency
+          (it is needed to develop the project, not to run it in production). In the root folder of your project,
+          run: <br>
           <br>
           <code>composer require --dev phpunit/phpunit</code>
           <br>
           <br>
-          Composer will install the proper PHPUnit version in the <code>vendor/bin</code> directory.
+          Composer creates (or updates) <code>composer.json</code> and <code>composer.lock</code>, downloads
+          PHPUnit into the <code>vendor</code> folder and puts the <code>phpunit</code> command in
+          <code>vendor/bin</code>.
           <br>
           <br>
         </p>
@@ -185,26 +139,838 @@
 
       <div class="Definitions">
         <p>
-          To verify that PHPUnit has been installed correctly, run the
-          <code>phpunit --version</code> command. <br>
+          To verify that PHPUnit has been installed correctly, run: <br>
+          <br>
+          <code>./vendor/bin/phpunit --version</code> (Linux/macOS, Git Bash) <br>
+          <code>vendor\bin\phpunit --version</code> (Windows cmd / PowerShell) <br>
         </p>
       </div>
       <img class="Smaller_Image" src="SRC/IMAGES/Unit_Test/PHPUnit_Installed.png" alt="PHPUnit_Installed">
+      <div class="Note"><strong>Tip:</strong> Add the <code>vendor</code> folder to your <code>.gitignore</code>.
+        Commit <code>composer.json</code> and <code>composer.lock</code> instead: your teammates only need to run
+        <code>composer install</code> to get exactly the same versions.
+      </div>
+    </section>
+
+    <section id="Autoload">
+      <h1 class="Section_Title">Organising the Project and Autoloading (PSR-4)</h1>
       <div class="Definitions">
         <p>
+          A unit test checks a small unit of code (usually one class or one function) in isolation. To make our
+          classes easy to test, we put them in a <code>src</code> folder and the tests in a separate
+          <code>tests</code> folder: <br>
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+my_project/
+├── composer.json
+├── composer.lock
+├── phpunit.xml
+├── src/
+│   ├── Calculator.php        (class App\Calculator)
+│   └── Validator.php         (class App\Validator)
+├── tests/
+│   ├── CalculatorTest.php    (class Tests\CalculatorTest)
+│   └── ValidatorTest.php     (class Tests\ValidatorTest)
+└── vendor/                   (created by Composer, never edit it)</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Instead of writing <code>require_once</code> for every file, we ask Composer to load classes
+          automatically. The <strong>PSR-4</strong> standard maps a namespace prefix to a folder: the class
+          <code>App\Calculator</code> is looked for in <code>src/Calculator.php</code>, and
+          <code>App\Forms\LoginForm</code> in <code>src/Forms/LoginForm.php</code>. Add an
+          <code>autoload</code> section to <code>composer.json</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.0"
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>autoload-dev</code> is used for classes needed only during development (our tests). The backslash
+          is doubled because <code>\</code> is an escape character in JSON. After every change of the
+          <code>autoload</code> sections, regenerate the autoloader with: <br>
+          <br>
+          <code>composer dump-autoload</code>
+          <br>
+          <br>
+          Any PHP script of the project (including your pages) can now use all classes by including a single
+          file: <code>require __DIR__ . '/vendor/autoload.php';</code>
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> The version constraint <code>^12.0</code> means "12.0 or any newer
+        12.x version". If your XAMPP runs PHP 8.2, Composer will refuse it; use <code>^11.0</code> instead, or just
+        run <code>composer require --dev phpunit/phpunit</code> and let Composer pick the version.
+      </div>
+    </section>
 
+    <section id="First_Test">
+      <h1 class="Section_Title">Writing a First Test</h1>
+      <h1 class="Sub_Section_Title">The class under test</h1>
+      <div class="Definitions">
+        <p>
+          Let us start with a simple class, <code>App\Calculator</code>, saved in
+          <code>src/Calculator.php</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace App;
+
+final class Calculator
+{
+    public function add(int|float $a, int|float $b): int|float
+    {
+        return $a + $b;
+    }
+
+    public function divide(int|float $a, int|float $b): float
+    {
+        if ($b == 0) {
+            throw new \InvalidArgumentException('Division by zero');
+        }
+        return $a / $b;
+    }
+}</pre>
+      </div>
+      <h1 class="Sub_Section_Title">The test class</h1>
+      <div class="Definitions">
+        <p>
+          A test class:
+        </p>
+        <ul>
+          <li>is named after the class it tests, followed by <code>Test</code> (<code>CalculatorTest</code>) and
+            saved in a file with the same name (<code>tests/CalculatorTest.php</code>);</li>
+          <li>extends <code>PHPUnit\Framework\TestCase</code>;</li>
+          <li>contains public methods whose name starts with <code>test</code>. Each method is one test;</li>
+          <li>follows the <strong>Arrange / Act / Assert</strong> pattern: prepare the objects, call the method,
+            check the result with an <em>assertion</em>.</li>
+        </ul>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\Calculator;
+use PHPUnit\Framework\TestCase;
+
+final class CalculatorTest extends TestCase
+{
+    public function testAddReturnsTheSumOfTwoIntegers(): void
+    {
+        // Arrange
+        $calculator = new Calculator();
+
+        // Act
+        $result = $calculator-&gt;add(2, 3);
+
+        // Assert
+        $this-&gt;assertSame(5, $result);
+    }
+
+    public function testDivideReturnsAFloat(): void
+    {
+        $calculator = new Calculator();
+
+        $this-&gt;assertEqualsWithDelta(3.333, $calculator-&gt;divide(10, 3), 0.001);
+    }
+
+    public function testDivideByZeroThrowsAnException(): void
+    {
+        $calculator = new Calculator();
+
+        // The expectation must be declared BEFORE the code that throws
+        $this-&gt;expectException(\InvalidArgumentException::class);
+        $this-&gt;expectExceptionMessage('Division by zero');
+
+        $calculator-&gt;divide(10, 0);
+    }
+}</pre>
+      </div>
+      <h1 class="Sub_Section_Title">A class used in your forms: Validator</h1>
+      <div class="Definitions">
+        <p>
+          The validation rules of your registration and login forms are perfect candidates for unit tests: they
+          are pure functions (input &rarr; true/false) and a bug in them is a security problem.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace App;
+
+final class Validator
+{
+    public static function isValidEmail(string $email): bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    // At least 8 characters, one upper-case letter and one digit
+    public static function isStrongPassword(string $password): bool
+    {
+        return strlen($password) &gt;= 8
+            &amp;&amp; preg_match('/[A-Z]/', $password) === 1
+            &amp;&amp; preg_match('/[0-9]/', $password) === 1;
+    }
+
+    /** Returns the list of error messages (empty array = valid form) */
+    public static function validateRegistration(array $data): array
+    {
+        $errors = [];
+        if (trim($data['name'] ?? '') === '') {
+            $errors[] = 'Name is required';
+        }
+        if (!self::isValidEmail($data['email'] ?? '')) {
+            $errors[] = 'Invalid e-mail';
+        }
+        if (!self::isStrongPassword($data['password'] ?? '')) {
+            $errors[] = 'Weak password';
+        }
+        return $errors;
+    }
+}</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\Validator;
+use PHPUnit\Framework\TestCase;
+
+final class ValidatorTest extends TestCase
+{
+    public function testAValidEmailIsAccepted(): void
+    {
+        $this-&gt;assertTrue(Validator::isValidEmail('student@ensia.edu.dz'));
+    }
+
+    public function testAnEmailWithoutAtSignIsRejected(): void
+    {
+        $this-&gt;assertFalse(Validator::isValidEmail('student.ensia.edu.dz'));
+    }
+
+    public function testAnEmptyFormReturnsThreeErrors(): void
+    {
+        $errors = Validator::validateRegistration([]);
+
+        $this-&gt;assertCount(3, $errors);
+        $this-&gt;assertContains('Invalid e-mail', $errors);
+    }
+
+    public function testACorrectFormReturnsNoError(): void
+    {
+        $errors = Validator::validateRegistration([
+            'name'     =&gt; 'Amina',
+            'email'    =&gt; 'amina@ensia.edu.dz',
+            'password' =&gt; 'Secret2025',
+        ]);
+
+        $this-&gt;assertSame([], $errors);
+    }
+}</pre>
+      </div>
+      <h1 class="Sub_Section_Title">The most useful assertions</h1>
+      <table>
+        <tr>
+          <th>Assertion</th>
+          <th>Passes when</th>
+        </tr>
+        <tr>
+          <td>assertSame($expected, $actual)</td>
+          <td>Same value <strong>and</strong> same type (like <code>===</code>). <code>assertSame(5, '5')</code>
+            fails.</td>
+        </tr>
+        <tr>
+          <td>assertEquals($expected, $actual)</td>
+          <td>Equal values (like <code>==</code>), useful for arrays and objects. <code>assertEquals(5, '5')</code>
+            passes.</td>
+        </tr>
+        <tr>
+          <td>assertEqualsWithDelta($expected, $actual, $delta)</td>
+          <td>Floats that are close enough (never compare floats with ===).</td>
+        </tr>
+        <tr>
+          <td>assertTrue($value) / assertFalse($value)</td>
+          <td>The value is exactly <code>true</code> / <code>false</code>.</td>
+        </tr>
+        <tr>
+          <td>assertNull($value)</td>
+          <td>The value is <code>null</code>.</td>
+        </tr>
+        <tr>
+          <td>assertCount($n, $array)</td>
+          <td>The array (or Countable) has exactly <code>$n</code> elements.</td>
+        </tr>
+        <tr>
+          <td>assertContains($needle, $array)</td>
+          <td>The array contains the value.</td>
+        </tr>
+        <tr>
+          <td>assertStringContainsString($needle, $string)</td>
+          <td>The string contains the substring.</td>
+        </tr>
+        <tr>
+          <td>assertInstanceOf(ClassName::class, $object)</td>
+          <td>The object is an instance of the class.</td>
+        </tr>
+        <tr>
+          <td>expectException(ClassName::class)</td>
+          <td>The rest of the test throws that exception.</td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Tip:</strong> Prefer <code>assertSame</code> to <code>assertEquals</code>: it
+        detects type bugs such as a function returning <code>"5"</code> (a string coming from
+        <code>$_POST</code>) instead of <code>5</code>. Give your test methods long descriptive names: when a test
+        fails, its name tells you what is broken.
+      </div>
+    </section>
+
+    <section id="Running_Tests">
+      <h1 class="Section_Title">Running the Tests and Reading the Output</h1>
+      <div class="Definitions">
+        <p>
+          From the root folder of the project, run all the tests of the <code>tests</code> folder: <br>
+          <br>
+          <code>./vendor/bin/phpunit tests</code> (Linux/macOS, Git Bash) <br>
+          <code>vendor\bin\phpunit tests</code> (Windows) <br>
+          <br>
+          With a <code>phpunit.xml</code> file (next section) a simple <code>vendor\bin\phpunit</code> (or
+          <code>composer test</code>, thanks to the <code>scripts</code> entry of composer.json) is enough. You can
+          also run only one file, <code>vendor\bin\phpunit tests/CalculatorTest.php</code>, or only the tests whose
+          name matches a pattern, <code>vendor\bin\phpunit --filter Divide</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+PHPUnit 12.x.x by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.x
+Configuration: C:\xampp\htdocs\my_project\phpunit.xml
+
+..F....                                                             7 / 7 (100%)
+
+Time: 00:00.015, Memory: 8.00 MB
+
+There was 1 failure:
+
+1) Tests\CalculatorTest::testDivideByZeroThrowsAnException
+Failed asserting that exception of type "InvalidArgumentException" is thrown.
+
+FAILURES!
+Tests: 7, Assertions: 9, Failures: 1.</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Each character of the progress line is one test:
+        </p>
+        <ul>
+          <li><code>.</code> the test passed;</li>
+          <li><code>F</code> <strong>failure</strong>: an assertion is false (the code does not do what is
+            expected);</li>
+          <li><code>E</code> <strong>error</strong>: an unexpected exception or PHP error occurred while running the
+            test (e.g. calling an undefined method);</li>
+          <li><code>R</code> risky test (e.g. a test without any assertion), <code>S</code> skipped,
+            <code>I</code> incomplete, <code>D</code>/<code>N</code>/<code>W</code> deprecation, notice or
+            warning triggered by the code.</li>
+        </ul>
+        <p>
+          For each failure, PHPUnit prints the test name, the reason (expected vs actual value) and the file and
+          line of the failing assertion. When everything passes, the last line is green:
+          <code>OK (7 tests, 9 assertions)</code>. Add <code>--testdox</code> to print the test names as readable
+          sentences ("Divide by zero throws an exception").
         </p>
       </div>
     </section>
 
-    <section>
-      <h1 class="Section_Title"></h1>
+    <section id="PHPUnit_Config">
+      <h1 class="Section_Title">Configuring PHPUnit: phpunit.xml</h1>
+      <div class="Definitions">
+        <p>
+          Instead of repeating options on the command line, put them in a <code>phpunit.xml</code> file at the root
+          of the project. You can generate a starting file with
+          <code>vendor\bin\phpunit --generate-configuration</code>, or write it yourself:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-xml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         failOnRisky="true"
+         failOnWarning="true"&gt;
+    &lt;testsuites&gt;
+        &lt;testsuite name="Unit"&gt;
+            &lt;directory&gt;tests&lt;/directory&gt;
+        &lt;/testsuite&gt;
+    &lt;/testsuites&gt;
+
+    &lt;!-- The application code (used for code coverage reports) --&gt;
+    &lt;source&gt;
+        &lt;include&gt;
+            &lt;directory&gt;src&lt;/directory&gt;
+        &lt;/include&gt;
+    &lt;/source&gt;
+
+    &lt;php&gt;
+        &lt;ini name="error_reporting" value="-1"/&gt;
+        &lt;env name="APP_ENV" value="testing"/&gt;
+    &lt;/php&gt;
+&lt;/phpunit&gt;</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>bootstrap</code> is executed before the tests: here it loads Composer's autoloader so that the
+          classes <code>App\...</code> and <code>Tests\...</code> are found. <code>testsuites</code> tells PHPUnit
+          where the tests are; <code>source</code> tells it where the application code is.
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> The <code>&lt;source&gt;</code> element exists since PHPUnit 10. Old
+        tutorials use <code>&lt;coverage&gt;&lt;include&gt;...</code> or <code>&lt;filter&gt;&lt;whitelist&gt;</code>:
+        if PHPUnit warns that your configuration is outdated, run
+        <code>vendor\bin\phpunit --migrate-configuration</code>.
+      </div>
     </section>
-    <section>
-      <h1 class="Section_Title"></h1>
+
+    <section id="Data_Providers">
+      <h1 class="Section_Title">Data Providers</h1>
+      <div class="Definitions">
+        <p>
+          We often want to run the same test with many inputs (several valid e-mails, several invalid passwords,
+          ...). Rather than copying the test, we write a <strong>data provider</strong>: a
+          <code>public static</code> method that returns an array of argument lists. The test method receives each
+          list as parameters and PHPUnit runs it once per entry. The provider is linked to the test with the PHP 8
+          attribute <code>#[DataProvider('methodName')]</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\Validator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+final class PasswordTest extends TestCase
+{
+    public static function passwordProvider(): array
+    {
+        // 'name of the case' =&gt; [argument 1, argument 2]
+        return [
+            'strong password'      =&gt; ['Secret2025', true],
+            'too short'            =&gt; ['Ab1', false],
+            'no digit'             =&gt; ['SecretSecret', false],
+            'no upper-case'        =&gt; ['secret2025', false],
+            'exactly 8 characters' =&gt; ['Abcdefg1', true],
+        ];
+    }
+
+    #[DataProvider('passwordProvider')]
+    public function testIsStrongPassword(string $password, bool $expected): void
+    {
+        $this-&gt;assertSame($expected, Validator::isStrongPassword($password));
+    }
+}</pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          This file counts as 5 tests. If one case fails, PHPUnit prints its key, for example
+          <code>testIsStrongPassword with data set "no digit"</code>, so always give meaningful keys.
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Older code (PHPUnit 9 and before) uses a doc-comment annotation
+        instead of the attribute: <code>/** @dataProvider passwordProvider */</code> just above the test method.
+        Annotations are deprecated in PHPUnit 11 and no longer supported in PHPUnit 12, so use attributes in new
+        code. The same applies to <code>@test</code> (attribute <code>#[Test]</code>) and <code>@depends</code>
+        (<code>#[Depends('...')]</code>).
+      </div>
+    </section>
+
+    <section id="Set_Up">
+      <h1 class="Section_Title">Preparing Each Test: setUp()</h1>
+      <div class="Definitions">
+        <p>
+          PHPUnit creates a <strong>new instance</strong> of the test class for every test method, so tests never
+          share state. If several tests need the same objects, create them in the <code>setUp()</code> method,
+          which PHPUnit calls before each test. <code>tearDown()</code> is called after each test (to close a file
+          or a connection, for instance).
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\Calculator;
+use PHPUnit\Framework\TestCase;
+
+final class CalculatorTest extends TestCase
+{
+    private Calculator $calculator;
+
+    protected function setUp(): void
+    {
+        // Runs before EACH test: every test gets a fresh Calculator
+        $this-&gt;calculator = new Calculator();
+    }
+
+    public function testAdd(): void
+    {
+        $this-&gt;assertSame(5, $this-&gt;calculator-&gt;add(2, 3));
+    }
+
+    public function testAddNegativeNumbers(): void
+    {
+        $this-&gt;assertSame(-5, $this-&gt;calculator-&gt;add(-2, -3));
+    }
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> <code>setUp()</code> must be <code>protected</code> and return
+        <code>void</code>. There are also <code>setUpBeforeClass()</code> / <code>tearDownAfterClass()</code>
+        (static, run once for the whole class) but avoid them for mutable objects: tests must stay independent and
+        pass in any order.
+      </div>
+    </section>
+
+    <section id="Database_Tests">
+      <h1 class="Section_Title">Testing Code that Uses a Database</h1>
+      <div class="Definitions">
+        <p>
+          A real unit test should be fast and must not depend on XAMPP's MySQL server or on the data of your
+          development database. There are two common solutions:
+        </p>
+        <ol>
+          <li><strong>An in-memory SQLite database</strong>: PDO can open a temporary database that lives in RAM
+            (<code>new PDO('sqlite::memory:')</code>). Each test creates the tables it needs, and everything
+            disappears at the end of the test.</li>
+          <li><strong>Mocks (test doubles)</strong>: replace a dependency by a fake object created by PHPUnit,
+            which returns predefined values and records how it was called.</li>
+        </ol>
+        <p>
+          Both solutions only work if your classes <strong>receive</strong> their PDO connection (or their
+          dependencies) as constructor parameters instead of creating them internally. This is called
+          <em>dependency injection</em>, and it is exactly what the Model classes of the MVC pattern should do.
+        </p>
+      </div>
+      <h1 class="Sub_Section_Title">Solution 1: an in-memory SQLite PDO</h1>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// src/ProductRepository.php
+declare(strict_types=1);
+
+namespace App;
+
+use PDO;
+
+final class ProductRepository
+{
+    // The connection is injected: MySQL in the application, SQLite in the tests
+    public function __construct(private PDO $pdo)
+    {
+    }
+
+    public function add(string $name, float $price): int
+    {
+        if ($price &lt; 0) {
+            throw new \InvalidArgumentException('Price must be positive');
+        }
+        $stmt = $this-&gt;pdo-&gt;prepare('INSERT INTO product (name, price) VALUES (:name, :price)');
+        $stmt-&gt;execute(['name' =&gt; $name, 'price' =&gt; $price]);
+        return (int) $this-&gt;pdo-&gt;lastInsertId();
+    }
+
+    public function findAll(): array
+    {
+        return $this-&gt;pdo-&gt;query('SELECT id, name, price FROM product ORDER BY id')
+                         -&gt;fetchAll(PDO::FETCH_ASSOC);
+    }
+}</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// tests/ProductRepositoryTest.php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\ProductRepository;
+use PDO;
+use PHPUnit\Framework\TestCase;
+
+final class ProductRepositoryTest extends TestCase
+{
+    private ProductRepository $repository;
+
+    protected function setUp(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // SQLite syntax (MySQL would use INT AUTO_INCREMENT)
+        $pdo-&gt;exec('CREATE TABLE product (
+            id    INTEGER PRIMARY KEY AUTOINCREMENT,
+            name  TEXT NOT NULL,
+            price REAL NOT NULL
+        )');
+        $this-&gt;repository = new ProductRepository($pdo);
+    }
+
+    public function testANewRepositoryIsEmpty(): void
+    {
+        $this-&gt;assertCount(0, $this-&gt;repository-&gt;findAll());
+    }
+
+    public function testAddedProductsAreReturnedByFindAll(): void
+    {
+        $id = $this-&gt;repository-&gt;add('Keyboard', 2500.0);
+        $this-&gt;repository-&gt;add('Mouse', 900.0);
+
+        $products = $this-&gt;repository-&gt;findAll();
+
+        $this-&gt;assertSame(1, $id);
+        $this-&gt;assertCount(2, $products);
+        $this-&gt;assertSame('Keyboard', $products[0]['name']);
+        $this-&gt;assertEquals(900.0, $products[1]['price']);
+    }
+
+    public function testANegativePriceIsRefused(): void
+    {
+        $this-&gt;expectException(\InvalidArgumentException::class);
+        $this-&gt;repository-&gt;add('Broken', -1.0);
+    }
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> SQLite needs the <code>pdo_sqlite</code> extension. Check it with
+        <code>php -m</code>; if it is missing, remove the <code>;</code> in front of
+        <code>extension=pdo_sqlite</code> in <code>C:\xampp\php\php.ini</code>. Keep your SQL standard (avoid
+        MySQL-only functions) so that the same queries run on both databases; for MySQL-specific queries, write a
+        few <em>integration tests</em> against a separate test database (never your real one).
+      </div>
+      <h1 class="Sub_Section_Title">Solution 2: mocks with createMock()</h1>
+      <div class="Definitions">
+        <p>
+          Suppose that registering a user sends a welcome e-mail. We do not want the tests to send real e-mails,
+          so the service depends on an interface <code>Mailer</code>, and in the tests we give it a mock:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// src/Mailer.php
+namespace App;
+
+interface Mailer
+{
+    public function send(string $to, string $subject, string $body): bool;
+}</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// src/RegistrationService.php
+namespace App;
+
+final class RegistrationService
+{
+    public function __construct(private Mailer $mailer)
+    {
+    }
+
+    public function register(string $email): bool
+    {
+        if (!Validator::isValidEmail($email)) {
+            throw new \InvalidArgumentException('Invalid e-mail');
+        }
+        return $this-&gt;mailer-&gt;send($email, 'Welcome', 'Thank you for registering!');
+    }
+}</pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// tests/RegistrationServiceTest.php
+declare(strict_types=1);
+
+namespace Tests;
+
+use App\Mailer;
+use App\RegistrationService;
+use PHPUnit\Framework\TestCase;
+
+final class RegistrationServiceTest extends TestCase
+{
+    public function testAWelcomeEmailIsSentOnce(): void
+    {
+        $mailer = $this-&gt;createMock(Mailer::class);
+        $mailer-&gt;expects($this-&gt;once())              // must be called exactly once
+               -&gt;method('send')
+               -&gt;with('amina@ensia.edu.dz', 'Welcome', $this-&gt;anything())
+               -&gt;willReturn(true);                    // fake return value
+
+        $service = new RegistrationService($mailer);
+
+        $this-&gt;assertTrue($service-&gt;register('amina@ensia.edu.dz'));
+    }
+
+    public function testNoEmailIsSentForAnInvalidAddress(): void
+    {
+        $mailer = $this-&gt;createMock(Mailer::class);
+        $mailer-&gt;expects($this-&gt;never())-&gt;method('send');
+
+        $service = new RegistrationService($mailer);
+
+        $this-&gt;expectException(\InvalidArgumentException::class);
+        $service-&gt;register('not-an-email');
+    }
+}</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> Use <code>createMock()</code> when you want to check
+        <em>how</em> the dependency is called (<code>expects(...)</code>). If you only need it to return a value,
+        use <code>createStub()</code> with <code>-&gt;method('send')-&gt;willReturn(true)</code>. Recent PHPUnit
+        versions warn about mocks that have no expectations.
+      </div>
+    </section>
+
+    <section id="What_To_Test">
+      <h1 class="Section_Title">What Should You Test in the Course Project?</h1>
+      <div class="Definitions">
+        <p>
+          You cannot (and should not) test everything. Focus on the code that contains logic and whose failure
+          would hurt your users:
+        </p>
+        <ul>
+          <li><strong>Form validation</strong>: required fields, e-mail format, password rules, phone numbers,
+            dates, maximum lengths. Test valid values, invalid values and limits (empty string, exactly 8
+            characters, ...).</li>
+          <li><strong>Business rules</strong>: computing a cart total, a discount, a reservation price, checking
+            that a booking date is in the future, that stock cannot become negative.</li>
+          <li><strong>Models / repositories</strong>: inserting, finding, updating and deleting rows (with SQLite
+            in memory), including "not found" cases.</li>
+          <li><strong>Security helpers</strong>: password hashing and verification
+            (<code>password_hash</code> / <code>password_verify</code>), escaping output with
+            <code>htmlspecialchars</code>, access rules ("only an admin can delete a product").</li>
+          <li><strong>Bugs</strong>: when you find a bug, first write a test that reproduces it, then fix it. The
+            bug can never come back silently.</li>
+        </ul>
+        <p>
+          Do not unit-test the HTML layout, the CSS or PHP itself (no need to check that <code>strlen</code>
+          works). Keep the logic out of your view files: a function hidden in the middle of an HTML page cannot be
+          tested, a method of a class in <code>src/</code> can.
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> A good unit test is <strong>F.I.R.S.T.</strong>: Fast, Independent
+        (no order between tests), Repeatable (same result every time, no dependency on the network or the current
+        date), Self-validating (passes or fails, no manual reading) and Timely (written together with the code).
+      </div>
+    </section>
+
+    <section id="TDD">
+      <h1 class="Section_Title">Test-Driven Development (TDD)</h1>
+      <div class="Definitions">
+        <p>
+          Test-Driven Development reverses the usual order: you write the test <strong>before</strong> the code.
+          You work in very short cycles of three steps:
+        </p>
+        <ol>
+          <li><strong style="color: #c00000;">Red</strong>: write a small test for a behaviour that does not exist
+            yet. Run it and watch it fail (this proves the test can fail).</li>
+          <li><strong style="color: green;">Green</strong>: write the simplest code that makes the test pass, even
+            if it is not elegant.</li>
+          <li><strong>Refactor</strong>: clean the code (names, duplication, structure) while running the tests
+            again to make sure everything stays green.</li>
+        </ol>
+        <p>
+          Example: we want a function <code>Validator::isValidPhone()</code> for Algerian mobile numbers.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// 1. RED: the test is written first (in tests/ValidatorTest.php);
+//    it fails because the method does not exist yet
+public static function phoneProvider(): array
+{
+    return [
+        'mobile 05'    =&gt; ['0551234567', true],
+        'mobile 06'    =&gt; ['0661234567', true],
+        'mobile 07'    =&gt; ['0771234567', true],
+        'too short'    =&gt; ['055123', false],
+        'landline 021' =&gt; ['0211234567', false],
+        'letters'      =&gt; ['05512345ab', false],
+    ];
+}
+
+#[DataProvider('phoneProvider')]
+public function testIsValidPhone(string $phone, bool $expected): void
+{
+    $this-&gt;assertSame($expected, Validator::isValidPhone($phone));
+}
+
+// 2. GREEN: the simplest code that passes, added to src/Validator.php
+public static function isValidPhone(string $phone): bool
+{
+    return preg_match('/^0[567][0-9]{8}$/', $phone) === 1;
+}
+
+// 3. REFACTOR: e.g. also accept "+213 551 23 45 67" by removing spaces and
+//    converting "+213" to "0" first, then run the tests again: still green.</pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> TDD makes you think about how a function will be used before
+        writing it, and you end up with a test suite that covers all your code. Even if you do not follow it
+        strictly, try it on the validation functions of your project.
+      </div>
     </section>
   </main>
+  <footer class="Inter_Pages">
+    <a href="MVC.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>MVC Design Pattern</h1>
+    </a>
+    <a href="AJAX.html" class="Arrow">
+      <h1>Ajax</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
 
 </html>

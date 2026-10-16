@@ -79,7 +79,7 @@
 
 #Nav_Bar_Item_Labs_ID:hover .Labs_Menu {
   display: grid;
-  grid-template-columns: 3fr 3fr 3fr 3fr 1fr;
+  grid-template-columns: repeat(2, auto);
 }
 
 .Labs_Menu_Item {

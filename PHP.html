@@ -1,9 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHP</title>
-  </head>
-  <body></body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>PHP</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">PHP</h1>
+    <section>
+      <div class="Definitions">
+        <p>
+          PHP is a server-side scripting language used to build dynamic web pages. It processes forms, stores data in MySQL databases, manages sessions and cookies, and produces the HTML (or JSON) that is sent back to the browser. To run PHP locally we use XAMPP (see Lab 1).
+        </p>
+      </div>
+    </section>
+    <section id="Lectures">
+      <h2 class="Section_Title">Lectures</h2>
+      <div class="Hub_Grid">
+        <a href="Introduction_PHP.html" class="Hub_Card">
+          <i class="fa-brands fa-php fa-2xl"></i>
+          <h3>Introduction to PHP</h3>
+          <p>Syntax, variables, arrays, functions, superglobals and forms.</p>
+        </a>
+        <a href="OOPHP.html" class="Hub_Card">
+          <i class="fa-solid fa-cubes fa-2xl"></i>
+          <h3>Object-oriented PHP</h3>
+          <p>Classes, objects, inheritance, interfaces and code reuse.</p>
+        </a>
+        <a href="PHP_MySQL.html" class="Hub_Card">
+          <i class="fa-solid fa-database fa-2xl"></i>
+          <h3>Storing data with PHP</h3>
+          <p>Files, MySQL, mysqli and PDO.</p>
+        </a>
+        <a href="Sessions_Cookies.html" class="Hub_Card">
+          <i class="fa-solid fa-cookie-bite fa-2xl"></i>
+          <h3>Sessions and cookies</h3>
+          <p>Remembering users between requests.</p>
+        </a>
+        <a href="MVC.html" class="Hub_Card">
+          <i class="fa-solid fa-diagram-project fa-2xl"></i>
+          <h3>MVC design pattern (optional)</h3>
+          <p>Separating models, views and controllers.</p>
+        </a>
+        <a href="Unit_Testing.html" class="Hub_Card">
+          <i class="fa-solid fa-vial fa-2xl"></i>
+          <h3>Unit testing (optional)</h3>
+          <p>Composer and PHPUnit.</p>
+        </a>
+        <a href="Security.html" class="Hub_Card">
+          <i class="fa-solid fa-shield-halved fa-2xl"></i>
+          <h3>Web security</h3>
+          <p>SQL injection, XSS, CSRF, sessions and secure configuration.</p>
+        </a>
+      </div>
+    </section>
+    <section id="Labs">
+      <h2 class="Section_Title">Related labs</h2>
+      <div class="Hub_Grid">
+        <a href="Lab_1.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 1: Installations</h3>
+          <p>Install XAMPP, an editor and Git.</p>
+        </a>
+        <a href="Lab_5.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 5: MySQL</h3>
+          <p>Design and create your database with phpMyAdmin.</p>
+        </a>
+        <a href="Lab_6.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 6: PDO</h3>
+          <p>Connect to MySQL and write CRUD operations with prepared statements.</p>
+        </a>
+        <a href="Lab_8.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 8: PHP forms</h3>
+          <p>Server-side validation, sticky forms and file uploads.</p>
+        </a>
+        <a href="Lab_9.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 9: Sessions and cookies</h3>
+          <p>Registration, login, logout and protected pages.</p>
+        </a>
+        <a href="Lab_10.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 10: OOP PHP and MVC</h3>
+          <p>Refactor your project into classes and MVC.</p>
+        </a>
+        <a href="Lab_12.html" class="Hub_Card">
+          <i class="fa-solid fa-flask fa-2xl"></i>
+          <h3>Lab 12: Security</h3>
+          <p>Audit and fix the security of your project.</p>
+        </a>
+      </div>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="HTML.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>HTML</h1>
+    </a>
+    <a href="Introduction_PHP.html" class="Arrow">
+      <h1>Introduction to PHP</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+</body>
+
 </html>

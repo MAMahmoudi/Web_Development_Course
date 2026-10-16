@@ -2,7 +2,7 @@ var Slides_Previous_Btn = document.querySelector("#Slides_Previous_Btn"),
   Slides_Next_Btn = document.querySelector("#Slides_Next_Btn"),
   Slides_Container = document.querySelector("#Slides_Container"),
   Slides_Width = 0,
-  Counter = 1,
+  Counter = 0,
   Slides = document.querySelectorAll(".Slide");
 
 //Sliding Images in Home Page--begin
@@ -10,9 +10,10 @@ Slides.forEach((Slide, index) => {
   Slide.style.left = index * 100 + "%";
 });
 const Slide_Images = () => {
+  // keep the index in [0, length) even when Counter becomes negative
+  const Index = ((Counter % Slides.length) + Slides.length) % Slides.length;
   Slides.forEach((Slide) => {
-    Slide.style.transform =
-      "translateX(-" + (Counter % Slides.length) * 100 + "%)";
+    Slide.style.transform = "translateX(-" + Index * 100 + "%)";
   });
 };
 
