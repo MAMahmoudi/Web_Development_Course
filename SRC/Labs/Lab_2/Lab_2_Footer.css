@@ -31,6 +31,7 @@
 .Footer_Buttom {
   padding: 2rem;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   text-align: start;
   flex-wrap: wrap;
@@ -52,5 +53,24 @@
   color: #fafafa;
   padding-bottom: 0.4rem;
   font-size: 1.1rem;
+  direction: rtl;
+}
+
+.Footer_Buttom p {
+  color: #fafafa;
+  padding-bottom: 0.4rem;
+  font-size: 1.1rem;
+  direction: rtl;
+}
+
+.Footer_Buttom a:hover {
+  color: #01959a;
+}
+
+.Footer_Copyright {
+  border-top: 1px solid #333;
+  padding-top: 1.5rem;
+  text-align: center;
+  color: #aaa;
   direction: rtl;
 }

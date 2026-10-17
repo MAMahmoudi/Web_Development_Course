@@ -1,0 +1,16 @@
+@media screen and (max-width: 850px) {
+  .Services {
+    margin: 4rem 2rem;
+  }
+
+  .Services h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* minmax(300px, 1fr) would be wider than a small phone: force one column */
+@media screen and (max-width: 555px) {
+  .Services_Grid {
+    grid-template-columns: 1fr;
+  }
+}

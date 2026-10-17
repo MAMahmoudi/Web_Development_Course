@@ -4,12 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Lab_2_Page.css">
+    <link rel="stylesheet" href="Logins.css">
+    <!-- responsive design (Lab 3) -->
+    <link rel="stylesheet" href="../Lab_3/Logins_Responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
     <title>Login</title>
+    <link rel="stylesheet" href="../Lab_4+/Interactions.css">
 </head>
 
 <body>
     <!--Logins part starts here-->
     <section class="Logins">
+        <a href="Lab_2_Page.html" class="Back_Home">&larr; Back to home</a>
         <div class="Account_Login">
             <form class="Form" name="Account_Login" method="POST" autocomplete="off">
                 <h1>Account login</h1>
@@ -21,9 +30,7 @@
                     name="AccountLogin_submit">Login</button>
             </form>
             <a href="#" class="Forgot_Password">Forgot your password?</a>
-            <button type="button" class="CreateAccountBtn">
-                <a href="#" class="Create_Account_Btn">Create new account</a>
-            </button>
+            <a href="#" class="CreateAccountBtn">Create new account</a>
         </div>
         <div class="Page_Login">
             <form class="Form" name="Page_Login" method="POST" autocomplete="off">
@@ -35,13 +42,13 @@
                 <button type="submit" class="LoginBtn" id="Page_Login_Btn_ID" name="PageLogin_submit">Login</button>
             </form>
             <a href="#" class="Forgot_Password">Forgot your password?</a>
-            <button type="submit" class="CreateAccountBtn">
-                <a href="#" class="Create_Account_Btn">Create new page</a>
-            </button>
+            <a href="#" class="CreateAccountBtn">Create new page</a>
         </div>
     </section>
     <!--Logins part ends here-->
 
+    <!-- JavaScript (Lab 4) -->
+    <script src="../Lab_4+/Login_Form.js"></script>
 </body>
 
 </html>

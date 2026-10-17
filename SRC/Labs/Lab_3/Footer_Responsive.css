@@ -1,13 +1,31 @@
 @media screen and (max-width: 850px) {
-    .Footer {
-      padding: 4rem 2rem;
-    }
-  
-    .Footer i {
-      margin: 1rem 1rem 0 0;
-    }
-  
-    .Footer_Buttom div {
-      width: 50%;
-    }
+  .Footer {
+    padding: 4rem 2rem;
   }
+
+  .Footer i {
+    margin: 1rem 1rem 0 0;
+  }
+
+  .Footer_Buttom {
+    padding: 2rem 0;
+  }
+
+  /* two columns of links per row */
+  .Footer_Buttom div {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 555px) {
+  .Footer_Top {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  /* one column of links per row */
+  .Footer_Buttom div {
+    width: 100%;
+  }
+}

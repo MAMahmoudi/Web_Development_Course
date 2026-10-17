@@ -55,3 +55,12 @@
 .Nav_Bar_Menu_Item i {
   padding-left: 10px;
 }
+
+/* link of the page currently displayed */
+.Nav_Bar_Menu_Item.Active {
+  color: #01959a;
+}
+
+.Nav_Bar_Menu_Item.Active:hover {
+  color: white;
+}

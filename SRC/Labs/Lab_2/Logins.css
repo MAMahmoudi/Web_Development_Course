@@ -77,6 +77,10 @@
 }
 
 .CreateAccountBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   border: none;
   outline: none;
   height: 30px;
@@ -121,4 +125,17 @@
   right: 0.3em;
   padding: 0.3em;
   cursor: pointer;
+}
+
+.Back_Home {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.Back_Home:hover {
+  text-decoration: underline;
 }

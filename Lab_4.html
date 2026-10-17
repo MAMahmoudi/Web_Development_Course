@@ -10,627 +10,1404 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 4: JavaScript form validation</title>
+  <title>Lab 4: JavaScript: scripting CSS and form validation</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 4: JavaScript form validation</h1>
+    <h1 class="Title">Lab 4: JavaScript: scripting CSS and form validation</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab, you will validate the forms of your team project before their data is sent to the server. <br>
-          You will start with the validation built into HTML5 (<code>required</code>, <code>type</code>,
-          <code>pattern</code>, <code>min</code>/<code>max</code>, ...), then control it from JavaScript with the
-          Constraint Validation API, and finally write your own validation with clear error messages, regular
-          expressions (emails, Algerian phone numbers), password rules and real-time feedback. <br>
-          Before you start, read the lecture <a href="JS_Form_Validation.html">JavaScript form validation</a> and try
-          the <a href="SRC/Labs/Lab_4/Form_Validation.html">demo form</a> (its code:
-          <a href="SRC/Labs/Lab_4/Form_Validation.js">Form_Validation.js</a>,
-          <a href="SRC/Labs/Lab_4/Form_Validation.css">Form_Validation.css</a>).
+          In <a href="Lab_2.html">Lab 2</a> and <a href="Lab_3.html">Lab 3</a> you built the HTML and CSS of the
+          <strong>Syaha</strong> website. In this lab you bring it to life with JavaScript, step by step: first by
+          scripting its CSS (menu, slider, animations, favourites, dialog), then by validating its forms. Each step
+          is one small script of the demo; read it, run it, change it, then do the same in your team project.
         </p>
       </div>
     </section>
-    <section id="Why_Validate">
-      <h2 class="Section_Title">I. Why validate forms, and where?</h2>
+    <section id="Scripts">
+      <h2 class="Section_Title">I. JavaScript in a web page</h2>
       <div class="Definitions">
         <p>
-          Every web service of your project (create, update, search, login, ...) receives data from a form. Validating
-          this data means checking that it is <strong>present</strong>, has the right <strong>format</strong>
-          (email, phone, date, ...) and respects your <strong>business rules</strong> (the user is at least 18, the
-          quantity is between 1 and 10, the two passwords are the same, ...).
-        </p>
-        <ul>
-          <li><strong>Client-side validation</strong> (HTML5 + JavaScript, this lab) runs in the browser. Its goal is
-            the <em>user experience</em>: the user sees the error immediately, next to the field, without waiting for
-            a page reload.</li>
-          <li><strong>Server-side validation</strong> (PHP, later labs) runs on the server. Its goal is
-            <em>security and data integrity</em>.</li>
-        </ul>
-      </div>
-      <div class="Note"><strong>Warning:</strong> Client-side validation <em>never</em> replaces server-side
-        validation. Anyone can disable JavaScript, remove the <code>required</code> attribute with the DevTools, or
-        send a request directly to your PHP script with tools such as Postman or <code>curl</code>. The browser is
-        under the user's control, so your PHP code must check every value again before using it (and use prepared
-        statements for SQL; see the <a href="Security.html">Security</a> lecture).</div>
-      <div class="Definitions">
-        <p>For example, the same email and phone rules on the server side will look like this:</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-$errors = [];
-$email = trim($_POST["Email"] ?? "");
-$phone = trim($_POST["Phone_Number"] ?? "");
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors["Email"] = "Email is not valid";
-}
-if (!preg_match('/^0[5-7][0-9]{8}$/', $phone)) {
-    $errors["Phone_Number"] = "Phone number is not valid";
-}
-
-if (count($errors) &gt; 0) {
-    http_response_code(422);   // Unprocessable Content
-    // ... display the form again with the error messages
-}
-        </pre>
-      </div>
-    </section>
-    <section id="HTML5_Validation">
-      <h2 class="Section_Title">II. HTML5 constraint validation</h2>
-      <div class="Definitions">
-        <p>
-          Before writing any JavaScript, use the right input types and attributes. The browser then refuses to submit
-          the form and shows a message when a constraint is not respected. On phones, the <code>type</code> also
-          displays the appropriate keyboard (a number pad for <code>tel</code>, an "@" key for <code>email</code>).
+          Open the <a href="SRC/Labs/Lab_2/Lab_2_Page.html" target="_blank" rel="noopener">Syaha demo</a> and try everything: the menu at phone width, the slider (arrows, dots, keyboard), the hearts and the &quot;احجز الآن&quot; buttons of the trip cards, the &quot;back to top&quot; button, the <a href="SRC/Labs/Lab_2/Contact_Us.html" target="_blank" rel="noopener">contact form</a> and the <a href="SRC/Labs/Lab_2/Login.html" target="_blank" rel="noopener">login page</a>. All of it is in the folder <a href="SRC/Labs/Lab_4+/" target="_blank" rel="noopener">SRC/Labs/Lab_4+</a>: one script per feature, plus one stylesheet, <a href="SRC/Labs/Lab_4+/Interactions.css" target="_blank" rel="noopener">Interactions.css</a>, for the elements that the scripts create or animate.
         </p>
       </div>
-      <table>
-        <tr>
-          <th>Attribute</th>
-          <th>Meaning</th>
-          <th>Example</th>
-        </tr>
-        <tr>
-          <td>required</td>
-          <td>The field cannot be empty</td>
-          <td><code>&lt;input name="Name" required&gt;</code></td>
-        </tr>
-        <tr>
-          <td>type</td>
-          <td>The value must have the format of the type (email, url, number, date, ...)</td>
-          <td><code>&lt;input type="email"&gt;</code></td>
-        </tr>
-        <tr>
-          <td>minlength / maxlength</td>
-          <td>Minimum / maximum number of characters</td>
-          <td><code>&lt;input minlength="3" maxlength="30"&gt;</code></td>
-        </tr>
-        <tr>
-          <td>min / max / step</td>
-          <td>Range and step of numbers and dates</td>
-          <td><code>&lt;input type="number" min="1" max="10" step="1"&gt;</code></td>
-        </tr>
-        <tr>
-          <td>pattern</td>
-          <td>The value must match a regular expression (the whole value)</td>
-          <td><code>&lt;input type="tel" pattern="0[5-7][0-9]{8}"&gt;</code></td>
-        </tr>
-      </table>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;form id="Signup_Form" action="signup.php" method="POST"&gt;
-  &lt;label for="Full_Name"&gt;Full name&lt;/label&gt;
-  &lt;input type="text" id="Full_Name" name="Full_Name" required minlength="3" maxlength="50" /&gt;
-
-  &lt;label for="Email"&gt;Email&lt;/label&gt;
-  &lt;input type="email" id="Email" name="Email" required autocomplete="email" /&gt;
-
-  &lt;label for="Phone_Number"&gt;Phone number (05/06/07 followed by 8 digits)&lt;/label&gt;
-  &lt;input type="tel" id="Phone_Number" name="Phone_Number" required
-         pattern="0[5-7][0-9]{8}" maxlength="10" inputmode="numeric"
-         title="Example: 0555123456" /&gt;
-
-  &lt;label for="Quantity"&gt;Number of tickets&lt;/label&gt;
-  &lt;input type="number" id="Quantity" name="Quantity" min="1" max="10" value="1" /&gt;
-
-  &lt;label for="Birthdate"&gt;Birthdate&lt;/label&gt;
-  &lt;input type="date" id="Birthdate" name="Birthdate" required /&gt;
-
-  &lt;button type="submit"&gt;Sign up&lt;/button&gt;
-&lt;/form&gt;
-        </pre>
-      </div>
       <div class="Definitions">
         <p>
-          The file <a href="SRC/Labs/Lab_3/Phone.html">Phone.html</a> is a minimal working example: a
-          <code>tel</code> input with <code>required</code> and <code>pattern="[0]{1}[5-7]{1}[0-9]{8}"</code> (the
-          same rule as <code>0[5-7][0-9]{8}</code>). Open it and try to submit "0812345678" or "055512".
-        </p>
-        <p>
-          You can style valid and invalid fields with CSS pseudo-classes. <code>:invalid</code> applies immediately
-          (even before the user has typed anything), so prefer <code>:user-invalid</code>, which applies only after the
-          user has interacted with the field:
+          The scripts are loaded at the end of the <code>&lt;body&gt;</code>, after the HTML they work on. Each page only loads the scripts it needs. On the home page:
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-input:user-invalid {
-  border: 2px solid red;
-}
-
-input:user-valid {
-  border: 2px solid green;
-}
+        <pre class="prettyprint lang-html">
+    &lt;!-- JavaScript (Lab 4) --&gt;
+    &lt;script src="../Lab_4+/Drop_Down_Menu.js"&gt;&lt;/script&gt;
+    &lt;script src="../Lab_4+/Image_Slider.js"&gt;&lt;/script&gt;
+    &lt;script src="../Lab_4+/Scroll_Effects.js"&gt;&lt;/script&gt;
+    &lt;script src="../Lab_4+/Read_More.js"&gt;&lt;/script&gt;
+    &lt;script src="../Lab_4+/Favourites.js"&gt;&lt;/script&gt;
+    &lt;script src="../Lab_4+/Booking.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> The default browser messages depend on the browser and its language,
-        and their look cannot be styled. When you display your own messages with JavaScript (sections III to VII), add
-        the <code>novalidate</code> attribute to the <code>&lt;form&gt;</code>: the HTML5 constraints still work (and
-        you can read them from JavaScript), but the browser no longer shows its own bubbles.</div>
-    </section>
-    <section id="Validation_API">
-      <h2 class="Section_Title">III. The Constraint Validation API</h2>
       <div class="Definitions">
-        <p>
-          Every form field has properties and methods that give JavaScript access to the HTML5 validation:
-        </p>
+        <div>
+          <ul><li><strong>At the end of the body</strong>, the elements already exist when the script runs. A script in the <code>&lt;head&gt;</code> needs the <code>defer</code> attribute to wait for the HTML.</li><li><strong>Each script is wrapped in a function that calls itself</strong> (<code>(() =&gt; { ... })();</code>). Its variables only exist inside, so two scripts can use the same names without conflict:</li></ul>
+        </div>
       </div>
-      <table>
-        <tr>
-          <th>Property / method</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td><code>input.checkValidity()</code></td>
-          <td>Returns <code>true</code> if the field respects all its constraints (also exists on the form:
-            <code>form.checkValidity()</code>)</td>
-        </tr>
-        <tr>
-          <td><code>input.reportValidity()</code></td>
-          <td>Same as <code>checkValidity()</code>, and also shows the browser's message to the user</td>
-        </tr>
-        <tr>
-          <td><code>input.validationMessage</code></td>
-          <td>The message the browser would display (in the browser's language)</td>
-        </tr>
-        <tr>
-          <td><code>input.setCustomValidity(message)</code></td>
-          <td>Marks the field as invalid with your own message; <code>setCustomValidity("")</code> marks it valid
-            again</td>
-        </tr>
-        <tr>
-          <td><code>input.validity</code></td>
-          <td>A <code>ValidityState</code> object with one boolean per constraint (see below)</td>
-        </tr>
-      </table>
-      <div class="Definitions">
-        <p>The properties of <code>input.validity</code> tell you <em>which</em> constraint failed:</p>
-        <ul>
-          <li><code>valueMissing</code>: a <code>required</code> field is empty</li>
-          <li><code>typeMismatch</code>: the value does not match the <code>type</code> (email, url)</li>
-          <li><code>patternMismatch</code>: the value does not match the <code>pattern</code></li>
-          <li><code>tooShort</code> / <code>tooLong</code>: <code>minlength</code> / <code>maxlength</code> not
-            respected</li>
-          <li><code>rangeUnderflow</code> / <code>rangeOverflow</code>: smaller than <code>min</code> / larger than
-            <code>max</code></li>
-          <li><code>stepMismatch</code>: the value does not respect <code>step</code></li>
-          <li><code>badInput</code>: the browser cannot convert the input (letters in a number field)</li>
-          <li><code>customError</code>: a message was set with <code>setCustomValidity()</code></li>
-          <li><code>valid</code>: <code>true</code> when none of the above is true</li>
-        </ul>
-      </div>
-      <h3 class="Sub_Section_Title">Example: a custom message for the phone number</h3>
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
-const phone = document.querySelector("#Phone_Number");
+// Image_Slider.js
+(() =&gt; {
+  const Delay = 5000;   // only visible inside this function
+  // ...
+})();
 
-const updatePhoneMessage = () =&gt; {
-  phone.setCustomValidity("");   // reset first, otherwise the field stays invalid forever
-
-  if (phone.validity.valueMissing) {
-    phone.setCustomValidity("Please enter your phone number.");
-  } else if (phone.validity.patternMismatch) {
-    phone.setCustomValidity("An Algerian mobile number starts with 05, 06 or 07, followed by 8 digits.");
-  }
-};
-
-phone.addEventListener("input", updatePhoneMessage);
-updatePhoneMessage();   // set the right message when the page loads
+// Read_More.js can also declare a constant named Delay: no conflict
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> Always call <code>setCustomValidity("")</code> before testing again. As
-        long as a custom message is set, <code>validity.customError</code> is <code>true</code> and the field is
-        invalid, even if the user has corrected the value.</div>
+      <div class="Definitions">
+        <div>
+          <ul><li><strong>Each script first checks that its elements exist</strong> (<code>if (!Dialog) return;</code>), because not every page has a slider or a dialog.</li><li><strong>Progressive enhancement:</strong> everything that only makes sense with JavaScript (slider dots, &quot;read more&quot; and &quot;book now&quot; buttons, hearts, error messages) is created by the scripts. Without JavaScript the page still shows all its content.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Tip:</strong> keep the developer tools open (<kbd>F12</kbd>) while you work: the <em>Console</em> shows the errors of your scripts with their line number, and you can type JavaScript in it to test a selector, e.g. <code>document.querySelectorAll(".Trip_Card")</code>.</div>
     </section>
-    <section id="Custom_Validation">
-      <h2 class="Section_Title">IV. Custom validation with error messages</h2>
+    <section id="Essentials">
+      <h2 class="Section_Title">II. The tools used in this lab</h2>
+      <div class="Definitions">
+        <div>
+          All the scripts are built with a small set of tools. Keep this table at hand (see the lectures <a href="DOM.html">The Document Object Model</a> and <a href="JavaScript_Events.html">Events</a>):<table><tr><th>Task</th><th>Code</th><th>Used in</th></tr><tr><td>Find one element / all the elements</td><td><code>document.querySelector(".Hero")</code>, <code>querySelectorAll(".Slide")</code>, <code>getElementById("Menu_Icon_ID")</code></td><td>every script</td></tr><tr><td>React to an event</td><td><code>element.addEventListener("click", (event) =&gt; { ... })</code></td><td>every script</td></tr><tr><td>Find the element that was clicked</td><td><code>event.target</code>, <code>event.target.closest("a")</code></td><td>Drop_Down_Menu.js</td></tr><tr><td>Change classes</td><td><code>classList.add / remove / toggle / contains</code></td><td>every script</td></tr><tr><td>Change an inline style</td><td><code>element.style.transform = ...</code></td><td>Image_Slider.js</td></tr><tr><td>Change an attribute</td><td><code>setAttribute("aria-expanded", true)</code>, <code>element.dataset.price</code></td><td>Drop_Down_Menu.js, Booking.js</td></tr><tr><td>Create an element</td><td><code>document.createElement("button")</code>, <code>append / after / before</code></td><td>Image_Slider.js, Read_More.js...</td></tr><tr><td>Run later / repeatedly</td><td><code>setTimeout(fn, ms)</code>, <code>setInterval(fn, ms)</code></td><td>Image_Slider.js, Favourites.js</td></tr><tr><td>Remember data in the browser</td><td><code>localStorage.setItem / getItem</code> + <code>JSON</code></td><td>Favourites.js</td></tr><tr><td>Test the screen</td><td><code>matchMedia("(min-width: 851px)")</code></td><td>Drop_Down_Menu.js</td></tr></table>
+        </div>
+      </div>
+    </section>
+    <section id="Scripting_CSS">
+      <h2 class="Section_Title">III. Scripting CSS: styles or classes?</h2>
       <div class="Definitions">
         <p>
-          The <a href="SRC/Labs/Lab_4/Form_Validation.html">demo form</a> uses a pattern with two helper functions:
-          <code>setErrorFor(input, message)</code> marks a field as wrong and displays a message, and
-          <code>setSuccessFor(input)</code> marks it as correct. The demo writes all the messages in a single
-          <code>&lt;small&gt;</code> under the button. It is clearer for the user to show each message <em>next to its
-            field</em>, so we wrap every field in a <code>.Form_Control</code> with its own <code>&lt;small&gt;</code>:
+          JavaScript can change the appearance of an element in several ways:
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;form id="Signup_Form" action="signup.php" method="POST" novalidate&gt;
-  &lt;div class="Form_Control"&gt;
-    &lt;label for="Full_Name"&gt;Full name&lt;/label&gt;
-    &lt;input type="text" id="Full_Name" name="Full_Name" required aria-describedby="Full_Name_Error" /&gt;
-    &lt;small class="Error_Message" id="Full_Name_Error" aria-live="polite"&gt;&lt;/small&gt;
-  &lt;/div&gt;
+        <pre class="prettyprint lang-js">
+const Slide = document.querySelector(".Slide");
 
-  &lt;div class="Form_Control"&gt;
-    &lt;label for="Email"&gt;Email&lt;/label&gt;
-    &lt;input type="email" id="Email" name="Email" required aria-describedby="Email_Error" /&gt;
-    &lt;small class="Error_Message" id="Email_Error" aria-live="polite"&gt;&lt;/small&gt;
-  &lt;/div&gt;
+// 1. the style property writes an inline style (style="..."): for values computed in JavaScript
+Slide.style.transform = `translateX(-${Current * 100}%)`;
 
-  &lt;!-- ... same structure for Phone_Number, Password, Confirm_Password, Birthdate ... --&gt;
+// 2. classList switches classes defined in the CSS: for states (open, active, visible...)
+Menu.classList.add("active");
+Menu.classList.remove("active");
+Menu.classList.toggle("active");          // adds it if missing, removes it otherwise
+Menu.classList.toggle("active", Open);    // adds it if Open is true, removes it otherwise
+Menu.classList.contains("active");        // true or false
 
-  &lt;button type="submit"&gt;Sign up&lt;/button&gt;
-&lt;/form&gt;
+// 3. CSS custom properties can be set from JavaScript and used by the CSS
+Text.style.setProperty("--Lines", 6);     // CSS: -webkit-line-clamp: var(--Lines, 6);
+
+// 4. getComputedStyle reads the final value applied by all the CSS rules
+getComputedStyle(Menu).display;           // "none" on a phone, "grid" on a desktop
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The rule used in the whole demo: <strong>the CSS describes the states, JavaScript switches between them</strong> with classes. The menu is closed or <code>active</code>, a card is <code>Visible</code>, a heart is <code>On</code>; what these states look like is written in the stylesheets. Inline styles are kept for values that are computed while the page runs, such as the position of the slider.
+        </p>
+      </div>
+      <div class="Note"><strong>Why:</strong> with classes, the look stays in the CSS where designers expect it, the transitions of the CSS animate the change for free, and the media queries of Lab 3 keep working.</div>
+    </section>
+    <section id="Step_1">
+      <h2 class="Section_Title">IV. Step 1: the hamburger menu</h2>
+      <div class="Definitions">
+        <p>
+          In <a href="Lab_3.html">Lab 3</a>, <code>Nav_Bar_Responsive.css</code> hides the menu on small screens and shows it when it has the class <code>active</code>. The script switches that class and keeps everything consistent:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Hamburger menu of the navigation bar (small screens, see Lab_3/Nav_Bar_Responsive.css).
+// The menu is open when it has the class "active".
+(() =&gt; {
+  const Menu_Icon = document.getElementById("Menu_Icon_ID"),
+    Nav_Bar_Menu = document.getElementById("Nav_Bar_Menu_ID"),
+    Burger_Icon = document.getElementById("Burger_Icon_ID");
+
+  if (!Menu_Icon || !Nav_Bar_Menu || !Burger_Icon) return;
+
+  // the icon is a &lt;div&gt;: make it usable with the keyboard and by screen readers
+  Menu_Icon.setAttribute("role", "button");
+  Menu_Icon.setAttribute("tabindex", "0");
+  Menu_Icon.setAttribute("aria-controls", "Nav_Bar_Menu_ID");
+
+  function Set_Menu(Open) {
+    Nav_Bar_Menu.classList.toggle("active", Open);
+    Burger_Icon.className = Open ? "fas fa-times" : "fas fa-bars";
+    Menu_Icon.setAttribute("aria-expanded", Open);
+    Menu_Icon.setAttribute("aria-label", Open ? "إغلاق القائمة" : "فتح القائمة");
+  }
+
+  Set_Menu(false);
+
+  Menu_Icon.addEventListener("click", () =&gt; {
+    Set_Menu(!Nav_Bar_Menu.classList.contains("active"));
+  });
+
+  Menu_Icon.addEventListener("keydown", (event) =&gt; {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      Menu_Icon.click();
+    }
+  });
+
+  // close the menu when a link is chosen, with Escape, or with a click outside the bar
+  Nav_Bar_Menu.addEventListener("click", (event) =&gt; {
+    if (event.target.closest("a")) Set_Menu(false);
+  });
+
+  document.addEventListener("keydown", (event) =&gt; {
+    if (event.key === "Escape") Set_Menu(false);
+  });
+
+  document.addEventListener("click", (event) =&gt; {
+    if (!event.target.closest?.(".Nav_Bar_Items")) Set_Menu(false);
+  });
+
+  // back to a desktop width (e.g. a tablet rotated): the hamburger disappears, so close the menu
+  matchMedia("(min-width: 851px)").addEventListener("change", (event) =&gt; {
+    if (event.matches) Set_Menu(false);
+  });
+})();
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>Set_Menu(Open)</code> is the only place that opens or closes the menu: the class, the icon (bars or cross) and the <code>aria-expanded</code> attribute that tells screen readers the state. <code>classList.toggle("active", Open)</code> adds the class when <code>Open</code> is true and removes it otherwise.</li><li>The icon is a <code>&lt;div&gt;</code>; <code>role="button"</code> and <code>tabindex="0"</code> make it reachable with <kbd>Tab</kbd>, and the <code>keydown</code> listener opens it with <kbd>Enter</kbd> or <kbd>Space</kbd>.</li><li>The menu closes when a link is chosen, with <kbd>Escape</kbd>, or with a click anywhere outside the bar: <code>event.target.closest(".Nav_Bar_Items")</code> looks for the bar among the ancestors of the clicked element.</li><li><code>matchMedia</code> watches a media query from JavaScript: when the screen becomes wide again, the menu is closed.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Try:</strong> in the console, type <code>document.getElementById("Nav_Bar_Menu_ID").classList.toggle("active")</code> at phone width: the menu opens without any click. The script does nothing more than that.</div>
+    </section>
+    <section id="Step_2">
+      <h2 class="Section_Title">V. Step 2: the image slider</h2>
+      <div class="Definitions">
+        <p>
+          The six photos of the hero are placed side by side with <code>left: 0%, 100%, 200%...</code>, and the slider moves all of them with <code>transform: translateX()</code>. The arrows already exist in the HTML; the dots are created by the script:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Image slider of the home page hero: arrows, dots, keyboard, swipe and auto-play.
+(() =&gt; {
+  const Hero = document.querySelector(".Hero"),
+    Slides = document.querySelectorAll(".Slide"),
+    Previous_Btn = document.querySelector("#Slides_Previous_Btn"),
+    Next_Btn = document.querySelector("#Slides_Next_Btn");
+
+  if (!Hero || Slides.length === 0) return;
+
+  const Delay = 5000,
+    Reduced_Motion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let Current = 0,
+    Timer = null;
+
+  // place the slides side by side: 0%, 100%, 200%...
+  Slides.forEach((Slide, index) =&gt; {
+    Slide.style.left = index * 100 + "%";
+  });
+
+  // one dot per slide, named after the photo (its alt text)
+  const Dots = document.createElement("div");
+  Dots.className = "Slider_Dots";
+  Slides.forEach((Slide, index) =&gt; {
+    const Dot = document.createElement("button");
+    Dot.type = "button";
+    Dot.className = "Slider_Dot";
+    Dot.setAttribute("aria-label", Slide.alt);
+    Dot.addEventListener("click", () =&gt; {
+      Go_To(index);
+      Restart();
+    });
+    Dots.appendChild(Dot);
+  });
+  Hero.appendChild(Dots);
+
+  function Go_To(index) {
+    // (index + length) % length keeps the index between 0 and length - 1, even when index is -1
+    Current = (index + Slides.length) % Slides.length;
+    Slides.forEach((Slide) =&gt; {
+      Slide.style.transform = `translateX(-${Current * 100}%)`;
+    });
+    Dots.querySelectorAll(".Slider_Dot").forEach((Dot, i) =&gt; {
+      Dot.classList.toggle("Active", i === Current);
+      Dot.setAttribute("aria-current", i === Current);
+    });
+  }
+
+  const Next = () =&gt; Go_To(Current + 1),
+    Previous = () =&gt; Go_To(Current - 1);
+
+  function Start() {
+    if (!Reduced_Motion &amp;&amp; Timer === null) Timer = setInterval(Next, Delay);
+  }
+
+  function Stop() {
+    clearInterval(Timer);
+    Timer = null;
+  }
+
+  function Restart() {
+    Stop();
+    Start();
+  }
+
+  // the arrows are &lt;i&gt; icons: give them a role, a name and keyboard access
+  [
+    [Next_Btn, Next, "الصورة التالية"],
+    [Previous_Btn, Previous, "الصورة السابقة"],
+  ].forEach(([Button, Action, Label]) =&gt; {
+    if (!Button) return;
+    Button.setAttribute("role", "button");
+    Button.setAttribute("tabindex", "0");
+    Button.setAttribute("aria-label", Label);
+    Button.addEventListener("click", () =&gt; {
+      Action();
+      Restart();
+    });
+    Button.addEventListener("keydown", (event) =&gt; {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        Button.click();
+      }
+    });
+  });
+
+  // keyboard arrows, unless the visitor is typing in a field
+  document.addEventListener("keydown", (event) =&gt; {
+    if (event.target.closest?.("input, textarea, select")) return;
+    if (event.key === "ArrowRight") Next_Btn?.click();
+    if (event.key === "ArrowLeft") Previous_Btn?.click();
+  });
+
+  // swipe on touch screens
+  let Touch_Start_X = null;
+  Hero.addEventListener("touchstart", (event) =&gt; {
+    Touch_Start_X = event.touches[0].clientX;
+  }, { passive: true });
+  Hero.addEventListener("touchend", (event) =&gt; {
+    if (Touch_Start_X === null) return;
+    const Distance = event.changedTouches[0].clientX - Touch_Start_X;
+    if (Math.abs(Distance) &gt; 50) {
+      Distance &lt; 0 ? Next() : Previous();
+      Restart();
+    }
+    Touch_Start_X = null;
+  });
+
+  // pause while the mouse is over the hero or the tab is hidden
+  Hero.addEventListener("mouseenter", Stop);
+  Hero.addEventListener("mouseleave", Start);
+  document.addEventListener("visibilitychange", () =&gt; (document.hidden ? Stop() : Start()));
+
+  Go_To(0);
+  Start();
+})();
         </pre>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-css">
-.Form_Control {
+/* --- slider dots (Image_Slider.js) --- */
+.Slider_Dots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6rem;
+  z-index: 900;
+}
+
+.Slider_Dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.Slider_Dot.Active {
+  background-color: white;
+  transform: scale(1.25);
+}
+
+.Slides_Next_Btn:focus-visible,
+.Slides_Previous_Btn:focus-visible,
+.Slider_Dot:focus-visible,
+.Menu_Icon:focus-visible {
+  outline: 3px solid #79fad5;
+  outline-offset: 3px;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>Go_To(index)</code> is the heart of the slider: <code>(index + length) % length</code> wraps around, so &quot;previous&quot; on the first photo goes to the last one (in JavaScript <code>-1 % 6</code> is <code>-1</code>, hence the <code>+ length</code>). The <code>transition: 1s</code> of <code>Slider.css</code> animates the movement.</li><li>Auto-play uses <code>setInterval</code>; <code>clearInterval</code> stops it while the mouse is over the hero (<code>mouseenter</code>/<code>mouseleave</code>) or the tab is hidden (<code>visibilitychange</code>). Every manual action restarts the timer.</li><li>The dots are <code>&lt;button&gt;</code> elements: they can be focused and clicked with the keyboard. The active dot has the class <code>Active</code>.</li><li>Touch events (<code>touchstart</code>, <code>touchend</code>) give a swipe: if the finger moved more than 50px, go to the next or previous photo.</li><li><code>prefers-reduced-motion</code> is a setting of the visitor's system: auto-play is disabled when they asked for less motion.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">VI. Step 3: effects linked to scrolling</h2>
+      <div class="Definitions">
+        <p>
+          Three effects depend on the scroll position: the navigation bar gets smaller, the cards fade in when they appear on the screen, and a &quot;back to top&quot; button shows up. The script also writes the current year in the footer.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Effects linked to scrolling, shared by every page that has the navigation bar:
+// smaller navigation bar, cards appearing on scroll, "back to top" button and current year in the footer.
+(() =&gt; {
+  const Reduced_Motion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 1. the navigation bar gets the class "Scrolled" once the page is scrolled
+  const Nav_Bar = document.querySelector(".Nav_Bar_Items");
+  const Update_Nav_Bar = () =&gt; Nav_Bar?.classList.toggle("Scrolled", scrollY &gt; 50);
+
+  // 2. cards fade in when they enter the screen
+  const Cards = document.querySelectorAll(
+    ".Destination_Item, .Destination_Item_Reverse, .Trip_Card, .Feature, .Service_Card, .Team_Card, .Contact_Info_Item"
+  );
+  if (!Reduced_Motion &amp;&amp; "IntersectionObserver" in window) {
+    const Observer = new IntersectionObserver((entries) =&gt; {
+      entries.forEach((entry) =&gt; {
+        if (!entry.isIntersecting) return;
+        const Card = entry.target;
+        Card.classList.add("Visible");
+        Observer.unobserve(Card);
+        // once visible, remove the classes so that the card's own :hover transform works again
+        // (transitionend also bubbles up from the card's children: only react to the card itself)
+        Card.addEventListener("transitionend", function Done(event) {
+          if (event.target !== Card) return;
+          Card.classList.remove("Reveal", "Visible", "Delay_1", "Delay_2", "Delay_3");
+          Card.removeEventListener("transitionend", Done);
+        });
+      });
+    }, { threshold: 0.15 });
+
+    Cards.forEach((Card) =&gt; {
+      // the class is added by JavaScript: without JavaScript, the cards stay visible
+      Card.classList.add("Reveal");
+      // cards of the same row appear one after the other
+      const Position = [...Card.parentElement.children].indexOf(Card) % 4;
+      if (Position &gt; 0) Card.classList.add("Delay_" + Position);
+      Observer.observe(Card);
+    });
+  }
+
+  // 3. "back to top" button, created here because it is only useful with JavaScript
+  const Top_Btn = document.createElement("button");
+  Top_Btn.type = "button";
+  Top_Btn.className = "Back_To_Top";
+  Top_Btn.setAttribute("aria-label", "العودة إلى أعلى الصفحة");
+  Top_Btn.innerHTML = '&lt;i class="fa-solid fa-arrow-up"&gt;&lt;/i&gt;';
+  Top_Btn.addEventListener("click", () =&gt; scrollTo({ top: 0 }));
+  document.body.appendChild(Top_Btn);
+  const Update_Top_Btn = () =&gt; Top_Btn.classList.toggle("Shown", scrollY &gt; 600);
+
+  // 4. the copyright always shows the current year
+  const Copyright = document.querySelector(".Footer_Copyright");
+  if (Copyright) Copyright.textContent = Copyright.textContent.replace(/\d{4}/, new Date().getFullYear());
+
+  // the scroll event fires very often: keep the work done here small (two class toggles).
+  // passive: true tells the browser that we never call preventDefault(), so scrolling stays smooth
+  addEventListener("scroll", () =&gt; {
+    Update_Nav_Bar();
+    Update_Top_Btn();
+  }, { passive: true });
+
+  Update_Nav_Bar();
+  Update_Top_Btn();
+})();
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- navigation bar: smaller once the page is scrolled (Scroll_Effects.js) --- */
+.Nav_Bar_Items {
+  transition: height 0.3s ease, top 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Nav_Bar_Items.Scrolled {
+  top: 10px;
+  height: 64px;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* --- cards appearing on scroll (Scroll_Effects.js) --- */
+.Reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.Reveal.Visible {
+  opacity: 1;
+  transform: none;
+}
+
+.Reveal.Delay_1 {
+  transition-delay: 0.1s;
+}
+
+.Reveal.Delay_2 {
+  transition-delay: 0.2s;
+}
+
+.Reveal.Delay_3 {
+  transition-delay: 0.3s;
+}
+
+/* --- back to top button (Scroll_Effects.js) --- */
+.Back_To_Top {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 950;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.Back_To_Top.Shown {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>The <code>scroll</code> event fires many times per second: the listener only toggles two classes. <code>{ passive: true }</code> promises the browser that the listener never blocks scrolling.</li><li><code>IntersectionObserver</code> calls a function when an element enters the screen, without listening to <code>scroll</code> at all. Each card starts with the class <code>Reveal</code> (invisible, 30px lower) and receives <code>Visible</code>; the CSS <code>transition</code> does the animation.</li><li>When the transition ends (<code>transitionend</code>), the classes are removed so that the card's own <code>:hover</code> effect works again.</li><li>The &quot;back to top&quot; button is created with <code>createElement</code> because it is useless without JavaScript.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">VII. Step 4: &quot;read more&quot;</h2>
+      <div class="Definitions">
+        <p>
+          The texts of the trips and destinations are long. The script cuts them after a few lines and adds a button that shows the rest:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// "Read more" for long texts: the text is cut after a few lines and a button shows the rest.
+(() =&gt; {
+  const Targets = [
+    [".Trip_Card p", 6],
+    [".Destination_Text p", 10],
+  ];
+
+  function Setup() {
+    Targets.forEach(([Selector, Lines]) =&gt; {
+      document.querySelectorAll(Selector).forEach((Text) =&gt; {
+        if (Text.nextElementSibling?.classList.contains("Read_More_Btn")) return;
+
+        Text.style.setProperty("--Lines", Lines);
+        Text.classList.add("Clamped");
+        // short texts fit in the lines: nothing to hide
+        if (Text.scrollHeight &lt;= Text.clientHeight + 1) {
+          Text.classList.remove("Clamped");
+          return;
+        }
+
+        const Button = document.createElement("button");
+        Button.type = "button";
+        Button.className = "Read_More_Btn";
+        Button.textContent = "اقرأ المزيد";
+        Button.setAttribute("aria-expanded", "false");
+        Button.addEventListener("click", (event) =&gt; {
+          event.stopPropagation();
+          const Open = Text.classList.toggle("Clamped") === false;
+          Button.textContent = Open ? "عرض أقل" : "اقرأ المزيد";
+          Button.setAttribute("aria-expanded", Open);
+        });
+        Text.after(Button);
+      });
+    });
+  }
+
+  // wait for the web font: the number of lines depends on it
+  if (document.fonts) document.fonts.ready.then(Setup);
+  else addEventListener("load", Setup);
+})();
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- read more (Read_More.js) --- */
+.Clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--Lines, 6);
+  line-clamp: var(--Lines, 6);
+  overflow: hidden;
+}
+
+.Read_More_Btn {
+  display: block;
+  margin: 0.8rem 0 0 auto;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #01959a;
+  cursor: pointer;
+}
+
+.Read_More_Btn:hover {
+  text-decoration: underline;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>The number of lines is a <strong>CSS custom property</strong> set from JavaScript: <code>setProperty("--Lines", 6)</code>, used by the CSS as <code>var(--Lines, 6)</code>. One class (<code>Clamped</code>) works for any number of lines.</li><li>To know whether a text is cut, compare <code>scrollHeight</code> (the height of the whole content) with <code>clientHeight</code> (the visible height). Short texts get no button.</li><li>The measure depends on the font, so the script waits for <code>document.fonts.ready</code>.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">VIII. Step 5: favourites saved in the browser</h2>
+      <div class="Definitions">
+        <p>
+          A heart on each trip card adds it to the visitor's favourites. The list survives a reload and is shared by the home page and the services page, because it is stored with <code>localStorage</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Favourite trips: a heart on each trip card, remembered in localStorage (shared by the home and services pages).
+(() =&gt; {
+  const Key = "Syaha_Favourites";
+
+  // localStorage only stores strings: the list is saved as JSON.
+  // It can be unavailable (private browsing, blocked storage), hence the try/catch.
+  function Load() {
+    try {
+      return JSON.parse(localStorage.getItem(Key)) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function Save(List) {
+    try {
+      localStorage.setItem(Key, JSON.stringify(List));
+    } catch {
+      // the favourites will only last until the page is closed
+    }
+  }
+
+  let Favourites = Load();
+
+  // small message at the bottom of the screen, hidden after 2.5 s
+  const Toast = document.createElement("div");
+  Toast.className = "Toast";
+  Toast.setAttribute("role", "status");
+  document.body.appendChild(Toast);
+  let Toast_Timer;
+
+  function Show_Toast(Text) {
+    Toast.textContent = Text;
+    Toast.classList.add("Shown");
+    clearTimeout(Toast_Timer);
+    Toast_Timer = setTimeout(() =&gt; Toast.classList.remove("Shown"), 2500);
+  }
+
+  const Renders = [];
+
+  document.querySelectorAll(".Trip_Card").forEach((Card) =&gt; {
+    const Title = Card.querySelector("h4").textContent.trim(),
+      Frame = Card.querySelector(".Trip_Image");
+
+    const Button = document.createElement("button");
+    Button.type = "button";
+    Button.className = "Favourite_Btn";
+
+    function Render() {
+      const On = Favourites.includes(Title);
+      Button.innerHTML = `&lt;i class="${On ? "fa-solid" : "fa-regular"} fa-heart"&gt;&lt;/i&gt;`;
+      Button.classList.toggle("On", On);
+      Button.setAttribute("aria-pressed", On);
+      Button.setAttribute("aria-label", On ? `إزالة ${Title} من المفضلة` : `إضافة ${Title} إلى المفضلة`);
+    }
+
+    Button.addEventListener("click", (event) =&gt; {
+      event.stopPropagation();
+      if (Favourites.includes(Title)) {
+        Favourites = Favourites.filter((Item) =&gt; Item !== Title);
+        Show_Toast(`تمت إزالة «${Title}» من المفضلة`);
+      } else {
+        Favourites.push(Title);
+        Show_Toast(`تمت إضافة «${Title}» إلى المفضلة`);
+      }
+      Save(Favourites);
+      Render();
+    });
+
+    Render();
+    Renders.push(Render);
+    Frame.appendChild(Button);
+  });
+
+  // the favourites were changed in another tab: update this one
+  addEventListener("storage", (event) =&gt; {
+    if (event.key !== Key) return;
+    Favourites = Load();
+    Renders.forEach((Render) =&gt; Render());
+  });
+})();
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- favourites (Favourites.js) --- */
+.Trip_Image {
+  position: relative;
+}
+
+.Favourite_Btn {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: #c0392b;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.Favourite_Btn:hover,
+.Favourite_Btn.On {
+  transform: scale(1.12);
+}
+
+.Toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  z-index: 1000;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  color: white;
+  background-color: #2a2a2a;
+  direction: rtl;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 1rem);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.Toast.Shown {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>localStorage</code> keeps strings for one website, with no expiry date. Arrays and objects are converted with <code>JSON.stringify</code> before saving and <code>JSON.parse</code> after reading.</li><li>The <code>try/catch</code> blocks protect the page when storage is unavailable (private browsing, blocked cookies).</li><li>The <code>storage</code> event fires when another tab of the same site changes the storage: the hearts of this tab are updated.</li><li>The &quot;toast&quot; message is shown with a class and hidden again by a <code>setTimeout</code>; <code>clearTimeout</code> restarts the delay when a second message arrives.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Try:</strong> click a heart, then open <em>Application &gt; Local Storage</em> in the developer tools: you see the key <code>Syaha_Favourites</code> and its JSON value.</div>
+      <div class="Note"><strong>Careful:</strong> <code>localStorage</code> is visible and editable by the visitor: never store passwords or anything that the server must trust. Data that must last on the server goes to the database (Lab 5).</div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">IX. Step 6: a modal dialog to book a trip</h2>
+      <div class="Definitions">
+        <p>
+          The &quot;احجز الآن&quot; button of each card opens a booking form in a <strong>modal dialog</strong>. The <code>&lt;dialog&gt;</code> element is written in the HTML of the home and services pages, after the trips section:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;dialog class="Booking_Dialog" id="Booking_Dialog" aria-labelledby="Booking_Title"&gt;
+    &lt;form class="Booking_Form" id="Booking_Form"&gt;
+        &lt;h2 id="Booking_Title"&gt;احجز رحلتك&lt;/h2&gt;
+        &lt;label for="Booking_Trip"&gt;الرحلة&lt;/label&gt;
+        &lt;select id="Booking_Trip" name="trip" required&gt;
+            &lt;option value=""&gt;اختر رحلة&lt;/option&gt;
+            &lt;option value="mosques" data-price="8000"&gt;المساجد (8 000 دج للشخص)&lt;/option&gt;
+            &lt;option value="cities" data-price="15000"&gt;المدن (15 000 دج للشخص)&lt;/option&gt;
+            &lt;option value="sahara" data-price="30000"&gt;الصحراء (30 000 دج للشخص)&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;label for="Booking_Name"&gt;الإسم الكامل&lt;/label&gt;
+        &lt;input type="text" id="Booking_Name" name="name" minlength="3" autocomplete="name" required /&gt;
+        &lt;label for="Booking_Email"&gt;البريد الإلكتروني&lt;/label&gt;
+        &lt;input type="email" id="Booking_Email" name="email" autocomplete="email" required /&gt;
+        &lt;label for="Booking_Date"&gt;تاريخ الانطلاق&lt;/label&gt;
+        &lt;input type="date" id="Booking_Date" name="date" required /&gt;
+        &lt;label for="Booking_People"&gt;عدد المسافرين&lt;/label&gt;
+        &lt;input type="number" id="Booking_People" name="people" min="1" max="10" value="1" required /&gt;
+        &lt;p class="Booking_Total"&gt;المجموع: &lt;output id="Booking_Total" for="Booking_Trip Booking_People"&gt;0 دج&lt;/output&gt;&lt;/p&gt;
+        &lt;div class="Booking_Buttons"&gt;
+            &lt;button type="submit" class="Booking_Confirm"&gt;تأكيد الحجز&lt;/button&gt;
+            &lt;button type="button" class="Booking_Cancel" id="Booking_Cancel"&gt;إلغاء&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p class="Booking_Message" id="Booking_Message" role="status"&gt;&lt;/p&gt;
+    &lt;/form&gt;
+&lt;/dialog&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- booking dialog (Booking.js) --- */
+.Book_Btn {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  cursor: pointer;
+}
+
+.Book_Btn:hover {
+  background-image: linear-gradient(to left, #79fad5, #027b92);
+}
+
+.Booking_Dialog {
+  /* the reset of Lab_2_Page.css (* { margin: 0 }) removes the margin: auto that centers a modal dialog */
+  margin: auto;
+  width: min(480px, 92vw);
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.Booking_Dialog[open] {
+  animation: Dialog_In 0.25s ease-out;
+}
+
+@keyframes Dialog_In {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.Booking_Dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.Booking_Form {
   display: flex;
   flex-direction: column;
+  padding: 2rem;
+  direction: rtl;
+}
+
+.Booking_Form h2 {
   margin-bottom: 1rem;
+  color: #027b92;
 }
 
-.Form_Control input.error {
-  border: 2px solid red;
-  background-color: rgb(255 0 0 / 0.1);
+.Booking_Form label {
+  margin: 0.8rem 0 0.3rem;
+  font-weight: 600;
 }
 
-.Form_Control input.success {
-  border: 2px solid green;
-  background-color: rgb(0 255 0 / 0.1);
+.Booking_Form input,
+.Booking_Form select {
+  height: 2.6rem;
+  padding: 0 0.8rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
 }
 
-.Error_Message {
-  color: red;
-  min-height: 1.2em;   /* reserve space so the form does not jump */
+/* :user-invalid only applies after the visitor has interacted with the field */
+.Booking_Form :user-invalid {
+  border-color: #c0392b;
+  background-color: #fdf1f0;
+}
+
+.Booking_Total {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.Booking_Total output {
+  color: #027b92;
+}
+
+.Booking_Buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.Booking_Buttons button {
+  flex: 1;
+  height: 2.8rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.Booking_Confirm {
+  color: white;
+  background-color: #01959a;
+}
+
+.Booking_Cancel {
+  color: #2a2a2a;
+  background-color: #e5e5e5;
+}
+
+.Booking_Message:not(:empty) {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 6px;
+  color: #1b7a3a;
+  background-color: #e6f6ec;
 }
         </pre>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
-const setErrorFor = (input, message) =&gt; {
-  const control = input.closest(".Form_Control");
-  control.querySelector(".Error_Message").textContent = message;
-  input.classList.remove("success");
-  input.classList.add("error");
-  input.setAttribute("aria-invalid", "true");   // announced by screen readers
-};
+// Booking dialog: a "book now" button on each trip card opens a modal &lt;dialog&gt; with a form.
+// The form is checked with the browser's Constraint Validation API, with messages in Arabic.
+(() =&gt; {
+  const Dialog = document.getElementById("Booking_Dialog");
+  if (!Dialog) return;
 
-const setSuccessFor = (input) =&gt; {
-  const control = input.closest(".Form_Control");
-  control.querySelector(".Error_Message").textContent = "";
-  input.classList.remove("error");
-  input.classList.add("success");
-  input.removeAttribute("aria-invalid");
-};
+  const Form = Dialog.querySelector("form"),
+    Trip = Form.querySelector("#Booking_Trip"),
+    People = Form.querySelector("#Booking_People"),
+    Departure = Form.querySelector("#Booking_Date"),
+    Total = Form.querySelector("#Booking_Total"),
+    Message = Form.querySelector("#Booking_Message"),
+    Fields = Form.querySelectorAll("input, select");
+
+  // without this, the browser would check the form itself and never fire "submit" while a field is invalid,
+  // so our Arabic messages would never be set. We call reportValidity() ourselves instead.
+  Form.noValidate = true;
+
+  // the earliest departure is in 3 days: the min attribute is computed when the page loads
+  const Earliest = new Date();
+  Earliest.setDate(Earliest.getDate() + 3);
+  const Pad = (n) =&gt; String(n).padStart(2, "0");
+  Departure.min = `${Earliest.getFullYear()}-${Pad(Earliest.getMonth() + 1)}-${Pad(Earliest.getDate())}`;
+
+  // one Arabic message per validity state (the browser would show its own messages in its own language)
+  const Messages = {
+    valueMissing: () =&gt; "هذا الحقل إجباري.",
+    typeMismatch: () =&gt; "الصيغة غير صحيحة.",
+    tooShort: (Field) =&gt; `أدخل ${Field.minLength} أحرف على الأقل.`,
+    rangeUnderflow: (Field) =&gt;
+      Field.type === "date" ? "يجب أن يكون تاريخ الانطلاق بعد 3 أيام على الأقل." : `القيمة الدنيا هي ${Field.min}.`,
+    rangeOverflow: (Field) =&gt; `القيمة القصوى هي ${Field.max}.`,
+    badInput: () =&gt; "القيمة غير صحيحة.",
+  };
+
+  function Explain(Field) {
+    Field.setCustomValidity(""); // forget the previous message, then ask the browser again
+    if (Field.validity.valid) return true;
+    const State = Object.keys(Messages).find((Name) =&gt; Field.validity[Name]);
+    Field.setCustomValidity(State ? Messages[State](Field) : "القيمة غير صحيحة.");
+    return false;
+  }
+
+  // the total is computed from the price stored in the chosen &lt;option data-price="..."&gt;
+  const Money = new Intl.NumberFormat("fr-DZ");
+  function Update_Total() {
+    const Price = Number(Trip.selectedOptions[0]?.dataset.price || 0),
+      Count = Number(People.value) || 0;
+    Total.value = `${Money.format(Price * Count)} دج`;
+  }
+
+  Fields.forEach((Field) =&gt;
+    Field.addEventListener("input", () =&gt; {
+      Explain(Field);
+      Update_Total();
+    })
+  );
+
+  let Close_Timer;
+
+  function Open(Title) {
+    clearTimeout(Close_Timer);
+    Form.reset();
+    Message.textContent = "";
+    Fields.forEach((Field) =&gt; Field.setCustomValidity(""));
+    // preselect the trip of the card that was clicked
+    const Option = [...Trip.options].find((O) =&gt; O.textContent.startsWith(Title));
+    if (Option) Trip.value = Option.value;
+    Update_Total();
+    Dialog.showModal();
+    Form.querySelector("#Booking_Name").focus();
+  }
+
+  // a "book now" button at the bottom of each trip card
+  document.querySelectorAll(".Trip_Card").forEach((Card) =&gt; {
+    const Button = document.createElement("button");
+    Button.type = "button";
+    Button.className = "Book_Btn";
+    Button.innerHTML = '&lt;i class="fa-solid fa-calendar-check"&gt;&lt;/i&gt; احجز الآن';
+    Button.addEventListener("click", () =&gt; Open(Card.querySelector("h4").textContent.trim()));
+    Card.appendChild(Button);
+  });
+
+  Form.querySelector("#Booking_Cancel").addEventListener("click", () =&gt; Dialog.close());
+
+  // a click on the dark backdrop reaches the &lt;dialog&gt; itself, not the form inside it
+  Dialog.addEventListener("click", (event) =&gt; {
+    if (event.target === Dialog) Dialog.close();
+  });
+
+  Form.addEventListener("submit", (event) =&gt; {
+    event.preventDefault(); // no back end yet: nothing is sent
+    const All_Valid = [...Fields].map(Explain).every(Boolean);
+    if (!All_Valid) {
+      Form.reportValidity(); // shows the message of the first invalid field
+      return;
+    }
+    const Date_Text = new Date(Departure.value).toLocaleDateString("ar-DZ", { dateStyle: "long" });
+    Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.split(" (")[0]} ` +
+      `لـ ${People.value} مسافر(ين) يوم ${Date_Text}. المجموع: ${Total.value}`;
+    Close_Timer = setTimeout(() =&gt; Dialog.close(), 3500);
+  });
+})();
         </pre>
       </div>
       <div class="Definitions">
-        <p>
-          Use <code>textContent</code> (not <code>innerHTML</code>) to display messages: it inserts plain text, so a
-          value typed by the user can never be interpreted as HTML. Notice also that, unlike the demo, the message is
-          <em>replaced</em> each time, not appended with <code>+=</code>; otherwise the same error would be repeated
-          every time the user clicks the button.
-        </p>
+        <div>
+          The dialog part of the script:<ul><li><code>Dialog.showModal()</code> opens the dialog above the page, makes the rest of the page inactive, and draws the <code>::backdrop</code>. <kbd>Escape</kbd> closes it natively; <code>Dialog.close()</code> closes it from the &quot;إلغاء&quot; button.</li><li>A click on the dark backdrop has the <code>&lt;dialog&gt;</code> itself as <code>event.target</code> (the form covers the inside of the dialog): that is how the script detects it.</li><li>The button that opened the dialog tells which trip was clicked: the matching <code>&lt;option&gt;</code> is selected before the dialog opens.</li><li>Each <code>&lt;option&gt;</code> carries its price in a <code>data-price</code> attribute, read with <code>dataset.price</code>. The total is recomputed at each <code>input</code> event and written in an <code>&lt;output&gt;</code> element, formatted with <code>Intl.NumberFormat</code>.</li></ul>The validation part of the script is explained in Step 7.
+        </div>
       </div>
+      <div class="Note"><strong>Careful:</strong> the CSS reset of the demo (<code>* { margin: 0; }</code>) removes the <code>margin: auto</code> with which browsers center a modal dialog: <code>Interactions.css</code> puts it back.</div>
     </section>
-    <section id="Regular_Expressions">
-      <h2 class="Section_Title">V. Regular expressions for emails and Algerian phone numbers</h2>
+    <section id="Validation">
+      <h2 class="Section_Title">X. Form validation: why and where</h2>
       <div class="Definitions">
         <p>
-          A <strong>regular expression</strong> (regex) describes a text pattern. In JavaScript it is written between
-          slashes, and its <code>test()</code> method returns <code>true</code> if a string matches. The most useful
-          symbols are:
+          Before sending data to the server, check it in the browser: the visitor sees their mistakes at once, next to the field, without waiting for a reply. But <strong>client-side validation is only for comfort</strong>. Anybody can switch JavaScript off, edit the HTML with the developer tools, or send a request without using the form at all. The server must check everything again (<a href="Lab_6.html">Lab 6</a>).
         </p>
       </div>
-      <table>
-        <tr>
-          <th>Symbol</th>
-          <th>Meaning</th>
-        </tr>
-        <tr>
-          <td><code>^</code> and <code>$</code></td>
-          <td>Start and end of the string (without them, the pattern can match anywhere inside the value)</td>
-        </tr>
-        <tr>
-          <td><code>[5-7]</code>, <code>[a-zA-Z]</code></td>
-          <td>One character from the set or range</td>
-        </tr>
-        <tr>
-          <td><code>[^0-9]</code></td>
-          <td>One character that is <em>not</em> in the set</td>
-        </tr>
-        <tr>
-          <td><code>\d</code>, <code>\w</code>, <code>\s</code></td>
-          <td>A digit, a "word" character (letter, digit or _), a white space</td>
-        </tr>
-        <tr>
-          <td><code>.</code></td>
-          <td>Any character (write <code>\.</code> for a real dot)</td>
-        </tr>
-        <tr>
-          <td><code>+</code>, <code>*</code>, <code>?</code></td>
-          <td>One or more, zero or more, zero or one of the previous item</td>
-        </tr>
-        <tr>
-          <td><code>{8}</code>, <code>{2,}</code>, <code>{3,30}</code></td>
-          <td>Exactly 8, at least 2, between 3 and 30 of the previous item</td>
-        </tr>
-        <tr>
-          <td><code>(...)</code>, <code>a|b</code></td>
-          <td>A group, and "a or b"</td>
-        </tr>
-      </table>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// Algerian mobile number: 0, then 5, 6 or 7, then exactly 8 digits (10 digits in total)
-const PHONE_REGEX = /^0[5-7][0-9]{8}$/;
-
-// Optional: also accept the international format +213 5x xx xx xx
-const PHONE_INTL_REGEX = /^(0|\+213)[5-7][0-9]{8}$/;
-
-// Email: characters before @, a domain, a dot, and an extension of at least 2 letters
-const EMAIL_REGEX = /^[\w.+-]+@[\w-]+(\.[\w-]+)*\.[a-zA-Z]{2,}$/;
-
-// Username: 3 to 20 letters, digits or underscores
-const USERNAME_REGEX = /^\w{3,20}$/;
-
-const isPhoneNumber = (value) =&gt; PHONE_REGEX.test(value);
-const isEmail = (value) =&gt; EMAIL_REGEX.test(value);
-
-console.log(isPhoneNumber("0555123456"));   // true
-console.log(isPhoneNumber("0812345678"));   // false: 08 is not a mobile prefix
-console.log(isPhoneNumber("055512345"));    // false: only 9 digits
-console.log(isEmail("student@ensia.edu.dz")); // true
-console.log(isEmail("student@ensia"));        // false: no extension
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> In the HTML <code>pattern</code> attribute, do not write the slashes nor
-        <code>^</code> and <code>$</code>: the browser always compares the <em>whole</em> value. So
-        <code>/^0[5-7][0-9]{8}$/</code> in JavaScript becomes <code>pattern="0[5-7][0-9]{8}"</code> in HTML. You can
-        test your regular expressions on <a href="https://regex101.com/">regex101.com</a> (choose the ECMAScript
-        flavor). No regex can check that an email address really exists: only sending a confirmation email can.</div>
-    </section>
-    <section id="Passwords">
-      <h2 class="Section_Title">VI. Password strength and confirmation (and other rules)</h2>
-      <h3 class="Sub_Section_Title">1. Password strength</h3>
       <div class="Definitions">
         <p>
-          Instead of one long and unreadable regex, test each rule separately. This lets you tell the user exactly
-          what is missing and display a strength meter. Add a <code>&lt;meter&gt;</code> under the password field:
+          The first level costs nothing: HTML attributes. The browser checks them before sending the form and shows its own messages.
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-html">
-&lt;div class="Form_Control"&gt;
-  &lt;label for="Password"&gt;Password&lt;/label&gt;
-  &lt;input type="password" id="Password" name="Password" required minlength="8" autocomplete="new-password" /&gt;
-  &lt;meter id="Password_Strength" min="0" max="5" low="3" high="4" optimum="5" value="0"&gt;&lt;/meter&gt;
-  &lt;small class="Error_Message"&gt;&lt;/small&gt;
-&lt;/div&gt;
+&lt;input type="text" name="name" minlength="3" required&gt;
+&lt;input type="email" name="email" required&gt;
+&lt;input type="tel" name="phone" pattern="0[5-7][0-9]{8}"&gt;
+&lt;input type="date" name="date" min="2025-01-01" required&gt;
+&lt;input type="number" name="people" min="1" max="10" value="1" required&gt;
+&lt;select name="trip" required&gt;
+    &lt;option value=""&gt;Choose a trip&lt;/option&gt;  &lt;!-- value="" counts as empty for required --&gt;
+    ...
+&lt;/select&gt;
         </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Attribute</th><th>Checks that</th></tr><tr><td><code>required</code></td><td>the field is not empty</td></tr><tr><td><code>type="email"</code>, <code>"url"</code>, <code>"number"</code>, <code>"date"</code></td><td>the value has the right format (and shows the right keyboard on phones)</td></tr><tr><td><code>minlength</code> / <code>maxlength</code></td><td>the number of characters</td></tr><tr><td><code>min</code> / <code>max</code> / <code>step</code></td><td>the range of a number or a date</td></tr><tr><td><code>pattern</code></td><td>the value matches a regular expression (the whole value, no need for ^ and $)</td></tr></table>
+        </div>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-const PASSWORD_RULES = [
-  { regex: /.{8,}/, message: "at least 8 characters" },
-  { regex: /[a-z]/, message: "a lowercase letter" },
-  { regex: /[A-Z]/, message: "an uppercase letter" },
-  { regex: /[0-9]/, message: "a digit" },
-  { regex: /[^A-Za-z0-9]/, message: "a special character (!, @, #, ...)" },
-];
-
-// Returns the list of rules that the password does not respect yet
-const getMissingRules = (password) =&gt;
-  PASSWORD_RULES.filter((rule) =&gt; !rule.regex.test(password)).map((rule) =&gt; rule.message);
-
-const passwordInput = document.querySelector("#Password");
-const strengthMeter = document.querySelector("#Password_Strength");
-
-passwordInput.addEventListener("input", () =&gt; {
-  const missing = getMissingRules(passwordInput.value);
-  strengthMeter.value = PASSWORD_RULES.length - missing.length;   // 0 (weak) to 5 (strong)
-});
-
-const validatePassword = (value) =&gt; {
-  if (value === "") return "Password cannot be blank";
-  const missing = getMissingRules(value);
-  if (missing.length &gt; 0) return `Password must contain ${missing.join(", ")}`;
-  return "";   // empty string = no error
-};
+        <pre class="prettyprint lang-css">
+/* :invalid would be red as soon as the page is loaded (an empty required field is invalid);
+   :user-invalid waits until the visitor has interacted with the field */
+.Booking_Form :user-invalid {
+  border-color: #c0392b;
+}
         </pre>
       </div>
-      <h3 class="Sub_Section_Title">2. Password confirmation</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-const validateConfirmPassword = (value) =&gt; {
-  if (value === "") return "Please confirm your password";
-  if (value !== passwordInput.value) return "Passwords do not match";
-  return "";
-};
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> Do not <code>trim()</code> passwords: a space can be a valid character
-        of a password. On the server, never store the password itself; store its hash with PHP's
-        <code>password_hash()</code> and check it with <code>password_verify()</code>.</div>
-      <h3 class="Sub_Section_Title">3. Business rules: the minimum age</h3>
       <div class="Definitions">
         <p>
-          Some rules cannot be written with HTML attributes because they depend on the current date or on another
-          field. The demo checks that the birthdate is not in the future and that the user is at least 18. Comparing
-          dates is more precise than dividing milliseconds by 365 days (which ignores leap years):
+          Three levels are used in the demo, from the simplest to the most flexible: the booking form uses the attributes and the browser's <em>Constraint Validation API</em> (Step 7); the contact form and the login form use their own rules and messages (Steps 8 and 9).
         </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-const validateBirthdate = (value) =&gt; {
-  if (value === "") return "Birthdate cannot be blank";
-
-  const birthdate = new Date(value);
-  const today = new Date();
-  if (birthdate &gt; today) return "You can't be born in the future";
-
-  // The date of the 18th birthday
-  const adultDate = new Date(birthdate);
-  adultDate.setFullYear(birthdate.getFullYear() + 18);
-  if (adultDate &gt; today) return "You must be 18 years old or older";
-
-  return "";
-};
-        </pre>
       </div>
     </section>
-    <section id="Real_Time_Validation">
-      <h2 class="Section_Title">VII. Real-time validation and submission</h2>
+    <section id="Step_7">
+      <h2 class="Section_Title">XI. Step 7: the Constraint Validation API (booking form)</h2>
+      <div class="Definitions">
+        <div>
+          Each field of a form has a <code>validity</code> object that tells which constraint fails:<table><tr><th>Property of <code>field.validity</code></th><th>True when</th></tr><tr><td><code>valueMissing</code></td><td>a <code>required</code> field is empty</td></tr><tr><td><code>typeMismatch</code></td><td>the value is not a valid e-mail / URL</td></tr><tr><td><code>patternMismatch</code></td><td>the value does not match <code>pattern</code></td></tr><tr><td><code>tooShort</code> / <code>tooLong</code></td><td><code>minlength</code> / <code>maxlength</code> not respected</td></tr><tr><td><code>rangeUnderflow</code> / <code>rangeOverflow</code></td><td>below <code>min</code> / above <code>max</code></td></tr><tr><td><code>badInput</code></td><td>the browser cannot understand the value (letters in a number field)</td></tr><tr><td><code>customError</code></td><td>a message was set with <code>setCustomValidity()</code></td></tr><tr><td><code>valid</code></td><td>everything is fine</td></tr></table>The booking script uses it to replace the browser's messages (written in the language of the browser) with Arabic messages:
+        </div>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// one Arabic message per validity state (the browser would show its own messages in its own language)
+const Messages = {
+  valueMissing: () =&gt; "هذا الحقل إجباري.",
+  typeMismatch: () =&gt; "الصيغة غير صحيحة.",
+  tooShort: (Field) =&gt; `أدخل ${Field.minLength} أحرف على الأقل.`,
+  rangeUnderflow: (Field) =&gt;
+    Field.type === "date" ? "يجب أن يكون تاريخ الانطلاق بعد 3 أيام على الأقل." : `القيمة الدنيا هي ${Field.min}.`,
+  rangeOverflow: (Field) =&gt; `القيمة القصوى هي ${Field.max}.`,
+  badInput: () =&gt; "القيمة غير صحيحة.",
+};
+
+function Explain(Field) {
+  Field.setCustomValidity(""); // forget the previous message, then ask the browser again
+  if (Field.validity.valid) return true;
+  const State = Object.keys(Messages).find((Name) =&gt; Field.validity[Name]);
+  Field.setCustomValidity(State ? Messages[State](Field) : "القيمة غير صحيحة.");
+  return false;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>setCustomValidity(message)</code> marks the field as invalid with this message; <code>setCustomValidity("")</code> makes it valid again. That is why <code>Explain()</code> starts by clearing the previous message, then asks <code>validity</code> again.</li><li><code>Object.keys(Messages).find(...)</code> finds the first failing state that has a message.</li><li>The <code>min</code> of the date is computed when the page loads (today + 3 days): a constraint can be set from JavaScript too.</li></ul>
+        </div>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// without this, the browser would check the form itself and never fire "submit" while a field is invalid,
+// so our Arabic messages would never be set. We call reportValidity() ourselves instead.
+Form.noValidate = true;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+Form.addEventListener("submit", (event) =&gt; {
+  event.preventDefault(); // no back end yet: nothing is sent
+  const All_Valid = [...Fields].map(Explain).every(Boolean);
+  if (!All_Valid) {
+    Form.reportValidity(); // shows the message of the first invalid field
+    return;
+  }
+  const Date_Text = new Date(Departure.value).toLocaleDateString("ar-DZ", { dateStyle: "long" });
+  Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.split(" (")[0]} ` +
+    `لـ ${People.value} مسافر(ين) يوم ${Date_Text}. المجموع: ${Total.value}`;
+  Close_Timer = setTimeout(() =&gt; Dialog.close(), 3500);
+});
+        </pre>
+      </div>
       <div class="Definitions">
         <p>
-          The demo validates only when the button is clicked. Users prefer immediate feedback, but showing "Email is
-          not valid" after the first letter is annoying. A good compromise:
+          <code>noValidate</code> stops the browser from checking the form by itself before the <code>submit</code> event: the script runs <code>Explain()</code> on every field, then <code>reportValidity()</code> shows the first message in the browser's bubble. <code>checkValidity()</code> does the same check without showing anything.
         </p>
-        <ul>
-          <li>on <code>blur</code> (the user leaves the field): validate it and remember that it was "touched";</li>
-          <li>on <code>input</code> (each key typed): re-validate only fields that were already touched, so the error
-            disappears as soon as the value is correct;</li>
-          <li>on <code>submit</code>: validate every field, and cancel the submission with
-            <code>event.preventDefault()</code> only if at least one field is invalid.</li>
-        </ul>
+      </div>
+    </section>
+    <section id="Step_8">
+      <h2 class="Section_Title">XII. Step 8: custom messages under each field (contact form)</h2>
+      <div class="Definitions">
         <p>
-          Listen to the <code>submit</code> event of the form rather than the <code>click</code> event of the button:
-          <code>submit</code> also fires when the user presses Enter in a field.
+          The browser's bubbles disappear after a few seconds and only show one message at a time. The contact form shows its own messages, one under each field, and checks rules that HTML attributes cannot express:
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
-const form = document.querySelector("#Signup_Form");
+// Validation of the contact form (Contact_Us.html): one message under each field, checked on submit,
+// then again while the visitor corrects the field. The server must validate again (Lab 6).
+(() =&gt; {
+  const Form = document.querySelector(".Contact_Us_Container form");
+  if (!Form) return;
 
-// One validation function per field name. Each returns "" when the value is valid,
-// otherwise the error message to display.
-const validators = {
-  Full_Name: (value) =&gt; (value.trim().length &lt; 3 ? "Name must contain at least 3 characters" : ""),
-  Email: (value) =&gt; {
-    if (value.trim() === "") return "Email cannot be blank";
-    return isEmail(value.trim()) ? "" : "Email is not valid";
-  },
-  Phone_Number: (value) =&gt; {
-    if (value.trim() === "") return "Phone number cannot be blank";
-    return isPhoneNumber(value.trim()) ? "" : "Use 05, 06 or 07 followed by 8 digits";
-  },
-  Password: validatePassword,
-  Confirm_Password: validateConfirmPassword,
-  Birthdate: validateBirthdate,
-};
+  const Max_Message = 500;
 
-const validateField = (input) =&gt; {
-  const message = validators[input.name](input.value);
-  if (message === "") {
-    setSuccessFor(input);
-    return true;
-  }
-  setErrorFor(input, message);
-  return false;
-};
+  // [field, test returning an error message or "" when the value is valid]
+  const Rules = [
+    ["#Name", (v) =&gt; (v.length &lt; 3 ? "الرجاء إدخال الإسم الكامل (3 أحرف على الأقل)." : "")],
+    ["#Email", (v) =&gt;
+      v === "" ? "الرجاء إدخال البريد الإلكتروني."
+        : !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v) ? "البريد الإلكتروني غير صحيح." : ""],
+    // optional, but if given it must be an Algerian mobile number: 05, 06 or 07 followed by 8 digits
+    ["#Phone", (v) =&gt; (v !== "" &amp;&amp; !/^0[5-7][0-9]{8}$/.test(v) ? "رقم الهاتف يجب أن يكون من الشكل 05XXXXXXXX." : "")],
+    ["#Subject", (v) =&gt; (v === "" ? "الرجاء اختيار موضوع." : "")],
+    ["#Message", (v) =&gt; (v.length &lt; 20 ? "الرسالة قصيرة جداً (20 حرفاً على الأقل)." : "")],
+  ].map(([Selector, Test]) =&gt; [Form.querySelector(Selector), Test]);
 
-const fields = Object.keys(validators).map((name) =&gt; form.elements[name]);
+  // our own messages replace the browser's bubbles
+  Form.noValidate = true;
 
-fields.forEach((input) =&gt; {
-  input.addEventListener("blur", () =&gt; {
-    input.dataset.touched = "true";
-    validateField(input);
+  // an empty message element after each field
+  Rules.forEach(([Field]) =&gt; {
+    const Error = document.createElement("small");
+    Error.className = "Field_Error";
+    Error.id = Field.id + "_Error";
+    Error.setAttribute("aria-live", "polite");
+    Field.after(Error);
+    Field.setAttribute("aria-describedby", Error.id);
   });
 
-  input.addEventListener("input", () =&gt; {
-    if (input.dataset.touched === "true") validateField(input);
-  });
-});
+  // characters left in the message
+  const Message = Form.querySelector("#Message");
+  Message.maxLength = Max_Message;
+  const Counter = document.createElement("small");
+  Counter.className = "Char_Counter";
+  Message.parentElement.insertBefore(Counter, Message.nextElementSibling.nextElementSibling);
+  const Update_Counter = () =&gt; {
+    Counter.textContent = `${Message.value.length} / ${Max_Message}`;
+  };
+  Message.addEventListener("input", Update_Counter);
+  Update_Counter();
 
-// When the password changes, the confirmation must be checked again
-form.elements.Password.addEventListener("input", () =&gt; {
-  const confirm = form.elements.Confirm_Password;
-  if (confirm.dataset.touched === "true") validateField(confirm);
-});
-
-form.addEventListener("submit", (event) =&gt; {
-  // map() (not every()) so that ALL the fields show their message, not just the first one
-  const results = fields.map(validateField);
-
-  if (results.includes(false)) {
-    event.preventDefault();                 // stay on the page
-    form.querySelector(".error").focus();   // help the user find the first error
+  function Check(Field, Test) {
+    const Error = Test(Field.value.trim());
+    Field.nextElementSibling.textContent = Error;
+    Field.classList.toggle("Invalid", Error !== "");
+    Field.classList.toggle("Valid", Error === "" &amp;&amp; Field.value.trim() !== "");
+    Field.setAttribute("aria-invalid", Error !== "");
+    return Error === "";
   }
-  // otherwise the form is sent normally to signup.php, which validates everything again
-});
+
+  // after a field has been left once, check it at each keystroke
+  Rules.forEach(([Field, Test]) =&gt; {
+    Field.addEventListener("blur", () =&gt; {
+      Field.dataset.touched = "yes";
+      Check(Field, Test);
+    });
+    Field.addEventListener("input", () =&gt; {
+      if (Field.dataset.touched) Check(Field, Test);
+    });
+  });
+
+  const Success = document.createElement("p");
+  Success.className = "Form_Success";
+  Success.setAttribute("role", "status");
+  Form.appendChild(Success);
+
+  Form.addEventListener("submit", (event) =&gt; {
+    // no back end yet: the form is not sent (it will be in the PHP labs)
+    event.preventDefault();
+    Success.textContent = "";
+    const Results = Rules.map(([Field, Test]) =&gt; Check(Field, Test));
+    if (Results.includes(false)) {
+      Rules[Results.indexOf(false)][0].focus();
+      return;
+    }
+    Success.textContent = "شكراً لكم! تم استلام رسالتكم وسنرد عليكم في أقرب وقت.";
+    Form.reset();
+    Rules.forEach(([Field]) =&gt; {
+      Field.classList.remove("Valid");
+      delete Field.dataset.touched;
+    });
+    Update_Counter();
+  });
+})();
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> You can combine both worlds: keep the HTML5 attributes
-        (<code>required</code>, <code>pattern</code>, ...) on your inputs, and inside <code>validateField</code> use
-        <code>input.checkValidity()</code> and <code>input.validity</code> (section III) to choose the message. This way
-        the rules are written only once, in the HTML.</div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- contact form (Contact_Form.js) --- */
+.Contact_Us_Container .Field_Error {
+  min-height: 1.2em;
+  margin: -1.6rem 0 1.2rem;
+  font-size: 0.9rem;
+  color: #c0392b;
+  direction: rtl;
+}
+
+.Contact_Us_Container .Invalid {
+  border-color: #c0392b;
+  outline-color: #c0392b;
+}
+
+.Contact_Us_Container .Valid {
+  border-color: #1b7a3a;
+}
+
+.Contact_Us_Container .Char_Counter {
+  margin: -1.6rem 0 1.2rem;
+  font-size: 0.85rem;
+  color: #777;
+  text-align: left;
+}
+
+.Form_Success:not(:empty) {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+  text-align: center;
+  direction: rtl;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Each rule is a pair: a field and a function that returns an error message, or <code>""</code> when the value is valid. Adding a rule is adding a line.</li><li><code>Check()</code> writes the message in the <code>&lt;small&gt;</code> created after the field, toggles the classes <code>Invalid</code>/<code>Valid</code>, and sets <code>aria-invalid</code>; <code>aria-describedby</code> links the field to its message for screen readers.</li><li>Messages appear on <code>blur</code> (when the visitor leaves the field), then follow each keystroke (<code>input</code>): no red message while the visitor is still typing for the first time. The field remembers it was visited with <code>dataset.touched</code>.</li><li>On submit, every rule is checked, the first invalid field receives the focus, and nothing is sent until everything is valid.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>More rules:</strong> the <a href="SRC/Labs/Lab_4/Form_Validation.html" target="_blank" rel="noopener">sign-up form demo</a> (<a href="SRC/Labs/Lab_4/Form_Validation.js" target="_blank" rel="noopener">Form_Validation.js</a>) shows other classic rules: password confirmation and birth date in the past.</div>
+    </section>
+    <section id="Step_9">
+      <h2 class="Section_Title">XIII. Step 9: the login form</h2>
+      <div class="Definitions">
+        <p>
+          The login field accepts an e-mail address <em>or</em> a phone number, which no single input type can check, and the password can be shown to check what was typed:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Login page: show/hide the password and check the fields before sending.
+(() =&gt; {
+  document.querySelectorAll(".Logins .Form").forEach((Form) =&gt; {
+    const Login = Form.querySelector('input[type="email"]'),
+      Password = Form.querySelector('input[type="password"]');
+    if (!Login || !Password) return;
+
+    // the field accepts an e-mail address OR a phone number: type="email" would refuse phone numbers
+    Login.type = "text";
+    Login.autocomplete = "username";
+    Password.autocomplete = "current-password";
+    Form.noValidate = true;
+
+    // eye button inside the password field
+    const Wrapper = document.createElement("div");
+    Wrapper.className = "Password_Field";
+    Password.before(Wrapper);
+    Wrapper.appendChild(Password);
+    const Eye = document.createElement("button");
+    Eye.type = "button";
+    Eye.className = "Password_Toggle";
+    Eye.setAttribute("aria-label", "Show password");
+    Eye.innerHTML = '&lt;i class="fa-solid fa-eye"&gt;&lt;/i&gt;';
+    Wrapper.appendChild(Eye);
+    Eye.addEventListener("click", () =&gt; {
+      const Show = Password.type === "password";
+      Password.type = Show ? "text" : "password";
+      Eye.innerHTML = `&lt;i class="fa-solid ${Show ? "fa-eye-slash" : "fa-eye"}"&gt;&lt;/i&gt;`;
+      Eye.setAttribute("aria-label", Show ? "Hide password" : "Show password");
+    });
+
+    const Message = document.createElement("p");
+    Message.className = "Login_Message";
+    Message.setAttribute("role", "status");
+    Form.appendChild(Message);
+
+    Form.addEventListener("submit", (event) =&gt; {
+      // no back end yet: logging in will work after the sessions lab (Lab 7)
+      event.preventDefault();
+      const Value = Login.value.trim(),
+        Is_Email = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(Value),
+        Is_Phone = /^0[5-7][0-9]{8}$/.test(Value);
+      let Error = "";
+      if (!Is_Email &amp;&amp; !Is_Phone) Error = "Enter a valid e-mail or an Algerian phone number (05XXXXXXXX).";
+      else if (Password.value.length &lt; 8) Error = "The password has at least 8 characters.";
+      Login.classList.toggle("Invalid", !Is_Email &amp;&amp; !Is_Phone);
+      Password.classList.toggle("Invalid", Error !== "" &amp;&amp; (Is_Email || Is_Phone));
+      Message.classList.toggle("Error", Error !== "");
+      Message.textContent = Error || "Checked! Logging in will be connected to the server in Lab 7.";
+    });
+  });
+})();
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* --- login form (Login_Form.js) --- */
+.Password_Field {
+  position: relative;
+  width: 80%;
+}
+
+.Password_Field .Email_Password {
+  width: 100%;
+}
+
+.Password_Toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-40%);
+  border: none;
+  background: none;
+  color: #555;
+  cursor: pointer;
+}
+
+.Logins .Invalid {
+  border-bottom-color: #c0392b;
+}
+
+.Login_Message:not(:empty) {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #03632e;
+}
+
+.Login_Message.Error {
+  color: #c0392b;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Showing the password is just changing <code>input.type</code> from <code>"password"</code> to <code>"text"</code>.</li><li>Two regular expressions are tested with <code>.test()</code>; the field is valid if either one matches.</li><li><code>autocomplete="username"</code> and <code>"current-password"</code> help password managers fill the form.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Careful:</strong> never check a password in JavaScript (for example <code>if (password === "1234")</code>): the code is visible to everybody. Passwords are checked on the server (<a href="Lab_7.html">Lab 7</a>).</div>
+    </section>
+    <section id="Regex">
+      <h2 class="Section_Title">XIV. Regular expressions</h2>
+      <div class="Definitions">
+        <div>
+          The rules of the forms use <strong>regular expressions</strong>, patterns that a text must match, written between slashes and tested with <code>.test(text)</code>:<table><tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr><tr><td><code>^</code> / <code>$</code></td><td>start / end of the text</td><td><code>/^0/</code>: starts with 0</td></tr><tr><td><code>[5-7]</code></td><td>one character among 5, 6, 7</td><td><code>/^0[5-7]/</code>: 05, 06 or 07</td></tr><tr><td><code>[0-9]</code> or <code>\d</code></td><td>one digit</td><td></td></tr><tr><td><code>{8}</code>, <code>{2,}</code></td><td>exactly 8 times, at least 2 times</td><td><code>[0-9]{8}</code>: 8 digits</td></tr><tr><td><code>+</code>, <code>*</code>, <code>?</code></td><td>1 or more, 0 or more, 0 or 1</td><td><code>\s+</code>: spaces</td></tr><tr><td><code>[^\s@]</code></td><td>any character except a space or @</td><td></td></tr><tr><td><code>\.</code></td><td>a real dot (a plain <code>.</code> means any character)</td><td></td></tr><tr><td><code>/i</code></td><td>ignore upper/lower case</td><td></td></tr></table>
+        </div>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Rule</th><th>Regular expression</th></tr><tr><td>Algerian mobile number</td><td><code>/^0[5-7][0-9]{8}$/</code></td></tr><tr><td>E-mail address (simple check)</td><td><code>/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i</code></td></tr><tr><td>Password: a capital, a digit, 8 characters</td><td><code>/^(?=.*[A-Z])(?=.*\d).{8,}$/</code></td></tr></table>
+        </div>
+      </div>
+      <div class="Note"><strong>Tip:</strong> test your expressions on <a href="https://regex101.com/" target="_blank" rel="noopener">regex101.com</a> before using them, and see the lecture <a href="JS_Form_Validation.html">Form validation</a>.</div>
     </section>
     <section id="Your_Turn">
-      <h2 class="Section_Title">VIII. Your turn: validate the forms of your project</h2>
+      <h2 class="Section_Title">XV. Your turn</h2>
       <div class="Definitions">
-        <ol>
-          <li><strong>List the forms:</strong> as a team, list every form of your project (sign up, login, contact,
-            and the create/update forms of each CRUD web service) and, for each field, write its rules (required?
-            type? length? format? range?).</li>
-          <li><strong>HTML5 first:</strong> give every input the correct <code>type</code>, a <code>&lt;label&gt;</code>,
-            a <code>name</code>, and the attributes <code>required</code>, <code>minlength</code>/<code>maxlength</code>,
-            <code>min</code>/<code>max</code> and <code>pattern</code> that match your rules. Test the forms
-            without JavaScript.</li>
-          <li><strong>Structure:</strong> wrap each field in a <code>.Form_Control</code> with a
-            <code>&lt;small class="Error_Message"&gt;</code>, add <code>novalidate</code> to the form, and add the
-            <code>.error</code> / <code>.success</code> styles to your CSS (keep them responsive, see Lab 3).</li>
-          <li><strong>Shared helpers:</strong> create one file (for example <code>assets/JS/validation.js</code>)
-            with <code>setErrorFor</code>, <code>setSuccessFor</code>, your regular expressions
-            (<code>isEmail</code>, <code>isPhoneNumber</code>, ...) and <code>validateField</code>, so that every team
-            member reuses the same code.</li>
-          <li><strong>Validators:</strong> for each form, write the <code>validators</code> object with one function
-            and a clear English (or Arabic/French, but consistent) message per field. Include your business rules
-            (dates, ranges, two fields that must match, ...).</li>
-          <li><strong>Passwords:</strong> on the sign-up form, add the strength meter and the confirmation check.</li>
-          <li><strong>Real time:</strong> attach the <code>blur</code>, <code>input</code> and <code>submit</code>
-            listeners as in section VII.</li>
-          <li><strong>Test:</strong> for every field, try an empty value, a value that is too short/too long, a wrong
-            format, and a correct value. Try a phone number starting with 08, an email without a domain, a birthdate
-            in the future, and two different passwords.</li>
-          <li><strong>Bypass test:</strong> in the DevTools, remove <code>required</code> from an input or disable
-            JavaScript, and submit the form. Write down what your server receives: this is what your PHP validation
-            will have to handle.</li>
-        </ol>
+        <div>
+          Bring your team project to life. Share the features between the members:<ol><li>Create one script per feature in <code>assets/js</code>, wrapped in <code>(() =&gt; { ... })();</code>, and load it at the end of the pages that need it.</li><li><strong>Navigation:</strong> make your hamburger menu of Lab 3 open and close, with the keyboard and on an outside click.</li><li><strong>At least three interactive components</strong> that switch classes, for example: a slider, &quot;read more&quot;, tabs, an accordion (FAQ), a filter of cards, animations on scroll.</li><li><strong>A modal dialog</strong>, for example to confirm the deletion of an item of one of your CRUD services, or to show a detail or a form.</li><li><strong>One preference or list saved with localStorage</strong> (favourites, cart, last search, font size...).</li><li><strong>Validate every form</strong> of your project: HTML attributes first, then messages under the fields for the rules that need JavaScript.</li><li>Test: no error in the console, everything works with the keyboard and at phone width, and your pages still show their content with JavaScript disabled.</li></ol>
+        </div>
       </div>
-      <div class="Note"><strong>Tip:</strong> Start from the <a href="SRC/Labs/Lab_4/Form_Validation.html">demo
-          form</a>: rewrite <a href="SRC/Labs/Lab_4/Form_Validation.js">Form_Validation.js</a> with
-        <code>const</code>, one message per field and the <code>submit</code> event, then adapt it to your own
-        forms.</div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>Every form of your team project uses the correct input types, labels and HTML5 validation attributes.</li>
-        <li>Every field is validated in JavaScript with a clear error message displayed next to it, and valid fields
-          are visually marked.</li>
-        <li>Email and Algerian phone numbers (05/06/07 followed by 8 digits) are checked with regular expressions.</li>
-        <li>The sign-up form checks the password strength and the password confirmation.</li>
-        <li>Validation happens in real time (<code>blur</code>/<code>input</code>) and the form is not submitted while
-          a field is invalid.</li>
-        <li>The work is committed and pushed to your team repository. It counts toward the <strong>Javascript</strong>
-          milestone ("Input validation + everything related to JS"); see the
-          <a href="Syllabus.html#Deadlines">Deadlines table in the syllabus</a> for the date.</li>
+        <li>One script per feature, loaded only by the pages that use it, with no error in the console.</li>
+        <li>A working hamburger menu and at least three interactive components driven by classes.</li>
+        <li>A modal dialog and one use of <code>localStorage</code>.</li>
+        <li>Every form of the project validated in the browser, with clear messages next to the fields.</li>
+        <li>This lab is the "Javascript" milestone of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
       </ul>
     </section>
   </main>

@@ -1,0 +1,16 @@
+@media screen and (max-width: 850px) {
+  /* the two cards are stacked and the page grows with its content */
+  .Logins {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    gap: 2rem;
+    padding: 6rem 1.5rem 3rem;
+  }
+
+  .Account_Login,
+  .Page_Login {
+    width: 100%;
+    max-width: 400px;
+  }
+}

@@ -4,270 +4,1702 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="SRC/CSS/Styles.css">
-  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css">
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
   <link rel="stylesheet" href="SRC/CSS/HTML.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 2: Project Structure</title>
+  <title>Lab 2: Project structure</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 2: Project Structure</h1>
-
-    <section id="Pulling_Project">
-      <h1>Instructions:</h1>
+    <h1 class="Title">Lab 2: Project structure</h1>
+    <section>
+      <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab, you will learn how to pull your project from the repository to your local machine. <br>
-          You will also learn how to set up the project structure and start working on your project. <br>
-          Follow the instructions below to complete the lab. <br>
-        </p>
-      </div>
-      <h2 class="Section_Title">Pulling your project</h2>
-      <div class="Definitions">
-        <p>
-          At this point you should have a team already created and a project assigned to you. If you do not have a
-          project assigned to you, please contact your instructor. <br>
-          To start working on your project, you will need to pull the project from the repository to your local machine.
-          Since we are using XAMPP, you will need to pull the project to the <strong>xampp/htdocs</strong> folder. <br>
-          To pull the project, you will need to use the command line. Open the command line and navigate to the htdocs
-          folder. <br>
-          The default location of the htdocs folder is as follows: <br>
-        <ol>
-          <li>Windows: C:/xampp/htdocs</li>
-          <li>Mac: /Applications/XAMPP/xamppfiles/htdocs</li>
-          <li>Linux: /opt/lampp/htdocs</li>
-        </ol>
-        Once you are in the htdocs folder, you will need to use the git clone command to pull the project. <br>
-        The git clone command is used to create a copy of the repository on your local machine. <br>
-        The syntax for the git clone command is as follows:
-        </p>
-      </div>
-      <pre class="prettyprint">
-        $ cd C:/xampp/htdocs
-        $ git clone https://github.com/the-repository-url
-    </pre>
-      <div class="Definitions">
-        <p>
-          where the-repository-url is the URL of the repository you want to clone. <br>
-          In our case, you can find the URL of the repository by going to the <strong>Ensia-AI</strong> organization on
-          GitHub and look for the repository that has been assigned to you. This repository should have the same name as
-          your project.
-        </p>
-      </div>
-      <h2 class="Sub_Section_Title">Windows</h2>
-      <div class="Definitions">
-        <p>
-          If you are using Windows, you can use GitHub Desktop to clone the repository. <br>
-          GitHub Desktop is a graphical user interface for Git that makes it easier to work with repositories. <br>
-          To download GitHub Desktop, go to the following website: <br>
-          <a href="https://desktop.github.com/">https://desktop.github.com/</a> <br>
-          To clone the repository using GitHub Desktop, follow these steps: <br>
-        <ol>
-          <li>Open GitHub Desktop.</li>
-          <li>Click on the "File" menu and select "Clone repository".</li>
-          <li>In the "Clone a repository" window, enter the URL of the repository you want to clone.</li>
-          <li>Click on the "Clone" button.</li>
-          <li>Choose the location where you want to clone the repository.</li>
-          <li>Click on the "Clone" button.</li>
-          <li>Wait for the repository to be cloned.</li>
-          <li>Once the repository is cloned, you can start working on your project.</li>
-        </ol>
-        </p>
-        <p>
-          At this point, you should have the project cloned to your local machine. You can now start working on your
-          project.
+          In this lab you will set up your project folder and then rebuild, step by step, the HTML and CSS of the
+          demo travel website <strong>Syaha</strong> (سياحة). Every step adds one component (navigation bar, hero,
+          destinations, trips, features, footer) with its own stylesheet. <br>
+          We build the <strong>desktop version only</strong>: making it work on phones and tablets is the subject of
+          <a href="Lab_3.html">Lab 3</a>, and the JavaScript (menu, slider) comes in <a href="Lab_4.html">Lab 4</a>.
+          Then apply the same method to the pages of your own team project.
         </p>
       </div>
     </section>
-    <section>
-      <h2 class="Section_Title">The structure of a project</h2>
+    <section id="Pulling_Project">
+      <h2 class="Section_Title">I. Get your project</h2>
+      <div class="Definitions">
+        <div>
+          At this point you should have a team and a project (see <a href="Lab_0.html">Lab 0</a>). Your teacher created a GitHub repository for it. Since we use XAMPP, clone it inside the <strong>htdocs</strong> folder:<ul><li>Windows: <code>C:/xampp/htdocs</code></li><li>Mac: <code>/Applications/XAMPP/xamppfiles/htdocs</code></li><li>Linux: <code>/opt/lampp/htdocs</code></li></ul>You find the URL of your repository in the <strong>ENSIA-AI</strong> organization on GitHub (it has the name of your project).
+        </div>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+$ cd C:/xampp/htdocs
+$ git clone https://github.com/the-repository-url
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> With GitHub Desktop: <em>File &gt; Clone repository</em>, paste the URL, choose <code>C:/xampp/htdocs</code> as local path and click <em>Clone</em>.</div>
       <div class="Definitions">
         <p>
-          When you start working on a project, it is important to have a clear structure for your project. <br>
-          A good project structure will help you organize your files and folders in a way that makes it easy to find
-          what you need. <br>
-          In this section, we will discuss the structure of a typical web project. <br>
+          Start <strong>Apache</strong> from the XAMPP control panel and open <code>http://localhost/your-project-name</code> in the browser. Any file you create in the folder is now served at <code>http://localhost/your-project-name/file-name</code>.
         </p>
+      </div>
+    </section>
+    <section id="The_Website">
+      <h2 class="Section_Title">II. The website you will build</h2>
+      <div class="Definitions">
         <p>
-          Unless you are working with a specific framework or tool that has its own structure, you are free to organize
-          your project in any way you like. <br>
-          A typical web project will have the following structure: <br>
-        <ol>
-          <li>
-            <strong>index.php</strong> - The main PHP file for the project. This file is usually the entry point
-            for the project and contains the content that will be displayed to the user.
-          </li>
-          <li>
-            <strong>assets</strong> - A folder that contains all the assets used in the project, such as images,
-            fonts, and JavaScript files.
-            <ol type="a">
-              <li>
-                <strong>CSS</strong> - A folder that contains the CSS files for the project. CSS files are used to style
-                the HTML content.
-              </li>
-              <li>
-                <strong>JS</strong> - A folder that contains the JavaScript files for the project. JavaScript files are
-                used to add interactivity to the project.
-              </li>
-              <li>
-                <strong>Images</strong> - A folder that contains the images used in the project.
-              </li>
-              <li>
-                <strong>Fonts</strong> - A folder that contains the fonts used in the project.
-              </li>
-            </ol>
-          </li>
+          Syaha is a small tourism website written in Arabic. Open the finished demo in a new tab and keep it next to this page while you work: <a href="SRC/Labs/Lab_2/Lab_2_Page.html" target="_blank" rel="noopener">Syaha demo website</a>.
+        </p>
+      </div>
+      <table>
+        <tr>
+          <th>Page</th>
+          <th>Demo file</th>
+          <th>Components</th>
+        </tr>
+        <tr>
+          <td>Home</td>
+          <td><a href="SRC/Labs/Lab_2/Lab_2_Page.html" target="_blank" rel="noopener">Lab_2_Page.html</a></td>
+          <td>navigation bar, hero with slider, destinations, trips, why choose us, footer</td>
+        </tr>
+        <tr>
+          <td>Services</td>
+          <td><a href="SRC/Labs/Lab_2/Services.html" target="_blank" rel="noopener">Services.html</a></td>
+          <td>navigation bar, hero, service cards, trips, footer</td>
+        </tr>
+        <tr>
+          <td>About us</td>
+          <td><a href="SRC/Labs/Lab_2/About_Us.html" target="_blank" rel="noopener">About_Us.html</a></td>
+          <td>navigation bar, hero, text, team, footer</td>
+        </tr>
+        <tr>
+          <td>Contact us</td>
+          <td><a href="SRC/Labs/Lab_2/Contact_Us.html" target="_blank" rel="noopener">Contact_Us.html</a></td>
+          <td>navigation bar, hero, contact details, form, map, footer</td>
+        </tr>
+        <tr>
+          <td>Login</td>
+          <td><a href="SRC/Labs/Lab_2/Login.html" target="_blank" rel="noopener">Login.html</a></td>
+          <td>two login forms</td>
+        </tr>
+        <tr>
+          <td>Page not found</td>
+          <td><a href="SRC/Labs/Lab_2/NotFound.html" target="_blank" rel="noopener">NotFound.html</a></td>
+          <td>navigation bar, 404 message, footer</td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Note:</strong> the demo pages already include the responsive stylesheets of Lab 3 and the scripts of Lab 4. In this lab you write everything else; the listings below leave those files out.</div>
+    </section>
+    <section id="Structure">
+      <h2 class="Section_Title">III. Project structure</h2>
+      <div class="Definitions">
+        <p>
+          Unless you use a framework that imposes its own structure, organize your files so that anybody in the team finds things immediately. Pages stay at the root, and everything they use goes into <strong>assets</strong>, one folder per type of file:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+syaha/                      &lt;- the repository you cloned into xampp/htdocs
+├── index.html              home page        (demo: Lab_2_Page.html)
+├── Services.html           all the services
+├── About_Us.html           about us
+├── Contact_Us.html         contact
+├── Login.html              login forms
+├── NotFound.html           page not found
+└── assets/
+    ├── css/
+    │   ├── Lab_2_Page.css      reset shared by every page
+    │   ├── Nav_Bar.css         navigation bar
+    │   ├── Hero.css            hero banner
+    │   ├── Slider.css          image slider of the hero
+    │   ├── Destination.css     "destinations" section
+    │   ├── Trip.css            "trips" cards
+    │   ├── Features.css        "why choose us" section
+    │   ├── Lab_2_Footer.css    footer
+    │   ├── Services.css        service cards
+    │   ├── About_Us.css        about us text and team
+    │   ├── Contact_Us.css      contact details, form and map
+    │   ├── NotFound.css        404 page
+    │   └── Logins.css          login page
+    ├── images/                 photos (copy them from SRC/IMAGES and SRC/IMAGES/Lab_2)
+    ├── js/                     empty for now (Lab 4)
+    └── fonts/                  local fonts, if any
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          Two rules make team work much easier:<ol><li><strong>One component, one stylesheet.</strong> The navigation bar is styled only in <code>Nav_Bar.css</code>, the footer only in <code>Lab_2_Footer.css</code>, and so on. Each member can own some components and work on them without conflicts in Git.</li><li><strong>Pages reuse components.</strong> Every page links only the stylesheets of the components it contains: the About page does not need <code>Trip.css</code>.</li></ol>
+        </div>
+      </div>
+      <div class="Note"><strong>Tip:</strong> pick one naming convention and keep it everywhere. The demo uses <code>Capitalized_Words</code> for files and classes. Remember that the file <code>Hero.css</code> and the link <code>hero.css</code> are different on a Linux server.</div>
+    </section>
+    <section id="Step_1">
+      <h2 class="Section_Title">IV. Step 1: page skeleton, CSS reset and font</h2>
+      <div class="Definitions">
+        <p>
+          Create <code>index.html</code> with the skeleton below. The <code>&lt;head&gt;</code> links the stylesheet of every component of the home page (create them empty for now), the <em>Cairo</em> font from Google Fonts and Font Awesome for the icons. The <code>&lt;body&gt;</code> is divided with semantic elements: <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> and <code>&lt;footer&gt;</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar"&gt;
 
-          <li>
-            <strong>Components</strong> - Depending on the way you divide the worklload among your team members, you may
-            assign each member a specific component to work on. For example, if you are working on a website that has a
-            header, footer, and main content area, you may assign one team member to work on the header, another team
-            member
-            to work on the footer, and another team member to work on the main content area. Each team member will be
-            responsible for creating the HTML, CSS, and JavaScript files for their component. <br>
-            The PHP files for the components can be stored in a folder called components. <br>
-          </li>
-        </ol>
-        </p>
-      </div>
-    </section>
-    <section>
-      <h2 class="Section_Title">Example</h2>
-      <div class="Definitions">
-        <p>
-          Let's build a page that has a header, footer, and main content area. <br>
-          The header will contain the site logo and navigation links. <br>
-          The footer will contain the copyright information. <br>
-          The main content area will contain the main content of the page. <br>
-          To build this page, we will create the following files: <br>
-        <ol>
-          <li>
-            <strong>index.php</strong> - The main PHP file for the project. This file will contain the HTML content
-            for the page.
-          </li>
-          <li>
-            <strong>assets</strong> - A folder that contains all the assets used in the project.
-            <ol type="a">
-              <li>
-                <strong>CSS</strong> - A folder that contains the CSS files for the project.
-              </li>
-              <li>
-                <strong>JS</strong> - A folder that contains the JavaScript files for the project.
-              </li>
-              <li>
-                <strong>Images</strong> - A folder that contains the images used in the project.
-              </li>
-              <li>
-                <strong>Fonts</strong> - A folder that contains the fonts used in the project.
-              </li>
-            </ol>
-          </li>
-          <li>
-            <strong>Components</strong> - A folder that contains the PHP files for the components.
-            <ol type="a">
-              <li>
-                <strong>header.php</strong> - The PHP file for the header component.
-              </li>
-              <li>
-                <strong>footer.php</strong> - The PHP file for the footer component.
-              </li>
-              <li>
-                <strong>main.php</strong> - The PHP file for the main content area component.
-              </li>
-            </ol>
-          </li>
-        </ol>
-        </p>
-      </div>
-      <div class="Definitions">
-        <p>
-          The header.php file will contain the following code: <br>
-        </p>
-        <pre class="prettyprint">
-            &lt;header&gt;
-              &lt;h1&gt;Site Logo&lt;/h1&gt;
-              &lt;nav&gt;
-                &lt;a href="#"&gt;Home&lt;/a&gt;
-                &lt;a href="#"&gt;About&lt;/a&gt;
-                &lt;a href="#"&gt;Contact&lt;/a&gt;
-              &lt;/nav&gt;
-            &lt;/header&gt;
-          </pre>
-        <p>
-        <p>
-          The footer.php file will contain the following code: <br>
-        </p>
-        <pre class="prettyprint">
-            &lt;footer&gt;
-              &lt;p&gt;Copyright &copy; 2021&lt;/p&gt;
-            &lt;/footer&gt;
-          </pre>
-        <p>
-          The main.php file will contain the following code: <br>
-        </p>
-        <pre class="prettyprint">
-            &lt;main&gt;
-              &lt;h2&gt;Main Content&lt;/h2&gt;
-              &lt;p&gt;This is the main content of the page.&lt;/p&gt;
-            &lt;/main&gt;
-          </pre>
-        <p>
-          The index.php file will contain the following code: <br>
-        </p>
-        <pre class="prettyprint">
-            &lt;?php include 'components/header.php'; ?&gt;
-            &lt;?php include 'components/main.php'; ?&gt;
-            &lt;?php include 'components/footer.php'; ?&gt;
-          </pre>
-        <p>
-          The advantage of using this structure is that it allows you to work on different parts of the project
-          independently. <br>
-          Each team member can work on their component without interfering with the work of other team members. <br>
-          To use a component that another team member is working on, you can include the PHP file for that component in
-          the page you are working on. <br>
-          For example, if you are working on the main content area and you need to use the header component, you can
-          include the header.php file in the main.php file. <br>
-          This way, you can work on your component without having to wait for other team members to finish their work.
-          <br>
-          In addition, this structure makes it easy to update the project. If you need to make changes to a component,
-          you can do so without affecting the rest of the project. <br>
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;!-- one stylesheet per component --&gt;
+    &lt;link rel="stylesheet" href="assets/css/Lab_2_Page.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Nav_Bar.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Hero.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Slider.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Destination.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Trip.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Features.css"&gt;
+    &lt;link rel="stylesheet" href="assets/css/Lab_2_Footer.css"&gt;
+    &lt;!-- font with Arabic letters --&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+    &lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap"&gt;
+    &lt;!-- icons --&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /&gt;
+    &lt;title&gt;Syaha&lt;/title&gt;
+&lt;/head&gt;
 
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;!-- Step 2: navigation bar --&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;!-- Step 3: hero + slider --&gt;
+        &lt;!-- Step 4: destinations --&gt;
+        &lt;!-- Step 5: trips --&gt;
+        &lt;!-- Step 6: why choose us --&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;
+        &lt;!-- Step 7: footer --&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The first stylesheet, <code>Lab_2_Page.css</code>, removes the default margins and paddings that browsers add to elements, and switches every element to <code>box-sizing: border-box</code> so that <code>width</code> includes padding and border. It also enables smooth scrolling for links such as <code>#Destinations</code>, and <code>scroll-margin-top</code> stops the fixed navigation bar from hiding the top of the section you jump to.
         </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cairo", "Poppins", sans-serif;
+  gap: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* leave room for the fixed navigation bar when jumping to #Destinations, #Trips... */
+section {
+  scroll-margin-top: 120px;
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Fonts:</strong> <em>Cairo</em> has Arabic and Latin letters. The two <code>preconnect</code> links let the browser open the connection to Google Fonts early. See <em>External fonts</em> in <a href="CSS_fundamentals.html">CSS fundamentals</a> to choose another font.</div>
+      <div class="Note"><strong>Arabic text:</strong> the demo sets <code>direction: rtl</code> on titles, paragraphs and grids, and uses <code>row-reverse</code> in flex containers to put things on the right. An alternative is to write <code>&lt;html lang="ar" dir="rtl"&gt;</code> once: the whole page then flows from right to left. If your project is in English or French you will not need any of this.</div>
     </section>
-    <section>
-      <h2 class="Section_Title">Load your website</h2>
+    <section id="Step_2">
+      <h2 class="Section_Title">V. Step 2: the navigation bar</h2>
       <div class="Definitions">
         <p>
-          To load your website, you need to start the Apache server in XAMPP. <br>
-          To start the Apache server, open the XAMPP control panel and click on the "Start" button next to Apache. <br>
-          Once the Apache server is started, open a web browser and go to the following URL: <br>
-          <a href="http://localhost/your-project-name">http://localhost/your-project-name</a> <br>
-          where your-project-name is the name of the folder where you cloned the project. <br>
-          For example, if you cloned the project to a folder called "my-project", you would go to the following URL:
-          <br>
-          <a href="http://localhost/my-project">http://localhost/my-project</a> <br>
-          This will load the index.php file in your project and display the content of the page.
-          If you do not have an index.php file, nothing will be displayed. <br>
-          To test your website, you can create an index.php file with some content and load it in the browser. <br>
-          For example, add the following code to the index.php file: <br>
+          The navigation bar contains the logo and a list of links. Each link has a text and an icon. The <code>Menu_Icon</code> (the &quot;hamburger&quot; button) is hidden on desktop: it will appear on small screens in Lab 3. Put this code inside <code>&lt;body&gt;</code>, in place of the <code>&lt;header&gt;</code> of the skeleton:
         </p>
       </div>
-      <pre class="prettyprint">
-        &lt;h1&gt;Hello, world!&lt;/h1&gt;
-    </pre>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;header&gt;
+    &lt;nav class="Nav_Bar_Items"&gt;
+        &lt;h1 class="Nav_Bar_Logo"&gt;سياحة&lt;/h1&gt;
+        &lt;div class="Menu_Icon" id="Menu_Icon_ID"&gt;
+            &lt;i class="fas fa-bars" id="Burger_Icon_ID"&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID"&gt;
+            &lt;li&gt;
+                &lt;a href="Login.html" class="Nav_Bar_Menu_Item"&gt;
+                    &lt;span&gt;تسجيل الدخول&lt;/span&gt;
+                    &lt;i class="fa-solid fa-right-to-bracket"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="Contact_Us.html" class="Nav_Bar_Menu_Item"&gt;
+                    &lt;span&gt;إتصل بنا&lt;/span&gt;
+                    &lt;i class="fa-solid fa-envelope"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="Services.html" class="Nav_Bar_Menu_Item"&gt;
+                    &lt;span&gt;جميع الخدمات&lt;/span&gt;
+                    &lt;i class="fa-solid fa-briefcase"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="About_Us.html" class="Nav_Bar_Menu_Item"&gt;
+                    &lt;span&gt;من نحن؟&lt;/span&gt;
+                    &lt;i class="fa-solid fa-circle-info"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;a href="index.html" class="Nav_Bar_Menu_Item Active"&gt;
+                    &lt;span&gt;الرئيسية&lt;/span&gt;
+                    &lt;i class="fa-solid fa-house"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+        </pre>
+      </div>
       <div class="Definitions">
         <p>
-          Save the file and reload the page in the browser. You should see the text "Hello, world!" displayed on the
-          page. <br>
-          You can now start working on your project and build your website. <br>
-          If you have any questions or need help, please contact your instructor. <br>
-          Good luck!
+          Now style it in <code>Nav_Bar.css</code>:
         </p>
       </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Nav_Bar_Items {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  width: 95%;
+  height: 80px;
+  border-radius: 13px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 9999;
+}
+
+.Nav_Bar_Logo {
+  color: #222;
+  font-size: 3rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.Menu_Icon {
+  display: none;
+  margin-top: 10px;
+}
+
+.Nav_Bar_Menu {
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
+  list-style: none;
+  align-items: center;
+}
+
+.Nav_Bar_Menu_Item {
+  text-decoration: none;
+  color: #222;
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  white-space: nowrap;
+}
+
+.Nav_Bar_Menu_Item:hover {
+  color: white;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  background-color: #01959a;
+}
+
+.Nav_Bar_Menu_Item i {
+  padding-left: 10px;
+}
+
+/* link of the page currently displayed */
+.Nav_Bar_Menu_Item.Active {
+  color: #01959a;
+}
+
+.Nav_Bar_Menu_Item.Active:hover {
+  color: white;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          What to notice:<ul><li><code>position: fixed; top: 20px;</code> keeps the bar visible while the page scrolls. <code>left: 50%</code> followed by <code>transform: translate(-50%)</code> centers a box whose width is not known in advance.</li><li><code>z-index: 9999</code> puts the bar above the photos of the page.</li><li><code>display: flex</code> with <code>flex-direction: row-reverse</code> and <code>justify-content: space-between</code> places the logo on the right and the menu on the left.</li><li>The menu itself is a grid of auto-sized columns: <code>grid-template-columns: repeat(6, auto)</code>.</li><li><code>:hover</code> with a <code>transition</code> gives a smooth color change on the links.</li><li>On every page, the link of that page gets the extra class <code>Active</code> so that visitors see where they are. An element can have several classes separated by spaces.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Check:</strong> reload the page: the white bar floats over an empty page. Hover over the links. See <a href="CSS_Layout.html#FlexBox">Flexbox</a>, <a href="CSS_Layout.html#Grid">Grid</a> and <a href="CSS_Layout.html#Positions">Positions</a> in the CSS layout lecture if needed.</div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">VI. Step 3: the hero and its slider</h2>
+      <div class="Definitions">
+        <p>
+          The <em>hero</em> is the full-screen banner at the top of the home page. It contains a slider of photos, two arrow buttons, and a text with a call-to-action button placed over the photos. Add it as the first child of <code>&lt;main&gt;</code>. Give every photo an <code>alt</code> text that describes it (here, the name of the city): it is read by screen readers and shown if the image cannot be loaded.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;!--Hero part starts here--&gt;
+&lt;section id="Hero_ID" class="Hero"&gt;
+    &lt;div class="Slider"&gt;
+        &lt;div class="Slides_Container"&gt;
+            &lt;img src="assets/images/Oran.jpg" alt="وهران" class="Slide" /&gt;
+            &lt;img src="assets/images/Tlemcen.jpg" alt="تلمسان" class="Slide" /&gt;
+            &lt;img src="assets/images/Taghit.jpg" alt="تاغيت" class="Slide" /&gt;
+            &lt;img src="assets/images/Algiers.jpg" alt="الجزائر العاصمة" class="Slide" /&gt;
+            &lt;img src="assets/images/Tipaza.jpg" alt="تيبازة" class="Slide" /&gt;
+            &lt;img src="assets/images/Ghardaia.jpg" alt="غرداية" class="Slide" /&gt;
+        &lt;/div&gt;
+        &lt;i class="fa-solid fa-circle-arrow-left fa-2xl Slides_Previous_Btn" id="Slides_Previous_Btn"&gt;&lt;/i&gt;
+        &lt;i class="fa-solid fa-circle-arrow-right fa-2xl Slides_Next_Btn" id="Slides_Next_Btn"&gt;&lt;/i&gt;
+
+    &lt;/div&gt;
+    &lt;div class="Hero_Text"&gt;
+        &lt;h1&gt;مرحبا بكم في موقعنا&lt;/h1&gt;
+        &lt;p&gt;نحن نقدم لكم أفضل الخدمات&lt;/p&gt;
+        &lt;a href="Contact_Us.html" class="Show" id="Contact_Us_Btn_ID"&gt;تواصل معنا&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+&lt;!--Hero part ends here--&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>Hero.css</code> makes the hero as high as the screen (<code>100vh</code>) and as wide as the page (<code>100%</code>), and places the text over the photos:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Hero {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  padding: 0;
+}
+
+.Hero_Small {
+  height: 70vh;
+  width: 100%;
+  position: relative;
+}
+
+.Hero img {
+  width: 100%;
+  height: 100vh;
+  display: block;
+  object-fit: fill;
+}
+
+.Hero_Text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.Hero_Text h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-right: 1rem;
+  color: white;
+  -webkit-background-clip: text;
+  direction: rtl;
+}
+
+.Hero_Text p {
+  font-size: 2rem;
+  color: white;
+  padding: 0.5rem 0 2rem;
+  direction: rtl;
+  margin-right: 2rem;
+}
+
+.Hero_Text a {
+  position: absolute;
+  top: 90%;
+  left: 40%;
+  transform: translate(0%, 50%);
+}
+
+.Hero_Text a:hover {
+  background-image: linear-gradient(to left, #79fad5, #027b92);
+  transition: all 1s ease-out;
+  transform: scale(1.1);
+}
+
+.Hero_Text .Show {
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+}
+
+.Hero_Text .Hide {
+  display: none;
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Careful:</strong> <code>100vw</code> looks like &quot;the width of the page&quot;, but it includes the vertical scrollbar (about 15px on Windows). A box of <code>width: 100vw</code> is therefore wider than the page and adds a horizontal scrollbar. Use <code>width: 100%</code> for full-width boxes.</div>
+      <div class="Definitions">
+        <div>
+          <ul><li><strong>Overlay technique:</strong> the hero is <code>position: relative</code>, and the text is <code>position: absolute</code>. <code>top: 50%; left: 50%; transform: translate(-50%, -50%)</code> centers the text both ways.</li><li>The button (<code>.Show</code>) uses a <code>linear-gradient</code> as background image, and on <code>:hover</code> reverses the gradient and grows with <code>transform: scale(1.1)</code>.</li><li><strong>Scope your selectors:</strong> <code>.Hero img</code> only targets the images inside the hero. A bare <code>img { ... }</code> rule would make <em>every</em> image of the site full-screen, and each other component would have to undo it.</li><li><code>.Hero_Small</code> is a shorter (70vh) variant. The demo pages do not use it: to use it, also make the image inside 70vh high, otherwise the 100vh image overflows the box.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>Slider.css</code> stacks the slides on top of each other and places the two arrows at the bottom corners:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Hero {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  margin: 0px;
+}
+
+.Slider {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  border: none;
+  margin: 0px;
+}
+
+.Slides_Container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.Slide {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  transition: 1s;
+  inset: 0;
+}
+
+.Slide &gt; img {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.Slide.Animated {
+  -webkit-transition: left 0.3s ease-in;
+  transition: left 0.3s ease-in;
+}
+
+.Slides_Next_Btn,
+.Slides_Previous_Btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  z-index: 900;
+  color: white;
+  background: none;
+  border: none;
+  top: 90%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.Slides_Next_Btn {
+  right: 1rem;
+}
+
+.Slides_Previous_Btn {
+  left: 1rem;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Each <code>.Slide</code> is <code>position: absolute</code> with <code>inset: 0</code> (shorthand for <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> = 0) inside the <code>overflow: hidden</code> container, so only one photo is visible.
+        </p>
+      </div>
+      <div class="Note"><strong>Check:</strong> without JavaScript the slides overlap and you see the last photo (Ghardaia); the arrows do nothing yet. Making them slide is part of <a href="Lab_4.html">Lab 4</a>.</div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">VII. Step 4: the destinations section</h2>
+      <div class="Definitions">
+        <p>
+          Each destination shows two overlapping photos next to a title and a text. Every second item is reversed (text on the other side), which gives a zig-zag layout. Add the section after the hero (the long texts are shortened here, copy them from the demo). Its <code>id</code> lets the footer link directly to it with <code>index.html#Destinations</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section class="Destinations" id="Destinations"&gt;
+    &lt;h1&gt;مختلف الوجهات&lt;/h1&gt;
+    &lt;div class="Destination_Item"&gt;
+        &lt;div class="Destination_Image"&gt;
+            &lt;img src="assets/images/Masjid.jpg" alt="Masjid" /&gt;
+            &lt;img src="assets/images/Masjid2.jpg" alt="Masjid2" /&gt;
+        &lt;/div&gt;
+        &lt;div class="Destination_Text"&gt;
+            &lt;h2&gt;المساجد&lt;/h2&gt;
+            &lt;p&gt;تحتوي الجزائر على العديد من المساجد والجوامع الإسلامية التي تتميز ...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="Destination_Item_Reverse"&gt;
+        &lt;div class="Destination_Image"&gt;
+            &lt;img src="assets/images/City.jpg" alt="City" /&gt;
+            &lt;img src="assets/images/City2.jpg" alt="City2" /&gt;
+        &lt;/div&gt;
+        &lt;div class="Destination_Text"&gt;
+            &lt;h2&gt;المدن&lt;/h2&gt;
+            &lt;p&gt;"تُعد الجزائر من الدول القليلة التي تمتلك مقومات هائلة في قطاع ...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ... a third Destination_Item (Sahara) ... --&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Destinations {
+  margin: 4rem 6rem;
+}
+
+.Destinations h1 {
+  font-size: 3rem;
+  direction: rtl;
+}
+
+.Destinations h2 {
+  font-size: 2rem;
+  direction: rtl;
+}
+
+.Destination_Item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4.5rem;
+}
+
+.Destination_Item_Reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4.5rem;
+}
+
+.Destination_Text {
+  width: 45%;
+  text-align: start;
+  font-size: 1.1rem;
+}
+
+.Destination_Text h2 {
+  direction: rtl;
+  padding-bottom: 1rem;
+}
+
+.Destination_Text p {
+  direction: rtl;
+  text-align: justify;
+}
+
+.Destination_Image {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  z-index: -99;
+}
+
+.Destination_Image img {
+  width: 49%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: -1px 1px 62px -18px rgba(0, 0, 0, 0.19);
+}
+
+.Destination_Image img:nth-child(2) {
+  position: absolute;
+  top: -10%;
+  right: 0;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>.Destination_Item</code> is a flex row: the images take 50% and the text 45% of the width; <code>justify-content: space-between</code> spreads the remaining 5%.</li><li><code>.Destination_Item_Reverse</code> is the same with <code>flex-direction: row-reverse</code>: no need to change the order of the HTML.</li><li>The second photo is <code>position: absolute; top: -10%</code> inside a <code>position: relative</code> container, so it is shifted up and overlaps the first one.</li><li><code>object-fit: cover</code> fills the 350px-high box without distorting the photo (it is cropped instead).</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">VIII. Step 5: the trip cards</h2>
+      <div class="Definitions">
+        <p>
+          The trips are three cards side by side, each with a photo, a title and a text. Add the section after the destinations:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section class="Trip" id="Trips"&gt;
+    &lt;h1&gt;رحلات&lt;/h1&gt;
+    &lt;div class="Trip_Cards"&gt;
+        &lt;div class="Trip_Card"&gt;
+            &lt;div class="Trip_Image"&gt;
+                &lt;img src="assets/images/Masjid3.jpg" alt="Masjid3" /&gt;
+            &lt;/div&gt;
+            &lt;h4&gt;المساجد&lt;/h4&gt;
+            &lt;p&gt;تحتوي الجزائر على العديد من المساجد والجوامع الإسلامية التي تتميز ...&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;!-- ... two more Trip_Card (cities, Sahara) ... --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Trip {
+  margin: 4rem 6rem;
+  color: #2a2a2a;
+}
+
+.Trip h1 {
+  font-size: 3rem;
+  direction: rtl;
+}
+
+.Trip_Cards {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.Trip_Card {
+  width: 32%;
+  text-align: start;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+  cursor: pointer;
+  padding: 1rem 0.8rem;
+}
+
+.Trip_Image {
+  height: 200px;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.Trip_Image img {
+  width: 100%;
+  height: 100%;
+  transition: 0.3s ease-in-out;
+  border-radius: 7px;
+}
+
+.Trip_Image:hover img {
+  transform: scale(1.3);
+}
+
+.Trip_Card h4 {
+  font-size: 1.3rem;
+  padding: 0.9rem 0 0.2rem;
+  direction: rtl;
+}
+
+.Trip_Card p {
+  text-align: justify;
+  direction: rtl;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>The cards are flex items of <code>width: 32%</code>: three cards use 96% and <code>space-between</code> distributes the rest as gaps.</li><li><code>box-shadow</code> and <code>border-radius</code> give the &quot;card&quot; look.</li><li><strong>Zoom on hover:</strong> <code>.Trip_Image</code> has a fixed height and <code>overflow: hidden</code>; on hover the image grows with <code>transform: scale(1.3)</code> but anything outside the frame is hidden. The <code>transition</code> on the image animates the zoom.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Try:</strong> remove <code>overflow: hidden</code> from <code>.Trip_Image</code> and hover a card to see why it is needed.</div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">IX. Step 6: why choose us</h2>
+      <div class="Definitions">
+        <p>
+          The last section of the home page lists four advantages of the agency, each with an icon, a title and a sentence. Here is the first one; the three others have the same structure:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section class="Features"&gt;
+    &lt;h1&gt;لماذا تختارنا؟&lt;/h1&gt;
+    &lt;div class="Features_Grid"&gt;
+        &lt;div class="Feature"&gt;
+            &lt;i class="fa-solid fa-map-location-dot"&gt;&lt;/i&gt;
+            &lt;h3&gt;مرشدون محليون&lt;/h3&gt;
+            &lt;p&gt;مرشدون من أبناء المنطقة يعرفون تاريخها وأسرارها ويرافقونكم طوال الرحلة.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;!-- ... three more Feature ... --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Features {
+  margin: 4rem 6rem;
+  color: #2a2a2a;
+}
+
+.Features h1 {
+  font-size: 3rem;
+  direction: rtl;
+}
+
+.Features_Grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  direction: rtl;
+}
+
+.Feature {
+  padding: 2rem 1.5rem;
+  border-radius: 7px;
+  text-align: center;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+  transition: transform 0.3s ease-in-out;
+}
+
+.Feature:hover {
+  transform: translateY(-8px);
+}
+
+.Feature i {
+  font-size: 2.5rem;
+  color: #01959a;
+  margin-bottom: 1rem;
+}
+
+.Feature h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.Feature p {
+  color: #555;
+  line-height: 1.7;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>This time the cards are placed with a <strong>grid</strong>: <code>repeat(auto-fit, minmax(220px, 1fr))</code> creates as many columns of at least 220px as fit in the width, and shares the rest equally. Compare with the fixed <code>32%</code> of the trip cards.</li><li><code>direction: rtl</code> on the grid fills it from the right, so the first card is on the right.</li><li>On hover, <code>transform: translateY(-8px)</code> lifts the card; the <code>transition</code> makes the movement smooth.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_7">
+      <h2 class="Section_Title">X. Step 7: the footer</h2>
+      <div class="Definitions">
+        <p>
+          The footer has a top row (site name and social icons), a bottom row of link columns, and a copyright line. Replace the <code>&lt;footer&gt;</code> of the skeleton with (only the first column is shown; the others list the destinations, the contact details and the opening hours):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;footer&gt;
+    &lt;div class="Footer"&gt;
+        &lt;div class="Footer_Top"&gt;
+            &lt;div&gt;
+                &lt;h1&gt;سياحة&lt;/h1&gt;
+                &lt;p&gt;اكتشف جمال الجزائر معنا&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+                &lt;a href="https://www.facebook.com/" aria-label="Facebook"&gt;
+                    &lt;i class="fa-brands fa-square-facebook"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+                &lt;a href="https://x.com/" aria-label="X"&gt;
+                    &lt;i class="fa-brands fa-square-x-twitter"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+                &lt;a href="https://www.instagram.com/" aria-label="Instagram"&gt;
+                    &lt;i class="fa-brands fa-square-instagram"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+                &lt;a href="https://www.youtube.com/" aria-label="YouTube"&gt;
+                    &lt;i class="fa-brands fa-square-youtube"&gt;&lt;/i&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="Footer_Buttom"&gt;
+            &lt;div&gt;
+                &lt;h4&gt;روابط سريعة&lt;/h4&gt;
+                &lt;a href="index.html"&gt;الرئيسية&lt;/a&gt;
+                &lt;a href="Services.html"&gt;جميع الخدمات&lt;/a&gt;
+                &lt;a href="About_Us.html"&gt;من نحن؟&lt;/a&gt;
+                &lt;a href="Contact_Us.html"&gt;إتصل بنا&lt;/a&gt;
+            &lt;/div&gt;
+            &lt;!-- ... three more columns ... --&gt;
+        &lt;/div&gt;
+        &lt;p class="Footer_Copyright"&gt;© 2024 سياحة. جميع الحقوق محفوظة.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Footer {
+  padding: 4rem 6rem;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.Footer_Top {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  text-align: start;
+  flex-wrap: wrap;
+}
+
+.Footer_Top h1 {
+  direction: rtl;
+}
+
+.Footer_Top i {
+  color: #fff;
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.Footer_Top i:hover {
+  color: #01959a;
+  cursor: pointer;
+}
+
+.Footer_Buttom {
+  padding: 2rem;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  text-align: start;
+  flex-wrap: wrap;
+}
+
+.Footer_Buttom div {
+  display: flex;
+  flex-direction: column;
+}
+
+.Footer_Buttom h4 {
+  font-size: 1.3rem;
+  padding: 1rem 0 0.8rem 0;
+  direction: rtl;
+}
+
+.Footer_Buttom a {
+  text-decoration: none;
+  color: #fafafa;
+  padding-bottom: 0.4rem;
+  font-size: 1.1rem;
+  direction: rtl;
+}
+
+.Footer_Buttom p {
+  color: #fafafa;
+  padding-bottom: 0.4rem;
+  font-size: 1.1rem;
+  direction: rtl;
+}
+
+.Footer_Buttom a:hover {
+  color: #01959a;
+}
+
+.Footer_Copyright {
+  border-top: 1px solid #333;
+  padding-top: 1.5rem;
+  text-align: center;
+  color: #aaa;
+  direction: rtl;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Both rows are flex containers with <code>flex-wrap: wrap</code>; <code>row-reverse</code> puts the first column on the right. Each column is itself a vertical flex container (<code>flex-direction: column</code>) so that the links are stacked.</li><li>Links can do more than open pages: <code>href="tel:+213..."</code> starts a call on a phone and <code>href="mailto:..."</code> opens the mail application.</li><li>A phone number is written left to right even in Arabic text: the demo wraps it in <code>&lt;span dir="ltr"&gt;</code>, otherwise the <code>+</code> ends up at the wrong end.</li><li><code>aria-label</code> gives a name to the icon-only social links for screen readers.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          Your home page is now complete: compare it with the <a href="SRC/Labs/Lab_2/Lab_2_Page.html" target="_blank" rel="noopener">demo</a>.
+        </p>
+      </div>
+    </section>
+    <section id="Step_8">
+      <h2 class="Section_Title">XI. Step 8: the other pages</h2>
+      <div class="Definitions">
+        <p>
+          The other pages reuse the navigation bar (with the <code>Active</code> class on their own link), the hero and the footer: copy them from <code>index.html</code> and link only the stylesheets each page needs.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">1. Services</h3>
+      <div class="Definitions">
+        <p>
+          <code>Services.html</code> shows six service cards, followed by the trips section of Step 5 (with <code>id="Trips"</code>). Each card ends with a price:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section class="Services"&gt;
+    &lt;h1&gt;جميع الخدمات&lt;/h1&gt;
+    &lt;p class="Services_Intro"&gt;نرافقكم في كل مراحل رحلتكم، من الحجز إلى العودة.&lt;/p&gt;
+    &lt;div class="Services_Grid"&gt;
+        &lt;div class="Service_Card"&gt;
+            &lt;i class="fa-solid fa-route"&gt;&lt;/i&gt;
+            &lt;h3&gt;رحلات منظمة&lt;/h3&gt;
+            &lt;p&gt;برامج جاهزة لاكتشاف المدن الساحلية والمواقع الأثرية مع مرشد محلي.&lt;/p&gt;
+            &lt;span class="Service_Price"&gt;ابتداءً من 15 000 دج&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;!-- ... five more Service_Card ... --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Services {
+  margin: 4rem 6rem;
+  color: #2a2a2a;
+}
+
+.Services h1 {
+  font-size: 3rem;
+  direction: rtl;
+}
+
+.Services_Intro {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  color: #555;
+  direction: rtl;
+}
+
+.Services_Grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  direction: rtl;
+}
+
+.Service_Card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 2rem;
+  border-top: 4px solid #01959a;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+}
+
+.Service_Card i {
+  font-size: 2rem;
+  color: #01959a;
+}
+
+.Service_Card h3 {
+  font-size: 1.3rem;
+}
+
+.Service_Card p {
+  flex-grow: 1;
+  color: #555;
+  line-height: 1.7;
+}
+
+.Service_Price {
+  font-weight: 700;
+  color: #027b92;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Each card is a vertical flex container. <code>flex-grow: 1</code> on the paragraph makes it take the free space, so the prices of a row stay aligned at the bottom even when the texts have different lengths. The coloured <code>border-top</code> is a simple accent.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">2. About us</h3>
+      <div class="Definitions">
+        <p>
+          The same hero as the home page (a single photo instead of the slider) followed by the agency's story, its values and its team:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section id="Hero_ID"&gt;
+    &lt;div class="Hero"&gt;
+        &lt;img src="assets/images/Oran.jpg" alt="وهران" /&gt;
+    &lt;/div&gt;
+    &lt;div class="Hero_Text"&gt;
+        &lt;h1&gt;مرحبا بكم في موقعنا&lt;/h1&gt;
+        &lt;p&gt;نحن نقدم لكم أفضل الخدمات&lt;/p&gt;
+        &lt;a href="Contact_Us.html" class="Show" id="Contact_Us_Btn_ID"&gt;تواصل معنا&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;div class="About_Us_Container"&gt;
+    &lt;h1&gt;من نحن؟&lt;/h1&gt;
+    &lt;p&gt;
+        سياحة وكالة أسفار جزائرية تأسست سنة 2015 بهدف التعريف بثراء الجزائر الطبيعي والثقافي. ننظم كل سنة
+        عشرات الرحلات إلى المدن الساحلية والهضاب العليا والصحراء، لفائدة العائلات والطلبة والسياح الأجانب.
+    &lt;/p&gt;
+    &lt;h1&gt;رسالتنا&lt;/h1&gt;
+    &lt;p&gt;
+        أن نجعل اكتشاف الجزائر سهلاً وممتعاً وفي متناول الجميع، مع احترام البيئة ودعم الحرفيين والمرشدين
+        المحليين في كل منطقة نزورها.
+    &lt;/p&gt;
+    &lt;h1&gt;قيمنا&lt;/h1&gt;
+    &lt;ul&gt;
+        &lt;li&gt;الأمانة: أسعار واضحة ومعلومات صادقة.&lt;/li&gt;
+        &lt;li&gt;الجودة: شركاء مختارون بعناية في النقل والإقامة.&lt;/li&gt;
+        &lt;li&gt;الاحترام: احترام السكان المحليين وتقاليدهم وطبيعتهم.&lt;/li&gt;
+        &lt;li&gt;الإصغاء: نصمم كل رحلة حسب رغبات زبائننا.&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;!--Team part starts here--&gt;
+&lt;section class="Team"&gt;
+    &lt;h1&gt;فريقنا&lt;/h1&gt;
+    &lt;div class="Team_Grid"&gt;
+        &lt;div class="Team_Card"&gt;
+            &lt;img src="assets/images/User_A.png" alt="أمين" /&gt;
+            &lt;h3&gt;أمين بن علي&lt;/h3&gt;
+            &lt;p&gt;المدير العام&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;!-- ... three more Team_Card ... --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.About_Us_Container {
+  margin: 4rem 6rem;
+  text-align: start;
+}
+
+.About_Us_Container h1 {
+  padding-bottom: 1rem;
+  direction: rtl;
+}
+
+.About_Us_Container p {
+  padding-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  direction: rtl;
+}
+
+.About_Us_Container ul {
+  direction: rtl;
+  padding: 0 1.5rem 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.9;
+}
+
+.About_Us_Container li::marker {
+  color: #01959a;
+}
+
+.Team {
+  margin: 0 6rem 4rem;
+  color: #2a2a2a;
+}
+
+.Team h1 {
+  direction: rtl;
+  padding-bottom: 2rem;
+}
+
+.Team_Grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  direction: rtl;
+}
+
+.Team_Card {
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+}
+
+.Team_Card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.Team_Card h3 {
+  font-size: 1.2rem;
+}
+
+.Team_Card p {
+  color: #01959a;
+  font-weight: 600;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The team photos are made round with <code>border-radius: 50%</code>, and <code>object-fit: cover</code> keeps them from being distorted. <code>li::marker</code> colours the bullets of the list.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">3. Contact us</h3>
+      <div class="Definitions">
+        <p>
+          Contact details on one side, a form on the other, and a map below:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;div class="Contact_Us_Container"&gt;
+    &lt;h1&gt;إتصل بنا&lt;/h1&gt;
+    &lt;div class="Contact_Layout"&gt;
+        &lt;div class="Contact_Info"&gt;
+            &lt;div class="Contact_Info_Item"&gt;
+                &lt;i class="fa-solid fa-location-dot"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                    &lt;h4&gt;العنوان&lt;/h4&gt;
+                    &lt;p&gt;شارع ديدوش مراد، الجزائر العاصمة&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="Contact_Info_Item"&gt;
+                &lt;i class="fa-solid fa-phone"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                    &lt;h4&gt;الهاتف&lt;/h4&gt;
+                    &lt;a href="tel:+213555000000"&gt;&lt;span dir="ltr"&gt;+213 555 00 00 00&lt;/span&gt;&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="Contact_Info_Item"&gt;
+                &lt;i class="fa-solid fa-envelope"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                    &lt;h4&gt;البريد الإلكتروني&lt;/h4&gt;
+                    &lt;a href="mailto:contact@syaha.example"&gt;contact@syaha.example&lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="Contact_Info_Item"&gt;
+                &lt;i class="fa-solid fa-clock"&gt;&lt;/i&gt;
+                &lt;div&gt;
+                    &lt;h4&gt;ساعات العمل&lt;/h4&gt;
+                    &lt;p&gt;الأحد - الخميس: 08:00 - 17:00&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;form action="#" method="post"&gt;
+            &lt;label for="Name"&gt;الإسم الكامل&lt;/label&gt;
+            &lt;input type="text" id="Name" name="name" autocomplete="name" required /&gt;
+            &lt;label for="Email"&gt;البريد الإلكتروني&lt;/label&gt;
+            &lt;input type="email" id="Email" name="email" autocomplete="email" required /&gt;
+            &lt;label for="Phone"&gt;رقم الهاتف&lt;/label&gt;
+            &lt;input type="tel" id="Phone" name="phone" autocomplete="tel" placeholder="05XXXXXXXX"
+                pattern="0[5-7][0-9]{8}" /&gt;
+            &lt;label for="Subject"&gt;الموضوع&lt;/label&gt;
+            &lt;select id="Subject" name="subject" required&gt;
+                &lt;option value=""&gt;اختر موضوعاً&lt;/option&gt;
+                &lt;option value="info"&gt;معلومات عامة&lt;/option&gt;
+                &lt;option value="booking"&gt;حجز رحلة&lt;/option&gt;
+                &lt;option value="custom"&gt;رحلة حسب الطلب&lt;/option&gt;
+                &lt;option value="other"&gt;أخرى&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;label for="Message"&gt;الرسالة&lt;/label&gt;
+            &lt;textarea id="Message" name="message" rows="5" required&gt;&lt;/textarea&gt;
+            &lt;button type="submit"&gt;إرسال&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+    &lt;iframe class="Contact_Map" title="موقع الوكالة على الخريطة" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=3.03%2C36.75%2C3.07%2C36.78&amp;amp;layer=mapnik&amp;amp;marker=36.765%2C3.05"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Contact_Us_Container {
+  margin: 4rem 6rem;
+  color: #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Contact_Us_Container form {
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+}
+
+.Contact_Us_Container input {
+  height: 3rem;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.3px;
+  border: 1px solid #2a2a2a;
+  direction: rtl;
+}
+
+.Contact_Us_Container textarea {
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 0.3px;
+  border: 1px solid #2a2a2a;
+  direction: rtl;
+}
+
+.Contact_Us_Container button {
+  width: 50%;
+  margin: auto;
+  height: 3rem;
+  border-radius: 0.3px;
+  border: 1px solid #2a2a2a;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.Contact_Us_Container label {
+  direction: rtl;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.Contact_Us_Container select {
+  height: 3rem;
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+  border: 1px solid #2a2a2a;
+  background-color: white;
+  direction: rtl;
+  font-size: 1rem;
+}
+
+.Contact_Layout {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  gap: 3rem;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.Contact_Layout form {
+  flex: 1.5;
+  width: auto;
+  margin: 0;
+  padding-top: 0;
+}
+
+.Contact_Info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  direction: rtl;
+}
+
+.Contact_Info_Item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+}
+
+.Contact_Info_Item i {
+  width: 2rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #01959a;
+}
+
+.Contact_Info_Item a,
+.Contact_Info_Item p {
+  color: #555;
+  text-decoration: none;
+}
+
+.Contact_Map {
+  width: 100%;
+  height: 350px;
+  margin-top: 3rem;
+  border: 0;
+  border-radius: 7px;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Every field has a <code>&lt;label for="..."&gt;</code> that matches its <code>id</code>: clicking the label focuses the field, and screen readers announce it.</li><li>The input types (<code>email</code>, <code>tel</code>) show the right keyboard on phones, and <code>required</code> and <code>pattern</code> give a first validation. You will add JavaScript validation in <a href="Lab_4.html">Lab 4</a> and server-side validation in <a href="Lab_6.html">Lab 6</a>.</li><li><code>.Contact_Layout</code> is a flex row with <code>flex: 1</code> and <code>flex: 1.5</code>: the form gets one and a half times the width of the details.</li><li>The map is an <code>&lt;iframe&gt;</code> from OpenStreetMap; <code>loading="lazy"</code> only loads it when the visitor scrolls near it.</li></ul>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">4. Page not found</h3>
+      <div class="Definitions">
+        <p>
+          <code>NotFound.html</code> keeps the navigation bar and the footer and shows a big message with a way back:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;main&gt;
+    &lt;section class="Not_Found"&gt;
+        &lt;span class="Not_Found_Code"&gt;404&lt;/span&gt;
+        &lt;h1&gt;لم يتم العثور على هذه الصفحة&lt;/h1&gt;
+        &lt;p&gt;ربما تم نقل الصفحة أو حذفها، أو أن الرابط غير صحيح.&lt;/p&gt;
+        &lt;a href="index.html" class="Not_Found_Btn"&gt;العودة إلى الرئيسية&lt;/a&gt;
+    &lt;/section&gt;
+&lt;/main&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Not_Found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  direction: rtl;
+  background-image: linear-gradient(160deg, #e6fbf6 0%, #ffffff 100%);
+}
+
+.Not_Found_Code {
+  font-size: 9rem;
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.Not_Found h1 {
+  font-size: 2rem;
+}
+
+.Not_Found p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.Not_Found_Btn {
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  transition: transform 0.3s ease-in-out;
+}
+
+.Not_Found_Btn:hover {
+  transform: scale(1.05);
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The gradient text is a <code>linear-gradient</code> background clipped to the letters with <code>background-clip: text</code> and a <code>transparent</code> text color. To make Apache show this page for every unknown URL of your site, add the line <code>ErrorDocument 404 /your-project-name/NotFound.html</code> to a <code>.htaccess</code> file at the root of the project.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">5. Login</h3>
+      <div class="Definitions">
+        <p>
+          <code>Login.html</code> has no navigation bar: two cards (account login and page login) are centered on a gradient background, with a link back to the home page. Here is the first card:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;section class="Logins"&gt;
+    &lt;a href="index.html" class="Back_Home"&gt;&amp;larr; Back to home&lt;/a&gt;
+    &lt;div class="Account_Login"&gt;
+        &lt;form class="Form" name="Account_Login" method="POST" autocomplete="off"&gt;
+            &lt;h1&gt;Account login&lt;/h1&gt;
+            &lt;input type="email" placeholder="Enter your email or phone number" name="mostakhdim"
+                class="Email_Password" required&gt;
+            &lt;input type="password" placeholder="Enter your password" name="kalimat_sir" class="Email_Password"
+                required&gt;
+            &lt;button type="submit" class="LoginBtn" id="Account_Login_Btn_ID"
+                name="AccountLogin_submit"&gt;Login&lt;/button&gt;
+        &lt;/form&gt;
+        &lt;a href="#" class="Forgot_Password"&gt;Forgot your password?&lt;/a&gt;
+        &lt;a href="#" class="CreateAccountBtn"&gt;Create new account&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;!-- ... the same card for the page login ... --&gt;
+&lt;/section&gt;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Logins {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10vh 10vw;
+  margin: 0;
+  gap: 10vw;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+}
+
+.Account_Login,
+.Page_Login {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  box-shadow: 10px 10px 20px #888888;
+  border-radius: 30px;
+  align-items: center;
+  background-color: #f2f2f2;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.Form &gt; h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #03632e;
+  margin: 10px;
+}
+
+.Email_Password {
+  outline: none;
+  border: none;
+  height: 30px;
+  width: 80%;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid rgb(9, 232, 9);
+  background: transparent;
+  text-align: center;
+  display: block;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.LoginBtn {
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 80%;
+  background-color: #01959a;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 25px;
+  padding: 1px 20px;
+  margin-top: 10px;
+}
+
+.Forgot_Password {
+  text-decoration: none;
+  color: #03632e;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.CreateAccountBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  height: 30px;
+  width: 90%;
+  background-color: #01959a;
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 25px;
+  padding: 1px 20px;
+  margin-top: 10px;
+}
+
+.CreateAccountBtn:hover,
+.LoginBtn:hover {
+  background-image: linear-gradient(to bottom right, #80ffdb 1%, #01959a 99%);
+  color: white;
+}
+
+.Create_Account_Btn {
+  text-decoration: none;
+  color: white;
+}
+
+.Dialog {
+  display: none;
+}
+
+.Dialog_Backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.Close_Btn {
+  position: absolute;
+  top: 0em;
+  right: 0.3em;
+  padding: 0.3em;
+  cursor: pointer;
+}
+
+.Back_Home {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.Back_Home:hover {
+  text-decoration: underline;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>.Logins</code> takes the full height of the screen and centers the two cards with flexbox (<code>justify-content</code> and <code>align-items: center</code>, <code>gap: 10vw</code> between them). The inputs only keep a bottom border (<code>border: none</code> then <code>border-bottom</code>). &quot;Create new account&quot; leads to another page, so it is a link styled as a button: a <code>&lt;button&gt;</code> is for actions, a link for navigation.
+        </p>
+      </div>
+      <div class="Note"><strong>Note:</strong> the <code>.Dialog</code> rules at the end of <code>Logins.css</code> are used later to open the login form in a dialog box; you can leave them for now.</div>
+    </section>
+    <section id="Step_9">
+      <h2 class="Section_Title">XII. Step 9: reusable components with PHP</h2>
+      <div class="Definitions">
+        <p>
+          Copying the same navigation bar and footer into six pages has a cost: one change must be repeated six times. As soon as you use PHP (we are already on XAMPP), you can write each shared component once and <strong>include</strong> it. Rename your pages <code>.php</code> and create a <code>components</code> folder:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+syaha/
+├── index.php
+├── Services.php
+├── ...
+├── components/
+│   ├── header.php      &lt;head&gt; + navigation bar
+│   └── footer.php      footer + &lt;/body&gt;&lt;/html&gt;
+└── assets/
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>components/footer.php</code> contains the footer of Step 7, and <code>components/header.php</code> the beginning of the page up to the navigation bar of Step 2. Each page then contains only what is specific to it:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php include 'components/header.php'; ?&gt;
+    &lt;main&gt;
+        &lt;!-- hero, destinations, trips and features of the home page --&gt;
+    &lt;/main&gt;
+&lt;?php include 'components/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Open <code>http://localhost/your-project-name/index.php</code>: the browser receives the same HTML as before, assembled by the server. Each member can work on their components and pages independently, and an update of a component is visible on every page at once.
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> the stylesheets and the <code>Active</code> link differ from page to page. Set variables such as <code>$styles = ['Trip.css'];</code> and <code>$page = 'services';</code> before the include, and use them in the header. PHP itself is covered from <a href="Introduction_PHP.html">Introduction to PHP</a>.</div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">XIII. Your turn</h2>
+      <div class="Definitions">
+        <div>
+          Apply the same method to your team project:<ol><li>Draw the site map and list the pages of your project (see the template in <a href="Resources.html">Resources</a>).</li><li>For each page, list its components. Components used on several pages (header, footer, cards...) are written once.</li><li>Create the folder structure of Section III and commit it.</li><li>Share the components between the team members; each member creates the HTML and the stylesheet of their components, in a branch.</li><li>Assemble the pages, check them in the browser at <code>http://localhost/...</code>, and validate the HTML with the <a href="https://validator.w3.org/" target="_blank" rel="noopener">W3C validator</a>.</li><li>Commit and push regularly with meaningful messages.</li></ol>
+        </div>
+      </div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>The repository follows a clear structure: pages at the root, <code>assets/css</code>,
+          <code>assets/js</code>, <code>assets/images</code> (and <code>components/</code> if you use PHP includes).</li>
+        <li>All the pages of your project exist with their final HTML structure and desktop styling.</li>
+        <li>One stylesheet per component, linked only by the pages that use it.</li>
+        <li>Shared components (header, footer) are identical on every page, or included with PHP.</li>
+        <li>Images have meaningful <code>alt</code> texts and form fields have labels.</li>
+        <li>Every member has commits for the components they built.</li>
+        <li>Responsiveness is added in <a href="Lab_3.html">Lab 3</a>; together they form the "HTML/CSS" milestone
+          of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
+      </ul>
     </section>
   </main>
   <footer class="Inter_Pages">

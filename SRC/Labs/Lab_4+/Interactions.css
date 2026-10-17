@@ -1,0 +1,380 @@
+/* Styles of the elements created or animated by the JavaScript of the Syaha demo (SRC/Labs/Lab_4+) */
+
+/* --- navigation bar: smaller once the page is scrolled (Scroll_Effects.js) --- */
+.Nav_Bar_Items {
+  transition: height 0.3s ease, top 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Nav_Bar_Items.Scrolled {
+  top: 10px;
+  height: 64px;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* --- slider dots (Image_Slider.js) --- */
+.Slider_Dots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6rem;
+  z-index: 900;
+}
+
+.Slider_Dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 2px solid white;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.Slider_Dot.Active {
+  background-color: white;
+  transform: scale(1.25);
+}
+
+.Slides_Next_Btn:focus-visible,
+.Slides_Previous_Btn:focus-visible,
+.Slider_Dot:focus-visible,
+.Menu_Icon:focus-visible {
+  outline: 3px solid #79fad5;
+  outline-offset: 3px;
+}
+
+/* --- cards appearing on scroll (Scroll_Effects.js) --- */
+.Reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.Reveal.Visible {
+  opacity: 1;
+  transform: none;
+}
+
+.Reveal.Delay_1 {
+  transition-delay: 0.1s;
+}
+
+.Reveal.Delay_2 {
+  transition-delay: 0.2s;
+}
+
+.Reveal.Delay_3 {
+  transition-delay: 0.3s;
+}
+
+/* --- back to top button (Scroll_Effects.js) --- */
+.Back_To_Top {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 950;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.Back_To_Top.Shown {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* --- read more (Read_More.js) --- */
+.Clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--Lines, 6);
+  line-clamp: var(--Lines, 6);
+  overflow: hidden;
+}
+
+.Read_More_Btn {
+  display: block;
+  margin: 0.8rem 0 0 auto;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #01959a;
+  cursor: pointer;
+}
+
+.Read_More_Btn:hover {
+  text-decoration: underline;
+}
+
+/* --- contact form (Contact_Form.js) --- */
+.Contact_Us_Container .Field_Error {
+  min-height: 1.2em;
+  margin: -1.6rem 0 1.2rem;
+  font-size: 0.9rem;
+  color: #c0392b;
+  direction: rtl;
+}
+
+.Contact_Us_Container .Invalid {
+  border-color: #c0392b;
+  outline-color: #c0392b;
+}
+
+.Contact_Us_Container .Valid {
+  border-color: #1b7a3a;
+}
+
+.Contact_Us_Container .Char_Counter {
+  margin: -1.6rem 0 1.2rem;
+  font-size: 0.85rem;
+  color: #777;
+  text-align: left;
+}
+
+.Form_Success:not(:empty) {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+  text-align: center;
+  direction: rtl;
+}
+
+/* --- login form (Login_Form.js) --- */
+.Password_Field {
+  position: relative;
+  width: 80%;
+}
+
+.Password_Field .Email_Password {
+  width: 100%;
+}
+
+.Password_Toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-40%);
+  border: none;
+  background: none;
+  color: #555;
+  cursor: pointer;
+}
+
+.Logins .Invalid {
+  border-bottom-color: #c0392b;
+}
+
+.Login_Message:not(:empty) {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #03632e;
+}
+
+.Login_Message.Error {
+  color: #c0392b;
+}
+
+/* --- favourites (Favourites.js) --- */
+.Trip_Image {
+  position: relative;
+}
+
+.Favourite_Btn {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: #c0392b;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.Favourite_Btn:hover,
+.Favourite_Btn.On {
+  transform: scale(1.12);
+}
+
+.Toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  z-index: 1000;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  color: white;
+  background-color: #2a2a2a;
+  direction: rtl;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 1rem);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.Toast.Shown {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* --- booking dialog (Booking.js) --- */
+.Book_Btn {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  cursor: pointer;
+}
+
+.Book_Btn:hover {
+  background-image: linear-gradient(to left, #79fad5, #027b92);
+}
+
+.Booking_Dialog {
+  /* the reset of Lab_2_Page.css (* { margin: 0 }) removes the margin: auto that centers a modal dialog */
+  margin: auto;
+  width: min(480px, 92vw);
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.Booking_Dialog[open] {
+  animation: Dialog_In 0.25s ease-out;
+}
+
+@keyframes Dialog_In {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.Booking_Dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.Booking_Form {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  direction: rtl;
+}
+
+.Booking_Form h2 {
+  margin-bottom: 1rem;
+  color: #027b92;
+}
+
+.Booking_Form label {
+  margin: 0.8rem 0 0.3rem;
+  font-weight: 600;
+}
+
+.Booking_Form input,
+.Booking_Form select {
+  height: 2.6rem;
+  padding: 0 0.8rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* :user-invalid only applies after the visitor has interacted with the field */
+.Booking_Form :user-invalid {
+  border-color: #c0392b;
+  background-color: #fdf1f0;
+}
+
+.Booking_Total {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.Booking_Total output {
+  color: #027b92;
+}
+
+.Booking_Buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.Booking_Buttons button {
+  flex: 1;
+  height: 2.8rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.Booking_Confirm {
+  color: white;
+  background-color: #01959a;
+}
+
+.Booking_Cancel {
+  color: #2a2a2a;
+  background-color: #e5e5e5;
+}
+
+.Booking_Message:not(:empty) {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 6px;
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Nav_Bar_Items,
+  .Back_To_Top,
+  .Slider_Dot,
+  .Toast,
+  .Favourite_Btn {
+    transition: none;
+  }
+
+  .Booking_Dialog[open] {
+    animation: none;
+  }
+}

@@ -10,12 +10,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 8: PHP forms and server-side validation</title>
+  <title>Lab 6: PHP forms and server-side validation</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 8: PHP forms and server-side validation</h1>
+    <h1 class="Title">Lab 6: PHP forms and server-side validation</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
@@ -23,7 +23,7 @@
           In this lab you will receive form data in PHP, validate every field on the server, and redisplay the form
           with the user's values and an error message next to each wrong field. <br>
           You will then apply the Post/Redirect/Get pattern, handle file uploads securely, and insert the validated
-          data in the database with PDO (<a href="Lab_6.html">Lab 6</a>). <br>
+          data in the database with PDO (<a href="Lab_5.html">Lab 5</a>). <br>
           Useful lectures: <a href="Introduction_PHP.html">Introduction to PHP</a> (strings, arrays, functions) and
           <a href="Security.html">Security</a> (SQL injection, XSS, filesystem security). At the end of the lab, every
           form of your project must be validated on the server.
@@ -49,7 +49,7 @@
           So the rule is: <strong>JavaScript validation is optional comfort, server-side validation is
           mandatory</strong>. Keep both, with the same rules. And remember the two halves of input/output security:
           <em>validate the input</em> (this lab), <em>escape the output</em> with <code>htmlspecialchars()</code> and
-          use prepared statements for the database (Lab 6).
+          use prepared statements for the database (Lab 5).
         </p>
       </div>
       <div class="Code_Block">
@@ -234,7 +234,7 @@ if (!array_key_exists($accountType, ACCOUNT_TYPES)) {
         </ol>
         <p>
           We build a complete <code>register.php</code> for this <code>users</code> table. Create it in your
-          <code>shop_lab</code> database from Lab 6:
+          <code>shop_lab</code> database from Lab 5:
         </p>
       </div>
       <div class="Code_Block">
@@ -264,9 +264,9 @@ CREATE TABLE users (
 // register.php
 declare(strict_types=1);
 
-require_once __DIR__ . '/includes/db.php';   // getConnection() from Lab 6
+require_once __DIR__ . '/includes/db.php';   // getConnection() from Lab 5
 
-// If you already include includes/helpers.php (Lab 6), do not declare e() again here.
+// If you already include includes/helpers.php (Lab 5), do not declare e() again here.
 
 const ACCOUNT_TYPES = ['customer' =&gt; 'Customer', 'seller' =&gt; 'Seller'];
 
@@ -442,7 +442,7 @@ $registered = isset($_GET['registered']);
       <h2 class="Section_Title">V. Saving with PDO and the Post/Redirect/Get pattern</h2>
       <div class="Definitions">
         <p>
-          When the data is valid, we insert it with a prepared statement (Lab 6). Then we must not display the result
+          When the data is valid, we insert it with a prepared statement (Lab 5). Then we must not display the result
           page directly: if the user refreshes it, the browser re-sends the <code>POST</code> request ("Confirm form
           resubmission") and the account would be created twice. The <strong>Post/Redirect/Get</strong> (PRG) pattern
           avoids this:
@@ -495,7 +495,7 @@ $registered = isset($_GET['registered']);
       <div class="Note"><strong>Important:</strong> <code>header()</code> only works if nothing has been sent to the
         browser yet, not even a space or an empty line before <code>&lt;?php</code>. That is why all the processing
         is at the top of the file and the HTML at the bottom. Always write <code>exit;</code> after a redirect,
-        otherwise the rest of the script keeps running. In <a href="Lab_9.html">Lab 9</a> you will replace
+        otherwise the rest of the script keeps running. In <a href="Lab_7.html">Lab 7</a> you will replace
         <code>?registered=1</code> by a "flash message" stored in the session.</div>
     </section>
     <section id="File_Upload">
@@ -663,7 +663,7 @@ Options -ExecCGI -Indexes
           <li>Now apply the same approach to <strong>every form of your project</strong>: list each field with its
             rules (required, type, length, format, allowed values), write the validation in PHP, and display the
             errors with sticky values. Keep your JavaScript validation from Lab 4 with the same rules.</li>
-          <li>Use PRG after every successful POST, and use the PDO functions written in Lab 6 to save the data.</li>
+          <li>Use PRG after every successful POST, and use the PDO functions written in Lab 5 to save the data.</li>
           <li>Commit and push your work to your team repository.</li>
         </ol>
       </div>
@@ -687,12 +687,12 @@ Options -ExecCGI -Indexes
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_7.html" class="Arrow">
+    <a href="Lab_5.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 7: JavaScript scripting CSS</h1>
+      <h1>Lab 5: MySQL and PDO</h1>
     </a>
-    <a href="Lab_9.html" class="Arrow">
-      <h1>Lab 9: Sessions and cookies</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_7.html" class="Arrow">
+      <h1>Lab 7: Sessions and cookies</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

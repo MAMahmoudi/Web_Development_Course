@@ -1,0 +1,13 @@
+@media screen and (max-width: 555px) {
+  .Not_Found_Code {
+    font-size: 6rem;
+  }
+
+  .Not_Found h1 {
+    font-size: 1.5rem;
+  }
+
+  .Not_Found p {
+    font-size: 1rem;
+  }
+}

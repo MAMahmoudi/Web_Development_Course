@@ -24,7 +24,7 @@
 
 .Slide {
   position: absolute;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   text-align: center;
   transition: 1s;
@@ -33,7 +33,7 @@
 
 .Slide > img {
   display: block;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   object-fit: cover;
 }
@@ -67,10 +67,4 @@
 
 .Slides_Previous_Btn {
   left: 1rem;
-}
-
-.Slides_Previous_Btn:hover .fa-solid .fa-envelope {
-}
-
-.Slides_Next_Btn:hover .fa-solid .fa-envelope {
 }

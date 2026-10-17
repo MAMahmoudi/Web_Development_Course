@@ -1,0 +1,19 @@
+@media screen and (max-width: 850px) {
+  .Contact_Us_Container {
+    margin: 4rem 2rem;
+  }
+
+  /* contact details above the form */
+  .Contact_Layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .Contact_Layout form {
+    width: 100%;
+  }
+
+  .Contact_Map {
+    height: 250px;
+  }
+}

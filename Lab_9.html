@@ -10,12 +10,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 11: AJAX and JSON APIs</title>
+  <title>Lab 9: AJAX and JSON APIs</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 11: AJAX and JSON APIs</h1>
+    <h1 class="Title">Lab 9: AJAX and JSON APIs</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
@@ -27,7 +27,7 @@
           loading indicators, and build a live search and a delete-without-reload. <br>
           This work counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines
             table</a>. Review the lectures <a href="AJAX.html">Introduction to AJAX</a> and
-          <a href="jQuery.html">jQuery</a> (jQuery AJAX part), and make sure your PDO connection from Lab 6 works.
+          <a href="jQuery.html">jQuery</a> (jQuery AJAX part), and make sure your PDO connection from Lab 5 works.
         </p>
       </div>
     </section>
@@ -42,7 +42,7 @@
           2. JavaScript calls <code>fetch("api/products.php")</code>. The page stays on screen. <br>
           3. Apache runs the PHP file, which queries MySQL with PDO. <br>
           4. PHP answers with a status code (200, 404, 500...) and a JSON body, never with HTML. <br>
-          5. JavaScript reads the JSON and updates the DOM (Lab 7 techniques). <br><br>
+          5. JavaScript reads the JSON and updates the DOM (Lab 4 techniques). <br><br>
           In this lab we use a <code>products</code> service as an example. Replace it with the services of your own
           project. A suggested structure:
         </p>
@@ -51,7 +51,7 @@
         <pre class="prettyprint lang-none">
 your_project/
 ├── config/
-│   └── db.php            (PDO connection, Lab 6)
+│   └── db.php            (PDO connection, Lab 5)
 ├── api/
 │   └── products.php      (JSON endpoint: list/search, create, delete)
 ├── assets/JS/
@@ -94,7 +94,7 @@ INSERT INTO products (name, price, stock) VALUES
           character makes the JSON invalid.
         </p>
       </div>
-      <h3 class="Sub_Section_Title">The connection (from Lab 6)</h3>
+      <h3 class="Sub_Section_Title">The connection (from Lab 5)</h3>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
@@ -372,7 +372,7 @@ loadProducts();
       <div class="Note"><strong>Security:</strong> the product names come from users. Putting them in
         <code>innerHTML</code> would let someone save <code>&lt;img src=x onerror=alert(1)&gt;</code> as a name and
         run JavaScript in other users' browsers (XSS). <code>textContent</code> always displays text. See
-        <a href="Lab_12.html">Lab 12</a> and the <a href="Security.html">Security</a> lecture.</div>
+        <a href="Lab_10.html">Lab 10</a> and the <a href="Security.html">Security</a> lecture.</div>
       <div class="Definitions">
         <p>For comparison, the same request written with <code>.then()</code> instead of <code>await</code>:</p>
       </div>
@@ -605,7 +605,7 @@ searchInput.addEventListener("input", () =&gt; {
         <pre class="prettyprint lang-php">
 if ($method === 'DELETE') {
     // (In your project, check here that the user is logged in and allowed to delete,
-    //  e.g. with $_SESSION, and answer 401/403 otherwise. See Lab 12.)
+    //  e.g. with $_SESSION, and answer 401/403 otherwise. See Lab 10.)
     $input = json_decode(file_get_contents('php://input'), true);
     $id = is_array($input) ? filter_var($input['id'] ?? null, FILTER_VALIDATE_INT) : false;
     if ($id === false) {
@@ -631,7 +631,7 @@ tbody.addEventListener("click", async (event) =&gt; {
 
   const row = btn.closest("tr");
   const name = row.cells[0].textContent;
-  if (!confirm(`Delete "${name}"?`)) return; // or use the &lt;dialog&gt; of Lab 7
+  if (!confirm(`Delete "${name}"?`)) return; // or use the &lt;dialog&gt; of Lab 4
 
   btn.disabled = true;
   row.classList.add("Removing"); // visual feedback while waiting
@@ -757,10 +757,10 @@ $.post("api/products.php", $("#Add_Product_Form").serialize()).done(() =&gt; loa
             the form.</li>
           <li>Add a live search with debounce on one of your lists.</li>
           <li>Add a delete (or update) without reload, with a confirmation (the <code>&lt;dialog&gt;</code> of
-            <a href="Lab_7.html">Lab 7</a> is a good choice).</li>
+            <a href="Lab_4.html">Lab 4</a> is a good choice).</li>
           <li>Test the failure cases: stop MySQL in the XAMPP control panel (you must see your error message, not
             a frozen page), and use the "Slow 3G" throttling of DevTools to see your loading indicators.</li>
-          <li>Commit and push: <code>git commit -m "Lab 11: AJAX services"</code> then <code>git push</code>.</li>
+          <li>Commit and push: <code>git commit -m "Lab 9: AJAX services"</code> then <code>git push</code>.</li>
         </ol>
       </div>
     </section>
@@ -783,12 +783,12 @@ $.post("api/products.php", $("#Add_Product_Form").serialize()).done(() =&gt; loa
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_10.html" class="Arrow">
+    <a href="Lab_8.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 10: OOP PHP and MVC</h1>
+      <h1>Lab 8: OOP PHP and MVC</h1>
     </a>
-    <a href="Lab_12.html" class="Arrow">
-      <h1>Lab 12: Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_10.html" class="Arrow">
+      <h1>Lab 10: Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

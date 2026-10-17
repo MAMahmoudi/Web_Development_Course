@@ -1,0 +1,11 @@
+/* the grid already adapts its number of columns (auto-fit):
+   only the margins and the title need to change */
+@media screen and (max-width: 850px) {
+  .Features {
+    margin: 4rem 2rem;
+  }
+
+  .Features h1 {
+    font-size: 2.2rem;
+  }
+}

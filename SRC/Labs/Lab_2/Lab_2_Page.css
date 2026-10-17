@@ -2,6 +2,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Cairo", "Poppins", sans-serif;
   gap: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* leave room for the fixed navigation bar when jumping to #Destinations, #Trips... */
+section {
+  scroll-margin-top: 120px;
 }

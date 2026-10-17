@@ -1,0 +1,46 @@
+.Not_Found {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  direction: rtl;
+  background-image: linear-gradient(160deg, #e6fbf6 0%, #ffffff 100%);
+}
+
+.Not_Found_Code {
+  font-size: 9rem;
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.Not_Found h1 {
+  font-size: 2rem;
+}
+
+.Not_Found p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.Not_Found_Btn {
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  background-image: linear-gradient(to right, #79fad5, #027b92);
+  transition: transform 0.3s ease-in-out;
+}
+
+.Not_Found_Btn:hover {
+  transform: scale(1.05);
+}

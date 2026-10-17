@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,19 @@
     <link rel="stylesheet" href="Lab_2_Page.css">
     <link rel="stylesheet" href="Contact_Us.css">
     <link rel="stylesheet" href="Lab_2_Footer.css">
-    <link rel="stylesheet" href="../Lab_3/Footer_Responsive.css">
-    <link rel="stylesheet" href="../Lab_3/Hero_Responsive.css">
+    <!-- responsive design (Lab 3) -->
     <link rel="stylesheet" href="../Lab_3/Nav_Bar_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/Hero_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/Contact_Us_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/Footer_Responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Syaha</title>
+    <link rel="stylesheet" href="../Lab_4+/Interactions.css">
 </head>
 
 <body>
@@ -27,7 +33,13 @@
             </div>
             <ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID">
                 <li>
-                    <a href="Contact_Us.html" class="Nav_Bar_Menu_Item">
+                    <a href="Login.html" class="Nav_Bar_Menu_Item">
+                        <span>تسجيل الدخول</span>
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="Contact_Us.html" class="Nav_Bar_Menu_Item Active">
                         <span>إتصل بنا</span>
                         <i class="fa-solid fa-envelope"></i>
                     </a>
@@ -56,83 +68,135 @@
     <main>
         <!--Hero part starts here-->
         <section id="Hero_ID">
-            <div class=".Hero">
-                <img src="../../IMAGES/Oran.jpg" alt="Oran.jpg" />
+            <div class="Hero">
+                <img src="../../IMAGES/Oran.jpg" alt="وهران" />
             </div>
             <div class="Hero_Text">
                 <h1>مرحبا بكم في موقعنا</h1>
                 <p>نحن نقدم لكم أفضل الخدمات</p>
-                <a href="#" class="Show" id="Contact_Us_Btn_ID">تواصل معنا</a>
+                <a href="Contact_Us.html" class="Show" id="Contact_Us_Btn_ID">تواصل معنا</a>
             </div>
         </section>
         <!--Hero part ends here-->
         <!--Contact us part starts here-->
         <div class="Contact_Us_Container">
             <h1>إتصل بنا</h1>
-            <form>
-                <input type="text" placeholder="الإسم" />
-                <input type="text" placeholder="البريد الإاكتروني" />
-                <input type="text" placeholder="الموضوع" />
-                <textarea placeholder="الرسالة" rows="4"></textarea>
-                <button type="submit">إرسال</button>
-            </form>
+            <div class="Contact_Layout">
+                <div class="Contact_Info">
+                    <div class="Contact_Info_Item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>العنوان</h4>
+                            <p>شارع ديدوش مراد، الجزائر العاصمة</p>
+                        </div>
+                    </div>
+                    <div class="Contact_Info_Item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>الهاتف</h4>
+                            <a href="tel:+213555000000"><span dir="ltr">+213 555 00 00 00</span></a>
+                        </div>
+                    </div>
+                    <div class="Contact_Info_Item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>البريد الإلكتروني</h4>
+                            <a href="mailto:contact@syaha.example">contact@syaha.example</a>
+                        </div>
+                    </div>
+                    <div class="Contact_Info_Item">
+                        <i class="fa-solid fa-clock"></i>
+                        <div>
+                            <h4>ساعات العمل</h4>
+                            <p>الأحد - الخميس: 08:00 - 17:00</p>
+                        </div>
+                    </div>
+                </div>
+                <form action="#" method="post">
+                    <label for="Name">الإسم الكامل</label>
+                    <input type="text" id="Name" name="name" autocomplete="name" required />
+                    <label for="Email">البريد الإلكتروني</label>
+                    <input type="email" id="Email" name="email" autocomplete="email" required />
+                    <label for="Phone">رقم الهاتف</label>
+                    <input type="tel" id="Phone" name="phone" autocomplete="tel" placeholder="05XXXXXXXX"
+                        pattern="0[5-7][0-9]{8}" />
+                    <label for="Subject">الموضوع</label>
+                    <select id="Subject" name="subject" required>
+                        <option value="">اختر موضوعاً</option>
+                        <option value="info">معلومات عامة</option>
+                        <option value="booking">حجز رحلة</option>
+                        <option value="custom">رحلة حسب الطلب</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                    <label for="Message">الرسالة</label>
+                    <textarea id="Message" name="message" rows="5" required></textarea>
+                    <button type="submit">إرسال</button>
+                </form>
+            </div>
+            <iframe class="Contact_Map" title="موقع الوكالة على الخريطة" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=3.03%2C36.75%2C3.07%2C36.78&amp;layer=mapnik&amp;marker=36.765%2C3.05"></iframe>
         </div>
         <!--Contact us part ends here-->
     </main>
     <footer>
-        <div class=" Footer">
+        <div class="Footer">
             <div class="Footer_Top">
                 <div>
                     <h1>سياحة</h1>
-                    <p> نحن نقدم لكم أفضل الخدمات</p>
+                    <p>اكتشف جمال الجزائر معنا</p>
                 </div>
                 <div>
-                    <a href="https://www.facebook.com/">
-                        <i class="fa-brands fa-facebook-square"></i>
+                    <a href="https://www.facebook.com/" aria-label="Facebook">
+                        <i class="fa-brands fa-square-facebook"></i>
                     </a>
-                    <a href="https://www.twitter.com/">
-                        <i class="fa-brands fa-twitter-square"></i>
+                    <a href="https://x.com/" aria-label="X">
+                        <i class="fa-brands fa-square-x-twitter"></i>
                     </a>
-                    <a href="https://www.instagram.com/">
-                        <i class="fa-brands fa-instagram-square"></i>
+                    <a href="https://www.instagram.com/" aria-label="Instagram">
+                        <i class="fa-brands fa-square-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/" aria-label="YouTube">
+                        <i class="fa-brands fa-square-youtube"></i>
                     </a>
                 </div>
             </div>
 
             <div class="Footer_Buttom">
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>روابط سريعة</h4>
+                    <a href="Lab_2_Page.html">الرئيسية</a>
+                    <a href="Services.html">جميع الخدمات</a>
+                    <a href="About_Us.html">من نحن؟</a>
+                    <a href="Contact_Us.html">إتصل بنا</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>الوجهات</h4>
+                    <a href="Lab_2_Page.html#Destinations">المساجد</a>
+                    <a href="Lab_2_Page.html#Destinations">المدن</a>
+                    <a href="Lab_2_Page.html#Destinations">الصحراء</a>
+                    <a href="Services.html#Trips">جميع الرحلات</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>تواصل معنا</h4>
+                    <p>شارع ديدوش مراد، الجزائر العاصمة</p>
+                    <a href="tel:+213555000000"><span dir="ltr">+213 555 00 00 00</span></a>
+                    <a href="mailto:contact@syaha.example">contact@syaha.example</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>ساعات العمل</h4>
+                    <p>الأحد - الخميس: 08:00 - 17:00</p>
+                    <p>السبت: 09:00 - 13:00</p>
+                    <p>الجمعة: مغلق</p>
                 </div>
             </div>
+            <p class="Footer_Copyright">© 2024 سياحة. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../Lab_4+/Lab_2.js"></script>
+    <!-- JavaScript (Lab 4) -->
     <script src="../Lab_4+/Drop_Down_Menu.js"></script>
+    <script src="../Lab_4+/Scroll_Effects.js"></script>
+    <script src="../Lab_4+/Contact_Form.js"></script>
 </body>
 
 </html>

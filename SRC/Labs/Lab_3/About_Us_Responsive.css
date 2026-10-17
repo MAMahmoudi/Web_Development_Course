@@ -1,0 +1,9 @@
+@media screen and (max-width: 850px) {
+  .About_Us_Container {
+    margin: 4rem 2rem;
+  }
+
+  .Team {
+    margin: 0 2rem 4rem;
+  }
+}

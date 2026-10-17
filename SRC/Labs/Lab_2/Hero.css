@@ -1,18 +1,18 @@
 .Hero {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
   padding: 0;
 }
 
 .Hero_Small {
   height: 70vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
 }
 
-Img {
-  width: 100vw;
+.Hero img {
+  width: 100%;
   height: 100vh;
   display: block;
   object-fit: fill;

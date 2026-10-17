@@ -1,0 +1,43 @@
+/* Elements added by the back end (Lab 5) to the pages of the demo */
+
+/* messages shown after a form was processed by the server */
+.Flash {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 7px;
+  direction: rtl;
+  line-height: 1.8;
+}
+
+.Flash ul {
+  padding-right: 1.5rem;
+}
+
+.Flash_Success {
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+  border-right: 5px solid #1b7a3a;
+}
+
+.Flash_Error {
+  color: #a93226;
+  background-color: #fdf1f0;
+  border-right: 5px solid #c0392b;
+}
+
+.Contact_Us_Container .Flash {
+  width: 100%;
+}
+
+/* duration and price of a trip, read from the database */
+.Trip_Card .Trip_Facts {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+  color: #027b92;
+}
+
+.Trip_Facts i {
+  margin-left: 0.3rem;
+}

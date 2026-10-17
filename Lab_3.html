@@ -20,568 +20,129 @@
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab, you will make the pages of your team project look good and work well on every screen: phones,
-          tablets, laptops and large monitors. <br>
-          You will use a mobile-first approach, the viewport meta tag, relative units, media queries, and Flexbox/Grid
-          layouts that reflow. You will also make your images responsive and build a navigation bar that collapses into
-          a hamburger menu on small screens. <br>
-          Finally, you will learn how to test your pages with the device mode of your browser's DevTools. <br>
-          Before you start, review the lecture <a href="CSS_Layout.html">CSS Layout</a> (Flexbox, Grid and the
-          responsive design part at the end), and keep the <a href="SRC/Labs/Lab_2/Lab_2_Page.html">Lab 2 demo
-            site</a> open: it is responsive, and we will study its code throughout this lab.
+          In <a href="Lab_2.html">Lab 2</a> you built the desktop version of the <strong>Syaha</strong> website. Open
+          it on a phone and almost everything breaks: the menu does not fit, titles cover the photos, cards become
+          slivers. In this lab you make every component adapt to tablets and phones, one stylesheet per component,
+          without touching the desktop styles. Then you do the same for your team project.
         </p>
       </div>
     </section>
     <section id="Principles">
-      <h2 class="Section_Title">I. What is responsive design?</h2>
+      <h2 class="Section_Title">I. What responsive design is</h2>
       <div class="Definitions">
-        <p>
-          A <strong>responsive</strong> website has a single HTML code base whose layout <em>adapts</em> to the size
-          of the screen. We do not build a separate "mobile site". Responsive design rests on three ideas:
-        </p>
-        <ol>
-          <li><strong>Mobile first:</strong> write the styles for the smallest screen first, then add styles for
-            larger screens.</li>
-          <li><strong>Fluid layouts:</strong> containers use relative sizes (%, rem, fr, ...) and Flexbox/Grid, so they
-            stretch and shrink with the viewport instead of having a fixed width.</li>
-          <li><strong>Media queries:</strong> the <code>@media</code> at-rule applies a group of styles only when a
-            condition is true (for example "the viewport is at least 768px wide"). The width where the layout changes
-            is called a <strong>breakpoint</strong>.</li>
-        </ol>
-      </div>
-      <h3 class="Sub_Section_Title">1. The viewport meta tag</h3>
-      <div class="Definitions">
-        <p>
-          Without this tag, a mobile browser assumes that your page was designed for a desktop. It renders the page in
-          a virtual window about 980px wide and then zooms out, so the text becomes tiny and your media queries never
-          trigger. Every page of your project must have this line in its <code>&lt;head&gt;</code>:
-        </p>
+        <div>
+          A responsive page uses the same HTML for every device and adapts its <em>layout</em> with CSS. Three ingredients make it work:<ol><li><strong>The viewport meta tag.</strong> Without it, phones pretend to be about 980px wide and shrink the whole page. Every page of Syaha already has it in its <code>&lt;head&gt;</code>:</li></ol>
+        </div>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-html">
-&lt;head&gt;
-  &lt;meta charset="UTF-8" /&gt;
-  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
-  ...
-&lt;/head&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          <code>width=device-width</code> makes the layout viewport as wide as the device's screen (in CSS pixels).
-          <code>initial-scale=1.0</code> sets the zoom level to 100% when the page loads.
-        </p>
-      </div>
-      <div class="Note"><strong>Tip:</strong> Do not add <code>maximum-scale=1</code> or <code>user-scalable=no</code>.
-        They stop users from zooming, which is an accessibility problem for people with low vision.</div>
-      <h3 class="Sub_Section_Title">2. Why mobile first?</h3>
-      <div class="Definitions">
-        <p>
-          On a phone, most content is simply stacked in one column. This is the simplest layout, and it is what the
-          browser does by default with block elements. So it is easier to start with one column and <em>add</em>
-          columns when there is more space than to start with a complex desktop layout and <em>undo</em> it for small
-          screens. Mobile first also makes you decide what content really matters, because a phone screen has little
-          space.
-        </p>
-      </div>
-    </section>
-    <section id="Units">
-      <h2 class="Section_Title">II. Relative units</h2>
-      <div class="Definitions">
-        <p>
-          Fixed widths such as <code>width: 1200px</code> are the first cause of horizontal scrolling on phones.
-          Prefer units that are relative to the parent, the font size or the viewport:
-        </p>
-      </div>
-      <table>
-        <tr>
-          <th>Unit</th>
-          <th>Relative to</th>
-          <th>Typical use</th>
-        </tr>
-        <tr>
-          <td>%</td>
-          <td>The size of the parent element</td>
-          <td>Widths of columns and images</td>
-        </tr>
-        <tr>
-          <td>rem</td>
-          <td>The font size of the root element (<code>html</code>), 16px by default</td>
-          <td>Font sizes, padding, margins, gaps</td>
-        </tr>
-        <tr>
-          <td>em</td>
-          <td>The font size of the element itself</td>
-          <td>Padding of buttons that should grow with their text</td>
-        </tr>
-        <tr>
-          <td>vw / vh</td>
-          <td>1% of the viewport width / height</td>
-          <td>Full-screen hero sections, fluid font sizes</td>
-        </tr>
-        <tr>
-          <td>dvh</td>
-          <td>1% of the <em>dynamic</em> viewport height (accounts for the mobile address bar)</td>
-          <td>Full-height sections on phones</td>
-        </tr>
-        <tr>
-          <td>fr</td>
-          <td>A fraction of the free space in a grid container</td>
-          <td>Grid columns</td>
-        </tr>
-        <tr>
-          <td>ch</td>
-          <td>The width of the "0" character</td>
-          <td>Limiting the length of text lines</td>
-        </tr>
-      </table>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-/* Make width and height include padding and border (avoids overflow surprises) */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.Container {
-  width: 90%;          /* fluid width ...                       */
-  max-width: 1200px;   /* ... but never wider than 1200px       */
-  margin: 0 auto;      /* centered                              */
-  padding: 1rem;
-}
-
-.Article p {
-  max-width: 70ch;     /* comfortable line length for reading   */
-  line-height: 1.6;
-}
-
-.Hero {
-  min-height: 100vh;   /* fallback for old browsers             */
-  min-height: 100dvh;  /* full screen, even with the address bar */
-}
-
-h1 {
-  /* clamp(minimum, preferred, maximum): the title grows with the screen
-     but never becomes smaller than 1.8rem or larger than 3.5rem */
-  font-size: clamp(1.8rem, 4vw + 1rem, 3.5rem);
-}
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> Use <code>max-width</code> instead of <code>width</code> whenever you
-        can. <code>max-width: 1200px</code> means "up to 1200px" and still lets the element shrink on a small screen,
-        while <code>width: 1200px</code> forces it to be 1200px wide everywhere.</div>
-    </section>
-    <section id="Media_Queries">
-      <h2 class="Section_Title">III. Media queries and breakpoints</h2>
-      <div class="Definitions">
-        <p>
-          A media query wraps CSS rules that only apply when its condition is true. The most common media features
-          are <code>min-width</code> (the viewport is <em>at least</em> this wide) and <code>max-width</code> (the
-          viewport is <em>at most</em> this wide). You can combine conditions with <code>and</code>, or list
-          alternatives separated by commas.
+          <ol start="2"><li><strong>Flexible sizes.</strong> Percentages, <code>vw</code>/<code>vh</code>, <code>rem</code>, flexbox and grids let boxes stretch and shrink instead of having fixed pixel widths.</li><li><strong>Media queries.</strong> Blocks of CSS that only apply when a condition is true, for example &quot;the viewport is at most 850px wide&quot;.</li></ol>
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-css">
-@media (min-width: 768px) { /* tablets and larger */ }
-
-@media (min-width: 768px) and (max-width: 1023px) { /* tablets only */ }
-
-@media (orientation: landscape) { /* wider than tall */ }
-
-@media print { /* when the page is printed */ }
-
-@media (prefers-color-scheme: dark) { /* the user's system uses a dark theme */ }
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">1. Desktop first (max-width) vs mobile first (min-width)</h3>
-      <div class="Definitions">
-        <p>
-          The Lab 2 demo site was written <strong>desktop first</strong>: the desktop styles are in
-          <a href="SRC/Labs/Lab_2/Trip.css">Trip.css</a>, and the file
-          <a href="SRC/Labs/Lab_3/Trip_Responsive.css">Trip_Responsive.css</a> overrides them with
-          <code>max-width: 850px</code> for small screens:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-/* Trip.css (desktop styles) */
-.Trip_Cards {
-  display: flex;
-  justify-content: space-between;
-}
+/* desktop styles: no media query */
 .Trip_Card {
   width: 32%;
 }
 
-/* Trip_Responsive.css (undo the desktop layout on small screens) */
+/* applied only when the viewport is 850px wide or less */
 @media screen and (max-width: 850px) {
-  .Trip {
-    margin: 4rem 2rem;
-  }
-  .Trip_Cards {
-    flex-direction: column;
-  }
   .Trip_Card {
     width: 100%;
-    margin-bottom: 1.5rem;
   }
 }
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          This works, but you write the layout and then write it again to cancel it. Here is the same component written
-          <strong>mobile first</strong>: the default styles are for phones, and the media query <em>adds</em> the
-          three-column layout when there is enough room.
+          Inside the media query, the rule has the same selector as the desktop rule. Since it comes <strong>later</strong> in the cascade, it wins when the condition is true, and is ignored otherwise.
         </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-/* Base styles = phones */
-.Trip {
-  margin: 4rem 2rem;
-}
-.Trip_Cards {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* From 850px and up: three cards side by side */
-@media (min-width: 850px) {
-  .Trip {
-    margin: 4rem 6rem;
-  }
-  .Trip_Cards {
-    flex-direction: row;
-  }
-  .Trip_Card {
-    flex: 1;   /* each card takes an equal share of the row */
-  }
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">2. Choosing breakpoints</h3>
-      <div class="Definitions">
-        <p>
-          There are too many devices to target each one. Instead, start with a narrow window, widen it slowly, and add
-          a breakpoint where your content starts to look wrong (lines that are too long, cards that are too wide, a
-          menu that no longer fits). As a starting point, these values are common:
-        </p>
-        <ul>
-          <li><strong>Base styles:</strong> phones (no media query)</li>
-          <li><strong>min-width: 600px</strong> large phones / small tablets</li>
-          <li><strong>min-width: 768px</strong> tablets</li>
-          <li><strong>min-width: 1024px</strong> laptops</li>
-          <li><strong>min-width: 1280px</strong> large screens</li>
-        </ul>
-        <p>
-          Use the <em>same</em> few breakpoints in all the CSS files of your project, so that all the components of a
-          page change at the same time.
-        </p>
-      </div>
-      <div class="Note"><strong>Tip:</strong> Media queries do not increase specificity. Always place a media query
-        <em>after</em> the rules it overrides (or link the responsive file after the main one, as the Lab 2 page does
-        with <code>../Lab_3/*_Responsive.css</code>), otherwise the later rule wins.</div>
-    </section>
-    <section id="Fluid_Layouts">
-      <h2 class="Section_Title">IV. Flexbox and Grid layouts that reflow</h2>
-      <div class="Definitions">
-        <p>
-          Flexbox and Grid (see <a href="CSS_Layout.html#FlexBox">FlexBox</a> and <a
-            href="CSS_Layout.html#Grid">Grid</a> in the lecture) can often make a layout responsive with
-          <em>no media query at all</em>, because they let items wrap or create as many columns as fit.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">1. Flexbox with flex-wrap</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-.Cards {
-  display: flex;
-  flex-wrap: wrap;   /* items go to the next line when there is no more room */
-  gap: 1.5rem;
-}
-
-.Card {
-  flex: 1 1 250px;   /* grow, shrink, and try to be 250px wide */
-}
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          On a 360px phone each card takes a full line; on a 1200px screen four cards fit in a row. The browser
-          computes this for you.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">2. Grid with auto-fit and minmax()</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-.Gallery {
-  display: grid;
-  /* as many columns as fit, each at least 220px, sharing the free space */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> This course website uses the same technique: the cards on the hub pages
-        use <code>repeat(auto-fill, minmax(260px, 1fr))</code> (class <code>.Hub_Grid</code> in
-        <code>SRC/CSS/Styles.css</code>). Resize your window on <a href="index.html">the home page</a> to see the
-        columns change.</div>
-      <h3 class="Sub_Section_Title">3. Rearranging a page layout with grid-template-areas</h3>
-      <div class="Definitions">
-        <p>
-          For the overall page layout (header, sidebar, content, footer), named grid areas make it easy to describe a
-          different layout for each breakpoint:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;body class="Page"&gt;
-  &lt;header class="Page_Header"&gt;...&lt;/header&gt;
-  &lt;aside class="Page_Sidebar"&gt;...&lt;/aside&gt;
-  &lt;main class="Page_Content"&gt;...&lt;/main&gt;
-  &lt;footer class="Page_Footer"&gt;...&lt;/footer&gt;
-&lt;/body&gt;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-.Page_Header  { grid-area: header; }
-.Page_Sidebar { grid-area: sidebar; }
-.Page_Content { grid-area: content; }
-.Page_Footer  { grid-area: footer; }
-
-/* Phones: everything in one column, sidebar after the content */
-.Page {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "content"
-    "sidebar"
-    "footer";
-  gap: 1rem;
-}
-
-/* Laptops: sidebar on the left */
-@media (min-width: 1024px) {
-  .Page {
-    grid-template-columns: 250px 1fr;
-    grid-template-areas:
-      "header  header"
-      "sidebar content"
-      "footer  footer";
-  }
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">4. Changing the order with flex-direction</h3>
-      <div class="Definitions">
-        <p>
-          In <a href="SRC/Labs/Lab_3/Destination_Responsive.css">Destination_Responsive.css</a>, each destination
-          (image + text side by side on desktop) becomes a column on small screens with
-          <code>flex-direction: column-reverse</code>, so the image always appears above its text even in the
-          "reverse" items. You can also use the <code>order</code> property to move one item.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-@media screen and (max-width: 850px) {
-  .Destination_Item,
-  .Destination_Item_Reverse {
-    display: flex;
-    flex-direction: column-reverse;
-    margin-top: 2.5rem;
-  }
-
-  .Destination_Text,
-  .Destination_Image {
-    width: 100%;
-  }
-}
-        </pre>
       </div>
     </section>
-    <section id="Responsive_Images">
-      <h2 class="Section_Title">V. Responsive images and media</h2>
-      <h3 class="Sub_Section_Title">1. Images that never overflow</h3>
+    <section id="Breakpoints">
+      <h2 class="Section_Title">II. Breakpoints and strategy</h2>
+      <div class="Definitions">
+        <div>
+          A <em>breakpoint</em> is a width at which the layout changes. Syaha uses two:<table>
+            <tr>
+              <th>Media query</th>
+              <th>Devices</th>
+              <th>What changes</th>
+            </tr>
+            <tr>
+              <td><code>(max-width: 850px)</code></td>
+              <td>tablets, small laptops and phones</td>
+              <td>hamburger menu, items stacked in one column, smaller margins and titles</td>
+            </tr>
+            <tr>
+              <td><code>(max-width: 555px)</code></td>
+              <td>phones</td>
+              <td>even smaller texts, one column of links and cards</td>
+            </tr>
+          </table>
+        </div>
+      </div>
       <div class="Definitions">
         <p>
-          An image is displayed at its natural size by default; a 1920px photo will overflow a 360px phone screen. Add
-          this rule at the top of your main CSS file:
+          Because the site was written for desktops first, we use <code>max-width</code> queries that <em>override</em> the desktop styles on smaller screens: this is the <strong>desktop-first</strong> approach. The opposite, <strong>mobile-first</strong>, writes the phone styles first and adds <code>min-width</code> queries for larger screens (see Section XII).
         </p>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-img,
-video,
-iframe {
-  max-width: 100%;   /* never wider than the container */
-  height: auto;      /* keep the aspect ratio           */
-  display: block;
-}
-
-/* Cover a fixed-size box without distorting the picture (cards, sliders) */
-.Card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">2. srcset and sizes: let the browser pick the right file</h3>
-      <div class="Definitions">
-        <p>
-          Downloading a 3MB photo on a phone wastes data and time. Export a few versions of the same image at
-          different widths, and describe them with <code>srcset</code>. The <code>sizes</code> attribute tells the
-          browser how wide the image will be displayed, so it can choose the smallest file that is sharp enough.
-          Always keep a <code>src</code> as a fallback and set <code>width</code>/<code>height</code> to avoid layout
-          jumps while the image loads.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;img src="assets/Images/Oran-800.jpg"
-     srcset="assets/Images/Oran-480.jpg 480w,
-             assets/Images/Oran-800.jpg 800w,
-             assets/Images/Oran-1280.jpg 1280w"
-     sizes="(min-width: 1024px) 50vw, 100vw"
-     width="1280" height="720"
-     alt="The Santa Cruz fort overlooking Oran"
-     loading="lazy" /&gt;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">3. picture: a different image per breakpoint</h3>
-      <div class="Definitions">
-        <p>
-          When you want a different <em>crop</em> (not just a different size), for example a square photo on phones
-          and a wide banner on desktop, use <code>&lt;picture&gt;</code>. The browser uses the first
-          <code>&lt;source&gt;</code> whose media query matches, otherwise the <code>&lt;img&gt;</code>.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;picture&gt;
-  &lt;source media="(min-width: 1024px)" srcset="assets/Images/Banner-wide.webp" /&gt;
-  &lt;source media="(min-width: 600px)" srcset="assets/Images/Banner-medium.webp" /&gt;
-  &lt;img src="assets/Images/Banner-square.jpg" alt="Our team at ENSIA" /&gt;
-&lt;/picture&gt;
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> Compress your images (WebP is usually much smaller than JPG/PNG) and add
-        <code>loading="lazy"</code> to images that are below the first screen. Never use an image to display text:
-        it cannot be resized, translated or read by screen readers.</div>
+      <div class="Note"><strong>Tip:</strong> do not choose breakpoints from a list of phone models. Narrow the browser slowly and add a breakpoint where the design starts to break.</div>
     </section>
-    <section id="Responsive_Navbar">
-      <h2 class="Section_Title">VI. A responsive navigation bar with a hamburger menu</h2>
+    <section id="Organization">
+      <h2 class="Section_Title">III. Organizing the responsive stylesheets</h2>
       <div class="Definitions">
         <p>
-          On a large screen, the menu links are displayed in a row. On a phone they do not fit, so we hide them behind
-          a "hamburger" icon (<i class="fa-solid fa-bars"></i>) and show them in a column when the user taps it. We
-          present two versions: one with no JavaScript at all, and the one used in the Lab 2 demo site.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">1. Version A: CSS only (checkbox hack)</h3>
-      <div class="Definitions">
-        <p>
-          A hidden checkbox stores the "open/closed" state. Clicking the <code>&lt;label&gt;</code> (the hamburger icon)
-          checks or unchecks it, and the selector <code>:checked ~ .Menu</code> shows the menu that follows it.
+          Following the rule of Lab 2 (one component, one stylesheet), each component gets a second stylesheet that contains only its media queries, named after it: <code>Nav_Bar.css</code> and <code>Nav_Bar_Responsive.css</code>, <code>Hero.css</code> and <code>Hero_Responsive.css</code>, and so on. In the demo they are in the folder <a href="SRC/Labs/Lab_3/" target="_blank" rel="noopener">SRC/Labs/Lab_3</a>; in your project put them in <code>assets/css</code>. The order of the links matters: the responsive files come <strong>after</strong> the desktop files, otherwise the desktop rules would win again. Here is the <code>&lt;head&gt;</code> of the home page:
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-html">
-&lt;nav class="Navbar"&gt;
-  &lt;a href="index.php" class="Logo"&gt;MyProject&lt;/a&gt;
-
-  &lt;input type="checkbox" id="Menu_Toggle" class="Menu_Toggle" /&gt;
-  &lt;label for="Menu_Toggle" class="Menu_Icon" aria-label="Open the menu"&gt;
-    &lt;i class="fa-solid fa-bars"&gt;&lt;/i&gt;
-  &lt;/label&gt;
-
-  &lt;ul class="Menu"&gt;
-    &lt;li&gt;&lt;a href="index.php"&gt;Home&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="services.php"&gt;Services&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="about.php"&gt;About us&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="contact.php"&gt;Contact&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
+&lt;link rel="stylesheet" href="assets/css/Nav_Bar.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Lab_2_Page.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Hero.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Slider.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Destination.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Trip.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Features.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Lab_2_Footer.css"&gt;
+&lt;!-- responsive design (Lab 3) --&gt;
+&lt;link rel="stylesheet" href="assets/css/Nav_Bar_Responsive.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Hero_Responsive.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Destination_Responsive.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Trip_Responsive.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Features_Responsive.css"&gt;
+&lt;link rel="stylesheet" href="assets/css/Footer_Responsive.css"&gt;
         </pre>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-/* ---------- Base styles: phones ---------- */
-.Navbar {
-  display: flex;
-  flex-wrap: wrap;                 /* the menu can go on its own line */
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-}
-
-/* Hide the checkbox visually but keep it usable with the keyboard */
-.Menu_Toggle {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.Menu_Icon {
-  font-size: 1.5rem;
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.Menu_Toggle:focus-visible + .Menu_Icon {
-  outline: 2px solid #8c1515;
-}
-
-.Menu {
-  display: none;                   /* closed by default */
-  flex-basis: 100%;                /* take a full line under the logo */
-  flex-direction: column;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.Menu a {
-  display: block;
-  padding: 0.75rem 1rem;           /* big enough to tap with a finger */
-  text-decoration: none;
-}
-
-/* Open state: the checkbox is checked */
-.Menu_Toggle:checked ~ .Menu {
-  display: flex;
-}
-
-/* ---------- Tablets and larger ---------- */
-@media (min-width: 768px) {
-  .Menu_Icon {
-    display: none;                 /* no hamburger on large screens */
-  }
-
-  .Menu {
-    display: flex;                 /* always visible */
-    flex-basis: auto;
-    flex-direction: row;
-    gap: 1.5rem;
-  }
-}
-        </pre>
+      <div class="Note"><strong>Note:</strong> the media queries of a component could also be written at the end of its own stylesheet. Both are fine; separate files let us keep Lab 2 and Lab 3 apart.</div>
+    </section>
+    <section id="Testing">
+      <h2 class="Section_Title">IV. Testing with the browser's device mode</h2>
+      <div class="Definitions">
+        <div>
+          You do not need a phone for every test. In Chrome, Edge or Firefox:<ol><li>Open the page and press <kbd>F12</kbd> to open the developer tools.</li><li>Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> (<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd> on Mac) to toggle the device toolbar.</li><li>Choose a device (e.g. a 390px wide phone) or <em>Responsive</em> and drag the edge of the page to change the width.</li><li>Select an element and look at the <em>Styles</em> panel: rules coming from a media query are shown with it, and overridden properties are crossed out.</li></ol>For each width, check that: there is no horizontal scrollbar, texts are readable without zooming, nothing overlaps, and links and buttons are big enough to be tapped.
+        </div>
       </div>
-      <h3 class="Sub_Section_Title">2. Version B: a class toggled with a few lines of JavaScript (Lab 2 demo)</h3>
+      <div class="Note"><strong>Tip:</strong> to test on your own phone, connect it to the same Wi-Fi as your computer and open <code>http://&lt;your-computer-IP&gt;/your-project-name</code> (find the IP with <code>ipconfig</code>). You may have to allow Apache in the Windows firewall.</div>
       <div class="Definitions">
         <p>
-          The <a href="SRC/Labs/Lab_2/Lab_2_Page.html">Lab 2 demo site</a> uses a <code>.Menu_Icon</code> that is hidden
-          on desktop (<a href="SRC/Labs/Lab_2/Nav_Bar.css">Nav_Bar.css</a>). In
-          <a href="SRC/Labs/Lab_3/Nav_Bar_Responsive.css">Nav_Bar_Responsive.css</a>, below 850px, the icon is shown
-          and the menu is moved off screen (<code>right: -100%; opacity: 0;</code>). When the menu has the class
-          <code>active</code>, it slides in (<code>right: 0; opacity: 1;</code>) thanks to a CSS
-          <code>transition</code>:
+          The images in the following steps show the demo on a 390px wide phone, without (left) and with (right) the stylesheets of this lab.
+        </p>
+      </div>
+    </section>
+    <section id="Step_1">
+      <h2 class="Section_Title">V. Step 1: the navigation bar and its hamburger menu</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Nav_Bar.png" alt="Navigation bar before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          On a phone, the five links of the menu cannot fit next to the logo. Below 850px we hide the menu, show the hamburger icon (<code>.Menu_Icon</code>, hidden on desktop since Lab 2), and display the menu as a panel when it has the class <code>active</code>:
         </p>
       </div>
       <div class="Code_Block">
@@ -590,151 +151,524 @@ iframe {
   .Nav_Bar_Menu {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: -100%;               /* hidden outside the screen */
+    justify-content: flex-start;
+    background-color: #fff;
     width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0px;
+    right: -100%;
     opacity: 0;
+    align-items: stretch;
+    padding: 80px 0 30px 0;
+    margin: 0;
     transition: 0.5s ease-in-out;
+    border-radius: 13px;
   }
 
   .Nav_Bar_Menu.active {
-    right: 0;                   /* slides into the screen */
+    display: flex;
+    flex-direction: column-reverse;
+    right: 0;
     opacity: 1;
+    z-index: -1;
+    transition: 0.5s ease-in-out;
   }
 
+  .Nav_Bar_Menu_Item {
+    display: block;
+    font-size: 1.2rem;
+    padding: 2rem 0;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+    color: #222;
+    text-decoration: none;
+  }
+
+  .Nav_Bar_Menu_Item:hover {
+    color: white;
+    transition: none;
+    border-radius: 4px;
+    background-color: #01959a;
+  }
+  .Nav_Bar_Items {
+    z-index: 99;
+  }
   .Menu_Icon {
     display: block;
     cursor: pointer;
   }
+
+  .Menu_Icon i {
+    font-size: 1.2rem;
+    color: #222;
+  }
 }
         </pre>
       </div>
       <div class="Definitions">
+        <div>
+          <ul><li>The closed menu is not removed: it is moved out of the screen (<code>right: -100%</code>) and made invisible (<code>opacity: 0</code>). Adding <code>active</code> brings it back (<code>right: 0</code>, <code>opacity: 1</code>), and the <code>transition</code> animates the slide.</li><li><code>flex-direction: column-reverse</code> shows the links from bottom to top of the HTML, so &quot;Home&quot; (the last link, placed on the right on desktop) is first.</li><li><code>padding-top: 80px</code> leaves room for the logo, and <code>z-index: -1</code> places the panel under the bar.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
         <p>
-          The JavaScript only has to add or remove the <code>active</code> class and swap the icon (the original file
-          is <a href="SRC/Labs/Lab_4+/Drop_Down_Menu.js">Drop_Down_Menu.js</a>). Here is a short, modern version.
-          <code>classList.toggle()</code> returns <code>true</code> if the class was added, so we do not need a separate
-          "clicked" variable:
+          CSS cannot react to a click by itself, so a few lines of JavaScript add or remove the class <code>active</code> when the icon is clicked:
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
-const menuIcon = document.querySelector("#Menu_Icon_ID");
-const menu = document.querySelector("#Nav_Bar_Menu_ID");
-const burgerIcon = document.querySelector("#Burger_Icon_ID");
+// assets/js/Menu.js: open and close the menu on small screens
+const Menu_Icon = document.getElementById("Menu_Icon_ID"),
+  Nav_Bar_Menu = document.getElementById("Nav_Bar_Menu_ID"),
+  Burger_Icon = document.getElementById("Burger_Icon_ID");
 
-menuIcon.addEventListener("click", () =&gt; {
-  const isOpen = menu.classList.toggle("active");
-  burgerIcon.className = isOpen ? "fas fa-times" : "fas fa-bars";
-  menuIcon.setAttribute("aria-expanded", String(isOpen));
+Menu_Icon.addEventListener("click", () =&gt; {
+  // toggle() adds the class if it is missing, removes it otherwise, and returns true if it was added
+  const open = Nav_Bar_Menu.classList.toggle("active");
+  Burger_Icon.className = open ? "fas fa-times" : "fas fa-bars";
 });
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> For accessibility, the element the user clicks should be a real
-        <code>&lt;button type="button"&gt;</code> (or a <code>&lt;label&gt;</code> for version A), not a plain
-        <code>&lt;div&gt;</code>: buttons can be reached with the Tab key and activated with Enter or Space.</div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+    &lt;!-- at the end of &lt;body&gt;, on every page that has the navigation bar --&gt;
+    &lt;script src="assets/js/Menu.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Note:</strong> the demo uses a longer version of this script, <a href="SRC/Labs/Lab_4+/Drop_Down_Menu.js" target="_blank" rel="noopener">Drop_Down_Menu.js</a>. You will study scripts like this one in <a href="Lab_4.html">Lab 4</a>; for now, copying it is enough.</div>
     </section>
-    <section id="Testing">
-      <h2 class="Section_Title">VII. Testing with the browser DevTools</h2>
+    <section id="Step_2">
+      <h2 class="Section_Title">VI. Step 2: the hero</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Hero.png" alt="Hero before and after Lab 3 on a phone" loading="lazy" />
       <div class="Definitions">
         <p>
-          You do not need ten phones to test your site. Chrome, Edge and Firefox all have a <strong>device
-            mode</strong> (called "Responsive Design Mode" in Firefox):
+          The 4rem title takes the whole width of a phone and the text covers most of the photo. We reduce the font sizes in two steps:
         </p>
-        <ol>
-          <li>Open your page from XAMPP (for example <code>http://localhost/your_project/</code>) and press
-            <strong>F12</strong> (or <strong>Ctrl+Shift+I</strong>) to open the DevTools.</li>
-          <li>Press <strong>Ctrl+Shift+M</strong> (or click the phone/tablet icon) to toggle the device toolbar.</li>
-          <li>Choose a device in the list (for example a small phone around 360px wide, a tablet, a laptop), or select
-            <em>Responsive</em> and drag the edge of the viewport to resize it continuously.</li>
-          <li>Rotate the device to test the landscape orientation.</li>
-          <li>Open the <em>Elements</em> panel and select an element: the <em>Styles</em> pane shows which media query
-            each rule comes from, and which rules are crossed out (overridden).</li>
-          <li>In Chrome/Edge, the "<em>...</em>" menu of the device toolbar has <em>Show media queries</em>: it draws a
-            bar with all your breakpoints that you can click.</li>
-        </ol>
       </div>
-      <h3 class="Sub_Section_Title">What to check on every page</h3>
-      <ul class="Checklist">
-        <li>There is no horizontal scrollbar at any width between 320px and 1920px.</li>
-        <li>Text is readable without zooming (body text of about 16px, i.e. 1rem) and lines are not too long on large
-          screens.</li>
-        <li>Links and buttons are large enough to tap (around 44&times;44px) and not too close to each other.</li>
-        <li>Images are not stretched, cropped badly or overflowing.</li>
-        <li>The navigation menu opens and closes on small screens, and every link is reachable.</li>
-        <li>Forms and tables remain usable (inputs take the full width on phones; wide tables scroll inside their own
-          container).</li>
-      </ul>
       <div class="Code_Block">
         <pre class="prettyprint lang-css">
-/* Debug trick: find the element that causes horizontal scrolling.
-   Add this rule temporarily, look for the box that sticks out, then remove it. */
-* {
-  outline: 1px solid red;
+/* tablets and small laptops */
+@media screen and (max-width: 850px) {
+  .Hero_Text h1 {
+    font-size: 3rem;
+  }
+
+  .Hero_Text p {
+    font-size: 1.5rem;
+  }
 }
 
-/* A wide table can scroll inside its wrapper instead of breaking the page */
-.Table_Wrapper {
-  overflow-x: auto;
+/* phones */
+@media screen and (max-width: 555px) {
+  .Hero_Text h1 {
+    font-size: 2.2rem;
+    padding: 10px 20px;
+    margin-right: 0;
+  }
+
+  .Hero_Text p {
+    font-size: 1.1rem;
+    padding: 0 20px 2rem 0;
+    margin-right: 0;
+  }
+
+  .Hero_Text .Show {
+    padding: 0.6rem 1.1rem;
+    font-size: 1rem;
+  }
 }
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> Device mode is a simulation. To test on your real phone, connect it to the
-        same Wi-Fi network as your computer and open <code>http://YOUR_PC_IP/your_project/</code> (find the IP address
-        with the <code>ipconfig</code> command on Windows). You may need to allow Apache through the Windows firewall.
+      <div class="Definitions">
+        <p>
+          On phones, the margins added on desktop to move the text away from the edge are replaced by a small padding, and the button gets a smaller padding too. The photos keep <code>100vh</code>: they still fill the screen.
+        </p>
+      </div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">VII. Step 3: the destinations</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Destinations.png" alt="Destinations before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          On desktop, the photos take 50% and the text 45% of the width. On a phone 45% is only a few words per line, and the 6rem side margins eat a third of the screen. Below 850px each item becomes a column:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .Destinations {
+    margin: 4rem 2rem;
+  }
+
+  .Destinations h1 {
+    font-size: 2.2rem;
+  }
+
+  .Destinations h2 {
+    font-size: 1.6rem;
+  }
+
+  /* text above, photos below */
+  .Destination_Item,
+  .Destination_Item_Reverse {
+    flex-direction: column-reverse;
+    margin-top: 2.5rem;
+  }
+
+  .Destination_Text {
+    width: 100%;
+  }
+
+  .Destination_Image {
+    width: 100%;
+    margin: 1.8rem 0;
+  }
+
+  .Destination_Image img {
+    height: 250px;
+  }
+}
+
+@media screen and (max-width: 555px) {
+  .Destination_Image img {
+    height: 200px;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>flex-direction: column-reverse</code> stacks the photos and the text and puts the text first. The same rule works for both <code>.Destination_Item</code> and <code>.Destination_Item_Reverse</code>: a selector list (with a comma) shares one rule between several selectors.</li><li>Both children take <code>width: 100%</code>, and the photos get a smaller height.</li><li>The margins of the section go from <code>6rem</code> to <code>2rem</code>.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Check:</strong> a rule in a media query must use exactly the same class as the element. <code>.Destination</code> instead of <code>.Destinations</code> is silently ignored: if a rule seems to have no effect, select the element in the developer tools and check that the rule is listed.</div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">VIII. Step 4: the trip cards</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Trips.png" alt="Trip cards before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          Three cards of 32% side by side become three slivers on a phone. Below 850px the flex container becomes a column and each card takes the whole width:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .Trip {
+    margin: 4rem 2rem;
+  }
+
+  .Trip h1 {
+    font-size: 2.2rem;
+  }
+
+  /* one card per row */
+  .Trip_Cards {
+    flex-direction: column;
+  }
+
+  .Trip_Card {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+}
+        </pre>
+      </div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">IX. Step 5: why choose us</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Features.png" alt="Why choose us before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          This section needs almost nothing: its grid uses <code>repeat(auto-fit, minmax(220px, 1fr))</code>, so the browser already places as many columns as fit (four on a large screen, two on a tablet, one on a phone). Only the margins and the title change:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* the grid already adapts its number of columns (auto-fit):
+   only the margins and the title need to change */
+@media screen and (max-width: 850px) {
+  .Features {
+    margin: 4rem 2rem;
+  }
+
+  .Features h1 {
+    font-size: 2.2rem;
+  }
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Remember:</strong> flexible layouts such as <code>auto-fit</code> grids and <code>flex-wrap</code> are responsive by themselves. Use them when you can, and keep media queries for what really has to change.</div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">X. Step 6: the footer</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Footer.png" alt="Footer before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The four columns of links become two columns on tablets (<code>width: 50%</code>, the flex container already wraps), then one column on phones, where the site name and the social icons are also stacked:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .Footer {
+    padding: 4rem 2rem;
+  }
+
+  .Footer i {
+    margin: 1rem 1rem 0 0;
+  }
+
+  .Footer_Buttom {
+    padding: 2rem 0;
+  }
+
+  /* two columns of links per row */
+  .Footer_Buttom div {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 555px) {
+  .Footer_Top {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  /* one column of links per row */
+  .Footer_Buttom div {
+    width: 100%;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Your home page is now responsive: compare it with the <a href="SRC/Labs/Lab_2/Lab_2_Page.html" target="_blank" rel="noopener">demo</a> in the device mode of the developer tools.
+        </p>
+      </div>
+    </section>
+    <section id="Step_7">
+      <h2 class="Section_Title">XI. Step 7: the other pages</h2>
+      <div class="Definitions">
+        <p>
+          The other pages reuse the navigation bar, the hero, the trips and the footer, so link the same responsive stylesheets, plus one for their own components.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">1. Services</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Services.png" alt="Services before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .Services {
+    margin: 4rem 2rem;
+  }
+
+  .Services h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* minmax(300px, 1fr) would be wider than a small phone: force one column */
+@media screen and (max-width: 555px) {
+  .Services_Grid {
+    grid-template-columns: 1fr;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Unlike the &quot;why choose us&quot; grid, this one has a minimum of <code>300px</code> per column. On a small phone, 300px plus the margins is wider than the screen, so the grid overflows. Below 555px we force a single column with <code>grid-template-columns: 1fr</code>.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">2. About us</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .About_Us_Container {
+    margin: 4rem 2rem;
+  }
+
+  .Team {
+    margin: 0 2rem 4rem;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The text and the team grid only need smaller margins: the team grid is an <code>auto-fit</code> grid.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">3. Contact us</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Contact.png" alt="Contact page before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  .Contact_Us_Container {
+    margin: 4rem 2rem;
+  }
+
+  /* contact details above the form */
+  .Contact_Layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .Contact_Layout form {
+    width: 100%;
+  }
+
+  .Contact_Map {
+    height: 250px;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The flex row that puts the contact details next to the form becomes a column, the form takes the whole width, and the map gets shorter.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">4. Page not found</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/NotFound.png" alt="404 page before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 555px) {
+  .Not_Found_Code {
+    font-size: 6rem;
+  }
+
+  .Not_Found h1 {
+    font-size: 1.5rem;
+  }
+
+  .Not_Found p {
+    font-size: 1rem;
+  }
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">5. Login</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_3/Login.png" alt="Login page before and after Lab 3 on a phone" loading="lazy" />
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+@media screen and (max-width: 850px) {
+  /* the two cards are stacked and the page grows with its content */
+  .Logins {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    gap: 2rem;
+    padding: 6rem 1.5rem 3rem;
+  }
+
+  .Account_Login,
+  .Page_Login {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The two cards had a fixed <code>width: 25vw</code>: a quarter of a phone screen. Below 850px they are stacked, take the whole width up to <code>max-width: 400px</code>, and the section grows with its content (<code>height: auto</code> with a <code>min-height</code>) instead of being cut at the height of the screen.
+        </p>
+      </div>
+    </section>
+    <section id="Going_Further">
+      <h2 class="Section_Title">XII. Going further</h2>
+      <h3 class="Sub_Section_Title">1. Mobile first</h3>
+      <div class="Definitions">
+        <p>
+          Writing the phone styles first and enlarging with <code>min-width</code> often gives shorter CSS, because phones usually need the simplest layout. The trip cards written mobile first:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+/* mobile first: the default styles are for phones ... */
+.Trip_Cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.Trip_Card {
+  width: 100%;
+}
+
+/* ... and wider screens add what they need */
+@media screen and (min-width: 851px) {
+  .Trip_Cards {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .Trip_Card {
+    width: 32%;
+  }
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">2. Fluid font sizes with clamp()</h3>
+      <div class="Definitions">
+        <p>
+          Instead of changing the size of a title at each breakpoint, <code>clamp(min, preferred, max)</code> lets it grow with the viewport between two limits:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-css">
+.Destinations h1 {
+  /* never smaller than 2.2rem, never larger than 3rem, 6% of the viewport width in between */
+  font-size: clamp(2.2rem, 6vw, 3rem);
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">3. Responsive images</h3>
+      <div class="Definitions">
+        <p>
+          A phone does not need a 2000px wide photo. With <code>srcset</code> the browser chooses the smallest file that is sharp enough for the screen (you create the smaller versions of the image yourself):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;img src="assets/images/Oran-1600.jpg"
+     srcset="assets/images/Oran-800.jpg 800w, assets/images/Oran-1600.jpg 1600w"
+     sizes="100vw"
+     alt="وهران" class="Slide" /&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          See also <a href="CSS_Layout.html">CSS layout and responsive design</a> in the lectures.
+        </p>
       </div>
     </section>
     <section id="Your_Turn">
-      <h2 class="Section_Title">VIII. Your turn: make your project responsive</h2>
+      <h2 class="Section_Title">XIII. Your turn</h2>
       <div class="Definitions">
-        <p>Work as a team, each member on the pages/components they are responsible for (see Lab 2). Commit and push
-          your changes regularly.</p>
-        <ol>
-          <li><strong>Viewport:</strong> check that every page (or your shared header file) contains the viewport meta
-            tag.</li>
-          <li><strong>Reset:</strong> at the top of your main CSS file, add <code>box-sizing: border-box</code> for all
-            elements and the <code>img { max-width: 100%; height: auto; }</code> rule.</li>
-          <li><strong>Agree on breakpoints:</strong> choose 2 or 3 breakpoints as a team (for example 768px and 1024px)
-            and write them in your README so everyone uses the same values.</li>
-          <li><strong>Remove fixed widths:</strong> search your CSS for widths in <code>px</code> on containers and
-            replace them with <code>%</code>, <code>max-width</code>, <code>fr</code> or <code>flex</code>. Replace
-            font sizes in <code>px</code> with <code>rem</code>.</li>
-          <li><strong>Rewrite the layouts mobile first:</strong> for each component (cards, galleries, product lists,
-            footer, ...), write the one-column version as the base style, then use <code>@media (min-width: ...)</code>
-            to add columns. Use <code>flex-wrap</code> or <code>repeat(auto-fit, minmax(...))</code> where possible.
-          </li>
-          <li><strong>Navigation bar:</strong> implement a hamburger menu (version A or B of section VI) that appears
-            below your first breakpoint.</li>
-          <li><strong>Images:</strong> compress the large images of your project and use <code>srcset</code> or
-            <code>&lt;picture&gt;</code> for the biggest ones (hero, banners).</li>
-          <li><strong>Forms and tables:</strong> make inputs take 100% of the width on phones and wrap wide tables
-            (for example your CRUD lists) in a container with <code>overflow-x: auto</code>.</li>
-          <li><strong>Test:</strong> go through every page in device mode at 360px, 768px, 1024px and 1440px, and
-            apply the checklist of section VII. Fix every problem you find.</li>
-        </ol>
+        <div>
+          Make your team project responsive:<ol><li>Check that every page has the viewport meta tag.</li><li>Open each page in device mode, narrow it slowly, and note where it breaks.</li><li>Choose your breakpoints (you may reuse 850px and 555px).</li><li>For each component, create its <code>_Responsive.css</code> file and link it after the desktop stylesheet, on every page that uses the component.</li><li>Add the hamburger menu and its script.</li><li>Test every page at 1280px, 768px, 390px and 320px: no horizontal scrollbar, no overlap, readable texts.</li><li>Test at least once on a real phone, then commit and push.</li></ol>
+        </div>
       </div>
-      <div class="Note"><strong>Tip:</strong> Compare your work with the <a
-          href="SRC/Labs/Lab_2/Lab_2_Page.html">Lab 2 demo site</a>: open it in device mode, then read its responsive
-        files (<a href="SRC/Labs/Lab_3/Nav_Bar_Responsive.css">Nav_Bar</a>,
-        <a href="SRC/Labs/Lab_3/Hero_Responsive.css">Hero</a>,
-        <a href="SRC/Labs/Lab_3/Destination_Responsive.css">Destination</a>,
-        <a href="SRC/Labs/Lab_3/Trip_Responsive.css">Trip</a>,
-        <a href="SRC/Labs/Lab_3/Footer_Responsive.css">Footer</a>).</div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>Every page of your team project has the viewport meta tag.</li>
-        <li>All pages are responsive: they display correctly, with no horizontal scrolling, from 320px phones to large
-          desktop screens.</li>
-        <li>The layouts use relative units and Flexbox/Grid, with media queries written mobile first and a common set
-          of breakpoints.</li>
-        <li>The navigation bar collapses into a working hamburger menu on small screens.</li>
-        <li>Images scale with their container and large images are optimized.</li>
-        <li>The work is committed and pushed to your team repository. It counts toward the <strong>HTML/CSS</strong>
-          milestone ("Build all the pages of the website in a responsive style"); see the
-          <a href="Syllabus.html#Deadlines">Deadlines table in the syllabus</a> for the date.</li>
+        <li>Every page has the viewport meta tag.</li>
+        <li>Each component has its responsive stylesheet, linked after its desktop stylesheet.</li>
+        <li>The navigation bar turns into a working hamburger menu on small screens.</li>
+        <li>No page has a horizontal scrollbar or overlapping elements between 320px and 1920px.</li>
+        <li>Texts are readable and buttons can be tapped on a phone without zooming.</li>
+        <li>Together with <a href="Lab_2.html">Lab 2</a>, this completes the "HTML/CSS" milestone of the
+          <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
       </ul>
     </section>
   </main>
@@ -744,7 +678,7 @@ menuIcon.addEventListener("click", () =&gt; {
       <h1>Lab 2: Project structure</h1>
     </a>
     <a href="Lab_4.html" class="Arrow">
-      <h1>Lab 4: JavaScript form validation</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+      <h1>Lab 4: JavaScript and form validation</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

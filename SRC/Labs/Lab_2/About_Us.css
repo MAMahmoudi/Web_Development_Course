@@ -10,11 +10,59 @@
 
 .About_Us_Container p {
   padding-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
   direction: rtl;
 }
 
-@media screen and (max-width: 850px) {
-  .About_Us_Container {
-    margin: 4rem 2rem;
-  }
+.About_Us_Container ul {
+  direction: rtl;
+  padding: 0 1.5rem 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.9;
+}
+
+.About_Us_Container li::marker {
+  color: #01959a;
+}
+
+.Team {
+  margin: 0 6rem 4rem;
+  color: #2a2a2a;
+}
+
+.Team h1 {
+  direction: rtl;
+  padding-bottom: 2rem;
+}
+
+.Team_Grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  direction: rtl;
+}
+
+.Team_Card {
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 7px;
+  box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.11);
+}
+
+.Team_Card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.Team_Card h3 {
+  font-size: 1.2rem;
+}
+
+.Team_Card p {
+  color: #01959a;
+  font-weight: 600;
 }

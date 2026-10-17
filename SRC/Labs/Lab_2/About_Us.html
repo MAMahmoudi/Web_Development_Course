@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 
 <head>
     <meta charset="UTF-8">
@@ -9,13 +9,19 @@
     <link rel="stylesheet" href="Lab_2_Page.css">
     <link rel="stylesheet" href="About_Us.css">
     <link rel="stylesheet" href="Lab_2_Footer.css">
-    <link rel="stylesheet" href="../Lab_3/Footer_Responsive.css">
-    <link rel="stylesheet" href="../Lab_3/Hero_Responsive.css">
+    <!-- responsive design (Lab 3) -->
     <link rel="stylesheet" href="../Lab_3/Nav_Bar_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/Hero_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/About_Us_Responsive.css">
+    <link rel="stylesheet" href="../Lab_3/Footer_Responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Syaha</title>
+    <link rel="stylesheet" href="../Lab_4+/Interactions.css">
 </head>
 
 <body>
@@ -26,6 +32,12 @@
                 <i class="fas fa-bars" id="Burger_Icon_ID"></i>
             </div>
             <ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID">
+                <li>
+                    <a href="Login.html" class="Nav_Bar_Menu_Item">
+                        <span>تسجيل الدخول</span>
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </a>
+                </li>
                 <li>
                     <a href="Contact_Us.html" class="Nav_Bar_Menu_Item">
                         <span>إتصل بنا</span>
@@ -39,7 +51,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="About_Us.html" class="Nav_Bar_Menu_Item">
+                    <a href="About_Us.html" class="Nav_Bar_Menu_Item Active">
                         <span>من نحن؟</span>
                         <i class="fa-solid fa-circle-info"></i>
                     </a>
@@ -56,13 +68,13 @@
     <main>
         <!--Hero part starts here-->
         <section id="Hero_ID">
-            <div class=".Hero">
-                <img src="../../IMAGES/Oran.jpg" alt="Oran.jpg" />
+            <div class="Hero">
+                <img src="../../IMAGES/Oran.jpg" alt="وهران" />
             </div>
             <div class="Hero_Text">
                 <h1>مرحبا بكم في موقعنا</h1>
                 <p>نحن نقدم لكم أفضل الخدمات</p>
-                <a href="#" class="Show" id="Contact_Us_Btn_ID">تواصل معنا</a>
+                <a href="Contact_Us.html" class="Show" id="Contact_Us_Btn_ID">تواصل معنا</a>
             </div>
         </section>
         <!--Hero part ends here-->
@@ -70,76 +82,108 @@
         <div class="About_Us_Container">
             <h1>من نحن؟</h1>
             <p>
-                نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل
-                الخدماتنحن نقدم لكم أفضل الخدمات
+                سياحة وكالة أسفار جزائرية تأسست سنة 2015 بهدف التعريف بثراء الجزائر الطبيعي والثقافي. ننظم كل سنة
+                عشرات الرحلات إلى المدن الساحلية والهضاب العليا والصحراء، لفائدة العائلات والطلبة والسياح الأجانب.
             </p>
-            <h1>من نحن؟</h1>
+            <h1>رسالتنا</h1>
             <p>
-                نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل
-                الخدماتنحن نقدم لكم أفضل الخدمات
+                أن نجعل اكتشاف الجزائر سهلاً وممتعاً وفي متناول الجميع، مع احترام البيئة ودعم الحرفيين والمرشدين
+                المحليين في كل منطقة نزورها.
             </p>
-            <h1>من نحن؟</h1>
-            <p>
-                نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل الخدمات نحن نقدم لكم أفضل
-                الخدماتنحن نقدم لكم أفضل الخدمات
-            </p>
+            <h1>قيمنا</h1>
+            <ul>
+                <li>الأمانة: أسعار واضحة ومعلومات صادقة.</li>
+                <li>الجودة: شركاء مختارون بعناية في النقل والإقامة.</li>
+                <li>الاحترام: احترام السكان المحليين وتقاليدهم وطبيعتهم.</li>
+                <li>الإصغاء: نصمم كل رحلة حسب رغبات زبائننا.</li>
+            </ul>
         </div>
         <!--About us part ends here-->
+        <!--Team part starts here-->
+        <section class="Team">
+            <h1>فريقنا</h1>
+            <div class="Team_Grid">
+                <div class="Team_Card">
+                    <img src="../../IMAGES/User_A.png" alt="أمين" />
+                    <h3>أمين بن علي</h3>
+                    <p>المدير العام</p>
+                </div>
+                <div class="Team_Card">
+                    <img src="../../IMAGES/User_F.png" alt="سارة" />
+                    <h3>سارة بوزيد</h3>
+                    <p>مسؤولة الرحلات</p>
+                </div>
+                <div class="Team_Card">
+                    <img src="../../IMAGES/User_A.png" alt="يوسف" />
+                    <h3>يوسف حمدي</h3>
+                    <p>مرشد سياحي</p>
+                </div>
+                <div class="Team_Card">
+                    <img src="../../IMAGES/User_F.png" alt="مريم" />
+                    <h3>مريم سعدي</h3>
+                    <p>خدمة الزبائن</p>
+                </div>
+            </div>
+        </section>
+        <!--Team part ends here-->
     </main>
     <footer>
-        <div class=" Footer">
+        <div class="Footer">
             <div class="Footer_Top">
                 <div>
                     <h1>سياحة</h1>
-                    <p> نحن نقدم لكم أفضل الخدمات</p>
+                    <p>اكتشف جمال الجزائر معنا</p>
                 </div>
                 <div>
-                    <a href="https://www.facebook.com/">
-                        <i class="fa-brands fa-facebook-square"></i>
+                    <a href="https://www.facebook.com/" aria-label="Facebook">
+                        <i class="fa-brands fa-square-facebook"></i>
                     </a>
-                    <a href="https://www.twitter.com/">
-                        <i class="fa-brands fa-twitter-square"></i>
+                    <a href="https://x.com/" aria-label="X">
+                        <i class="fa-brands fa-square-x-twitter"></i>
                     </a>
-                    <a href="https://www.instagram.com/">
-                        <i class="fa-brands fa-instagram-square"></i>
+                    <a href="https://www.instagram.com/" aria-label="Instagram">
+                        <i class="fa-brands fa-square-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/" aria-label="YouTube">
+                        <i class="fa-brands fa-square-youtube"></i>
                     </a>
                 </div>
             </div>
 
             <div class="Footer_Buttom">
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>روابط سريعة</h4>
+                    <a href="Lab_2_Page.html">الرئيسية</a>
+                    <a href="Services.html">جميع الخدمات</a>
+                    <a href="About_Us.html">من نحن؟</a>
+                    <a href="Contact_Us.html">إتصل بنا</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>الوجهات</h4>
+                    <a href="Lab_2_Page.html#Destinations">المساجد</a>
+                    <a href="Lab_2_Page.html#Destinations">المدن</a>
+                    <a href="Lab_2_Page.html#Destinations">الصحراء</a>
+                    <a href="Services.html#Trips">جميع الرحلات</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>تواصل معنا</h4>
+                    <p>شارع ديدوش مراد، الجزائر العاصمة</p>
+                    <a href="tel:+213555000000"><span dir="ltr">+213 555 00 00 00</span></a>
+                    <a href="mailto:contact@syaha.example">contact@syaha.example</a>
                 </div>
                 <div>
-                    <h4>الموقع الرسمي</h4>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
-                    <a href="/">الرئيسية</a>
+                    <h4>ساعات العمل</h4>
+                    <p>الأحد - الخميس: 08:00 - 17:00</p>
+                    <p>السبت: 09:00 - 13:00</p>
+                    <p>الجمعة: مغلق</p>
                 </div>
             </div>
+            <p class="Footer_Copyright">© 2024 سياحة. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../Lab_4+/Lab_2.js"></script>
+    <!-- JavaScript (Lab 4) -->
     <script src="../Lab_4+/Drop_Down_Menu.js"></script>
+    <script src="../Lab_4+/Scroll_Effects.js"></script>
 </body>
 
 </html>

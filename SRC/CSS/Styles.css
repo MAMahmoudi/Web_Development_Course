@@ -29,27 +29,77 @@ b {
   font-weight: bolder;
 }
 
+/* All tables share one look: rounded white card, red header, striped rows */
 table {
-  margin: 2% 0 2% 0;
   width: 100%;
+  margin: 3vh 0 3vh 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+}
+
+th,
+td {
+  margin: 0;
+  padding: 1em 1.5em;
+  border: none;
+  font-size: 1.1em;
+  text-align: left;
+  vertical-align: middle;
 }
 
 th {
-  border: 1px solid black;
-  margin: 2%;
-  padding: 2%;
-  font-size: 1.5em;
   background-color: #8c1515;
   color: white;
   font-weight: bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 td {
-  background-color: #fff;
-  border: 2px solid green;
-  font-size: 1.5em;
-  margin: 2%;
-  padding: 2%;
+  background-color: white;
+  border-bottom: 1px solid #e5e1de;
+  transition: background-color 0.15s ease;
+}
+
+/* row headers (a th inside a body row) are tinted, only the top header row is solid red */
+tbody > tr:not(:first-child) > th,
+thead + tbody th {
+  background-color: #f6eeee;
+  color: #8c1515;
+  letter-spacing: normal;
+  text-transform: none;
+  border-bottom: 1px solid #e5e1de;
+}
+
+tr:last-child > td,
+tr:last-child > th {
+  border-bottom: none;
+}
+
+tr:nth-child(even) > td {
+  background-color: #faf8f7;
+}
+
+tr:hover > td {
+  background-color: #f6eeee;
+}
+
+@media (max-width: 768px) {
+  /* let wide tables scroll sideways instead of overflowing the page */
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  th,
+  td {
+    padding: 0.8em;
+    font-size: 1em;
+  }
 }
 
 .Definitions.HTML_demo {
@@ -882,6 +932,8 @@ td {
 .Code_Block > pre.prettyprint {
   margin: 0;
   padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .Note {
@@ -909,9 +961,9 @@ td {
 
 .Hub_Grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: 1.5em;
-  margin: 3vh 5vw 3vh 5vw;
+  margin: 1vh 5vw 3vh 5vw;
 }
 
 .Hub_Card {
@@ -937,8 +989,11 @@ td {
   color: #8c1515;
 }
 
-.Hub_Card i {
+.Hub_Card > i {
   color: #8c1515;
+  /* fa-2xl icons overflow their line box; reserve room so they don't cover the title */
+  margin: 0.6em 0 0.4em 0;
+  line-height: 1;
 }
 
 .Hub_Card p {
@@ -956,4 +1011,74 @@ td {
     margin-left: 2vw;
     margin-right: 2vw;
   }
+}
+
+/******************** Syllabus deadlines ********************/
+.Deadlines_Wrapper {
+  margin: 3vh 5vw 5vh 5vw;
+}
+
+.Deadlines_Table th:nth-child(2),
+.Deadlines_Table td:nth-child(2) {
+  text-align: center;
+}
+
+.Deadlines_Table time {
+  font-weight: bold;
+  white-space: nowrap;
+  color: #3f3c30;
+}
+
+.Milestone {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.Milestone > i {
+  width: 1.5em;
+  text-align: center;
+  color: #8c1515;
+}
+
+.Milestone > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.Milestone strong {
+  color: #8c1515;
+}
+
+.Milestone_Labs {
+  font-size: 0.85em;
+  color: #6b675e;
+}
+
+.Grade_Badge {
+  display: inline-block;
+  min-width: 2.5em;
+  padding: 0.3em 0.8em;
+  border-radius: 999px;
+  background-color: #8c1515;
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .Deadlines_Wrapper {
+    margin-left: 2vw;
+    margin-right: 2vw;
+  }
+}
+
+/* before/after screenshots of the labs */
+.Lab_Screenshot {
+  display: block;
+  width: min(870px, 92vw);
+  height: auto;
+  margin: 3vh auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
 }
