@@ -10,785 +10,459 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 11: AJAX and JSON APIs</title>
+  <title>Lab 13: Final project integration and presentation</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 11: AJAX and JSON APIs</h1>
+    <h1 class="Title">Lab 13: Final project integration and presentation</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          Until now, every action of your website (add, search, delete...) submits a form and reloads the whole page.
-          In this lab you will make your pages talk to PHP <b>without reloading</b>. <br>
-          You will write PHP endpoints that return JSON, call them from JavaScript with <code>fetch()</code> and
-          <code>async</code>/<code>await</code>, send data as <code>FormData</code> and as JSON, handle errors, show
-          loading indicators, and build a live search and a delete-without-reload. <br>
-          This work counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines
-            table</a>. Review the lectures <a href="AJAX.html">Introduction to AJAX</a> and
-          <a href="jQuery.html">jQuery</a> (jQuery AJAX part), and make sure your PDO connection from Lab 6 works.
+          This is the last lab of the semester. Your team will bring all the parts of the project together, check
+          that everything works from a fresh installation, clean up the Git repository, write a README that lets
+          anyone install and run your website, export the database, test the application end to end and prepare the
+          final presentation. At the end of this lab, a person who has never seen your project should be able to
+          clone it, follow the README and use every feature in less than 15 minutes.
         </p>
       </div>
     </section>
-    <section id="Big_Picture">
-      <h2 class="Section_Title">I. The big picture</h2>
+    <section id="Integration">
+      <h2 class="Section_Title">I. Integration checklist</h2>
       <div class="Definitions">
         <p>
-          AJAX (Asynchronous JavaScript And XML) means: JavaScript sends an HTTP request in the background, the
-          server answers with <b>data</b> (today almost always JSON, not XML), and JavaScript updates only the part
-          of the page that changed. The flow of one request is: <br>
-          1. The user types, clicks or submits a form. <br>
-          2. JavaScript calls <code>fetch("api/products.php")</code>. The page stays on screen. <br>
-          3. Apache runs the PHP file, which queries MySQL with PDO. <br>
-          4. PHP answers with a status code (200, 404, 500...) and a JSON body, never with HTML. <br>
-          5. JavaScript reads the JSON and updates the DOM (Lab 7 techniques). <br><br>
-          In this lab we use a <code>products</code> service as an example. Replace it with the services of your own
-          project. A suggested structure:
+          During the semester each member worked on separate pages and services. Integration means checking that
+          these parts work <em>together</em>: shared navigation, shared CSS, one database connection file, one
+          session system and consistent naming. Merge all the finished branches into <code>main</code>, then go
+          through the following checklist together, on one machine, starting from a fresh clone.
         </p>
       </div>
+      <table class="Table">
+        <tr>
+          <th>Area</th>
+          <th>What must work</th>
+          <th>Related labs and lectures</th>
+        </tr>
+        <tr>
+          <td>Pages and layout</td>
+          <td>All pages are reachable from the navigation bar, share the same style and are responsive (test at
+            360px, 768px and 1280px wide with the DevTools device toolbar). No broken links or images.</td>
+          <td><a href="CSS_Layout.html">CSS Layout</a></td>
+        </tr>
+        <tr>
+          <td>Validation</td>
+          <td>Every form is validated in JavaScript (immediate feedback) <strong>and</strong> in PHP (security). Error
+            messages are clear and shown next to the field.</td>
+          <td><a href="JS_Form_Validation.html">JS Form Validation</a></td>
+        </tr>
+        <tr>
+          <td>Web services</td>
+          <td>At least 5 CRUD services work: create, read (list and detail), update and delete, with the results
+            visible in phpMyAdmin.</td>
+          <td><a href="PHP_MySQL.html">PHP and MySQL</a></td>
+        </tr>
+        <tr>
+          <td>Authentication</td>
+          <td>Register, login, logout and session timeout work; pages reserved to logged-in users or admins redirect
+            the others.</td>
+          <td><a href="Sessions_Cookies.html">Sessions and Cookies</a></td>
+        </tr>
+        <tr>
+          <td>AJAX</td>
+          <td>The AJAX features (search, live update, pagination, ...) return valid JSON and update the page without
+            reloading; errors are handled and shown to the user.</td>
+          <td><a href="AJAX.html">AJAX</a></td>
+        </tr>
+        <tr>
+          <td>Security</td>
+          <td>All the issues of the Lab 12 audit are fixed and closed: prepared statements, output escaping, CSRF
+            tokens, password hashing, authorization checks, safe uploads, no secrets in Git.</td>
+          <td><a href="Lab_12.html">Lab 12</a>, <a href="Security.html">Security</a></td>
+        </tr>
+      </table>
+      <div class="Note"><strong>Tip:</strong> look for paths that only work on one machine, such as
+        <code>C:\xampp\htdocs\...</code> or <code>http://localhost/ahmed_project/</code>. Use relative paths
+        (<code>css/style.css</code>) in HTML and <code>__DIR__</code> in PHP includes
+        (<code>require __DIR__ . '/includes/db.php';</code>).</div>
+    </section>
+    <section id="Git_Workflow">
+      <h2 class="Section_Title">II. Git workflow hygiene</h2>
+      <div class="Definitions">
+        <p>
+          The repository is part of the evaluation: it shows how the team worked. A clean history has one branch per
+          feature, changes merged through pull requests reviewed by another member, small commits with meaningful
+          messages, and contributions from <strong>every</strong> member.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Feature branches and pull requests</h3>
       <div class="Code_Block">
-        <pre class="prettyprint lang-none">
-your_project/
-├── config/
-│   └── db.php            (PDO connection, Lab 6)
-├── api/
-│   └── products.php      (JSON endpoint: list/search, create, delete)
-├── assets/JS/
-│   ├── api.js            (a reusable fetch helper)
-│   └── products.js       (the logic of the products page)
-└── products.php          (the page the user sees)
+        <pre class="prettyprint lang-bash">
+# Start a feature from an up-to-date main
+git checkout main
+git pull
+git checkout -b feature/product-search
+
+# Work, then commit small logical steps
+git add products/search.php js/search.js
+git commit -m "Add AJAX product search by name"
+
+# Publish the branch and open a pull request on GitHub
+git push -u origin feature/product-search
+
+# Before merging, bring the latest main into your branch and fix conflicts locally
+git checkout feature/product-search
+git pull origin main
         </pre>
       </div>
       <div class="Definitions">
-        <p>The examples use this table. Run it in the SQL tab of phpMyAdmin (Lab 5):</p>
+        <p>
+          On GitHub, open the pull request from <code>feature/product-search</code> into <code>main</code>, describe
+          what it does and how to test it, and ask a teammate to review it. Merge it only once it works on the
+          reviewer's machine, then delete the branch.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Meaningful commit messages</h3>
+      <table class="Table">
+        <tr>
+          <th>Bad</th>
+          <th>Good</th>
+        </tr>
+        <tr>
+          <td>update</td>
+          <td>Add server-side validation to the registration form</td>
+        </tr>
+        <tr>
+          <td>fix</td>
+          <td>Fix IDOR in edit_post.php: check that the post belongs to the user</td>
+        </tr>
+        <tr>
+          <td>final version 2</td>
+          <td>Make the product grid responsive below 768px</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">Check that everyone contributes</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Number of commits per author on main
+git shortlog -sn main
+
+# Same, ignoring merge commits
+git shortlog -sn --no-merges main
+
+# A compact view of the history and its branches
+git log --oneline --graph --all -20
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> if the same person appears under two names (for example a laptop and a
+        lab computer configured differently), fix your identity with <code>git config --global user.name "First
+          Last"</code> and <code>git config --global user.email "you@example.com"</code>, using the email of your
+        GitHub account. Commits made from another member's computer are counted for that member.</div>
+    </section>
+    <section id="README">
+      <h2 class="Section_Title">III. Writing a good README.md</h2>
+      <div class="Definitions">
+        <p>
+          The <code>README.md</code> file is displayed on the home page of your GitHub repository. It is the first
+          thing a teacher, a classmate or a future employer reads. It must explain what the project does and, above
+          all, how to install it. Use the following template and replace every line between angle brackets.
+          Screenshots go in a folder of the repository (for example <code>docs/screenshots/</code>).
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# &lt;Project name&gt;
+
+&lt;One or two sentences: what the website does and for whom.&gt;
+
+## Team
+- &lt;Member 1&gt; - &lt;main responsibilities, e.g. products pages and product services&gt;
+- &lt;Member 2&gt; - &lt;...&gt;
+- &lt;Member 3&gt; - &lt;...&gt;
+
+## Features
+- User registration, login and logout
+- &lt;Service 1: e.g. create, edit and delete products (admin)&gt;
+- &lt;Service 2: e.g. live search of products with AJAX&gt;
+- &lt;...&gt;
+
+## Screenshots
+![Home page](docs/screenshots/home.png)
+![Product page](docs/screenshots/product.png)
+
+## Technologies
+HTML, CSS, JavaScript, PHP 8, MySQL (MariaDB), XAMPP
+
+## Installation
+1. Install XAMPP and start **Apache** and **MySQL** from the XAMPP control panel.
+2. Clone the repository into the `htdocs` folder:
+   `git clone https://github.com/&lt;organization&gt;/&lt;repository&gt;.git C:/xampp/htdocs/&lt;repository&gt;`
+3. Open http://localhost/phpmyadmin, click **Import**, choose `database/&lt;database&gt;.sql` and click **Import**
+   (the file creates the database and its tables).
+4. Copy `config.example.php` to `config.php` and fill in your database credentials.
+5. Open http://localhost/&lt;repository&gt;/ in your browser.
+
+## Test accounts
+| Role  | Email             | Password    |
+|-------|-------------------|-------------|
+| Admin | admin@test.local  | Admin1234!  |
+| User  | user@test.local   | User1234!   |
+
+## Project structure
+&lt;Short description of the main folders: css/, js/, includes/, products/, database/, ...&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> the test accounts must exist in the exported database, with their
+        passwords hashed by <code>password_hash()</code>. They are only for local testing: never reuse these
+        passwords, and change them on a deployed site.</div>
+    </section>
+    <section id="Database_Export">
+      <h2 class="Section_Title">IV. Exporting the database</h2>
+      <div class="Definitions">
+        <p>
+          Your PHP code is useless without the database. Export it into a <code>.sql</code> file and commit it in a
+          <code>database/</code> folder, so that anyone can recreate it. Export the final version, after all the
+          structure changes of the semester.
+        </p>
+        <ol>
+          <li>Open <code>http://localhost/phpmyadmin</code> and select your database in the left panel.</li>
+          <li>Click the <strong>Export</strong> tab and choose the <strong>Custom</strong> export method.</li>
+          <li>Keep the format <strong>SQL</strong>, select all the tables, and in "Object creation options" check
+            <strong>Add CREATE DATABASE / USE statement</strong> and <strong>Add DROP TABLE</strong>.</li>
+          <li>Click <strong>Export</strong> and save the file as <code>database/&lt;database&gt;.sql</code> in your
+            repository.</li>
+        </ol>
+      </div>
+      <div class="Definitions">
+        <p>
+          You can do the same from the command line with the tools shipped with XAMPP (in Git Bash):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Export (structure + data, with CREATE DATABASE)
+/c/xampp/mysql/bin/mysqldump -u root -p --databases shop &gt; database/shop.sql
+
+# Import on another machine
+/c/xampp/mysql/bin/mysql -u root -p &lt; database/shop.sql
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Before exporting, clean the data: remove personal information and junk test rows, and keep a small but
+          realistic data set (a few users, products, comments...) so the demo looks alive. To create the hash of a
+          test account password, run the following command and paste the result in the
+          <code>password_hash</code> column with phpMyAdmin:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+/c/xampp/php/php -r "echo password_hash('Admin1234!', PASSWORD_DEFAULT), PHP_EOL;"
+        </pre>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-sql">
-CREATE TABLE products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
-  stock INT NOT NULL DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO products (name, price, stock) VALUES
-  ('Keyboard', 2500.00, 12),
-  ('Mouse', 1200.00, 30),
-  ('Monitor', 32000.00, 5);
+-- Or insert the test accounts directly (replace the hashes with the ones you generated)
+INSERT INTO users (name, email, password_hash, role) VALUES
+  ('Admin', 'admin@test.local', '$2y$10$...generated hash...', 'admin'),
+  ('Test User', 'user@test.local', '$2y$10$...generated hash...', 'user');
         </pre>
       </div>
+      <div class="Note"><strong>Test it:</strong> drop your local database (or use a teammate's computer), import the
+        <code>.sql</code> file, and check that the whole site works. If the import fails, the reviewers' import will
+        fail too.</div>
     </section>
-    <section id="JSON_Endpoint">
-      <h2 class="Section_Title">II. A PHP endpoint that returns JSON</h2>
+    <section id="Testing">
+      <h2 class="Section_Title">V. End-to-end testing</h2>
       <div class="Definitions">
         <p>
-          An endpoint is a PHP file that is called by JavaScript, not displayed to the user. It must: <br>
-          1. Say that it returns JSON: <code>header('Content-Type: application/json')</code>, before any output. <br>
-          2. Set the HTTP status code with <code>http_response_code()</code>: JavaScript uses it to know whether the
-          request succeeded. <br>
-          3. Convert PHP arrays to JSON with <code>json_encode()</code>: an associative array becomes a JSON object,
-          a list becomes a JSON array. <br>
-          4. Output <b>nothing else</b>: no HTML, no <code>echo "debug"</code>, no PHP warnings. A single extra
-          character makes the JSON invalid.
+          End-to-end testing means using the application like a real user, from the browser to the database and
+          back. Write a short manual test plan (for example in <code>docs/TEST_PLAN.md</code>) with one line per
+          scenario, and run it on a fresh installation. Each member tests the services written by someone else.
         </p>
       </div>
-      <h3 class="Sub_Section_Title">The connection (from Lab 6)</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// config/db.php
-$host = 'localhost';
-$db   = 'my_project';   // the name of YOUR database
-$user = 'root';
-$pass = '';             // XAMPP default: empty password
-
-$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
-$options = [
-    PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,  // errors become exceptions
-    PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,        // rows as associative arrays
-    PDO::ATTR_EMULATE_PREPARES   =&gt; false,                   // real prepared statements
-];
-$pdo = new PDO($dsn, $user, $pass, $options);
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">The endpoint: GET (list and search)</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// api/products.php
-header('Content-Type: application/json; charset=utf-8');
-
-function send_json($data, int $status = 200): void
-{
-    http_response_code($status);
-    echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    exit; // stop here: nothing else may be printed
-}
-
-try {
-    require __DIR__ . '/../config/db.php';
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method === 'GET') {
-        $q = trim($_GET['q'] ?? '');
-        if ($q === '') {
-            $stmt = $pdo-&gt;query('SELECT id, name, price, stock FROM products ORDER BY id DESC');
-        } else {
-            // NEVER put $q directly in the SQL string: use a placeholder
-            $stmt = $pdo-&gt;prepare(
-                'SELECT id, name, price, stock FROM products WHERE name LIKE ? ORDER BY name LIMIT 20'
-            );
-            $stmt-&gt;execute(['%' . $q . '%']);
-        }
-        send_json($stmt-&gt;fetchAll());
-    }
-
-    if ($method === 'POST') {
-        // section IV
-    }
-
-    if ($method === 'DELETE') {
-        // section VI
-    }
-
-    send_json(['error' =&gt; 'Method not allowed'], 405);
-} catch (PDOException $e) {
-    error_log($e-&gt;getMessage());              // details go to the Apache error log...
-    send_json(['error' =&gt; 'Database error'], 500); // ...not to the user
-}
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          Test it directly in the browser: <code>http://localhost/your_project/api/products.php</code> and
-          <code>http://localhost/your_project/api/products.php?q=mo</code>. You should see something like:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-[
-  {"id": 3, "name": "Monitor", "price": "32000.00", "stock": 5},
-  {"id": 2, "name": "Mouse", "price": "1200.00", "stock": 30},
-  {"id": 1, "name": "Keyboard", "price": "2500.00", "stock": 12}
-]
-        </pre>
-      </div>
-      <div class="Note"><strong>Note:</strong> MySQL <code>DECIMAL</code> values arrive as strings
-        (<code>"2500.00"</code>) to keep their exact precision. Convert them in JavaScript with
-        <code>Number(product.price)</code> before computing with them. Also, do not write the closing
-        <code>?&gt;</code> tag in files that only contain PHP: a newline after it is sent to the browser and breaks
-        the JSON.</div>
-      <table>
+      <table class="Table">
         <tr>
-          <th>Status code</th>
-          <th>Meaning</th>
-          <th>Example</th>
+          <th>#</th>
+          <th>Scenario</th>
+          <th>Steps</th>
+          <th>Expected result</th>
+          <th>Result</th>
         </tr>
         <tr>
-          <td>200 OK</td>
-          <td>Success</td>
-          <td>List of products returned</td>
+          <td>1</td>
+          <td>Register a new user</td>
+          <td>Open the register page, fill valid data, submit</td>
+          <td>Redirected to the home page, logged in; new row in the users table with a hashed password</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
-          <td>201 Created</td>
-          <td>A new resource was created</td>
-          <td>Product inserted</td>
+          <td>2</td>
+          <td>Invalid registration</td>
+          <td>Submit with an empty name and an invalid email; then disable JS and submit again</td>
+          <td>JS errors shown; with JS disabled, PHP rejects the data with a message</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
-          <td>400 Bad Request</td>
-          <td>The request is malformed</td>
-          <td>Invalid JSON, missing id</td>
+          <td>3</td>
+          <td>Create / edit / delete an item</td>
+          <td>Log in as admin, create an item, edit it, delete it</td>
+          <td>Each change visible on the page and in phpMyAdmin</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
-          <td>401 / 403</td>
-          <td>Not logged in / not allowed</td>
-          <td>A visitor tries to delete</td>
+          <td>4</td>
+          <td>Access control</td>
+          <td>Log out and open an admin URL; log in as a user and open another user's edit URL</td>
+          <td>Redirected to login / "Access denied"</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
-          <td>404 Not Found</td>
-          <td>The resource does not exist</td>
-          <td>Delete an id that is not in the table</td>
-        </tr>
-        <tr>
-          <td>405 Method Not Allowed</td>
-          <td>The endpoint does not support this method</td>
-          <td>PUT on our endpoint</td>
-        </tr>
-        <tr>
-          <td>422 Unprocessable Content</td>
-          <td>Validation failed</td>
-          <td>Empty name, negative price</td>
-        </tr>
-        <tr>
-          <td>500 Internal Server Error</td>
-          <td>Bug or database problem</td>
-          <td>MySQL is stopped</td>
+          <td>5</td>
+          <td>AJAX search</td>
+          <td>Type in the search field</td>
+          <td>Results update without reloading; "no result" message when nothing matches</td>
+          <td>Pass / Fail</td>
         </tr>
       </table>
-    </section>
-    <section id="Fetch_GET">
-      <h2 class="Section_Title">III. fetch() GET with async/await, errors and loading</h2>
+      <h3 class="Sub_Section_Title">Browser DevTools</h3>
       <div class="Definitions">
         <p>
-          <code>fetch(url, options)</code> returns a Promise of a <code>Response</code>. With
-          <code>await</code> we wait for it without blocking the page (only inside an <code>async</code> function or
-          a module). Two things are essential: <br>
-          1. <code>fetch()</code> only <b>rejects</b> on network problems (server unreachable, request cancelled).
-          A 404 or 500 response is <b>not</b> an exception: you must check <code>response.ok</code> (true for status
-          200-299). <br>
-          2. <code>response.json()</code> is also asynchronous and must be awaited. <br>
-          Instead of repeating these checks in every call, write one helper and reuse it everywhere:
+          Open the DevTools (F12) on every page while you test. The <strong>Console</strong> tab must show no red
+          errors (JavaScript errors, blocked resources, CSP violations). In the <strong>Network</strong> tab, no
+          request should fail (status 404 or 500), and AJAX responses should contain valid JSON, not PHP warnings
+          mixed with the data.
         </p>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/api.js
-export async function apiFetch(url, options = {}) {
-  let response;
-  try {
-    response = await fetch(url, options);
-  } catch (error) {
-    if (error.name === "AbortError") throw error; // cancelled on purpose (section V)
-    throw new Error("Cannot reach the server. Is Apache running?");
-  }
-
-  // Our PHP always answers JSON, even for errors
-  let data = null;
-  const type = response.headers.get("Content-Type") || "";
-  if (type.includes("application/json")) {
-    data = await response.json(); // throws a SyntaxError if PHP printed a warning
-  }
-
-  if (!response.ok) {
-    const error = new Error(data?.error || `HTTP error ${response.status}`);
-    error.status = response.status;
-    error.details = data;
-    throw error;
-  }
-  return data;
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">The page</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;!-- products.php (inside &lt;main&gt;) --&gt;
-&lt;input type="search" id="Search_Input" placeholder="Search products..." autocomplete="off" /&gt;
-&lt;p id="Products_Status" class="Status" role="status" aria-live="polite"&gt;&lt;/p&gt;
-&lt;table class="Products_Table"&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Price (DA)&lt;/th&gt;&lt;th&gt;Stock&lt;/th&gt;&lt;th&gt;Actions&lt;/th&gt;&lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody id="Products_Body"&gt;&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;script src="assets/JS/products.js" type="module"&gt;&lt;/script&gt;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-.Status.loading::before {
-  content: "";
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5em;
-  vertical-align: middle;
-  border: 3px solid #cccccc;
-  border-top-color: #8c1515;
-  border-radius: 50%;
-  animation: Spin 0.8s linear infinite;
-}
-
-.Status.error { color: #b00020; }
-.Status.success { color: #1b7f3a; }
-
-tbody[aria-busy="true"] { opacity: 0.5; }
-tr.Removing { opacity: 0.4; }
-
-@keyframes Spin {
-  to { transform: rotate(360deg); }
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Loading and displaying the data</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js
-import { apiFetch } from "./api.js";
-
-const API = "api/products.php";
-const tbody = document.getElementById("Products_Body");
-const statusBox = document.getElementById("Products_Status");
-
-function setStatus(message, type = "info") {
-  statusBox.textContent = message;
-  statusBox.className = `Status ${type}`;
-}
-
-function renderProducts(products) {
-  tbody.replaceChildren(); // empty the table body
-  if (products.length === 0) {
-    const cell = tbody.insertRow().insertCell();
-    cell.colSpan = 4;
-    cell.textContent = "No products found.";
-    return;
-  }
-  for (const product of products) {
-    const row = tbody.insertRow();
-    row.dataset.id = product.id; // &lt;tr data-id="3"&gt;
-    row.insertCell().textContent = product.name; // textContent, never innerHTML, for data
-    row.insertCell().textContent = Number(product.price).toFixed(2);
-    row.insertCell().textContent = product.stock;
-    const deleteBtn = document.createElement("button");
-    deleteBtn.type = "button";
-    deleteBtn.className = "Delete_Btn";
-    deleteBtn.textContent = "Delete";
-    row.insertCell().appendChild(deleteBtn);
-  }
-}
-
-async function loadProducts(query = "", signal) {
-  setStatus("Loading...", "loading");
-  tbody.setAttribute("aria-busy", "true");
-  try {
-    const url = query ? `${API}?q=${encodeURIComponent(query)}` : API;
-    const products = await apiFetch(url, { signal });
-    renderProducts(products);
-    setStatus(`${products.length} product(s)`);
-  } catch (error) {
-    if (error.name === "AbortError") return; // a newer search replaced this one
-    setStatus(error.message, "error");
-  } finally {
-    tbody.removeAttribute("aria-busy");
-  }
-}
-
-loadProducts();
-        </pre>
-      </div>
-      <div class="Note"><strong>Security:</strong> the product names come from users. Putting them in
-        <code>innerHTML</code> would let someone save <code>&lt;img src=x onerror=alert(1)&gt;</code> as a name and
-        run JavaScript in other users' browsers (XSS). <code>textContent</code> always displays text. See
-        <a href="Lab_12.html">Lab 12</a> and the <a href="Security.html">Security</a> lecture.</div>
-      <div class="Definitions">
-        <p>For comparison, the same request written with <code>.then()</code> instead of <code>await</code>:</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-fetch("api/products.php")
-  .then((response) =&gt; {
-    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-    return response.json();
-  })
-  .then((products) =&gt; renderProducts(products))
-  .catch((error) =&gt; setStatus(error.message, "error"));
-        </pre>
-      </div>
-    </section>
-    <section id="POST">
-      <h2 class="Section_Title">IV. Sending data with POST: FormData and JSON</h2>
+      <h3 class="Sub_Section_Title">HTML validation and Lighthouse</h3>
       <div class="Definitions">
         <p>
-          There are two common ways to send data to PHP: <br>
-          1. <b>FormData</b>: <code>new FormData(form)</code> collects all the fields of a form (using their
-          <code>name</code> attributes), including files. PHP reads it with <code>$_POST</code> (and
-          <code>$_FILES</code>) exactly like a normal form. Do <b>not</b> set the <code>Content-Type</code> header
-          yourself: the browser does it. <br>
-          2. <b>JSON body</b>: <code>JSON.stringify(object)</code> with the header
-          <code>Content-Type: application/json</code>. PHP does <b>not</b> fill <code>$_POST</code> in this case: it
-          must read the raw body with <code>file_get_contents('php://input')</code> and decode it with
-          <code>json_decode(..., true)</code> (the <code>true</code> gives an associative array).
+          Check your HTML with the W3C validator at <a href="https://validator.w3.org/">https://validator.w3.org/</a>.
+          Since your pages are generated by PHP on localhost, open a page, view its source (Ctrl+U), copy it and use
+          the "Validate by Direct Input" tab. Fix the errors (unclosed tags, duplicate ids, missing
+          <code>alt</code> attributes...). Then run <strong>Lighthouse</strong> (DevTools &gt; Lighthouse tab, mode
+          "Navigation") on your main pages for mobile and desktop, and use the report to improve performance,
+          accessibility and best practices (image sizes, contrast, labels on form fields).
         </p>
       </div>
-      <h3 class="Sub_Section_Title">PHP: the POST branch</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-if ($method === 'POST') {
-    // Accept both a JSON body and a classic form body
-    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-    if (str_contains($contentType, 'application/json')) {
-        $input = json_decode(file_get_contents('php://input'), true);
-        if (!is_array($input)) {
-            send_json(['error' =&gt; 'Invalid JSON'], 400);
-        }
-    } else {
-        $input = $_POST; // FormData or normal form
-    }
-
-    // Always validate on the server, even if JavaScript already did (Lab 4)
-    $name  = trim($input['name'] ?? '');
-    $price = filter_var($input['price'] ?? null, FILTER_VALIDATE_FLOAT);
-    $stock = filter_var($input['stock'] ?? null, FILTER_VALIDATE_INT);
-
-    $errors = [];
-    if ($name === '' || mb_strlen($name) &gt; 100) {
-        $errors['name'] = 'Name is required (100 characters max).';
-    }
-    if ($price === false || $price &lt; 0) {
-        $errors['price'] = 'Price must be a positive number.';
-    }
-    if ($stock === false || $stock &lt; 0) {
-        $errors['stock'] = 'Stock must be a positive integer.';
-    }
-    if ($errors) {
-        send_json(['error' =&gt; 'Validation failed', 'errors' =&gt; $errors], 422);
-    }
-
-    $stmt = $pdo-&gt;prepare('INSERT INTO products (name, price, stock) VALUES (:name, :price, :stock)');
-    $stmt-&gt;execute([':name' =&gt; $name, ':price' =&gt; $price, ':stock' =&gt; $stock]);
-
-    send_json([
-        'id'    =&gt; (int) $pdo-&gt;lastInsertId(),
-        'name'  =&gt; $name,
-        'price' =&gt; $price,
-        'stock' =&gt; $stock,
-    ], 201);
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">JavaScript: sending a form with FormData</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;form id="Add_Product_Form" novalidate&gt;
-  &lt;input type="text" name="name" placeholder="Name" required /&gt;
-  &lt;input type="number" name="price" placeholder="Price" step="0.01" min="0" required /&gt;
-  &lt;input type="number" name="stock" placeholder="Stock" min="0" required /&gt;
-  &lt;button type="submit"&gt;Add&lt;/button&gt;
-  &lt;p id="Form_Errors" class="Status error" aria-live="polite"&gt;&lt;/p&gt;
-&lt;/form&gt;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-const form = document.getElementById("Add_Product_Form");
-const formErrors = document.getElementById("Form_Errors");
-
-form.addEventListener("submit", async (event) =&gt; {
-  event.preventDefault(); // stop the normal submit and page reload
-  const submitBtn = form.querySelector("button[type=submit]");
-  submitBtn.disabled = true; // avoid double submissions
-  submitBtn.textContent = "Saving...";
-  formErrors.textContent = "";
-
-  try {
-    const created = await apiFetch(API, {
-      method: "POST",
-      body: new FormData(form), // no Content-Type header here!
-    });
-    form.reset();
-    setStatus(`"${created.name}" added.`, "success");
-    loadProducts();
-  } catch (error) {
-    if (error.status === 422 &amp;&amp; error.details?.errors) {
-      formErrors.textContent = Object.values(error.details.errors).join(" ");
-    } else {
-      formErrors.textContent = error.message;
-    }
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Add";
-  }
-});
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">JavaScript: sending a JSON body</h3>
-      <div class="Definitions">
-        <p>Use JSON when the data does not come from a form, for example an object built by your code:</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-const newProduct = { name: "Webcam", price: 4500, stock: 8 };
-
-const created = await apiFetch(API, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(newProduct),
-});
-console.log("New id:", created.id);
-        </pre>
-      </div>
-      <table>
-        <tr>
-          <th></th>
-          <th>FormData</th>
-          <th>JSON body</th>
-        </tr>
-        <tr>
-          <td>Build it with</td>
-          <td><code>new FormData(form)</code></td>
-          <td><code>JSON.stringify(object)</code></td>
-        </tr>
-        <tr>
-          <td>Content-Type</td>
-          <td>Set automatically by the browser</td>
-          <td><code>application/json</code> (set it yourself)</td>
-        </tr>
-        <tr>
-          <td>Read in PHP with</td>
-          <td><code>$_POST</code>, <code>$_FILES</code></td>
-          <td><code>json_decode(file_get_contents('php://input'), true)</code></td>
-        </tr>
-        <tr>
-          <td>Best for</td>
-          <td>Existing forms, file uploads</td>
-          <td>Data built in JavaScript, nested data, DELETE/PUT requests</td>
-        </tr>
-      </table>
-      <div class="Note"><strong>Common mistake:</strong> sending JSON and reading <code>$_POST</code> in PHP. The
-        array is empty and every field looks "missing". Look at the request in DevTools &gt; Network &gt; Payload
-        to check what was really sent.</div>
+      <div class="Note"><strong>Tip:</strong> test in at least two browsers (for example Chrome and Firefox) and on a
+        real phone connected to the same network, using your computer's IP address instead of
+        <code>localhost</code>.</div>
     </section>
-    <section id="Live_Search">
-      <h2 class="Section_Title">V. A live search box with debounce</h2>
+    <section id="Deployment">
+      <h2 class="Section_Title">VI. Optional: deploying online</h2>
       <div class="Definitions">
         <p>
-          A live search updates the results while the user types. Listening to the <code>input</code> event and
-          calling the server for every key would send 5 requests for the word "mouse". <b>Debouncing</b> waits until
-          the user stops typing for a short delay (here 300 ms) and then sends a single request: each new key press
-          cancels the previous timer. <br>
-          Requests can also come back in the wrong order (the answer for "mo" arriving after the answer for
-          "mouse"). An <code>AbortController</code> cancels the previous request when a new one starts.
+          Deployment is not required, but a public URL is a great addition to your README and your CV. Any shared
+          hosting or free PHP hosting service with MySQL works the same way:
         </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-function debounce(fn, delay = 300) {
-  let timerId;
-  return (...args) =&gt; {
-    clearTimeout(timerId);
-    timerId = setTimeout(() =&gt; fn(...args), delay);
-  };
-}
-
-const searchInput = document.getElementById("Search_Input");
-let searchController = null;
-
-const runSearch = debounce((query) =&gt; {
-  searchController?.abort(); // cancel the previous, now useless, request
-  searchController = new AbortController();
-  loadProducts(query, searchController.signal);
-}, 300);
-
-searchInput.addEventListener("input", () =&gt; {
-  runSearch(searchInput.value.trim());
-});
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          The PHP side is the GET branch of section II: the search term is sent as <code>?q=...</code>
-          (encoded with <code>encodeURIComponent</code>) and used in a <b>prepared statement</b> with
-          <code>LIKE ?</code>. The <code>LIMIT 20</code> keeps the answer small and fast.
-        </p>
-      </div>
-      <div class="Note"><strong>Tip:</strong> open DevTools &gt; Network, type quickly in the search box and watch:
-        only one request should be sent after you stop typing, and older requests are shown as "canceled".</div>
-    </section>
-    <section id="Delete_Row">
-      <h2 class="Section_Title">VI. Deleting a row without reloading</h2>
-      <div class="Definitions">
-        <p>
-          The rows are created by JavaScript and replaced after every search, so adding a listener to each button
-          would be lost. Instead we use <b>event delegation</b>: one listener on the <code>&lt;tbody&gt;</code>, and
-          <code>event.target.closest(".Delete_Btn")</code> to find which button was clicked. The id of the product is
-          stored in the <code>data-id</code> attribute of the row. <br>
-          We send the request with the HTTP method <code>DELETE</code> and a JSON body. The row is removed from the
-          DOM <b>only after</b> the server confirms.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-if ($method === 'DELETE') {
-    // (In your project, check here that the user is logged in and allowed to delete,
-    //  e.g. with $_SESSION, and answer 401/403 otherwise. See Lab 12.)
-    $input = json_decode(file_get_contents('php://input'), true);
-    $id = is_array($input) ? filter_var($input['id'] ?? null, FILTER_VALIDATE_INT) : false;
-    if ($id === false) {
-        send_json(['error' =&gt; 'A valid id is required'], 400);
-    }
-
-    $stmt = $pdo-&gt;prepare('DELETE FROM products WHERE id = ?');
-    $stmt-&gt;execute([$id]);
-
-    if ($stmt-&gt;rowCount() === 0) {
-        send_json(['error' =&gt; 'Product not found'], 404);
-    }
-    send_json(['deleted' =&gt; $id]);
-}
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-tbody.addEventListener("click", async (event) =&gt; {
-  const btn = event.target.closest(".Delete_Btn");
-  if (!btn) return; // the click was not on a delete button
-
-  const row = btn.closest("tr");
-  const name = row.cells[0].textContent;
-  if (!confirm(`Delete "${name}"?`)) return; // or use the &lt;dialog&gt; of Lab 7
-
-  btn.disabled = true;
-  row.classList.add("Removing"); // visual feedback while waiting
-  try {
-    await apiFetch(API, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: Number(row.dataset.id) }),
-    });
-    row.remove();
-    setStatus(`"${name}" deleted.`, "success");
-  } catch (error) {
-    row.classList.remove("Removing");
-    btn.disabled = false;
-    setStatus(error.message, "error");
-  }
-});
-        </pre>
-      </div>
-      <div class="Note"><strong>Note:</strong> a <code>GET</code> request must never modify data (browsers,
-        link previews and search engines may call GET links on their own). Use <code>POST</code> or
-        <code>DELETE</code> for any action that changes the database.</div>
-    </section>
-    <section id="Comparison">
-      <h2 class="Section_Title">VII. fetch vs XMLHttpRequest vs jQuery $.ajax</h2>
-      <div class="Definitions">
-        <p>
-          The <a href="AJAX.html">AJAX lecture</a> and <code>SRC/JS/AJAX.js</code> use <code>XMLHttpRequest</code>,
-          the original AJAX API, with an <code>onreadystatechange</code> callback. The
-          <a href="jQuery.html">jQuery lecture</a> uses <code>$.ajax()</code>, <code>$.get()</code> and
-          <code>$.post()</code>. Here is the same "load the products" request with both:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// XMLHttpRequest (style of SRC/JS/AJAX.js)
-const xhr = new XMLHttpRequest();
-xhr.open("GET", "api/products.php");
-xhr.responseType = "json";
-xhr.onload = function () {
-  if (xhr.status === 200) {
-    renderProducts(xhr.response);
-  } else {
-    setStatus(`HTTP error ${xhr.status}`, "error");
-  }
-};
-xhr.onerror = () =&gt; setStatus("Network error", "error");
-xhr.send();
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// jQuery
-$.ajax({
-  url: "api/products.php",
-  method: "GET",
-  dataType: "json",
-})
-  .done((products) =&gt; renderProducts(products))
-  .fail((jqXHR) =&gt; setStatus(jqXHR.responseJSON?.error || "Request failed", "error"));
-
-// $.post with a serialized form (PHP reads it with $_POST)
-$.post("api/products.php", $("#Add_Product_Form").serialize()).done(() =&gt; loadProducts());
-        </pre>
-      </div>
-      <table>
-        <tr>
-          <th></th>
-          <th>XMLHttpRequest</th>
-          <th>fetch()</th>
-          <th>jQuery $.ajax</th>
-        </tr>
-        <tr>
-          <td>Style</td>
-          <td>Events and callbacks</td>
-          <td>Promises, works with <code>async</code>/<code>await</code></td>
-          <td>Callbacks or <code>.done()</code>/<code>.fail()</code> (also awaitable)</td>
-        </tr>
-        <tr>
-          <td>Needs a library</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes, jQuery</td>
-        </tr>
-        <tr>
-          <td>HTTP errors (404, 500)</td>
-          <td>Check <code>xhr.status</code></td>
-          <td>Not an exception: check <code>response.ok</code></td>
-          <td>Calls <code>.fail()</code></td>
-        </tr>
-        <tr>
-          <td>Cancel a request</td>
-          <td><code>xhr.abort()</code></td>
-          <td><code>AbortController</code></td>
-          <td><code>jqXHR.abort()</code></td>
-        </tr>
-        <tr>
-          <td>Upload progress</td>
-          <td>Yes, <code>xhr.upload.onprogress</code></td>
-          <td>Not directly</td>
-          <td>Yes, through the <code>xhr</code> option</td>
-        </tr>
-      </table>
-      <div class="Note"><strong>Recommendation:</strong> use <code>fetch()</code> for new code in your project. If
-        your team already uses jQuery on the pages (jQuery lecture), <code>$.ajax</code> is acceptable, but do not
-        mix several styles for the same service. Whatever the client, the PHP endpoint stays exactly the same.</div>
-    </section>
-    <section id="Your_Turn">
-      <h2 class="Section_Title">VIII. Your turn</h2>
-      <div class="Definitions">
-        <p>Apply this lab to your team project. Each member can take one service.</p>
         <ol>
-          <li>Choose at least <b>two</b> of the CRUD services of your project (<a href="Lab_0.html">Lab 0</a>), for
-            example the listing/search of your main items and the delete or add of another one.</li>
-          <li>Create the <code>api/</code> folder and one endpoint per service, based on section II. Use only PDO
-            prepared statements for queries that contain user data.</li>
-          <li>Test each endpoint in the browser (GET) and check in DevTools &gt; Network &gt; Response that the
-            answer is valid JSON with the correct status code.</li>
-          <li>Create <code>assets/JS/api.js</code> with the <code>apiFetch()</code> helper and import it in the
-            scripts of your pages (<code>type="module"</code>).</li>
-          <li>Load and display a list with <code>fetch()</code>, with a loading indicator and an error message.</li>
-          <li>Convert one form to AJAX (FormData or JSON). Validate on the server and show the 422 errors next to
-            the form.</li>
-          <li>Add a live search with debounce on one of your lists.</li>
-          <li>Add a delete (or update) without reload, with a confirmation (the <code>&lt;dialog&gt;</code> of
-            <a href="Lab_7.html">Lab 7</a> is a good choice).</li>
-          <li>Test the failure cases: stop MySQL in the XAMPP control panel (you must see your error message, not
-            a frozen page), and use the "Slow 3G" throttling of DevTools to see your loading indicators.</li>
-          <li>Commit and push: <code>git commit -m "Lab 11: AJAX services"</code> then <code>git push</code>.</li>
+          <li>Create an account and a website on the hosting service; note the FTP credentials and the database
+            host, name, user and password it gives you.</li>
+          <li>Create the database in the hosting control panel, open its phpMyAdmin and import your
+            <code>.sql</code> file. If the import fails because of the <code>CREATE DATABASE</code> statement,
+            export again without it (shared hosting usually imposes the database name).</li>
+          <li>Upload your files (without the <code>.git</code> folder) into the public folder (often
+            <code>htdocs</code> or <code>public_html</code>) with the hosting file manager or an FTP client.</li>
+          <li>Create <code>config.php</code> on the server with the hosting database credentials and
+            <code>'production' =&gt; true</code>.</li>
+          <li>Turn off <code>display_errors</code>, enable HTTPS if the host offers it, then rerun your test plan on
+            the online version.</li>
         </ol>
       </div>
+      <div class="Note"><strong>Warning:</strong> a public site will be visited by bots that try common attacks.
+        Deploy only after the Lab 12 fixes, never with the default test passwords, and never with real personal
+        data.</div>
+    </section>
+    <section id="Presentation">
+      <h2 class="Section_Title">VII. Final presentation</h2>
+      <div class="Definitions">
+        <p>
+          The final presentation is a 10 to 15 minute demonstration of your project followed by questions. Every
+          member must present the part they built and be able to explain its code: the evaluation is individual as
+          well as collective. A suggested structure:
+        </p>
+      </div>
+      <table class="Table">
+        <tr>
+          <th>Part</th>
+          <th>Duration</th>
+          <th>Content</th>
+        </tr>
+        <tr>
+          <td>Introduction</td>
+          <td>1-2 min</td>
+          <td>The problem, the target users, the team and who did what.</td>
+        </tr>
+        <tr>
+          <td>Architecture</td>
+          <td>2 min</td>
+          <td>Database schema (tables and relations), folder structure, list of the web services.</td>
+        </tr>
+        <tr>
+          <td>Live demo</td>
+          <td>5-8 min</td>
+          <td>A realistic user scenario that goes through the main CRUD services, authentication and AJAX. Each member
+            demonstrates their own features. Show the responsive layout on a small screen.</td>
+        </tr>
+        <tr>
+          <td>Security and quality</td>
+          <td>1-2 min</td>
+          <td>Main findings of the security audit and how they were fixed; testing done.</td>
+        </tr>
+        <tr>
+          <td>Conclusion</td>
+          <td>1 min</td>
+          <td>Difficulties met, what you learned, possible improvements.</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">Prepare the demo</h3>
+      <ul class="Checklist">
+        <li>Rehearse the full presentation at least once with a timer.</li>
+        <li>Prepare the demo data and the accounts in advance; log out of everything before you start.</li>
+        <li>Record a short <strong>backup video</strong> of the demo (screen recording) in case the network, the
+          laptop or XAMPP fails on the day.</li>
+        <li>Have the project working on two laptops, and keep the code open in your editor to answer questions.</li>
+        <li>Zoom the browser and the editor (Ctrl and +) so the audience can read.</li>
+      </ul>
+      <h3 class="Sub_Section_Title">Questions you should be ready to answer</h3>
+      <ul class="Checklist">
+        <li>Show the code of one of your services: what happens from the click in the browser to the database?</li>
+        <li>Why do you validate the data in PHP if JavaScript already validates it?</li>
+        <li>How do you protect this query against SQL injection? This page against XSS? This form against CSRF?</li>
+        <li>How are passwords stored? What happens to the session at login and logout?</li>
+        <li>What can a user do if they change the <code>id</code> in the URL?</li>
+        <li>What does this AJAX request send and receive? Show it in the Network tab.</li>
+        <li>How did you organize the work in Git? Show a pull request you reviewed.</li>
+        <li>What would you change if you had to start again?</li>
+      </ul>
+      <div class="Note"><strong>Further reading:</strong> documentation, tools and tutorials for going further are
+        collected on the <a href="Resources.html">Resources</a> page.</div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>At least two services of the project use AJAX (no page reload).</li>
-        <li>PHP endpoints that return only JSON, with <code>Content-Type: application/json</code> and correct
-          status codes (<code>http_response_code</code>).</li>
-        <li>All SQL queries with user data use PDO prepared statements.</li>
-        <li>At least one GET with <code>fetch()</code> and <code>async</code>/<code>await</code>, and at least one
-          POST (FormData or JSON body).</li>
-        <li>Error handling (<code>response.ok</code>, <code>try</code>/<code>catch</code>) with messages visible to
-          the user, and loading indicators.</li>
-        <li>A live search with debounce and a delete (or update) without reload.</li>
-        <li>Data displayed with <code>textContent</code> (or escaped), never raw <code>innerHTML</code>.</li>
-        <li>All the code pushed to your team repository before the "PHP/AJAX" milestone of the
-          <a href="Syllabus.html#Deadlines">Deadlines table</a>.</li>
+        <li>The integrated project merged into <code>main</code> on GitHub, with all features of the integration
+          checklist working from a fresh clone.</li>
+        <li>A complete <code>README.md</code>: description, features, screenshots, installation steps and test
+          accounts.</li>
+        <li>The database dump in <code>database/</code>, importable with phpMyAdmin.</li>
+        <li>The manual test plan with its results, a console free of errors and the W3C validation errors fixed.
+        </li>
+        <li>A clean Git history: feature branches, pull requests, meaningful commits and contributions from every
+          member (<code>git shortlog -sn</code>).</li>
+        <li>The final presentation with a live demo and a backup video. It corresponds to the "Final project
+          presentation" row of the Deadlines table in the <a href="Syllabus.html">Syllabus</a>.</li>
       </ul>
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_10.html" class="Arrow">
-      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 10: OOP PHP and MVC</h1>
-    </a>
     <a href="Lab_12.html" class="Arrow">
-      <h1>Lab 12: Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 12: Security</h1>
+    </a>
+    <a href="Resources.html" class="Arrow">
+      <h1>Resources</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
