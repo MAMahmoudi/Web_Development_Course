@@ -84,66 +84,86 @@
       <div class="Vertical_Demo">
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
-          <pre class="prettyprint  lang-html">
-            &lt;img class="Float_Img" src="SRC/IMAGES/Oran.jpg"/&gt;<br>
-            &lt;p&gt;
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus rem ad aliquid vero, cumque eligendi quasi
-            impedit ipsam quos voluptas aperiam reiciendis placeat, cum recusandae sapiente. Ullam iure laudantium modi!
-            <br>
-            &lt;/p&gt;
+          <pre class="prettyprint lang-html">
+          &lt;img class="Float_Left" src="SRC/IMAGES/Oran.jpg" alt="Oran"&gt;
+          &lt;p&gt;
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Accusamus rem ad aliquid vero, cumque eligendi quasi
+            impedit ipsam quos voluptas aperiam reiciendis placeat,
+            cum recusandae sapiente. Ullam iure laudantium modi! Vero
+            labore vel temporibus quia fuga quod, voluptatem totam
+            quidem pariatur velit earum voluptates, iusto porro, natus
+            sapiente repudiandae? Impedit, libero delectus. Deserunt
+            reiciendis cumque nam consequatur illum veritatis
+            doloribus aspernatur. Cupiditate perferendis, porro quod
+            distinctio veritatis vitae fugiat odit explicabo,
+            exercitationem alias aut.
+          &lt;/p&gt;
+          &lt;img class="Float_Right" src="SRC/IMAGES/Algiers.jpg" alt="Algiers"&gt;
+          &lt;p&gt;
+            Minima, perspiciatis labore consequuntur tenetur velit
+            numquam odit doloribus dolor mollitia laborum facere optio
+            aperiam magnam, unde vel dolores accusamus. Nihil, harum?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Minima, perspiciatis labore consequuntur tenetur velit
+            numquam odit doloribus dolor mollitia laborum facere optio
+            aperiam magnam, unde vel dolores accusamus. Nihil, harum?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Quasi impedit ipsam quos voluptas aperiam reiciendis
+            placeat.
+          &lt;/p&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Float_Img
-          {<br>
-          float: left;<br>
+          <pre class="prettyprint lang-css">
+          img {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+          }
+          /* the image goes to the left, the text wraps around it */
+          .Float_Left {
+            float: left;
+            margin: 0 12px 8px 0;
+          }
+          /* clear: both starts below the previous float */
+          .Float_Right {
+            float: right;
+            clear: both;
+            margin: 0 0 8px 12px;
           }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div>
-            <figure class="featured MediaImage">
-              <img src="SRC/IMAGES/Oran.jpg" alt="Oran" width="150px" height="100px" />
-              <figcaption>Oran</figcaption>
-            </figure>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero
-              labore vel temporibus quia fuga quod, voluptatem totam quidem
-              pariatur velit earum voluptates, iusto porro, natus sapiente
-              repudiandae? Impedit, libero delectus. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Deserunt reiciendis cumque nam
-              consequatur illum veritatis doloribus aspernatur. Cupiditate
-              perferendis, porro quod distinctio veritatis vitae fugiat odit
-              explicabo, exercitationem alias aut. Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit.
-            </p>
-          </div>
-          <div class="Media clearfix">
-            <figure class="featured MediaImage2">
-              <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-              <figcaption>Algiers</figcaption>
-            </figure>
-            <figure class="featured MediaImage2">
-              <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-              <figcaption>Tlemcen</figcaption>
-            </figure>
-            <div class="MediaBody">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Minima, perspiciatis labore consequuntur tenetur velit numquam
-                odit doloribus dolor mollitia laborum facere optio aperiam
-                magnam, unde vel dolores accusamus. Nihil, harum?. Lorem ipsum
-                dolor sit amet, consectetur adipisicing elit. Minima,
-                perspiciatis labore consequuntur tenetur velit numquam odit
-                doloribus dolor mollitia laborum facere optio aperiam magnam,
-                unde vel dolores accusamus. Nihil, harum? Lorem ipsum dolor sit
-                amet, consectetur adipisicing elit.
-              </p>
-            </div>
-          </div>
+          <img class="Float_Left" src="SRC/IMAGES/Oran.jpg" alt="Oran">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Accusamus rem ad aliquid vero, cumque eligendi quasi
+            impedit ipsam quos voluptas aperiam reiciendis placeat,
+            cum recusandae sapiente. Ullam iure laudantium modi! Vero
+            labore vel temporibus quia fuga quod, voluptatem totam
+            quidem pariatur velit earum voluptates, iusto porro, natus
+            sapiente repudiandae? Impedit, libero delectus. Deserunt
+            reiciendis cumque nam consequatur illum veritatis
+            doloribus aspernatur. Cupiditate perferendis, porro quod
+            distinctio veritatis vitae fugiat odit explicabo,
+            exercitationem alias aut.
+          </p>
+          <img class="Float_Right" src="SRC/IMAGES/Algiers.jpg" alt="Algiers">
+          <p>
+            Minima, perspiciatis labore consequuntur tenetur velit
+            numquam odit doloribus dolor mollitia laborum facere optio
+            aperiam magnam, unde vel dolores accusamus. Nihil, harum?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Minima, perspiciatis labore consequuntur tenetur velit
+            numquam odit doloribus dolor mollitia laborum facere optio
+            aperiam magnam, unde vel dolores accusamus. Nihil, harum?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Quasi impedit ipsam quos voluptas aperiam reiciendis
+            placeat.
+          </p>
         </div>
       </div>
     </section>
@@ -185,85 +205,60 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;h4&gt;flex-direction: row (default)&lt;/h4&gt;
+          &lt;div class="Box Direction_Row"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+            &lt;div class="Item"&gt;4&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;flex-direction: row-reverse&lt;/h4&gt;
+          &lt;div class="Box Direction_Row_Reverse"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+            &lt;div class="Item"&gt;4&lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-            .Flex_Container
-            { <br>
-            display: flex; <br>
-            flex-direction: row; <br>
-            }
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border: 2px dashed #888;
+          }
+          .Item {
+            width: 60px;
+            padding: 15px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          .Direction_Row { flex-direction: row; }
+          .Direction_Row_Reverse { flex-direction: row-reverse; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container">
-            <h3>flex-direction: row (default)</h3>
-            <div class="Flex_Sub_Container">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>flex-direction: row-reverse</h3>
-            <div class="Flex_Sub_Container Row_Reverse">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
+          <h4>flex-direction: row (default)</h4>
+          <div class="Box Direction_Row">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+            <div class="Item">4</div>
+          </div>
+          <h4>flex-direction: row-reverse</h4>
+          <div class="Box Direction_Row_Reverse">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+            <div class="Item">4</div>
           </div>
         </div>
       </div>
@@ -271,87 +266,68 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;div class="Compare"&gt;
+            &lt;div&gt;
+              &lt;h4&gt;flex-direction: column&lt;/h4&gt;
+              &lt;div class="Box Direction_Column"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;flex-direction: column-reverse&lt;/h4&gt;
+              &lt;div class="Box Direction_Column_Reverse"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Flex_Container
-          { <br>
-          display: flex; <br>
-          flex-direction: column; <br>
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border: 2px dashed #888;
           }
+          .Item {
+            width: 60px;
+            padding: 15px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          .Direction_Column { flex-direction: column; }
+          .Direction_Column_Reverse { flex-direction: column-reverse; }
+          /* puts the two examples side by side */
+          .Compare { display: flex; gap: 40px; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container Close_Column Row">
-            <div class="Display_Flex Column">
-              <div class="Flex_Sub_Container Column">
-                <h4>flex-direction: column</h4>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
+          <div class="Compare">
+            <div>
+              <h4>flex-direction: column</h4>
+              <div class="Box Direction_Column">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
-            <div class="Display_Flex Column">
-              <div class="Flex_Sub_Container Column_Reverse">
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-                <h4>flex-direction: column-reverse</h4>
+            <div>
+              <h4>flex-direction: column-reverse</h4>
+              <div class="Box Direction_Column_Reverse">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
           </div>
@@ -370,190 +346,89 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;h4&gt;flex-wrap: nowrap (default)&lt;/h4&gt;
+          &lt;div class="Box No_Wrap"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+            &lt;div class="Item"&gt;4&lt;/div&gt;
+            &lt;div class="Item"&gt;5&lt;/div&gt;
+            &lt;div class="Item"&gt;6&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;flex-wrap: wrap&lt;/h4&gt;
+          &lt;div class="Box Wrap"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+            &lt;div class="Item"&gt;4&lt;/div&gt;
+            &lt;div class="Item"&gt;5&lt;/div&gt;
+            &lt;div class="Item"&gt;6&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;flex-wrap: wrap-reverse&lt;/h4&gt;
+          &lt;div class="Box Wrap_Reverse"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+            &lt;div class="Item"&gt;4&lt;/div&gt;
+            &lt;div class="Item"&gt;5&lt;/div&gt;
+            &lt;div class="Item"&gt;6&lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Flex_Container
-          { <br>
-          display: flex; <br>
-          flex-wrap: nowrap; <br>
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            gap: 8px;
+            width: 330px; /* too narrow for 6 items */
+            padding: 8px;
+            border: 2px dashed #888;
           }
+          .Item {
+            width: 60px;
+            padding: 15px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          /* nowrap: one line, the items shrink to fit */
+          .No_Wrap { flex-wrap: nowrap; }
+          .Wrap { flex-wrap: wrap; }
+          .Wrap_Reverse { flex-wrap: wrap-reverse; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container Column">
-            <div class="Display_Flex Column_Reverse">
-              <div class="Flex_Sub_Container Flex_No_Wrap">
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-              </div>
-              <h3>flex-wrap: nowrap</h3>
-            </div>
-            <div class="Display_Flex Column_Reverse">
-              <div class="Flex_Sub_Container Flex_Wrap">
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-              </div>
-              <h3>flex-wrap: wrap</h3>
-            </div>
-            <div class="Display_Flex Column_Reverse">
-              <div class="Flex_Sub_Container Flex_Wrap_Reverse">
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Oran</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Algiers</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Tlemcen</figcaption>
-                  </figure>
-                </div>
-                <div>
-                  <figure class="featured MediaImage">
-                    <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                    <figcaption>Taghit</figcaption>
-                  </figure>
-                </div>
-              </div>
-              <h3>flex-wrap: wrap-reverse</h3>
-            </div>
+          <h4>flex-wrap: nowrap (default)</h4>
+          <div class="Box No_Wrap">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+            <div class="Item">4</div>
+            <div class="Item">5</div>
+            <div class="Item">6</div>
+          </div>
+          <h4>flex-wrap: wrap</h4>
+          <div class="Box Wrap">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+            <div class="Item">4</div>
+            <div class="Item">5</div>
+            <div class="Item">6</div>
+          </div>
+          <h4>flex-wrap: wrap-reverse</h4>
+          <div class="Box Wrap_Reverse">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+            <div class="Item">4</div>
+            <div class="Item">5</div>
+            <div class="Item">6</div>
           </div>
         </div>
       </div>
@@ -565,193 +440,108 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;h4&gt;justify-content: flex-start (default)&lt;/h4&gt;
+          &lt;div class="Box Start"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;justify-content: flex-end&lt;/h4&gt;
+          &lt;div class="Box End"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;justify-content: center&lt;/h4&gt;
+          &lt;div class="Box Center"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;justify-content: space-between&lt;/h4&gt;
+          &lt;div class="Box Between"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;justify-content: space-around&lt;/h4&gt;
+          &lt;div class="Box Around"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;h4&gt;justify-content: space-evenly&lt;/h4&gt;
+          &lt;div class="Box Evenly"&gt;
+            &lt;div class="Item"&gt;1&lt;/div&gt;
+            &lt;div class="Item"&gt;2&lt;/div&gt;
+            &lt;div class="Item"&gt;3&lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Flex_Container
-          { <br>
-          display: flex; <br>
-          justify-content: flex-start; <br>
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border: 2px dashed #888;
           }
+          .Item {
+            width: 60px;
+            padding: 15px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          .Start { justify-content: flex-start; }
+          .End { justify-content: flex-end; }
+          .Center { justify-content: center; }
+          .Between { justify-content: space-between; }
+          .Around { justify-content: space-around; }
+          .Evenly { justify-content: space-evenly; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container Column">
-            <h3>justify-content: flex-start</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Flex_Start">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>justify-content: flex-end</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Flex_End">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>justify-content: center</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Center">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>justify-content: space-between</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Space_Between">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>justify-content: space-around</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Space_Around">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
-            <h3>justify-content: space-evenly</h3>
-            <div class="Flex_Sub_Container_No_Justify Justify_Space_Evenly">
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Oran</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Algiers</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Tlemcen</figcaption>
-                </figure>
-              </div>
-              <div>
-                <figure class="featured MediaImage">
-                  <img src="SRC/IMAGES/Taghit.jpg" alt="ensia_logo" width="150px" height="100px" />
-                  <figcaption>Taghit</figcaption>
-                </figure>
-              </div>
-            </div>
+          <h4>justify-content: flex-start (default)</h4>
+          <div class="Box Start">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+          </div>
+          <h4>justify-content: flex-end</h4>
+          <div class="Box End">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+          </div>
+          <h4>justify-content: center</h4>
+          <div class="Box Center">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+          </div>
+          <h4>justify-content: space-between</h4>
+          <div class="Box Between">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+          </div>
+          <h4>justify-content: space-around</h4>
+          <div class="Box Around">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
+          </div>
+          <h4>justify-content: space-evenly</h4>
+          <div class="Box Evenly">
+            <div class="Item">1</div>
+            <div class="Item">2</div>
+            <div class="Item">3</div>
           </div>
         </div>
       </div>
@@ -763,116 +553,121 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;div class="Compare"&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-items: stretch (default)&lt;/h4&gt;
+              &lt;div class="Box Stretch"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item Big"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-items: flex-start&lt;/h4&gt;
+              &lt;div class="Box Start"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item Big"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-items: flex-end&lt;/h4&gt;
+              &lt;div class="Box End"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item Big"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-items: center&lt;/h4&gt;
+              &lt;div class="Box Center"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item Big"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-items: baseline&lt;/h4&gt;
+              &lt;div class="Box Baseline"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item Big"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Flex_Container
-          { <br>
-          display: flex; <br>
-          align-items: flex-start; <br>
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            gap: 8px;
+            height: 110px; /* room on the cross axis */
+            padding: 8px;
+            border: 2px dashed #888;
           }
+          .Item {
+            width: 60px;
+            padding: 6px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          .Big { font-size: 2em; }
+          .Stretch { align-items: stretch; }
+          .Start { align-items: flex-start; }
+          .End { align-items: flex-end; }
+          .Center { align-items: center; }
+          .Baseline { align-items: baseline; }
+          /* puts the examples side by side */
+          .Compare { display: flex; flex-wrap: wrap; gap: 20px; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container Column">
-            <div class="Display_Flex Column">
-              <div class="Display_Flex Column">
-                <h3>align-items: flex-start</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row Align_Flex_Start Height">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-              <div class="Display_Flex Column">
-                <h3>align-items: flex-end</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row Align_Flex_End Height">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-              <div class="Display_Flex Column">
-                <h3>align-items: center</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row Align_Center Height">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
+          <div class="Compare">
+            <div>
+              <h4>align-items: stretch (default)</h4>
+              <div class="Box Stretch">
+                <div class="Item">1</div>
+                <div class="Item Big">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
-            <div class="Display_Flex Column">
-              <div class="Display_Flex Column">
-                <h3>align-items: stretch</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
-                  <div class="Align_Stretch">
-                    <figure class="featured MediaImage ">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div class="Align_Stretch">
-                    <figure class="featured MediaImage">
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            <div>
+              <h4>align-items: flex-start</h4>
+              <div class="Box Start">
+                <div class="Item">1</div>
+                <div class="Item Big">2</div>
+                <div class="Item">3</div>
               </div>
-              <div class="Display_Flex Column">
-                <h3>align-items: baseline</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row Align_Baseline Height">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            </div>
+            <div>
+              <h4>align-items: flex-end</h4>
+              <div class="Box End">
+                <div class="Item">1</div>
+                <div class="Item Big">2</div>
+                <div class="Item">3</div>
+              </div>
+            </div>
+            <div>
+              <h4>align-items: center</h4>
+              <div class="Box Center">
+                <div class="Item">1</div>
+                <div class="Item Big">2</div>
+                <div class="Item">3</div>
+              </div>
+            </div>
+            <div>
+              <h4>align-items: baseline</h4>
+              <div class="Box Baseline">
+                <div class="Item">1</div>
+                <div class="Item Big">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
           </div>
@@ -889,175 +684,124 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Flex_Container"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
+          &lt;div class="Compare"&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-content: flex-start&lt;/h4&gt;
+              &lt;div class="Box Start"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-content: flex-end&lt;/h4&gt;
+              &lt;div class="Box End"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-content: center&lt;/h4&gt;
+              &lt;div class="Box Center"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-content: space-between&lt;/h4&gt;
+              &lt;div class="Box Between"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;align-content: stretch (default)&lt;/h4&gt;
+              &lt;div class="Box Stretch"&gt;
+                &lt;div class="Item"&gt;1&lt;/div&gt;
+                &lt;div class="Item"&gt;2&lt;/div&gt;
+                &lt;div class="Item"&gt;3&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Flex_Container
-          { <br>
-          display: flex; <br>
-          align-content: flex-start; <br>
+          <pre class="prettyprint lang-css">
+          .Box {
+            display: flex;
+            flex-wrap: wrap; /* needed: several rows */
+            gap: 8px;
+            width: 130px; /* 2 items per row */
+            height: 140px;
+            padding: 8px;
+            border: 2px dashed #888;
           }
+          .Item {
+            width: 50px;
+            padding: 8px 0;
+            background: #2b86c5;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 6px;
+          }
+          h4 { margin: 12px 0 4px; }
+          .Start { align-content: flex-start; }
+          .End { align-content: flex-end; }
+          .Center { align-content: center; }
+          .Between { align-content: space-between; }
+          .Stretch { align-content: stretch; }
+          /* puts the examples side by side */
+          .Compare { display: flex; flex-wrap: wrap; gap: 20px; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container Column">
-            <div class="Display_Flex Column">
-              <div class="Display_Flex Column">
-                <h3>align-content: flex-start</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
-                  <div class="Content_Flex_Start">
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-              <div class="Display_Flex Column">
-                <h3>align-content: flex-end</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
-                  <div class="Content_Flex_End">
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div class="Content_Flex_End">
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-              <div class="Display_Flex Column">
-                <h3>align-content: center</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row Content_Center Height">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
+          <div class="Compare">
+            <div>
+              <h4>align-content: flex-start</h4>
+              <div class="Box Start">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
-            <div class="Display_Flex Close_Column">
-              <div class="Display_Flex Column">
-                <h3>align-content: stretch</h3>
-                <div class="Flex_Sub_Container_No_Align_Item Row  Height">
-                  <div class="Content_Flex_Stretch">
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div class="Content_Flex_Stretch">
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            <div>
+              <h4>align-content: flex-end</h4>
+              <div class="Box End">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
             </div>
-            <!--
-            <div class="Display_Flex Close_Column">
-              <div class="Display_Flex Column Big_Height">
-                <h3>align-content: space-between</h3>
-                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Between ">
-                  <div>
-                    <figure class="featured MediaImage ">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage ">
-                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Tlemcen</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            <div>
+              <h4>align-content: center</h4>
+              <div class="Box Center">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
-              <div class="Display_Flex Column Big_Height">
-                <h3>align-content: space-evenly</h3>
-                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Evenly ">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage ">
-                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Tlemcen</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            </div>
+            <div>
+              <h4>align-content: space-between</h4>
+              <div class="Box Between">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
-              <div class="Display_Flex Column Big_Height">
-                <h3>align-content: space-around</h3>
-                <div class="Flex_Sub_Container_No_Align_Content Column Content_Space_Around ">
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Oran</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage">
-                      <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                      <figcaption>Algiers</figcaption>
-                    </figure>
-                  </div>
-                  <div>
-                    <figure class="featured MediaImage ">
-                      <img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" width="150px" height="100px" />
-                      <figcaption>Tlemcen</figcaption>
-                    </figure>
-                  </div>
-                </div>
+            </div>
+            <div>
+              <h4>align-content: stretch (default)</h4>
+              <div class="Box Stretch">
+                <div class="Item">1</div>
+                <div class="Item">2</div>
+                <div class="Item">3</div>
               </div>
-            </div>-->
+            </div>
           </div>
         </div>
       </div>
@@ -1206,39 +950,71 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;img class="Order_3" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" / &gt;
-          &lt;img class="Order_4" src="SRC/IMAGES/Oran.jpg" alt="Oran" / &gt;
-          &lt;img class="Order_1" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" / &gt;
-          &lt;img class="Order_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine"/ &gt;
+          &lt;p&gt;Order in the HTML: Tlemcen, Oran, Algiers, Constantine&lt;/p&gt;
+          &lt;div class="Gallery"&gt;
+            &lt;figure class="Tlemcen"&gt;
+              &lt;img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen"&gt;
+              &lt;figcaption&gt;Tlemcen (order: 3)&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure class="Oran"&gt;
+              &lt;img src="SRC/IMAGES/Oran.jpg" alt="Oran"&gt;
+              &lt;figcaption&gt;Oran (order: 4)&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure class="Algiers"&gt;
+              &lt;img src="SRC/IMAGES/Algiers.jpg" alt="Algiers"&gt;
+              &lt;figcaption&gt;Algiers (order: 1)&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure class="Constantine"&gt;
+              &lt;img src="SRC/IMAGES/Constantine.jpg" alt="Constantine"&gt;
+              &lt;figcaption&gt;Constantine (order: 2)&lt;/figcaption&gt;
+            &lt;/figure&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Order_1
-          { <br>
-          order: 1; <br>
+          <pre class="prettyprint lang-css">
+          .Gallery {
+            display: flex;
+            gap: 12px;
           }
+          .Gallery figure {
+            width: 120px;
+            margin: 0;
+          }
+          .Gallery img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+          }
+          .Gallery figcaption { text-align: center; }
+          /* all items start with order: 0 */
+          .Algiers { order: 1; }
+          .Constantine { order: 2; }
+          .Tlemcen { order: 3; }
+          .Oran { order: 4; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Flex_Container">
-            Below is a flex container.
-            <div class="Flex_Sub_Container">
-              <div class="Order_4">
-                <img class="MediaImage Image_2" src="SRC/IMAGES/Oran.jpg" alt="Oran" />
-              </div>
-              <div class="Order_1">
-                <img class="MediaImage Image_2" src="SRC/IMAGES/Algiers.jpg" alt="Algiers" />
-              </div>
-              <div class="Order_3">
-                <img class="MediaImage Image_2" src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen" />
-              </div>
-              <div class="Order_2">
-                <img class="MediaImage Image_2" src="SRC/IMAGES/Constantine.jpg" alt="Constantine" />
-              </div>
-            </div>
+          <p>Order in the HTML: Tlemcen, Oran, Algiers, Constantine</p>
+          <div class="Gallery">
+            <figure class="Tlemcen">
+              <img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen">
+              <figcaption>Tlemcen (order: 3)</figcaption>
+            </figure>
+            <figure class="Oran">
+              <img src="SRC/IMAGES/Oran.jpg" alt="Oran">
+              <figcaption>Oran (order: 4)</figcaption>
+            </figure>
+            <figure class="Algiers">
+              <img src="SRC/IMAGES/Algiers.jpg" alt="Algiers">
+              <figcaption>Algiers (order: 1)</figcaption>
+            </figure>
+            <figure class="Constantine">
+              <img src="SRC/IMAGES/Constantine.jpg" alt="Constantine">
+              <figcaption>Constantine (order: 2)</figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -1258,66 +1034,79 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Grid" &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;/div &gt;
+          &lt;div class="Grid"&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Oran.jpg" alt="Oran"&gt;
+              &lt;figcaption&gt;Oran&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Algiers.jpg" alt="Algiers"&gt;
+              &lt;figcaption&gt;Algiers&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen"&gt;
+              &lt;figcaption&gt;Tlemcen&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Taghit.jpg" alt="Taghit"&gt;
+              &lt;figcaption&gt;Taghit&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Tipaza.jpg" alt="Tipaza"&gt;
+              &lt;figcaption&gt;Tipaza&lt;/figcaption&gt;
+            &lt;/figure&gt;
+            &lt;figure&gt;
+              &lt;img src="SRC/IMAGES/Constantine.jpg" alt="Constantine"&gt;
+              &lt;figcaption&gt;Constantine&lt;/figcaption&gt;
+            &lt;/figure&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Grid
-          { <br>
-          display:grid; <br>
-          grid-template-columns: 1fr 1fr 1fr; <br>
-          grid-template-rows: 1fr 1fr; <br>
+          <pre class="prettyprint lang-css">
+          .Grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
           }
+          .Grid figure { margin: 0; }
+          .Grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+          }
+          .Grid figcaption { text-align: center; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Grid_Sub_Container">
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" width="150px" height="100px" />
-                <figcaption>Oran</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Algiers.jpg" alt="ensia_logo" width="150px" height="100px" />
-                <figcaption>Algiers</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Tlemcen.jpg" alt="ensia_logo" width="150px" height="100px" />
-                <figcaption>Algiers</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Taghit.jpg" alt="Taghit" width="150px" height="100px" />
-                <figcaption>Taghit</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Tipaza.jpg" alt="ensia_logo" width="150px" height="100px" />
-                <figcaption>Tipaza</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Constantine.jpg" alt="ensia_logo" width="150px" height="100px" />
-                <figcaption>Constantine</figcaption>
-              </figure>
-            </div>
+          <div class="Grid">
+            <figure>
+              <img src="SRC/IMAGES/Oran.jpg" alt="Oran">
+              <figcaption>Oran</figcaption>
+            </figure>
+            <figure>
+              <img src="SRC/IMAGES/Algiers.jpg" alt="Algiers">
+              <figcaption>Algiers</figcaption>
+            </figure>
+            <figure>
+              <img src="SRC/IMAGES/Tlemcen.jpg" alt="Tlemcen">
+              <figcaption>Tlemcen</figcaption>
+            </figure>
+            <figure>
+              <img src="SRC/IMAGES/Taghit.jpg" alt="Taghit">
+              <figcaption>Taghit</figcaption>
+            </figure>
+            <figure>
+              <img src="SRC/IMAGES/Tipaza.jpg" alt="Tipaza">
+              <figcaption>Tipaza</figcaption>
+            </figure>
+            <figure>
+              <img src="SRC/IMAGES/Constantine.jpg" alt="Constantine">
+              <figcaption>Constantine</figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -1325,56 +1114,41 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Grid" &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;div &gt;
-          &lt;/div &gt;<br>
-          &lt;/div &gt;
+          &lt;div class="Grid"&gt;
+            &lt;div&gt;column 1 (2fr), row 1 (1fr)&lt;/div&gt;
+            &lt;div&gt;column 2 (1fr), row 1 (1fr)&lt;/div&gt;
+            &lt;div&gt;column 1 (2fr), row 2 (2fr)&lt;/div&gt;
+            &lt;div&gt;column 2 (1fr), row 2 (2fr)&lt;/div&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Grid
-          { <br>
-          display:grid; <br>
-          grid-template-columns: 2fr 1fr; <br>
-          grid-template-rows: 1fr 1fr; <br>
+          <pre class="prettyprint lang-css">
+          .Grid {
+            display: grid;
+            /* the first column is two times wider than the second */
+            grid-template-columns: 2fr 1fr;
+            /* the second row is two times higher than the first */
+            grid-template-rows: 1fr 2fr;
+            gap: 10px;
+            height: 300px;
+          }
+          .Grid &gt; div {
+            padding: 10px;
+            background: #2b86c5;
+            color: white;
+            border-radius: 6px;
           }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Grid_Sub_Container_2">
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
-                <figcaption>Oran</figcaption>
-              </figure>
-              <!--Three times wider than the second column.-->
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
-                <figcaption>Oran</figcaption>
-              </figure>
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
-                <figcaption>Oran</figcaption>
-              </figure>
-              <!--two times higher than the first row.-->
-            </div>
-            <div>
-              <figure class="featured MediaImage">
-                <img src="SRC/IMAGES/Oran.jpg" alt="ensia_logo" />
-                <figcaption>Oran</figcaption>
-              </figure>
-            </div>
+          <div class="Grid">
+            <div>column 1 (2fr), row 1 (1fr)</div>
+            <div>column 2 (1fr), row 1 (1fr)</div>
+            <div>column 1 (2fr), row 2 (2fr)</div>
+            <div>column 2 (1fr), row 2 (2fr)</div>
           </div>
         </div>
       </div>
@@ -1430,80 +1204,82 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-           &lt;div class="Gradient_Div" &gt;
-          &lt;/div &gt;
+          &lt;div class="Swatches"&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Two colors&lt;/h4&gt;
+              &lt;div class="Swatch Simple"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Color stops&lt;/h4&gt;
+              &lt;div class="Swatch Stops"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Stripes&lt;/h4&gt;
+              &lt;div class="Swatch Stripes"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Repeating&lt;/h4&gt;
+              &lt;div class="Swatch Repeating"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Gradient_Div
-          { <br>
-          background-image: linear-gradient(90deg, #00dbde, #fc00ff); <br>
-          } <br><br>
-          /* Using color stops */<br><br>
-          .Gradient_Div
-          { <br>
-          background-image: linear-gradient(to right, #017137, #ffffff, #f47639); <br>
-          } <br><br>
-          /* Stripes */<br><br>
-          .Gradient_Div
-          { <br>
-          background-image: linear-gradient(
-          to bottom,
-          #000000 0%,
-          #000000 33%,
-          #c71231 33%,
-          #c71231 66%,
-          #ffba32 66%
-          ); <br>
-          } <br><br>
-          /* Repeating gradients */<br><br>
-          .Gradient_Div
-          { <br>
-          background-image: repeating-linear-gradient(
-          to bottom,
-          #be0b31 0%,
-          #be0b31 10%,
-          #ffffff 10%,
-          #ffffff 20%
-          );<br>
-          } <br>
+          <pre class="prettyprint lang-css">
+          .Swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+          }
+          .Swatch {
+            width: 150px;
+            height: 100px;
+            border: 1px solid black;
+            border-radius: 10px;
+          }
+          h4 { margin: 0 0 6px; }
+          .Simple {
+            background-image: linear-gradient(90deg, #00dbde, #fc00ff);
+          }
+          /* Using color stops */
+          .Stops {
+            background-image: linear-gradient(to right, #017137, #ffffff, #f47639);
+          }
+          /* Stripes: two colors at the same position */
+          .Stripes {
+            background-image: linear-gradient(to bottom,
+              #000000 0%, #000000 33%,
+              #c71231 33%, #c71231 66%,
+              #ffba32 66%);
+          }
+          /* Repeating gradients */
+          .Repeating {
+            background-image: repeating-linear-gradient(to bottom,
+              #be0b31 0%, #be0b31 10%,
+              #ffffff 10%, #ffffff 20%);
+          }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Gradient_Divs">
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
+          <div class="Swatches">
+            <div>
+              <h4>Two colors</h4>
+              <div class="Swatch Simple"></div>
+            </div>
+            <div>
+              <h4>Color stops</h4>
+              <div class="Swatch Stops"></div>
+            </div>
+            <div>
+              <h4>Stripes</h4>
+              <div class="Swatch Stripes"></div>
+            </div>
+            <div>
+              <h4>Repeating</h4>
+              <div class="Swatch Repeating"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1585,52 +1361,93 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Gradient_Div" &gt;
-          &lt;/div &gt;
+          &lt;div class="Swatches"&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Ellipse (default)&lt;/h4&gt;
+              &lt;div class="Swatch Ellipse"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Circle&lt;/h4&gt;
+              &lt;div class="Swatch Circle"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Size and center&lt;/h4&gt;
+              &lt;div class="Swatch Positioned"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Color stops&lt;/h4&gt;
+              &lt;div class="Swatch Stops"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;h4&gt;Repeating&lt;/h4&gt;
+              &lt;div class="Swatch Rings"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Gradient_Div
-          { <br>
-          background-image: radial-gradient(white, blue); <br>
-          } <br><br>
-          .Gradient_Div
-          { <br>
-          background-image: radial-gradient(circle, white, midnightblue) <br>
-          } <br><br>
-          .Gradient_Div
-          { <br>
-          /* Sized 3 em, centered 25% from the left and top edges */<br>
-          background-image: radial-gradient(3em at 25% 25%, white, midnightblue); <br>
-          } <br><br>
-          .Gradient_Div
-          { <br>
-          /* Radial gradient with explicit color stop positions */<br>
-          background-image: radial-gradient(circle, midnightblue 0%, white 75%, red 100%);
-          <br>
-          } <br><br>
-          .Gradient_Div
-          { <br>
-          /* Repeating gradient with stripes */<br>
-          background-image: repeating-radial-gradient(circle, midnightblue 0,
-          midnightblue 1em, white 1em, white 2em); <br>
-          } <br>
+          <pre class="prettyprint lang-css">
+          .Swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+          }
+          .Swatch {
+            width: 150px;
+            height: 100px;
+            border: 1px solid black;
+            border-radius: 10px;
+          }
+          h4 { margin: 0 0 6px; }
+          .Ellipse {
+            background-image: radial-gradient(white, blue);
+          }
+          .Circle {
+            background-image: radial-gradient(circle, white, midnightblue);
+          }
+          /* Sized 3em, centered 25% from the left and top edges */
+          .Positioned {
+            background-image: radial-gradient(3em at 25% 25%, white, midnightblue);
+          }
+          /* Explicit color stop positions */
+          .Stops {
+            background-image: radial-gradient(circle, midnightblue 0%, white 75%, red 100%);
+          }
+          /* Repeating gradient with stripes */
+          .Rings {
+            background-image: repeating-radial-gradient(circle,
+              midnightblue 0, midnightblue 1em, white 1em, white 2em);
+          }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Radial_Gradient_Divs">
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <div class="Gradient_Div"></div>
-            <button type="button" class="Try_It_Btn" id="Radial_Gradients_Try_It_Btn_ID">Try it</button>
+          <div class="Swatches">
+            <div>
+              <h4>Ellipse (default)</h4>
+              <div class="Swatch Ellipse"></div>
+            </div>
+            <div>
+              <h4>Circle</h4>
+              <div class="Swatch Circle"></div>
+            </div>
+            <div>
+              <h4>Size and center</h4>
+              <div class="Swatch Positioned"></div>
+            </div>
+            <div>
+              <h4>Color stops</h4>
+              <div class="Swatch Stops"></div>
+            </div>
+            <div>
+              <h4>Repeating</h4>
+              <div class="Swatch Rings"></div>
+            </div>
           </div>
         </div>
       </div>
+      <button type="button" class="Try_It_Btn" id="Radial_Gradients_Try_It_Btn_ID">Try it</button>
       <div class="Dialog" id="Dialog_2_ID">
         <div class="Dialog_Backdrop">
           <!--A “backdrop” to
@@ -1668,58 +1485,65 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Shadow_Div" &gt;
-          &lt;/div &gt;
+          &lt;h4&gt;Hover or click the boxes.&lt;/h4&gt;
+          &lt;div class="Tiles"&gt;
+            &lt;div class="Tile Soft"&gt;Shadow&lt;/div&gt;
+            &lt;div class="Tile Click"&gt;Click&lt;/div&gt;
+            &lt;div class="Tile Glow"&gt;Glow&lt;/div&gt;
+            &lt;div class="Tile Neon"&gt;Neon&lt;/div&gt;
+            &lt;div class="Tile Solid_1"&gt;Solid 1&lt;/div&gt;
+            &lt;div class="Tile Solid_2"&gt;Solid 2&lt;/div&gt;
+            &lt;div class="Tile Solid_3"&gt;Solid 3&lt;/div&gt;
+          &lt;/div&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          .Shadow_Div
-          { <br>
-          /* Dark blue shadow with a 0.5 em blur */<br>
-          box-shadow: 0.1em 0.1em 0.5em #124; <br>
-          text-shadow: 0.1em 0.1em 0.5em #ffffff;
-          <br>
-          } <br><br>
-          .Shadow_Div:active
-          {/* When I click on it */ <br>
-          /* Several shadows definition can be added, separating them with a comma.*/<br>
-          box-shadow: inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4); <br>
-          } <br><br>
-          .Shadow_Div:hover
-          { <br>
-          box-shadow: 0 0 50px 15px #48abe0; <br>
-          } <br><br>
-          .Shadow_Div:hover
-          { <br>
-          box-shadow: 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca, 0 0 25px 20px #8a2be2, 0 0
-          30px 25px #ff1493; <br>
-          } <br><br>
-          .Shadow_Div:hover
-          { <br>
-          box-shadow: -10px -10px 0 5px #000000;<br>
-          } <br><br>
-          .Shadow_Div:hover
-          { <br>
-          box-shadow: 10px 10px 0 5px #000000;<br>
-          } <br><br>
-          .Shadow_Div:hover
-          { <br>
-          box-shadow: 0 10px 0 5px #000000; <br>
-          } <br><br>
+          <pre class="prettyprint lang-css">
+          .Tiles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            padding: 30px;
+          }
+          .Tile {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 100px;
+          }
+          /* Dark blue shadow with a 0.5em blur */
+          .Soft {
+            box-shadow: 0.1em 0.1em 0.5em #124;
+            text-shadow: 0.1em 0.1em 0.2em #48abe0;
+          }
+          /* When I click on it: several shadows separated by a comma */
+          .Click:active {
+            box-shadow: inset 0 0 0.5em #124, inset 0 0.5em 1em rgba(0, 0, 0, 0.4);
+          }
+          .Glow:hover { box-shadow: 0 0 50px 15px #48abe0; }
+          .Neon:hover {
+            box-shadow: 0 0 10px 5px #48abe0, 0 0 20px 7px #ebecca,
+              0 0 25px 20px #8a2be2, 0 0 30px 25px #ff1493;
+          }
+          .Solid_1:hover { box-shadow: -10px -10px 0 5px #000000; }
+          .Solid_2:hover { box-shadow: 10px 10px 0 5px #000000; }
+          .Solid_3:hover { box-shadow: 0 10px 0 5px #000000; }
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <h4>Hover or click for the effect.</h4>
-          <div class="Shadow_Divs">
-            <div class="Shadow_Div">Click</div>
-            <div class="Shadow_Div">Hover</div>
-            <div class="Shadow_Div">Glow</div>
-            <div class="Shadow_Div">Solid</div>
-            <div class="Shadow_Div"></div>
-            <div class="Shadow_Div"></div>
+          <h4>Hover or click the boxes.</h4>
+          <div class="Tiles">
+            <div class="Tile Soft">Shadow</div>
+            <div class="Tile Click">Click</div>
+            <div class="Tile Glow">Glow</div>
+            <div class="Tile Neon">Neon</div>
+            <div class="Tile Solid_1">Solid 1</div>
+            <div class="Tile Solid_2">Solid 2</div>
+            <div class="Tile Solid_3">Solid 3</div>
           </div>
         </div>
       </div>
@@ -1864,73 +1688,77 @@
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;nav class="Nav_Bar_Items"&gt;<br>
-          &lt;h1 class="Nav_Bar_Logo"&gt;سياحة&lt;/h1&gt;<br>
-          &lt;div class="Menu_Icon" id="Menu_Icon_ID"&gt;<br>
-          &lt;i class="fas fa-bars" id="Burger_Icon_ID"&gt;
-          &lt;/i&gt;<br>
-          &lt;/div&gt;<br>
-          &lt;ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID"&gt;<br>
-          &lt;li&gt;<br>
-          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
-          &lt;span&gt;إتصل بنا&lt;/span&gt;<br>
-          &lt;i class="fa-solid fa-envelope"&gt;
-          &lt;/i&gt;<br>
-          &lt;/a&gt;<br>
-          &lt;/li&gt;<br>
-          &lt;li&gt;<br>
-          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
-          &lt;span&gt;جميع الخدمات&lt;/span&gt;<br>
-          &lt;i class="fa-solid fa-briefcase"&gt;
-          &lt;/i&gt;<br>
-          &lt;/a&gt;<br>
-          &lt;/li&gt;<br>
-          &lt;li&gt;<br>
-          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
-          &lt;span&gt;من نحن؟&lt;/span&gt;<br>
-          &lt;i class="fa-solid fa-circle-info"&gt;
-          &lt;/i&gt;<br>
-          &lt;/a&gt;<br>
-          &lt;/li&gt;<br>
-          &lt;li&gt;<br>
-          &lt;a href="#" class="Nav_Bar_Menu_Item"&gt;<br>
-          &lt;span&gt;الرئيسية&lt;/span&gt;<br>
-          &lt;i class="fa-solid fa-house"&gt;
-          &lt;/i&gt;<br>
-          &lt;/a&gt;<br>
-          &lt;/li&gt;<br>
-          &lt;/ul&gt;<br>
-          &lt;/nav&gt;<br>
+&lt;nav class="Bar"&gt;
+  &lt;h1 class="Logo"&gt;سياحة&lt;/h1&gt;
+  &lt;button class="Burger" id="Burger" aria-label="Menu"&gt;
+    &lt;i class="fas fa-bars"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;ul class="Menu" id="Menu"&gt;
+    &lt;li&gt;&lt;a href="#"&gt;الرئيسية&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;من نحن؟&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;جميع الخدمات&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#"&gt;إتصل بنا&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;p&gt;This result is narrower than 850px: you see the phone version.
+Change 850px into 500px in the CSS to see the desktop menu.&lt;/p&gt;
           </pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
-          <pre class="prettyprint  lang-css">
-          @media screen and (max-width: 850px)
-          { <br>
-          Nav_Bar_Menu
-          { <br>
-          display: flex; <br>
-          flex-direction: column; <br>
-          right: -100%; <br>
-          opacity: 0; <br>
-          } <br><br>
-          .Menu_Icon
-          { <br>
-          display: block; <br>
-          cursor: pointer; <br>
-          }<br><br>
-          .Nav_Bar_Menu.active
-          { <br>
-          right: 0; <br>
-          opacity: 1; <br>
-          }<br><br>
+          <pre class="prettyprint lang-css">
+body { overflow-x: hidden; min-height: 320px; }
+
+.Bar {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 20px;
+  border-radius: 13px;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.Logo { margin: 0; font-size: 2rem; }
+.Menu { display: flex; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.Menu a { padding: 8px 12px; border-radius: 4px; color: #222; font-weight: 600; text-decoration: none; }
+.Menu a:hover { color: white; background: #01959a; }
+.Burger { display: none; border: none; background: none; font-size: 1.4rem; cursor: pointer; }
+
+@media screen and (max-width: 850px) {
+  .Menu {
+    position: absolute;
+    top: 75px;
+    right: -100%;
+    width: 100%;
+    flex-direction: column;
+    background: white;
+    opacity: 0;
+    transition: 0.5s;
+  }
+  .Menu.active { right: 0; opacity: 1; }
+  .Burger { display: block; }
+}
+          </pre>
+        </div>
+        <h2 class="Code_Tag">JavaScript</h2>
+        <div class="JS_Code">
+          <pre class="prettyprint lang-js">
+const Burger = document.getElementById("Burger"),
+  Menu = document.getElementById("Menu");
+
+Burger.addEventListener("click", () =&gt; {
+  const open = Menu.classList.toggle("active");
+  Burger.innerHTML = open ? '&lt;i class="fas fa-times"&gt;&lt;/i&gt;' : '&lt;i class="fas fa-bars"&gt;&lt;/i&gt;';
+});
           </pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
           <a href="SRC/Labs/Lab_2/Lab_2_Page.html">
-            <h3>See result here</h3>
+            <h3>See the result on the Syaha demo website</h3>
           </a>
         </div>
       </div>

@@ -105,8 +105,8 @@ jQuery(document).ready(function () {
       </div>
       <h2 class="Code_Tag">Result</h2>
       <div class="Result_Demo">
-        <button id="button101" type="button">Click Me</button>
-        <p id="p101">This text will disapear when you click on the button.</p>
+        <button id="button" type="button">Click Me</button>
+        <p id="p">This text will disapear when you click on the button.</p>
       </div>
     </div>
     <div class="Definitions">
@@ -124,14 +124,13 @@ jQuery(document).ready(function () {
       <div class="HTML_Code">
         <pre class="prettyprint lang-js">
                 <code>
-$(document).ready(function () {
-  $("#button102").click(function () {
-    jq = $.noConflict();
+var jq = $.noConflict();   // jQuery gives the name $ back: jq is now the jQuery function
+jq(document).ready(function () {
+  jq("#button102").click(function () {
     jq("#p102").hide();
   });
   jq("#button103").click(function () {
-    $ = jq.noConflict();
-    alert("Off");
+    alert("$ is now: " + typeof $);   // "undefined": $ is free for another library
   });
 });
                 </code>
@@ -511,7 +510,7 @@ $(document).ready(function(){
           </tr>
         </table>
       </div>
-      <pre class="prettyprint lang-js">
+      <pre class="prettyprint lang-js" data-live-base="SRC/JS/">
         <code>
           $.ajax({
           url: "demo_test.txt",
@@ -521,6 +520,9 @@ $(document).ready(function(){
           });
         </code>
       </pre>
+    <template data-live-html>
+      <div id="div1">This text is replaced by the content of demo_test.txt.</div>
+    </template>
       <h2 class="Section_Title">jQuery load() Method</h2>
       <div class="Definitions">
         <p>
@@ -540,7 +542,7 @@ $(document).ready(function(){
 
         </p>
       </div>
-      <div class="card">
+      <div class="card" data-live-base="SRC/JS/">
         <h2 class="Code_Tag">JavaScript</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-js">
@@ -644,7 +646,7 @@ $(document).ready(function () {
         The following example uses the $.get() method to retrieve data from a file on the server:
         </p>
       </div>
-      <div class="card">
+      <div class="card" data-live-base="SRC/JS/">
         <h2 class="Code_Tag">JavaScript</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-js">

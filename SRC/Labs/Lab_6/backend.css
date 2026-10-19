@@ -1,0 +1,146 @@
+/* Elements added by the back end (Labs 5 and 6) to the pages of the demo */
+
+/* messages shown after a form was processed by the server */
+.Flash {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-radius: 7px;
+  direction: rtl;
+  line-height: 1.8;
+}
+
+.Flash ul {
+  padding-right: 1.5rem;
+}
+
+.Flash_Success {
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+  border-right: 5px solid #1b7a3a;
+}
+
+.Flash_Error {
+  color: #a93226;
+  background-color: #fdf1f0;
+  border-right: 5px solid #c0392b;
+}
+
+.Contact_Us_Container .Flash {
+  width: 100%;
+}
+
+/* duration and price of a trip, read from the database */
+.Trip_Card .Trip_Facts {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+  color: #027b92;
+}
+
+.Trip_Facts i {
+  margin-left: 0.3rem;
+}
+
+/* --- Lab 6 --- */
+
+/* search form of the services page (GET) */
+.Search_Form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.5rem;
+  margin: 0 6rem;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  background-color: #f0fafa;
+  direction: rtl;
+}
+
+.Search_Form h2 {
+  width: 100%;
+  font-size: 1.4rem;
+  color: #027b92;
+}
+
+.Search_Form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-weight: 600;
+}
+
+.Search_Form select {
+  min-width: 180px;
+  height: 2.6rem;
+  padding: 0 0.8rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.Search_Form button {
+  height: 2.6rem;
+  padding: 0 1.8rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background-color: #01959a;
+  cursor: pointer;
+}
+
+.Search_Form a {
+  align-self: center;
+  color: #027b92;
+}
+
+/* the booking page (book.php): the form of the dialog, alone on a page */
+.Booking_Page {
+  display: flex;
+  justify-content: center;
+  padding: 9rem 1rem 4rem;
+  background-color: #f0fafa;
+}
+
+.Booking_Page .Booking_Form {
+  width: min(520px, 100%);
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.Booking_Buttons a.Booking_Cancel {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 2.8rem;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* messages written by the server under the fields (same class as the JavaScript of Lab 4) */
+.Field_Error {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: #c0392b;
+  direction: rtl;
+}
+
+.Booking_Form .Invalid {
+  border-color: #c0392b;
+  background-color: #fdf1f0;
+}
+
+@media screen and (max-width: 850px) {
+  .Search_Form {
+    margin: 0 2rem;
+  }
+}

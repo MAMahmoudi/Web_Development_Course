@@ -795,6 +795,12 @@ getComputedStyle(Menu).display;           // "none" on a phone, "grid" on a desk
   cursor: pointer;
 }
 
+/* the same look for the link written by the server (Lab 6) */
+a.Book_Btn {
+  text-align: center;
+  text-decoration: none;
+}
+
 .Book_Btn:hover {
   background-image: linear-gradient(to left, #79fad5, #027b92);
 }
@@ -971,21 +977,29 @@ getComputedStyle(Menu).display;           // "none" on a phone, "grid" on a desk
     Message.textContent = "";
     Fields.forEach((Field) =&gt; Field.setCustomValidity(""));
     // preselect the trip of the card that was clicked
-    const Option = [...Trip.options].find((O) =&gt; O.textContent.startsWith(Title));
+    const Option = [...Trip.options].find((O) =&gt; O.textContent.trim().startsWith(Title));
     if (Option) Trip.value = Option.value;
     Update_Total();
     Dialog.showModal();
     Form.querySelector("#Booking_Name").focus();
   }
 
-  // a "book now" button at the bottom of each trip card
+  // a "book now" button at the bottom of each trip card.
+  // From Lab 6, the server writes a link to the booking page (it works without JavaScript):
+  // with JavaScript, the same link opens the dialog instead.
   document.querySelectorAll(".Trip_Card").forEach((Card) =&gt; {
-    const Button = document.createElement("button");
-    Button.type = "button";
-    Button.className = "Book_Btn";
-    Button.innerHTML = '&lt;i class="fa-solid fa-calendar-check"&gt;&lt;/i&gt; احجز الآن';
-    Button.addEventListener("click", () =&gt; Open(Card.querySelector("h4").textContent.trim()));
-    Card.appendChild(Button);
+    let Button = Card.querySelector(".Book_Btn");
+    if (!Button) {
+      Button = document.createElement("button");
+      Button.type = "button";
+      Button.className = "Book_Btn";
+      Button.innerHTML = '&lt;i class="fa-solid fa-calendar-check"&gt;&lt;/i&gt; احجز الآن';
+      Card.appendChild(Button);
+    }
+    Button.addEventListener("click", (event) =&gt; {
+      event.preventDefault();
+      Open(Card.querySelector("h4").textContent.trim());
+    });
   });
 
   Form.querySelector("#Booking_Cancel").addEventListener("click", () =&gt; Dialog.close());
@@ -996,14 +1010,20 @@ getComputedStyle(Menu).display;           // "none" on a phone, "grid" on a desk
   });
 
   Form.addEventListener("submit", (event) =&gt; {
-    event.preventDefault(); // no back end yet: nothing is sent
+    event.preventDefault();
     const All_Valid = [...Fields].map(Explain).every(Boolean);
     if (!All_Valid) {
       Form.reportValidity(); // shows the message of the first invalid field
       return;
     }
+    // with a back end (Lab 5), the form has an action: send it for real; the server checks it again
+    if (Form.getAttribute("action")) {
+      Form.submit();
+      return;
+    }
+    // static demo (Labs 2 to 4): nothing is sent, show a confirmation
     const Date_Text = new Date(Departure.value).toLocaleDateString("ar-DZ", { dateStyle: "long" });
-    Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.split(" (")[0]} ` +
+    Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.trim().split(" (")[0]} ` +
       `لـ ${People.value} مسافر(ين) يوم ${Date_Text}. المجموع: ${Total.value}`;
     Close_Timer = setTimeout(() =&gt; Dialog.close(), 3500);
   });
@@ -1106,14 +1126,20 @@ Form.noValidate = true;
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
 Form.addEventListener("submit", (event) =&gt; {
-  event.preventDefault(); // no back end yet: nothing is sent
+  event.preventDefault();
   const All_Valid = [...Fields].map(Explain).every(Boolean);
   if (!All_Valid) {
     Form.reportValidity(); // shows the message of the first invalid field
     return;
   }
+  // with a back end (Lab 5), the form has an action: send it for real; the server checks it again
+  if (Form.getAttribute("action")) {
+    Form.submit();
+    return;
+  }
+  // static demo (Labs 2 to 4): nothing is sent, show a confirmation
   const Date_Text = new Date(Departure.value).toLocaleDateString("ar-DZ", { dateStyle: "long" });
-  Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.split(" (")[0]} ` +
+  Message.textContent = `تم تسجيل حجزكم لرحلة ${Trip.selectedOptions[0].textContent.trim().split(" (")[0]} ` +
     `لـ ${People.value} مسافر(ين) يوم ${Date_Text}. المجموع: ${Total.value}`;
   Close_Timer = setTimeout(() =&gt; Dialog.close(), 3500);
 });
@@ -1157,13 +1183,16 @@ Form.addEventListener("submit", (event) =&gt; {
   // our own messages replace the browser's bubbles
   Form.noValidate = true;
 
-  // an empty message element after each field
+  // a message element after each field; the server (Lab 6) may already have written one: reuse it
   Rules.forEach(([Field]) =&gt; {
-    const Error = document.createElement("small");
-    Error.className = "Field_Error";
+    let Error = Field.nextElementSibling;
+    if (!Error || !Error.classList.contains("Field_Error")) {
+      Error = document.createElement("small");
+      Error.className = "Field_Error";
+      Field.after(Error);
+    }
     Error.id = Field.id + "_Error";
     Error.setAttribute("aria-live", "polite");
-    Field.after(Error);
     Field.setAttribute("aria-describedby", Error.id);
   });
 
@@ -1205,7 +1234,6 @@ Form.addEventListener("submit", (event) =&gt; {
   Form.appendChild(Success);
 
   Form.addEventListener("submit", (event) =&gt; {
-    // no back end yet: the form is not sent (it will be in the PHP labs)
     event.preventDefault();
     Success.textContent = "";
     const Results = Rules.map(([Field, Test]) =&gt; Check(Field, Test));
@@ -1213,6 +1241,13 @@ Form.addEventListener("submit", (event) =&gt; {
       Rules[Results.indexOf(false)][0].focus();
       return;
     }
+    // with a back end (Lab 5), the form has a real action: send it; the server checks it again
+    const Action = Form.getAttribute("action");
+    if (Action &amp;&amp; Action !== "#") {
+      Form.submit();
+      return;
+    }
+    // static demo (Labs 2 to 4): nothing is sent, show a confirmation
     Success.textContent = "شكراً لكم! تم استلام رسالتكم وسنرد عليكم في أقرب وقت.";
     Form.reset();
     Rules.forEach(([Field]) =&gt; {

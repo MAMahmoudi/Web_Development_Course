@@ -4,136 +4,1366 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
   <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 5</title>
+  <title>Lab 5: MySQL and PDO</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 5: MySQL</h1>
-    <h1 class="Section_Title">Instructions</h1>
-    <div class="Definitions">
-      <p>
-        <b>
-          In this lab, we will learn how to use MySQL. <br />
-          We will create a database and a table. <br />
-          In this week's lab, you must design you database on paper first. <br />
-          Then, you will create it using phpMyAdmin. <br />
-        </b>
-      </p>
-    </div>
-    <h1 class="Section_Title">I. Load MySQL</h1>
+    <h1 class="Title">Lab 5: MySQL and PDO</h1>
     <section>
-      <div class="Definitions">
+      <h2 class="Section_Title">Instructions</h2>
+      <div class="Instructions">
         <p>
-          <b>
-            To use MySQL, we need to install XAMPP. XAMPP is a free and open-source cross-platform web server solution
-            stack. <br>
-            It consists mainly of the Apache HTTP Server, MariaDB database, and interpreters for scripts written in the
-            PHP.
-            <br />
-            First, we start XAMPP. On windows, we can find it in the start menu. <br />
-            Then, we double click on the XAMPP tray icon to load the XAMPP control panel (see figure below). <br />
-          </b>
+          Until now, every text, photo and price of <strong>Syaha</strong> was written in the HTML. In this lab the
+          website gets a back end: a <strong>MySQL</strong> database that stores the trips, the services, the bookings
+          and the messages, and <strong>PHP</strong> pages that read and write it with <strong>PDO</strong>. You will
+          design the database, create it with phpMyAdmin, then build the pages that display it, the forms that fill
+          it, and an admin area to manage it. Then you do the same for your team project.
         </p>
       </div>
-      <img class="Small_Image_List_Item" src="SRC/IMAGES/Lab_5/Load_XAMPP_Control_Panel.png"
-        alt="Load_XAMPP_Control_Panel" />
-      <div class="Definitions">
-        <p>
-          <b>
-            On the XAMPP control panel, we first check that MySQL is runing (green). If not we have to start it using
-            the
-            start button. In the figure below we cannot see the start button because it is already runing. <br />
-            Then, we click on the admin button to open the phpMyAdmin page. <br />
-          </b>
-        </p>
-      </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/XAMPP_Control_Panel.png" alt="XAMPP_Control_Panel" />
     </section>
-    <h1 class="Section_Title">II. Create a database</h1>
-    <section>
+    <section id="Overview">
+      <h2 class="Section_Title">I. The back end you will build</h2>
+      <div class="Definitions">
+        <div>
+          The finished back end is in <a href="SRC/Labs/Lab_5/" target="_blank" rel="noopener">SRC/Labs/Lab_5</a>. Its pages look exactly like the demo of Labs 2 to 4 (they reuse its stylesheets and scripts), but their content comes from the database:<table><tr><th>Page</th><th>Reads</th><th>Writes</th></tr><tr><td><code>index.php</code></td><td>destinations, published trips</td><td>&mdash;</td></tr><tr><td><code>services.php</code></td><td>services, published trips</td><td>&mdash;</td></tr><tr><td><code>about_us.php</code></td><td>team members</td><td>&mdash;</td></tr><tr><td><code>contact_us.php</code></td><td>&mdash;</td><td>contact messages</td></tr><tr><td><code>book.php</code> (booking dialog)</td><td>the price of the trip</td><td>bookings</td></tr><tr><td><code>admin/</code></td><td>everything</td><td>trips (create, update, delete), booking status, messages</td></tr></table>
+        </div>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+SRC/Labs/Lab_5/
+├── database/
+│   └── syaha.sql           the tables and their data (import it in phpMyAdmin)
+├── includes/               files included by the pages, never opened directly
+│   ├── config.php          database settings
+│   ├── db.php              the PDO connection
+│   ├── functions.php       small helpers: e(), money(), redirect()...
+│   ├── queries.php         every SQL query of the site
+│   ├── header.php          &lt;head&gt; + navigation bar
+│   ├── footer.php          footer + scripts
+│   ├── hero.php, features.php             static parts of the home page
+│   └── trips_section.php, booking_dialog.php   parts shared by two pages
+├── index.php, services.php, about_us.php   pages that READ the database
+├── contact_us.php          shows the contact form and saves the messages
+├── book.php                saves a booking (no HTML: always redirects)
+├── 404.php, login.php
+├── backend.css             styles of the messages added by the server
+└── admin/                  administration: create, update, delete
+    ├── index.php           dashboard
+    ├── trips.php, trip_form.php, trip_delete.php
+    ├── bookings.php, messages.php
+    └── header.php, footer.php, admin.css
+        </pre>
+      </div>
       <div class="Definitions">
         <p>
-          <b>
-            On the phpMyAdmin page, we click on the new button to create a new database. <br />
-            We give the database a name and click on the create button. <br />
-          </b>
+          Every page follows the same path. The browser asks Apache for a <code>.php</code> file; PHP runs it, sends SQL queries to MySQL, builds the HTML with the rows it receives, and Apache sends that HTML back. The browser never sees the PHP code nor the database.
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_1.png" alt="Create_DB_1" />
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_2.png" alt="Create_DB_2" />
+      <div class="Code_Block">
+        <pre class="prettyprint">
+Browser                    Apache + PHP (XAMPP)                     MySQL
+   |  GET services.php           |                                        |
+   |----------------------------&gt;|  get_services()  SELECT * FROM services |
+   |                             |---------------------------------------&gt;|
+   |                             |&lt;---------------- 6 rows ---------------|
+   |                             |  foreach: one Service_Card per row     |
+   |&lt;--------- HTML -------------|                                        |
+        </pre>
+      </div>
+      <div class="Note"><strong>Run it:</strong> copy the whole course project into <code>C:/xampp/htdocs</code>, start <em>Apache</em> and <em>MySQL</em> in XAMPP, import <code>database/syaha.sql</code> (Step 3), then open <code>http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_5/index.php</code>. The admin area is <code>.../Lab_5/admin/</code>.</div>
     </section>
-    <h1 class="Section_Title">III. Create a table</h1>
-    <section>
+    <section id="Step_1">
+      <h2 class="Section_Title">II. Step 1: start MySQL and open phpMyAdmin</h2>
       <div class="Definitions">
         <p>
-          <b>
-            On the phpMyAdmin page, we click on the database we just created. <br />
-            Then, we click on the new button to create a new table. <br />
-            We give the table a name (1), the number of attributes (2) and click on the create button (3). <br />
-          </b>
+          MySQL (MariaDB in XAMPP) is a server: it must be running before PHP can use it. Open the XAMPP control panel (on Windows, from the Start menu or the XAMPP icon of the taskbar):
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_1.png" alt="Create_Table_1" />
+      <img class="Small_Image_List_Item" src="SRC/IMAGES/Lab_5/Load_XAMPP_Control_Panel.png" alt="XAMPP icon of the taskbar" loading="lazy" />
       <div class="Definitions">
         <p>
-          <b>
-            We give the attributes a name (1), a type (2), and a size (3). <br />
-            We also specify the default value (4), and if the attribute is a primary key (5). <br />
-            We can also set to auto increment (6) the primary key. <br />
-            Then, we click on the save button at the bottom of the page. <br />
-          </b>
+          Start <strong>Apache</strong> and <strong>MySQL</strong> (their names turn green), then click the <strong>Admin</strong> button of MySQL: it opens <strong>phpMyAdmin</strong> (<code>http://localhost/phpmyadmin</code>), a web interface to manage the databases.
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_2.png" alt="Create_Table_2" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/XAMPP_Control_Panel.png" alt="XAMPP control panel" loading="lazy" />
+      <div class="Note"><strong>Port already in use:</strong> if MySQL does not start, another program (often another MySQL server) already uses port 3306. Stop it, or change the port of XAMPP's MySQL in <em>Config &gt; my.ini</em> and in <code>includes/config.php</code>.</div>
+    </section>
+    <section id="Step_2">
+      <h2 class="Section_Title">III. Step 2: design the database</h2>
+      <div class="Definitions">
+        <div>
+          Design the database on paper before creating anything. Look at the pages and list what is <strong>repeated</strong>: each repeated block becomes a table, each piece of information in the block a column. On Syaha: the destination items, the trip cards, the service cards, the team cards; and what the visitors send: bookings and contact messages.<table><tr><th>Table</th><th>One row is</th><th>Main columns</th></tr><tr><td><code>destinations</code></td><td>a destination of the home page</td><td>title, description, image_1, image_2</td></tr><tr><td><code>trips</code></td><td>a trip that can be booked</td><td>title, description, image, price, duration_days, is_published</td></tr><tr><td><code>services</code></td><td>a service card</td><td>icon, title, description, price_label</td></tr><tr><td><code>team_members</code></td><td>a member of the team</td><td>full_name, role, photo</td></tr><tr><td><code>bookings</code></td><td>a booking of a trip</td><td>trip_id, full_name, email, departure_date, people, total_price, status</td></tr><tr><td><code>contact_messages</code></td><td>a message of the contact form</td><td>full_name, email, phone, subject, message, is_read</td></tr></table>
+        </div>
+      </div>
       <div class="Definitions">
         <p>
-          <b>
-            We can also modify any attribute after creating the table. <br />
-            We click on the structure tab, then on the change button (1) of the attribute we want to modify. <br />
-            We can delete an attribute by clicking on the drop button (2). <br />
-          </b>
+          <strong>Relationships.</strong> A booking concerns one trip, and a trip can have many bookings: a <em>one-to-many</em> relationship. It is stored with a <strong>foreign key</strong>: the column <code>bookings.trip_id</code> contains the <code>id</code> of a row of <code>trips</code>. The title or the price of the trip are <em>not</em> copied into the booking: they are found with a <code>JOIN</code> (Step 3).
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_3.png" alt="Create_Table_3" />
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_4.png" alt="Create_Table_4" />
+      <div class="Definitions">
+        <div>
+          <strong>Column types</strong> used by Syaha:<table><tr><th>Type</th><th>For</th><th>Example</th></tr><tr><td><code>INT UNSIGNED AUTO_INCREMENT PRIMARY KEY</code></td><td>the identifier of each row, numbered by MySQL</td><td><code>id</code></td></tr><tr><td><code>VARCHAR(n)</code></td><td>short texts, at most n characters</td><td><code>title VARCHAR(100)</code></td></tr><tr><td><code>TEXT</code></td><td>long texts</td><td><code>description</code>, <code>message</code></td></tr><tr><td><code>INT UNSIGNED</code></td><td>whole numbers &ge; 0 (prices in dinars have no decimals)</td><td><code>price</code></td></tr><tr><td><code>TINYINT(1)</code></td><td>yes/no (1/0)</td><td><code>is_published</code>, <code>is_read</code></td></tr><tr><td><code>DATE</code>, <code>TIMESTAMP</code></td><td>a day; a date and time</td><td><code>departure_date</code>, <code>created_at</code></td></tr><tr><td><code>ENUM(...)</code></td><td>one value out of a fixed list</td><td><code>status</code></td></tr></table>
+        </div>
+      </div>
+      <div class="Note"><strong>Rules of thumb:</strong> every table has an <code>id</code> primary key; store each information once (the price of a trip is in <code>trips</code> only); use <code>NOT NULL</code> unless a value is really optional (<code>phone</code>); use <code>utf8mb4</code> so that Arabic, accents and emojis are stored correctly, and the <code>InnoDB</code> engine, which supports foreign keys and transactions.</div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">IV. Step 3: create the database</h2>
+      <h3 class="Sub_Section_Title">1. With the phpMyAdmin interface</h3>
       <div class="Definitions">
         <p>
-          <b>
-            To delete a table, we go back to the database (1) and click on the drop button (2) of the table we want to
-            delete. <br />
-          </b>
+          Click <strong>New</strong> in the left column, type the name of the database (<code>syaha</code>), choose the collation <code>utf8mb4_unicode_ci</code> and click <strong>Create</strong>:
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_5.png" alt="Create_Table_5" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_1.png" alt="Create a database in phpMyAdmin" loading="lazy" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_DB_2.png" alt="The new database" loading="lazy" />
       <div class="Definitions">
         <p>
-          <b>
-            We can use the SQL tab to perform all the tasks we did before. <br />
-            We can also use it to test our SQL queries before using them in our PHP code. <br />
-            We have just to write the query and click on the go button. <br />
-          </b>
+          Then create a table: its name (1), its number of columns (2), and <strong>Create</strong> (3). For each column give a name (1), a type (2), a length (3), a default value (4), mark the primary key (5) and <code>AUTO_INCREMENT</code> (6), then <strong>Save</strong>.
         </p>
       </div>
-      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_6.png" alt="Create_Table_6" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_1.png" alt="Create a table" loading="lazy" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_2.png" alt="Define the columns" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The <strong>Structure</strong> tab lets you change (1) or drop (2) a column later; the <strong>Operations</strong> and <strong>Drop</strong> buttons of the database delete a table.
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_3.png" alt="Structure of a table" loading="lazy" />
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_5.png" alt="Drop a table" loading="lazy" />
+      <h3 class="Sub_Section_Title">2. With SQL</h3>
+      <div class="Definitions">
+        <p>
+          Everything you click in phpMyAdmin is translated into SQL, and the <strong>SQL</strong> tab runs SQL directly. The structure of Syaha is written in <a href="SRC/Labs/Lab_5/database/syaha.sql" target="_blank" rel="noopener">database/syaha.sql</a>. Read it: each <code>CREATE TABLE</code> is one table of Step 2.
+        </p>
+      </div>
+      <img class="Big_Image" src="SRC/IMAGES/Lab_5/Create_Table_6.png" alt="The SQL tab of phpMyAdmin" loading="lazy" />
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+-- ------------------------------------------------------------------
+-- Syaha: database of the demo website (Lab 5)
+-- Import it in phpMyAdmin (Import tab) or with:
+--   mysql -u root &lt; database/syaha.sql
+-- Importing again deletes the tables and their data and recreates them.
+-- ------------------------------------------------------------------
+
+CREATE DATABASE IF NOT EXISTS syaha CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE syaha;
+
+-- children first: a table cannot be dropped while another table references it
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS contact_messages;
+DROP TABLE IF EXISTS trips;
+DROP TABLE IF EXISTS destinations;
+DROP TABLE IF EXISTS services;
+DROP TABLE IF EXISTS team_members;
+
+-- the three destinations of the home page (mosques, cities, Sahara)
+CREATE TABLE destinations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  image_1 VARCHAR(255) NOT NULL,          -- path inside SRC/IMAGES
+  image_2 VARCHAR(255) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+-- the trips that can be booked
+CREATE TABLE trips (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  price INT UNSIGNED NOT NULL,            -- price per person, in dinars
+  duration_days TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- the service cards of the services page
+CREATE TABLE services (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  icon VARCHAR(60) NOT NULL,              -- Font Awesome classes
+  title VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  price_label VARCHAR(100) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+-- the team of the about page
+CREATE TABLE team_members (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  role VARCHAR(100) NOT NULL,
+  photo VARCHAR(255) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB;
+
+-- one booking = one trip (many bookings can concern the same trip: one-to-many relationship)
+CREATE TABLE bookings (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  trip_id INT UNSIGNED NOT NULL,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  departure_date DATE NOT NULL,
+  people TINYINT UNSIGNED NOT NULL,
+  total_price INT UNSIGNED NOT NULL,      -- computed by the server, never taken from the browser
+  status ENUM('pending', 'confirmed', 'cancelled') NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_bookings_trip FOREIGN KEY (trip_id) REFERENCES trips (id)
+    ON DELETE RESTRICT ON UPDATE CASCADE   -- a trip that has bookings cannot be deleted
+) ENGINE=InnoDB;
+
+-- the messages sent with the contact form
+CREATE TABLE contact_messages (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NULL,                 -- optional
+  subject VARCHAR(20) NOT NULL,
+  message TEXT NOT NULL,
+  is_read TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The file then fills the tables with the texts and photos of the demo. Note that the paths of the images are stored, not the images themselves:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+INSERT INTO trips (title, description, image, price, duration_days) VALUES
+  ('المساجد', 'تحتوي الجزائر على العديد من المساجد والجوامع الإسلامية التي تتميز بالزخارف وفن العمارة المميزة ومن أهمها ما يلي: جامع كتشاوة: مسجد تاريخي موجود في عاصمة الجزائر، بُني المسجد في فترة الحكم العثماني في 1612 ميلادي وتمت توسعته لاحقاً على يد الباي حسن في العام 1792 ميلادي، أثناء الحكم الفرنسي للجزائر تحوّل هذا المسجد إلى كاتدرائية القديس فيليب، التي ظلت كذلك حتى عام 1962 ميلادي، وعندها تمت إعادة المسجد إلى وضعه الأصلي، وعلى الرغم من هذه التحولات فقد احتفظ المسجد بعظمته الأصلية وعراقته التاريخية، كما تم تسجيل المسجد في قائمة اليونسكو للتراث العالمي في عام 1992، كجزء من آثار مدينة الجزائر.', 'Lab_2/Masjid3.jpg', 8000, 1),
+  ('المدن', 'تُعد الجزائر من الدول القليلة التي تمتلك مقومات هائلة في قطاع السياحة تجعلها إحدى الوجهات المفضلة للسياح حول العالم، فهناك العديد من الأماكن والمدن التي يمكن أن تقضي فيها عطلتك السنوية الصيفية في الجزائر، تمزج هذه المدن بين سحر الطبيعة الخلابة ورمال الشواطئ الذهبية وزرقة البحر والمعالم التاريخية الأثرية السياحية، التي تعكس تزاوجاً بين الطبيعة والتاريخ والبر والبحر،', 'Lab_2/City3.jpg', 15000, 3),
+  ('الصحراء', 'تعد الصحراء الجزائرية ثاني أكبر صحراء في العالم، وذلك لشاسعتها، حيث تقارب مساحتها 2 مليون متر مربع وتحتوي على تراث طبيعي وثقافي وتاريخي غني ومتنوع. تعد السياحة الصحراوية جوهر المنتوج السياحي الجزائري. تحتوي الصحراء على 05 حظائر ثقافية مصنفة، وهي حظيرة الطاسيلي في ولاية ايليزي، الهقار في ولاية تمنراست، وادي ميزاب في ولاية غرداية والحظيرة الثقافية للأطلس الصحراوي في حظيرة توات، قورارة، تيديكلت.', 'Lab_2/Sahara3.jpg', 30000, 5);
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">3. Import the file</h3>
+      <div class="Definitions">
+        <p>
+          In phpMyAdmin, open the <strong>Import</strong> tab, choose <code>database/syaha.sql</code> and click <strong>Import</strong> (or, in a terminal: <code>C:\xampp\mysql\bin\mysql -u root &lt; database/syaha.sql</code>). The database <code>syaha</code> appears with its six tables. Importing again resets them.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">4. Practise SQL</h3>
+      <div class="Definitions">
+        <p>
+          Before writing PHP, try the queries the site will need in the SQL tab:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+-- the published trips, cheapest first
+SELECT title, price, duration_days FROM trips WHERE is_published = 1 ORDER BY price;
+
+-- the bookings with the title of their trip (JOIN on the foreign key)
+SELECT bookings.id, trips.title, bookings.full_name, bookings.people, bookings.total_price
+FROM bookings
+JOIN trips ON trips.id = bookings.trip_id;
+
+-- number of bookings and travellers per trip (GROUP BY)
+SELECT trips.title, COUNT(bookings.id) AS bookings, COALESCE(SUM(bookings.people), 0) AS travellers
+FROM trips
+LEFT JOIN bookings ON bookings.trip_id = trips.id
+GROUP BY trips.id;
+
+-- try to delete a trip that has bookings: refused by the foreign key
+DELETE FROM trips WHERE id = 3;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The last query fails with <em>Cannot delete or update a parent row: a foreign key constraint fails</em>: <code>ON DELETE RESTRICT</code> protects the bookings. The admin area handles this error in Step 8.
+        </p>
+      </div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">V. Step 4: connect PHP to MySQL with PDO</h2>
+      <div class="Definitions">
+        <p>
+          PHP talks to MySQL through <strong>PDO</strong> (PHP Data Objects): the same functions work with MySQL, PostgreSQL or SQLite, errors become exceptions, and prepared statements protect against SQL injection. The settings are kept in one file:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/config.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Settings of the Syaha website.
+// XAMPP's MySQL account is "root" with an empty password: fine on your own computer,
+// never on a real server (see Lab 10). Keep the real settings of a server out of Git.
+
+const DB_HOST = '127.0.0.1';
+const DB_PORT = 3306;
+const DB_NAME = 'syaha';
+const DB_USER = 'root';
+const DB_PASS = '';
+
+// the images of the site are in SRC/IMAGES, two folders above the pages of Lab_5
+const IMAGES_URL = '../../IMAGES/';
+
+// a booking must be made at least this many days before departure
+const BOOKING_MIN_DAYS = 3;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The connection is created by one function, the first time a page needs it:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/db.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require_once __DIR__ . '/config.php';
+
+/**
+ * Returns the connection to the database, created the first time it is needed.
+ * Every query of a page then reuses the same connection.
+ */
+function db(): PDO
+{
+    static $pdo = null;
+
+    if ($pdo === null) {
+        $dsn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+        try {
+            $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+                PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,       // errors become exceptions
+                PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,  // rows as ['column' =&gt; value]
+                PDO::ATTR_EMULATE_PREPARES =&gt; false,               // real prepared statements
+            ]);
+        } catch (PDOException $e) {
+            // the details (host, user...) go to the error log, not to the visitor
+            error_log('Database connection failed: ' . $e-&gt;getMessage());
+            http_response_code(500);
+            exit('&lt;p style="font-family: sans-serif; padding: 2rem"&gt;The database is not available. '
+                . 'Is MySQL started in XAMPP, and was database/syaha.sql imported?&lt;/p&gt;');
+        }
+    }
+
+    return $pdo;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>The <strong>DSN</strong> (<code>mysql:host=...;port=...;dbname=...;charset=utf8mb4</code>) says which server and which database to use, and the encoding of the texts.</li><li><code>ERRMODE_EXCEPTION</code>: every SQL error throws a <code>PDOException</code> instead of failing silently.</li><li><code>FETCH_ASSOC</code>: each row is an array <code>['title' =&gt; ..., 'price' =&gt; ...]</code>.</li><li><code>EMULATE_PREPARES =&gt; false</code>: MySQL really prepares the queries (and returns numbers as numbers).</li><li><code>static $pdo</code> keeps the connection between two calls: one connection per page.</li><li>If MySQL is stopped, the visitor sees a short message; the details (user, host) go to the error log only.</li></ul>
+        </div>
+      </div>
+      <div class="Note"><strong>Test:</strong> stop MySQL in XAMPP and reload <code>index.php</code>: you get the message of <code>db.php</code>. Start it again: the page works.</div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">VI. Step 5: display the database (READ)</h2>
+      <div class="Definitions">
+        <p>
+          All the SQL of the site is in one file, <a href="SRC/Labs/Lab_5/includes/queries.php" target="_blank" rel="noopener">includes/queries.php</a>: the pages call small functions and never write SQL themselves. The functions that read:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ public pages (READ)
+
+function get_destinations(): array
+{
+    return db()-&gt;query('SELECT * FROM destinations ORDER BY sort_order')-&gt;fetchAll();
+}
+
+function get_services(): array
+{
+    return db()-&gt;query('SELECT * FROM services ORDER BY sort_order')-&gt;fetchAll();
+}
+
+function get_team(): array
+{
+    return db()-&gt;query('SELECT * FROM team_members ORDER BY sort_order')-&gt;fetchAll();
+}
+
+/** Published trips for the visitors, or all of them for the admin area. */
+function get_trips(bool $published_only = true): array
+{
+    $sql = 'SELECT * FROM trips' . ($published_only ? ' WHERE is_published = 1' : '') . ' ORDER BY id';
+    return db()-&gt;query($sql)-&gt;fetchAll();
+}
+
+/** One trip, or null if the id does not exist. */
+function get_trip(int $id): ?array
+{
+    $statement = db()-&gt;prepare('SELECT * FROM trips WHERE id = ?');
+    $statement-&gt;execute([$id]);
+    return $statement-&gt;fetch() ?: null;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>query()</code> runs a fixed query; <code>fetchAll()</code> returns all the rows.</li><li>As soon as a value comes from outside (a form, the URL), use <code>prepare()</code> with a placeholder (<code>?</code> or <code>:name</code>) and pass the value to <code>execute()</code>: it is sent <em>separately</em> from the SQL and can never change the query.</li><li><code>fetch()</code> returns one row, or <code>false</code> when there is none (hence <code>?: null</code>).</li></ul>
+        </div>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// NEVER: the value of the URL becomes part of the SQL code
+$id = $_GET['id'];                                    // the visitor types ?id=1 OR 1=1
+$rows = db()-&gt;query("SELECT * FROM trips WHERE id = $id")-&gt;fetchAll();   // returns ALL the trips
+
+// ALWAYS: a placeholder, and the value is sent separately
+$statement = db()-&gt;prepare('SELECT * FROM trips WHERE id = ?');
+$statement-&gt;execute([$_GET['id']]);                   // "1 OR 1=1" is just a (wrong) value
+$trip = $statement-&gt;fetch();
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The home page reads the data first, then includes the layout. Every value is written with <code>e()</code>, which escapes it with <code>htmlspecialchars</code>: a title containing <code>&lt;script&gt;</code> is displayed as text instead of being run (XSS).
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> index.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+
+// 1. read the data
+$destinations = get_destinations();
+$trips = get_trips();
+
+// 2. display the page
+$page_title = 'سياحة';
+$active = 'home';
+$styles = ['Hero', 'Slider', 'Destination', 'Trip', 'Features'];
+$responsive = ['Hero', 'Destination', 'Trip', 'Features'];
+$scripts = ['Image_Slider', 'Read_More', 'Favourites', 'Booking'];
+$return = 'index.php';
+
+require __DIR__ . '/includes/header.php';
+?&gt;
+    &lt;main&gt;
+&lt;?php require __DIR__ . '/includes/hero.php'; ?&gt;
+        &lt;!--Destination section starts here--&gt;
+        &lt;section class="Destinations" id="Destinations"&gt;
+            &lt;h1&gt;مختلف الوجهات&lt;/h1&gt;
+            &lt;?php foreach ($destinations as $index =&gt; $destination): ?&gt;
+            &lt;!-- one item out of two is reversed: zig-zag layout --&gt;
+            &lt;div class="&lt;?= $index % 2 === 0 ? 'Destination_Item' : 'Destination_Item_Reverse' ?&gt;"&gt;
+                &lt;div class="Destination_Image"&gt;
+                    &lt;img src="&lt;?= e(image_url($destination['image_1'])) ?&gt;" alt="&lt;?= e($destination['title']) ?&gt;" /&gt;
+                    &lt;img src="&lt;?= e(image_url($destination['image_2'])) ?&gt;" alt="&lt;?= e($destination['title']) ?&gt;" /&gt;
+                &lt;/div&gt;
+                &lt;div class="Destination_Text"&gt;
+                    &lt;h2&gt;&lt;?= e($destination['title']) ?&gt;&lt;/h2&gt;
+                    &lt;p&gt;&lt;?= e($destination['description']) ?&gt;&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/section&gt;
+        &lt;!--Destination section ends here--&gt;
+&lt;?php require __DIR__ . '/includes/trips_section.php'; ?&gt;
+&lt;?php require __DIR__ . '/includes/booking_dialog.php'; ?&gt;
+&lt;?php require __DIR__ . '/includes/features.php'; ?&gt;
+    &lt;/main&gt;
+&lt;?php require __DIR__ . '/includes/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/functions.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require_once __DIR__ . '/config.php';
+
+/** Escapes a value before writing it in the HTML: protects the page against XSS. */
+function e(?string $value): string
+{
+    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+}
+
+/** 15000 -&gt; "15 000 دج" */
+function money(int $amount): string
+{
+    return number_format($amount, 0, ',', ' ') . ' دج';
+}
+
+/** URL of an image stored in the database (path inside SRC/IMAGES). $prefix is "../" from the admin folder. */
+function image_url(string $path, string $prefix = ''): string
+{
+    return $prefix . IMAGES_URL . $path;
+}
+
+/** Sends the browser to another page and stops the script. */
+function redirect(string $url): void
+{
+    header('Location: ' . $url);
+    exit;
+}
+
+/** Only accepts POST requests (forms that change data). */
+function require_post(string $fallback): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        redirect($fallback);
+    }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The trip cards are generated by a loop, in a file shared by the home and services pages. The HTML is the one of Lab 2; only the values change:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/trips_section.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// The trip cards (home and services pages), built from the trips table.
+// Expects $trips (from get_trips()) and shows the result of a booking (book.php adds ?booked= or ?booking=).
+?&gt;
+        &lt;!--Trip section starts here--&gt;
+        &lt;section class="Trip" id="Trips"&gt;
+            &lt;h1&gt;رحلات&lt;/h1&gt;
+            &lt;?php if (isset($_GET['booked'])): ?&gt;
+            &lt;p class="Flash Flash_Success" role="status"&gt;
+                تم تسجيل حجزكم رقم &lt;?= (int) $_GET['booked'] ?&gt; بنجاح. سنتصل بكم لتأكيده.
+            &lt;/p&gt;
+            &lt;?php elseif (isset($_GET['booking'])): ?&gt;
+            &lt;p class="Flash Flash_Error" role="alert"&gt;
+                لم يتم تسجيل الحجز: تحققوا من المعلومات المدخلة ومن تاريخ الانطلاق.
+            &lt;/p&gt;
+            &lt;?php endif; ?&gt;
+            &lt;div class="Trip_Cards"&gt;
+                &lt;?php foreach ($trips as $trip): ?&gt;
+                &lt;div class="Trip_Card"&gt;
+                    &lt;div class="Trip_Image"&gt;
+                        &lt;img src="&lt;?= e(image_url($trip['image'])) ?&gt;" alt="&lt;?= e($trip['title']) ?&gt;" /&gt;
+                    &lt;/div&gt;
+                    &lt;h4&gt;&lt;?= e($trip['title']) ?&gt;&lt;/h4&gt;
+                    &lt;p class="Trip_Facts"&gt;
+                        &lt;span&gt;&lt;i class="fa-solid fa-clock"&gt;&lt;/i&gt; &lt;?= (int) $trip['duration_days'] ?&gt; يوم&lt;/span&gt;
+                        &lt;span&gt;&lt;i class="fa-solid fa-tag"&gt;&lt;/i&gt; &lt;?= money((int) $trip['price']) ?&gt; للشخص&lt;/span&gt;
+                    &lt;/p&gt;
+                    &lt;p&gt;&lt;?= e($trip['description']) ?&gt;&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;!--Trip section ends here--&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The navigation bar and the footer are written once (Step 9 of <a href="Lab_2.html">Lab 2</a>). The page sets a few variables (<code>$page_title</code>, <code>$active</code>, <code>$styles</code>...) before including the header:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/header.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Beginning of every public page: &lt;head&gt; and navigation bar.
+// The page sets before including this file:
+//   $page_title   text of &lt;title&gt;
+//   $active       key of the current page in the menu ('home', 'services', 'about', 'contact' or '')
+//   $styles       stylesheets of its components (in Lab_2) and $responsive (in Lab_3)
+
+$menu = [
+    'login' =&gt; ['login.php', 'تسجيل الدخول', 'fa-solid fa-right-to-bracket'],
+    'contact' =&gt; ['contact_us.php', 'إتصل بنا', 'fa-solid fa-envelope'],
+    'services' =&gt; ['services.php', 'جميع الخدمات', 'fa-solid fa-briefcase'],
+    'about' =&gt; ['about_us.php', 'من نحن؟', 'fa-solid fa-circle-info'],
+    'home' =&gt; ['index.php', 'الرئيسية', 'fa-solid fa-house'],
+];
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;?php foreach (['Nav_Bar', 'Lab_2_Page', ...$styles, 'Lab_2_Footer'] as $style): ?&gt;
+    &lt;link rel="stylesheet" href="../Lab_2/&lt;?= $style ?&gt;.css"&gt;
+    &lt;?php endforeach; ?&gt;
+    &lt;!-- responsive design (Lab 3) --&gt;
+    &lt;?php foreach (['Nav_Bar', ...$responsive, 'Footer'] as $style): ?&gt;
+    &lt;link rel="stylesheet" href="../Lab_3/&lt;?= $style ?&gt;_Responsive.css"&gt;
+    &lt;?php endforeach; ?&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+    &lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap"&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /&gt;
+    &lt;!-- JavaScript (Lab 4) and back end (Lab 5) --&gt;
+    &lt;link rel="stylesheet" href="../Lab_4+/Interactions.css"&gt;
+    &lt;link rel="stylesheet" href="backend.css"&gt;
+    &lt;title&gt;&lt;?= e($page_title) ?&gt;&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav class="Nav_Bar_Items"&gt;
+            &lt;h1 class="Nav_Bar_Logo"&gt;سياحة&lt;/h1&gt;
+            &lt;div class="Menu_Icon" id="Menu_Icon_ID"&gt;
+                &lt;i class="fas fa-bars" id="Burger_Icon_ID"&gt;&lt;/i&gt;
+            &lt;/div&gt;
+            &lt;ul class="Nav_Bar_Menu" id="Nav_Bar_Menu_ID"&gt;
+                &lt;?php foreach ($menu as $key =&gt; [$url, $label, $icon]): ?&gt;
+                &lt;li&gt;
+                    &lt;a href="&lt;?= $url ?&gt;" class="Nav_Bar_Menu_Item&lt;?= $key === $active ? ' Active' : '' ?&gt;"&gt;
+                        &lt;span&gt;&lt;?= $label ?&gt;&lt;/span&gt;
+                        &lt;i class="&lt;?= $icon ?&gt;"&gt;&lt;/i&gt;
+                    &lt;/a&gt;
+                &lt;/li&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+        </pre>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_5/Site_Trips.png" alt="Trip cards generated from the database" loading="lazy" />
+      <div class="Note"><strong>Try:</strong> in phpMyAdmin, change the price of a trip or the description of a destination, and reload the page: the site changes without touching any HTML.</div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">VII. Step 6: save the contact messages (CREATE)</h2>
+      <div class="Definitions">
+        <p>
+          The contact form of Lab 2 now sends its data to <code>contact_us.php</code> with <code>method="post"</code>. The same file displays the form and processes it:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> contact_us.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+
+$subjects = [
+    'info' =&gt; 'معلومات عامة',
+    'booking' =&gt; 'حجز رحلة',
+    'custom' =&gt; 'رحلة حسب الطلب',
+    'other' =&gt; 'أخرى',
+];
+$values = ['name' =&gt; '', 'email' =&gt; '', 'phone' =&gt; '', 'subject' =&gt; '', 'message' =&gt; ''];
+$errors = [];
+
+// the form was sent: check it, save it, then redirect (Post/Redirect/Get)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach ($values as $key =&gt; $value) {
+        $values[$key] = trim($_POST[$key] ?? '');
+    }
+
+    // minimal checks: the browser already checked the form (Lab 4), but its checks can be bypassed.
+    // Lab 6 is about validating forms on the server in detail.
+    if (mb_strlen($values['name']) &lt; 3) {
+        $errors[] = 'الرجاء إدخال الإسم الكامل.';
+    }
+    if (!filter_var($values['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'البريد الإلكتروني غير صحيح.';
+    }
+    if ($values['phone'] !== '' &amp;&amp; !preg_match('/^0[5-7][0-9]{8}$/', $values['phone'])) {
+        $errors[] = 'رقم الهاتف غير صحيح.';
+    }
+    if (!array_key_exists($values['subject'], $subjects)) {
+        $errors[] = 'الرجاء اختيار موضوع.';
+    }
+    if (mb_strlen($values['message']) &lt; 20) {
+        $errors[] = 'الرسالة قصيرة جداً.';
+    }
+
+    if (!$errors) {
+        create_message([
+            'full_name' =&gt; $values['name'],
+            'email' =&gt; $values['email'],
+            'phone' =&gt; $values['phone'],
+            'subject' =&gt; $values['subject'],
+            'message' =&gt; $values['message'],
+        ]);
+        // a reload of the next page will not send the message a second time
+        redirect('contact_us.php?sent=1');
+    }
+}
+
+$page_title = 'سياحة | إتصل بنا';
+$active = 'contact';
+$styles = ['Hero', 'Contact_Us'];
+$responsive = ['Hero', 'Contact_Us'];
+$scripts = ['Contact_Form'];
+
+require __DIR__ . '/includes/header.php';
+?&gt;
+    &lt;main&gt;
+        &lt;section id="Hero_ID"&gt;
+            &lt;div class="Hero"&gt;
+                &lt;img src="../../IMAGES/Oran.jpg" alt="وهران" /&gt;
+            &lt;/div&gt;
+            &lt;div class="Hero_Text"&gt;
+                &lt;h1&gt;مرحبا بكم في موقعنا&lt;/h1&gt;
+                &lt;p&gt;نحن نقدم لكم أفضل الخدمات&lt;/p&gt;
+                &lt;a href="#Contact" class="Show" id="Contact_Us_Btn_ID"&gt;تواصل معنا&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;div class="Contact_Us_Container" id="Contact"&gt;
+            &lt;h1&gt;إتصل بنا&lt;/h1&gt;
+            &lt;?php if (isset($_GET['sent'])): ?&gt;
+            &lt;p class="Flash Flash_Success" role="status"&gt;شكراً لكم! تم استلام رسالتكم وسنرد عليكم في أقرب وقت.&lt;/p&gt;
+            &lt;?php endif; ?&gt;
+            &lt;?php if ($errors): ?&gt;
+            &lt;div class="Flash Flash_Error" role="alert"&gt;
+                &lt;p&gt;لم يتم إرسال الرسالة:&lt;/p&gt;
+                &lt;ul&gt;
+                    &lt;?php foreach ($errors as $error): ?&gt;
+                    &lt;li&gt;&lt;?= e($error) ?&gt;&lt;/li&gt;
+                    &lt;?php endforeach; ?&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;?php endif; ?&gt;
+            &lt;div class="Contact_Layout"&gt;
+                &lt;div class="Contact_Info"&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-location-dot"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;العنوان&lt;/h4&gt;
+                            &lt;p&gt;شارع ديدوش مراد، الجزائر العاصمة&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-phone"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;الهاتف&lt;/h4&gt;
+                            &lt;a href="tel:+213555000000"&gt;&lt;span dir="ltr"&gt;+213 555 00 00 00&lt;/span&gt;&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-envelope"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;البريد الإلكتروني&lt;/h4&gt;
+                            &lt;a href="mailto:contact@syaha.example"&gt;contact@syaha.example&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-clock"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;ساعات العمل&lt;/h4&gt;
+                            &lt;p&gt;الأحد - الخميس: 08:00 - 17:00&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- the values typed before an error are put back in the fields ("sticky" form) --&gt;
+                &lt;form action="contact_us.php" method="post"&gt;
+                    &lt;label for="Name"&gt;الإسم الكامل&lt;/label&gt;
+                    &lt;input type="text" id="Name" name="name" value="&lt;?= e($values['name']) ?&gt;" autocomplete="name" required /&gt;
+                    &lt;label for="Email"&gt;البريد الإلكتروني&lt;/label&gt;
+                    &lt;input type="email" id="Email" name="email" value="&lt;?= e($values['email']) ?&gt;" autocomplete="email" required /&gt;
+                    &lt;label for="Phone"&gt;رقم الهاتف&lt;/label&gt;
+                    &lt;input type="tel" id="Phone" name="phone" value="&lt;?= e($values['phone']) ?&gt;" autocomplete="tel"
+                        placeholder="05XXXXXXXX" pattern="0[5-7][0-9]{8}" /&gt;
+                    &lt;label for="Subject"&gt;الموضوع&lt;/label&gt;
+                    &lt;select id="Subject" name="subject" required&gt;
+                        &lt;option value=""&gt;اختر موضوعاً&lt;/option&gt;
+                        &lt;?php foreach ($subjects as $key =&gt; $label): ?&gt;
+                        &lt;option value="&lt;?= $key ?&gt;" &lt;?= $key === $values['subject'] ? 'selected' : '' ?&gt;&gt;&lt;?= $label ?&gt;&lt;/option&gt;
+                        &lt;?php endforeach; ?&gt;
+                    &lt;/select&gt;
+                    &lt;label for="Message"&gt;الرسالة&lt;/label&gt;
+                    &lt;textarea id="Message" name="message" rows="5" required&gt;&lt;?= e($values['message']) ?&gt;&lt;/textarea&gt;
+                    &lt;button type="submit"&gt;إرسال&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;iframe class="Contact_Map" title="موقع الوكالة على الخريطة" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=3.03%2C36.75%2C3.07%2C36.78&amp;amp;layer=mapnik&amp;amp;marker=36.765%2C3.05"&gt;&lt;/iframe&gt;
+        &lt;/div&gt;
+    &lt;/main&gt;
+&lt;?php require __DIR__ . '/includes/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+function create_message(array $message): int
+{
+    $statement = db()-&gt;prepare(
+        'INSERT INTO contact_messages (full_name, email, phone, subject, message)
+         VALUES (?, ?, ?, ?, ?)'
+    );
+    $statement-&gt;execute([
+        $message['full_name'],
+        $message['email'],
+        $message['phone'] === '' ? null : $message['phone'],   // empty optional field -&gt; NULL
+        $message['subject'],
+        $message['message'],
+    ]);
+    return (int) db()-&gt;lastInsertId();
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>$_SERVER['REQUEST_METHOD'] === 'POST'</code> tells whether the form was sent. The values are in <code>$_POST</code>, under the <code>name</code> of each field.</li><li>The browser checked the form already (Lab 4), but anybody can bypass JavaScript: the server checks again. These checks are minimal; <a href="Lab_6.html">Lab 6</a> is about validating forms on the server in detail.</li><li>On error, the page is shown again with the messages and the typed values (a <em>sticky</em> form; the values are escaped too).</li><li>On success, <code>redirect()</code> sends the browser to <code>contact_us.php?sent=1</code>: this is the <strong>Post/Redirect/Get</strong> pattern. Reloading the page then repeats a harmless GET instead of sending the message again.</li><li>An empty optional field (<code>phone</code>) is stored as <code>NULL</code>.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The script of Lab 4 still validates in the browser; when the form has a real <code>action</code>, it now sends it after the checks:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+    // with a back end (Lab 5), the form has an action: send it for real; the server checks it again
+    if (Form.getAttribute("action")) {
+      Form.submit();
+      return;
+    }
+        </pre>
+      </div>
+    </section>
+    <section id="Step_7">
+      <h2 class="Section_Title">VIII. Step 7: save the bookings (a transaction)</h2>
+      <div class="Definitions">
+        <p>
+          The booking dialog of Lab 4 is now generated from the <code>trips</code> table and sent to <code>book.php</code>:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/booking_dialog.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// The booking dialog of Lab 4, now sent to book.php.
+// The options come from the trips table; $return is the page to come back to after booking.
+?&gt;
+        &lt;!--Booking dialog starts here--&gt;
+        &lt;dialog class="Booking_Dialog" id="Booking_Dialog" aria-labelledby="Booking_Title"&gt;
+            &lt;form class="Booking_Form" id="Booking_Form" action="book.php" method="post"&gt;
+                &lt;h2 id="Booking_Title"&gt;احجز رحلتك&lt;/h2&gt;
+                &lt;input type="hidden" name="return" value="&lt;?= e($return) ?&gt;" /&gt;
+                &lt;label for="Booking_Trip"&gt;الرحلة&lt;/label&gt;
+                &lt;select id="Booking_Trip" name="trip_id" required&gt;
+                    &lt;option value=""&gt;اختر رحلة&lt;/option&gt;
+                    &lt;?php foreach ($trips as $trip): ?&gt;
+                    &lt;option value="&lt;?= (int) $trip['id'] ?&gt;" data-price="&lt;?= (int) $trip['price'] ?&gt;"&gt;
+                        &lt;?= e($trip['title']) ?&gt; (&lt;?= money((int) $trip['price']) ?&gt; للشخص)
+                    &lt;/option&gt;
+                    &lt;?php endforeach; ?&gt;
+                &lt;/select&gt;
+                &lt;label for="Booking_Name"&gt;الإسم الكامل&lt;/label&gt;
+                &lt;input type="text" id="Booking_Name" name="name" minlength="3" maxlength="100" autocomplete="name" required /&gt;
+                &lt;label for="Booking_Email"&gt;البريد الإلكتروني&lt;/label&gt;
+                &lt;input type="email" id="Booking_Email" name="email" maxlength="255" autocomplete="email" required /&gt;
+                &lt;label for="Booking_Date"&gt;تاريخ الانطلاق&lt;/label&gt;
+                &lt;input type="date" id="Booking_Date" name="date" required /&gt;
+                &lt;label for="Booking_People"&gt;عدد المسافرين&lt;/label&gt;
+                &lt;input type="number" id="Booking_People" name="people" min="1" max="10" value="1" required /&gt;
+                &lt;p class="Booking_Total"&gt;المجموع: &lt;output id="Booking_Total" for="Booking_Trip Booking_People"&gt;0 دج&lt;/output&gt;&lt;/p&gt;
+                &lt;div class="Booking_Buttons"&gt;
+                    &lt;button type="submit" class="Booking_Confirm"&gt;تأكيد الحجز&lt;/button&gt;
+                    &lt;button type="button" class="Booking_Cancel" id="Booking_Cancel"&gt;إلغاء&lt;/button&gt;
+                &lt;/div&gt;
+                &lt;p class="Booking_Message" id="Booking_Message" role="status"&gt;&lt;/p&gt;
+            &lt;/form&gt;
+        &lt;/dialog&gt;
+        &lt;!--Booking dialog ends here--&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> book.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Receives the booking dialog (includes/booking_dialog.php), saves the booking and goes back to the page.
+// This file displays nothing: it always ends with a redirect.
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+
+require_post('index.php');
+
+// only come back to one of our own pages
+$return = in_array($_POST['return'] ?? '', ['index.php', 'services.php'], true) ? $_POST['return'] : 'index.php';
+
+$trip_id = filter_input(INPUT_POST, 'trip_id', FILTER_VALIDATE_INT);
+$people = filter_input(INPUT_POST, 'people', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 1, 'max_range' =&gt; 10]]);
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$name = trim($_POST['name'] ?? '');
+
+// the departure must be a real date, at least BOOKING_MIN_DAYS days from today
+$departure = DateTime::createFromFormat('!Y-m-d', $_POST['date'] ?? '');
+$earliest = new DateTime('today +' . BOOKING_MIN_DAYS . ' days');
+$date_ok = $departure !== false &amp;&amp; $departure-&gt;format('Y-m-d') === ($_POST['date'] ?? '') &amp;&amp; $departure &gt;= $earliest;
+
+// filter_input returns false (invalid) or null (missing): both mean "rejected"
+if (!$trip_id || !$people || !$email || mb_strlen($name) &lt; 3 || !$date_ok) {
+    redirect($return . '?booking=error#Trips');
+}
+
+$id = create_booking([
+    'trip_id' =&gt; $trip_id,
+    'full_name' =&gt; $name,
+    'email' =&gt; $email,
+    'departure_date' =&gt; $departure-&gt;format('Y-m-d'),
+    'people' =&gt; $people,
+]);
+
+redirect($id === null ? $return . '?booking=error#Trips' : $return . '?booked=' . $id . '#Trips');
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/**
+ * Records a booking and returns its id, or null if the trip is not available.
+ * The price is read from the database: a total sent by the browser could have been modified.
+ * Both queries run in a transaction: they succeed or fail together.
+ */
+function create_booking(array $booking): ?int
+{
+    $pdo = db();
+    $pdo-&gt;beginTransaction();
+    try {
+        $statement = $pdo-&gt;prepare('SELECT price FROM trips WHERE id = ? AND is_published = 1 FOR UPDATE');
+        $statement-&gt;execute([$booking['trip_id']]);
+        $price = $statement-&gt;fetchColumn();
+        if ($price === false) {
+            $pdo-&gt;rollBack();
+            return null;
+        }
+
+        $statement = $pdo-&gt;prepare(
+            'INSERT INTO bookings (trip_id, full_name, email, departure_date, people, total_price)
+             VALUES (?, ?, ?, ?, ?, ?)'
+        );
+        $statement-&gt;execute([
+            $booking['trip_id'],
+            $booking['full_name'],
+            $booking['email'],
+            $booking['departure_date'],
+            $booking['people'],
+            $price * $booking['people'],
+        ]);
+        $id = (int) $pdo-&gt;lastInsertId();
+        $pdo-&gt;commit();
+        return $id;
+    } catch (PDOException $e) {
+        $pdo-&gt;rollBack();
+        throw $e;
+    }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>book.php</code> displays nothing: it checks, saves and redirects. <code>filter_input</code> returns the value converted to a number, or <code>false</code>/<code>null</code> when it is invalid or missing.</li><li><strong>The total is computed by the server</strong> from the price stored in the database. The total shown in the dialog is only a preview: a visitor can change anything that the browser sends.</li><li>Reading the price and inserting the booking happen in a <strong>transaction</strong>: <code>beginTransaction()</code>, then <code>commit()</code> if everything worked, or <code>rollBack()</code> to cancel. <code>FOR UPDATE</code> locks the trip row until the end, so it cannot be unpublished in the meantime.</li><li><code>lastInsertId()</code> returns the <code>id</code> MySQL gave to the new booking: it is shown to the visitor (<code>?booked=4</code>).</li><li>The <code>return</code> field is compared with a list of allowed pages: never redirect to an address sent by the browser as such.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_8">
+      <h2 class="Section_Title">IX. Step 8: the admin area (CREATE, UPDATE, DELETE)</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_5/Admin_Dashboard.png" alt="Dashboard of the admin area" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The admin area manages the content of the site. Its dashboard uses aggregate queries (<code>COUNT</code>, <code>SUM</code>):
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ dashboard
+
+/** A few numbers for the admin dashboard, each from one aggregate query. */
+function get_statistics(): array
+{
+    $pdo = db();
+    return [
+        'trips' =&gt; (int) $pdo-&gt;query('SELECT COUNT(*) FROM trips WHERE is_published = 1')-&gt;fetchColumn(),
+        'pending' =&gt; (int) $pdo-&gt;query("SELECT COUNT(*) FROM bookings WHERE status = 'pending'")-&gt;fetchColumn(),
+        'unread' =&gt; (int) $pdo-&gt;query('SELECT COUNT(*) FROM contact_messages WHERE is_read = 0')-&gt;fetchColumn(),
+        'revenue' =&gt; (int) $pdo-&gt;query("SELECT COALESCE(SUM(total_price), 0) FROM bookings WHERE status = 'confirmed'")-&gt;fetchColumn(),
+    ];
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">1. List and delete the trips</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_5/Admin_Trips.png" alt="List of the trips" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/trips.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+
+$trips = get_trips(false);   // also the unpublished ones
+
+// result of the previous action (trip_form.php and trip_delete.php redirect here with ?status=...)
+$messages = [
+    'created' =&gt; ['Success', 'تمت إضافة الرحلة.'],
+    'updated' =&gt; ['Success', 'تم تعديل الرحلة.'],
+    'deleted' =&gt; ['Success', 'تم حذف الرحلة.'],
+    'has_bookings' =&gt; ['Error', 'لا يمكن حذف رحلة لديها حجوزات: ألغوا نشرها بدلاً من ذلك.'],
+    'not_found' =&gt; ['Error', 'هذه الرحلة غير موجودة.'],
+];
+$status = $messages[$_GET['status'] ?? ''] ?? null;
+
+$page_title = 'الرحلات';
+$active = 'trips';
+require __DIR__ . '/header.php';
+?&gt;
+        &lt;?php if ($status): ?&gt;
+        &lt;p class="Flash Flash_&lt;?= $status[0] ?&gt;"&gt;&lt;?= $status[1] ?&gt;&lt;/p&gt;
+        &lt;?php endif; ?&gt;
+        &lt;p&gt;&lt;a href="trip_form.php" class="Button"&gt;&lt;i class="fa-solid fa-plus"&gt;&lt;/i&gt; إضافة رحلة&lt;/a&gt;&lt;/p&gt;
+        &lt;table class="Admin_Table"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;الصورة&lt;/th&gt;
+                &lt;th&gt;العنوان&lt;/th&gt;
+                &lt;th&gt;السعر للشخص&lt;/th&gt;
+                &lt;th&gt;المدة&lt;/th&gt;
+                &lt;th&gt;منشورة&lt;/th&gt;
+                &lt;th&gt;&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;?php foreach ($trips as $trip): ?&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;img src="&lt;?= e(image_url($trip['image'], '../')) ?&gt;" alt="" class="Thumbnail" /&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= e($trip['title']) ?&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= money((int) $trip['price']) ?&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= (int) $trip['duration_days'] ?&gt; يوم&lt;/td&gt;
+                &lt;td&gt;&lt;?= $trip['is_published'] ? '&lt;i class="fa-solid fa-check"&gt;&lt;/i&gt;' : '&lt;i class="fa-solid fa-xmark"&gt;&lt;/i&gt;' ?&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;div class="Actions"&gt;
+                        &lt;a href="trip_form.php?id=&lt;?= (int) $trip['id'] ?&gt;" class="Button Small"&gt;تعديل&lt;/a&gt;
+                        &lt;!-- deleting changes data: a POST form, never a simple link (GET) --&gt;
+                        &lt;form action="trip_delete.php" method="post" data-confirm="حذف الرحلة «&lt;?= e($trip['title']) ?&gt;»؟"&gt;
+                            &lt;input type="hidden" name="id" value="&lt;?= (int) $trip['id'] ?&gt;" /&gt;
+                            &lt;button type="submit" class="Button Small Danger"&gt;حذف&lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/table&gt;
+&lt;?php require __DIR__ . '/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/trip_delete.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+
+require_post('trips.php');
+
+$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+if (!$id || get_trip($id) === null) {
+    redirect('trips.php?status=not_found');
+}
+
+redirect(delete_trip($id) ? 'trips.php?status=deleted' : 'trips.php?status=has_bookings');
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/**
+ * Deletes a trip. Returns false if it has bookings:
+ * the foreign key of the bookings table (ON DELETE RESTRICT) forbids it.
+ */
+function delete_trip(int $id): bool
+{
+    try {
+        $statement = db()-&gt;prepare('DELETE FROM trips WHERE id = ?');
+        $statement-&gt;execute([$id]);
+        return $statement-&gt;rowCount() === 1;
+    } catch (PDOException $e) {
+        if ($e-&gt;getCode() === '23000') {  // integrity constraint violation
+            return false;
+        }
+        throw $e;
+    }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Deleting changes data: it is a <strong>POST</strong> form, never a link (a link can be followed by a search engine, a browser preloading pages, or a malicious page).</li><li><code>rowCount()</code> returns the number of rows deleted or modified.</li><li>A trip with bookings cannot be deleted: MySQL refuses (foreign key) with the error code <code>23000</code>, which <code>delete_trip()</code> catches to show a clear message. Unpublishing it (<code>is_published = 0</code>) hides it from the site instead.</li></ul>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">2. Create and update a trip</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_5/Admin_Trip_Form.png" alt="Form to create or edit a trip" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/trip_form.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Creates a trip (trip_form.php) or edits one (trip_form.php?id=3).
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?: null;
+$trip = ['title' =&gt; '', 'description' =&gt; '', 'image' =&gt; '', 'price' =&gt; '', 'duration_days' =&gt; 1, 'is_published' =&gt; 1];
+
+if ($id !== null) {
+    $trip = get_trip($id);
+    if ($trip === null) {
+        redirect('trips.php?status=not_found');
+    }
+}
+
+// the images that can be chosen: the photos of SRC/IMAGES (uploading files is the subject of Lab 6)
+$images = array_map(
+    fn ($path) =&gt; substr($path, strlen(__DIR__ . '/../' . IMAGES_URL)),
+    array_merge(glob(__DIR__ . '/../' . IMAGES_URL . 'Lab_2/*.jpg'), glob(__DIR__ . '/../' . IMAGES_URL . '*.jpg'))
+);
+
+$errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $trip = [
+        'title' =&gt; trim($_POST['title'] ?? ''),
+        'description' =&gt; trim($_POST['description'] ?? ''),
+        'image' =&gt; $_POST['image'] ?? '',
+        'price' =&gt; filter_input(INPUT_POST, 'price', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 0]]),
+        'duration_days' =&gt; filter_input(INPUT_POST, 'duration_days', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 1, 'max_range' =&gt; 30]]),
+        'is_published' =&gt; isset($_POST['is_published']) ? 1 : 0,   // an unchecked checkbox is not sent at all
+    ];
+
+    if ($trip['title'] === '' || mb_strlen($trip['title']) &gt; 100) {
+        $errors[] = 'العنوان إجباري (100 حرف على الأكثر).';
+    }
+    if ($trip['description'] === '') {
+        $errors[] = 'الوصف إجباري.';
+    }
+    if (!in_array($trip['image'], $images, true)) {
+        $errors[] = 'الرجاء اختيار صورة.';
+    }
+    if ($trip['price'] === false || $trip['price'] === null) {
+        $errors[] = 'السعر يجب أن يكون عدداً صحيحاً موجباً.';
+    }
+    if ($trip['duration_days'] === false || $trip['duration_days'] === null) {
+        $errors[] = 'المدة بين 1 و 30 يوماً.';
+    }
+
+    if (!$errors) {
+        if ($id === null) {
+            create_trip($trip);
+            redirect('trips.php?status=created');
+        }
+        update_trip($id, $trip);
+        redirect('trips.php?status=updated');
+    }
+}
+
+$page_title = $id === null ? 'إضافة رحلة' : 'تعديل رحلة';
+$active = 'trips';
+require __DIR__ . '/header.php';
+?&gt;
+        &lt;?php if ($errors): ?&gt;
+        &lt;div class="Flash Flash_Error"&gt;
+            &lt;ul&gt;
+                &lt;?php foreach ($errors as $error): ?&gt;
+                &lt;li&gt;&lt;?= e($error) ?&gt;&lt;/li&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;?php endif; ?&gt;
+        &lt;form method="post" class="Admin_Form"&gt;
+            &lt;label for="Title"&gt;العنوان&lt;/label&gt;
+            &lt;input type="text" id="Title" name="title" value="&lt;?= e($trip['title']) ?&gt;" maxlength="100" required /&gt;
+
+            &lt;label for="Description"&gt;الوصف&lt;/label&gt;
+            &lt;textarea id="Description" name="description" rows="6" required&gt;&lt;?= e($trip['description']) ?&gt;&lt;/textarea&gt;
+
+            &lt;label for="Image"&gt;الصورة&lt;/label&gt;
+            &lt;select id="Image" name="image" required&gt;
+                &lt;option value=""&gt;اختر صورة&lt;/option&gt;
+                &lt;?php foreach ($images as $image): ?&gt;
+                &lt;option value="&lt;?= e($image) ?&gt;" &lt;?= $image === $trip['image'] ? 'selected' : '' ?&gt;&gt;&lt;?= e($image) ?&gt;&lt;/option&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/select&gt;
+
+            &lt;div class="Row"&gt;
+                &lt;div&gt;
+                    &lt;label for="Price"&gt;السعر للشخص (دج)&lt;/label&gt;
+                    &lt;input type="number" id="Price" name="price" value="&lt;?= e((string) $trip['price']) ?&gt;" min="0" step="500" required /&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for="Duration"&gt;المدة (أيام)&lt;/label&gt;
+                    &lt;input type="number" id="Duration" name="duration_days" value="&lt;?= e((string) $trip['duration_days']) ?&gt;" min="1" max="30" required /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;label class="Checkbox"&gt;
+                &lt;input type="checkbox" name="is_published" &lt;?= $trip['is_published'] ? 'checked' : '' ?&gt; /&gt;
+                منشورة على الموقع
+            &lt;/label&gt;
+
+            &lt;div class="Row"&gt;
+                &lt;button type="submit" class="Button"&gt;&lt;i class="fa-solid fa-floppy-disk"&gt;&lt;/i&gt; حفظ&lt;/button&gt;
+                &lt;a href="trips.php" class="Button Secondary"&gt;إلغاء&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+&lt;?php require __DIR__ . '/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/** Inserts a trip and returns its new id. */
+function create_trip(array $trip): int
+{
+    $statement = db()-&gt;prepare(
+        'INSERT INTO trips (title, description, image, price, duration_days, is_published)
+         VALUES (:title, :description, :image, :price, :duration_days, :is_published)'
+    );
+    $statement-&gt;execute([
+        'title' =&gt; $trip['title'],
+        'description' =&gt; $trip['description'],
+        'image' =&gt; $trip['image'],
+        'price' =&gt; $trip['price'],
+        'duration_days' =&gt; $trip['duration_days'],
+        'is_published' =&gt; $trip['is_published'],
+    ]);
+    return (int) db()-&gt;lastInsertId();
+}
+
+/** Updates a trip; returns false if the id does not exist. */
+function update_trip(int $id, array $trip): bool
+{
+    $statement = db()-&gt;prepare(
+        'UPDATE trips
+         SET title = :title, description = :description, image = :image, price = :price,
+             duration_days = :duration_days, is_published = :is_published
+         WHERE id = :id'
+    );
+    $statement-&gt;execute([
+        'id' =&gt; $id,
+        'title' =&gt; $trip['title'],
+        'description' =&gt; $trip['description'],
+        'image' =&gt; $trip['image'],
+        'price' =&gt; $trip['price'],
+        'duration_days' =&gt; $trip['duration_days'],
+        'is_published' =&gt; $trip['is_published'],
+    ]);
+    // rowCount() is 0 when nothing changed too: check that the trip exists instead
+    return $statement-&gt;rowCount() &gt; 0 || get_trip($id) !== null;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          One form for both actions: without <code>?id=</code> it creates (<code>INSERT</code>), with <code>?id=3</code> it loads the trip and updates it (<code>UPDATE ... WHERE id = :id</code>). Named placeholders (<code>:title</code>) are easier to read than <code>?</code> when there are many values. An unchecked checkbox is not sent at all, hence <code>isset($_POST['is_published'])</code>. The image is chosen in a list of existing photos (uploading files is part of Lab 6).
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">3. Bookings and messages</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_5/Admin_Bookings.png" alt="List of the bookings" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/bookings.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+
+$statuses = ['pending' =&gt; 'في الانتظار', 'confirmed' =&gt; 'مؤكد', 'cancelled' =&gt; 'ملغى'];
+
+// change the status of a booking, then reload the list (Post/Redirect/Get)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+    if ($id) {
+        set_booking_status($id, $_POST['status'] ?? '');
+    }
+    redirect('bookings.php');
+}
+
+$bookings = get_bookings();
+
+$page_title = 'الحجوزات';
+$active = 'bookings';
+require __DIR__ . '/header.php';
+?&gt;
+        &lt;table class="Admin_Table"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;#&lt;/th&gt;
+                &lt;th&gt;الرحلة&lt;/th&gt;
+                &lt;th&gt;الزبون&lt;/th&gt;
+                &lt;th&gt;تاريخ الانطلاق&lt;/th&gt;
+                &lt;th&gt;المسافرون&lt;/th&gt;
+                &lt;th&gt;المجموع&lt;/th&gt;
+                &lt;th&gt;الحالة&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;?php foreach ($bookings as $booking): ?&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;?= (int) $booking['id'] ?&gt;&lt;/td&gt;
+                &lt;!-- trip_title comes from the trips table, thanks to the JOIN of get_bookings() --&gt;
+                &lt;td&gt;&lt;?= e($booking['trip_title']) ?&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= e($booking['full_name']) ?&gt;&lt;br /&gt;&lt;small&gt;&lt;?= e($booking['email']) ?&gt;&lt;/small&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= e($booking['departure_date']) ?&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= (int) $booking['people'] ?&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;?= money((int) $booking['total_price']) ?&gt;&lt;/td&gt;
+                &lt;td&gt;
+                    &lt;form method="post" class="Inline_Form"&gt;
+                        &lt;input type="hidden" name="id" value="&lt;?= (int) $booking['id'] ?&gt;" /&gt;
+                        &lt;select name="status" class="Status Status_&lt;?= e($booking['status']) ?&gt;" aria-label="الحالة"&gt;
+                            &lt;?php foreach ($statuses as $value =&gt; $label): ?&gt;
+                            &lt;option value="&lt;?= $value ?&gt;" &lt;?= $value === $booking['status'] ? 'selected' : '' ?&gt;&gt;&lt;?= $label ?&gt;&lt;/option&gt;
+                            &lt;?php endforeach; ?&gt;
+                        &lt;/select&gt;
+                        &lt;button type="submit" class="Button Small"&gt;حفظ&lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/table&gt;
+        &lt;?php if (!$bookings): ?&gt;
+        &lt;p&gt;لا توجد حجوزات بعد.&lt;/p&gt;
+        &lt;?php endif; ?&gt;
+&lt;?php require __DIR__ . '/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The list shows the title of the trip of each booking thanks to the <code>JOIN</code> of <code>get_bookings()</code>. The status can only take the values of the <code>ENUM</code>: <code>set_booking_status()</code> checks it before the query. <a href="SRC/Labs/Lab_5/admin/messages.php" target="_blank" rel="noopener">admin/messages.php</a> works the same way (mark as read, delete).
+        </p>
+      </div>
+      <div class="Note"><strong>Not protected yet:</strong> anybody who knows the address of the admin area can change the site. <a href="Lab_7.html">Lab 7</a> adds a login with sessions, and <a href="Lab_10.html">Lab 10</a> reviews the security of the whole back end. Never put this version online.</div>
+    </section>
+    <section id="Security">
+      <h2 class="Section_Title">X. Security checklist of this lab</h2>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Risk</th><th>Protection used in the Syaha back end</th></tr><tr><td>SQL injection</td><td>only prepared statements with placeholders for outside values</td></tr><tr><td>XSS (a visitor's text running as code)</td><td>every value written in the HTML goes through <code>e()</code></td></tr><tr><td>Data changed by a simple link</td><td>every change is a POST form; <code>require_post()</code> refuses the rest</td></tr><tr><td>Prices or totals modified in the browser</td><td>the total is computed by the server from the database</td></tr><tr><td>Redirect to a foreign site</td><td>the return address is checked against a list</td></tr><tr><td>Database details shown to visitors</td><td>errors go to the log; the visitor sees a short message</td></tr><tr><td>Anybody can use the admin area</td><td>not solved yet: Lab 7 (login) and Lab 10</td></tr></table>
+        </div>
+      </div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">XI. Your turn</h2>
+      <div class="Definitions">
+        <div>
+          Give your team project its back end:<ol><li>Design the database of your project on paper: tables, columns, types, primary and foreign keys. Show it to your teacher.</li><li>Create it in phpMyAdmin, then export it (<strong>Export</strong> tab, format SQL) into <code>database/your_project.sql</code> in your repository, with some test data.</li><li>Add <code>includes/config.php</code> and <code>includes/db.php</code>; check the connection.</li><li>Put your queries in functions (one file, or one file per table) with prepared statements.</li><li>Replace the static content of your pages by loops over the database.</li><li>Make at least one service complete: create, read, update and delete (CRUD), with POST forms and redirects. Your project needs at least five such services by the end of the semester.</li><li>Commit the <code>.sql</code> file each time the structure changes, so that the whole team can import it.</li></ol>
+        </div>
+      </div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>The design of your database (tables, columns, keys) and its <code>.sql</code> file in the repository.</li>
+        <li>A PDO connection configured in one place, with exceptions enabled.</li>
+        <li>Pages that display data from the database, with every value escaped.</li>
+        <li>At least one service with a complete CRUD using prepared statements.</li>
+        <li>This lab counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
+      </ul>
     </section>
   </main>
   <footer class="Inter_Pages">
     <a href="Lab_4.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 4: Javascript form validation</h1>
+      <h1>Lab 4: JavaScript</h1>
     </a>
-    <a href="Lab_5.html" class="Arrow">
-      <h1>Lab 5: MySQL and PDO</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_6.html" class="Arrow">
+      <h1>Lab 6: PHP forms</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
 </body>
 
 </html>

@@ -1,4 +1,6 @@
 import { Menu_Items, Labs_Items } from "./Menu_Items.js";
+// every code example with a result becomes a live editor (div.card, div.Vertical_Demo)
+import "./Live_Demo.js";
 
 var Open_Dialog_Btn = document.getElementById("Open_Dialog_Btn_ID"),
   Close_Dialog_Btn = document.getElementById("Close_Btn_ID"),

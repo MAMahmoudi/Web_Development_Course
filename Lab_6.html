@@ -20,669 +20,985 @@
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab you will receive form data in PHP, validate every field on the server, and redisplay the form
-          with the user's values and an error message next to each wrong field. <br>
-          You will then apply the Post/Redirect/Get pattern, handle file uploads securely, and insert the validated
-          data in the database with PDO (<a href="Lab_5.html">Lab 5</a>). <br>
-          Useful lectures: <a href="Introduction_PHP.html">Introduction to PHP</a> (strings, arrays, functions) and
-          <a href="Security.html">Security</a> (SQL injection, XSS, filesystem security). At the end of the lab, every
-          form of your project must be validated on the server.
+          In <a href="Lab_5.html">Lab 5</a> the forms of <strong>Syaha</strong> started to send their data to PHP, with
+          a few quick checks. In this lab you make the server the real guardian of the data: a reusable validation
+          module, an error under each field, forms that keep what the visitor typed, a booking page that works even
+          without JavaScript, a search form with GET, and a secure upload of the photos of the trips. Then you validate
+          every form of your team project on the server.
         </p>
       </div>
     </section>
-    <section id="Why_Server_Side">
-      <h2 class="Section_Title">I. Why validate on the server?</h2>
+    <section id="Overview">
+      <h2 class="Section_Title">I. What this lab adds to the back end</h2>
+      <div class="Definitions">
+        <div>
+          The result is in <a href="SRC/Labs/Lab_6/" target="_blank" rel="noopener">SRC/Labs/Lab_6</a>: a copy of the back end of Lab 5 (same database, same pages) with the changes of this lab. Compare the two folders to see exactly what changed:<table><tr><th>File</th><th>Change</th></tr><tr><td><code>includes/validation.php</code></td><td><strong>new</strong>: <code>validate()</code> and its rules</td></tr><tr><td><code>includes/upload.php</code></td><td><strong>new</strong>: secure storage of uploaded photos</td></tr><tr><td><code>includes/functions.php</code></td><td><code>input()</code>, <code>field_error()</code>, <code>invalid_attributes()</code>; <code>image_url()</code> knows the uploaded photos</td></tr><tr><td><code>contact_us.php</code></td><td>validation with <code>validate()</code>, an error under each field</td></tr><tr><td><code>book.php</code></td><td>now also a page: the booking form, shown again with its errors</td></tr><tr><td><code>services.php</code>, <code>includes/queries.php</code></td><td>search form (GET) and <code>search_trips()</code></td></tr><tr><td><code>admin/trip_form.php</code>, <code>admin/trip_delete.php</code></td><td>photo upload, errors under the fields, deletion of unused photos</td></tr><tr><td><code>uploads/trips/</code></td><td><strong>new</strong>: the uploaded photos, with a protective <code>.htaccess</code></td></tr></table>
+        </div>
+      </div>
       <div class="Definitions">
         <p>
-          In <a href="Lab_4.html">Lab 4</a> you validated your forms with JavaScript. That validation is good for the
-          <strong>user experience</strong>: errors appear immediately, without reloading the page. But it gives
-          <strong>no security at all</strong>, because it runs on the visitor's machine, which you do not control:
+          Open it at <code>http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_6/index.php</code> (Apache and MySQL started, <code>syaha</code> database imported as in Lab 5).
         </p>
-        <ul>
-          <li>JavaScript can be disabled in the browser.</li>
-          <li>The <code>required</code>, <code>maxlength</code> and <code>pattern</code> attributes can be removed in
-            two seconds with the browser developer tools (F12).</li>
-          <li>Anyone can send a request directly to your PHP file, without using your form at all, with tools such as
-            <code>curl</code> or Postman.</li>
-        </ul>
+      </div>
+      <h3 class="Sub_Section_Title">Why validate on the server?</h3>
+      <div class="Definitions">
         <p>
-          So the rule is: <strong>JavaScript validation is optional comfort, server-side validation is
-          mandatory</strong>. Keep both, with the same rules. And remember the two halves of input/output security:
-          <em>validate the input</em> (this lab), <em>escape the output</em> with <code>htmlspecialchars()</code> and
-          use prepared statements for the database (Lab 5).
+          The checks of <a href="Lab_4.html">Lab 4</a> run in the visitor's browser, so the visitor controls them: JavaScript can be switched off, <code>required</code> or <code>maxlength</code> can be deleted in the developer tools, and a request can be sent without any browser at all:
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint">
-# This request bypasses all your JavaScript checks:
-curl -X POST http://localhost/your_project/register.php \
-     -d "full_name=&lt;script&gt;alert(1)&lt;/script&gt;" -d "email=not-an-email" -d "age=-5"
+        <pre class="prettyprint lang-bash">
+# send the contact form without any browser: no HTML, no JavaScript, no "required"
+curl -i -X POST http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_6/contact_us.php \
+     -d "name=x" -d "email=not-an-email" -d "subject=hack" -d "message=hi"
+
+# the answer is "HTTP/1.1 422 Unprocessable Entity" with an error under each field
         </pre>
       </div>
-    </section>
-    <section id="Receiving_Data">
-      <h2 class="Section_Title">II. Receiving form data</h2>
-      <h3 class="Sub_Section_Title">$_GET or $_POST?</h3>
       <div class="Definitions">
-        <ul>
-          <li><code>method="get"</code>: the data is added to the URL (<code>search.php?q=mouse&amp;page=2</code>)
-            and read in <code>$_GET</code>. The URL can be bookmarked and shared. Use it for requests that only
-            <strong>read</strong> data: search, filters, pagination.</li>
-          <li><code>method="post"</code>: the data is sent in the body of the request and read in
-            <code>$_POST</code>. Use it for everything that <strong>changes</strong> data (create, update, delete,
-            login) and for sensitive values such as passwords, which must never appear in a URL, the browser history
-            or the server logs. File uploads also require <code>POST</code>.</li>
-          <li><code>$_SERVER['REQUEST_METHOD']</code> tells you how the page was requested: <code>'GET'</code> when
-            the user simply opens it, <code>'POST'</code> when the form is submitted. This lets one PHP file both
-            display the form and process it.</li>
-        </ul>
+        <p>
+          Browser validation is for the comfort of honest visitors; <strong>server validation is what protects the data</strong>. The two use the same rules: the server checks everything again, whatever the browser did.
+        </p>
+      </div>
+    </section>
+    <section id="Step_1">
+      <h2 class="Section_Title">II. Step 1: receive the data of a form</h2>
+      <div class="Definitions">
+        <p>
+          The <code>name</code> of each field becomes a key of <code>$_POST</code> or <code>$_GET</code>, depending on the <code>method</code> of the form:
+        </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-html">
-&lt;!-- search.php: a GET form --&gt;
-&lt;form method="get" action="search.php"&gt;
-  &lt;input type="search" name="q" placeholder="Search a product"&gt;
-  &lt;button type="submit"&gt;Search&lt;/button&gt;
+&lt;form action="contact_us.php" method="post"&gt;
+    &lt;input type="text" name="name"&gt;        &lt;!-- read with $_POST['name'] --&gt;
+    &lt;select name="subject"&gt;...&lt;/select&gt;    &lt;!-- read with $_POST['subject'] --&gt;
+&lt;/form&gt;
+
+&lt;form action="services.php" method="get"&gt;  &lt;!-- services.php?max_price=20000&amp;sort=price_asc --&gt;
+    &lt;select name="max_price"&gt;...&lt;/select&gt;  &lt;!-- read with $_GET['max_price'] --&gt;
 &lt;/form&gt;
         </pre>
       </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th></th><th>GET</th><th>POST</th></tr><tr><td>Where are the values?</td><td>in the URL: <code>?max_price=20000</code></td><td>in the body of the request</td></tr><tr><td>Visible, bookmarkable, shareable</td><td>yes</td><td>no</td></tr><tr><td>Size</td><td>limited (a few KB)</td><td>large (files)</td></tr><tr><td>Use it for</td><td>reading: search, filters, sorting, pages</td><td>changing data: create, update, delete, send</td></tr><tr><td>In Syaha</td><td>the search form of the services page</td><td>contact, booking, admin forms</td></tr></table>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>$_SERVER['REQUEST_METHOD']</code> tells whether the page was requested normally (<code>'GET'</code>) or by sending a form (<code>'POST'</code>). Read the values carefully:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+$name = $_POST['name'];             // Warning if the field was not sent at all
+$name = $_POST['name'] ?? '';       // "" when missing: no warning
+empty('0');                         // true! "0" is "empty" for PHP: never use empty() for a quantity
+isset($_POST['is_published']);      // the right test for a checkbox: it is only sent when checked
+trim('  أمين  ');                   // "أمين": spaces typed by mistake are removed
+strlen('أمين');                     // 8 (bytes): use mb_strlen('أمين') = 4 (characters)
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Syaha reads every text with one small function. A field can be sent as an array (<code>name="email[]"</code>): <code>trim()</code> would then fail with an error, so arrays are refused:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/functions.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/**
+ * A text sent by a form ($_POST or $_GET), trimmed.
+ * A field can be sent as an array (name="email[]"): it is refused, otherwise trim() would fail.
+ */
+function input(string $name, string $method = 'post'): string
+{
+    $value = ($method === 'get' ? $_GET : $_POST)[$name] ?? '';
+    return is_string($value) ? trim($value) : '';
+}
+        </pre>
+      </div>
+    </section>
+    <section id="Step_2">
+      <h2 class="Section_Title">III. Step 2: a reusable validation module</h2>
+      <div class="Definitions">
+        <p>
+          Writing <code>if</code> after <code>if</code> for every field of every form is long and easy to get wrong. Syaha describes the rules of a form in an array and checks them with one function:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/validation.php</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
-// search.php?q=mouse&amp;page=2
-declare(strict_types=1);
+// Server-side validation of the forms (Lab 6).
+//
+//   $errors = validate($values, [
+//       'name'  =&gt; ['required', 'min:3', 'max:100'],
+//       'email' =&gt; ['required', 'email'],
+//       'phone' =&gt; ['phone'],                 // optional: only checked when it is not empty
+//   ]);
+//
+// $errors is ['field' =&gt; 'message', ...]: empty when everything is valid.
+// Each field gets one message: the one of the first rule that fails.
 
-// A field can be missing, or even sent as an array (q[]=x): never assume it is a string.
-$q = isset($_GET['q']) &amp;&amp; is_string($_GET['q']) ? trim($_GET['q']) : '';
+function validate(array $values, array $rules): array
+{
+    $errors = [];
+    foreach ($rules as $field =&gt; $field_rules) {
+        $value = $values[$field] ?? '';
+        foreach ($field_rules as $rule) {
+            // 'int:1,10' -&gt; name 'int', parameter '1,10'
+            [$name, $parameter] = array_pad(explode(':', $rule, 2), 2, '');
+            $error = check_rule($name, $parameter, (string) $value);
+            if ($error !== null) {
+                $errors[$field] = $error;
+                break;
+            }
+        }
+    }
+    return $errors;
+}
 
-// Missing or invalid page number: fall back to page 1.
-$page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 1]]) ?: 1;
+/** Returns the error message of one rule, or null when the value respects it. */
+function check_rule(string $name, string $parameter, string $value): ?string
+{
+    // an empty value is only refused by "required": the other rules apply to what was typed
+    if ($value === '' &amp;&amp; $name !== 'required') {
+        return null;
+    }
 
+    return match ($name) {
+        'required' =&gt; $value === '' ? 'هذا الحقل إجباري.' : null,
+        'min' =&gt; mb_strlen($value) &lt; (int) $parameter ? "أدخل {$parameter} أحرف على الأقل." : null,
+        'max' =&gt; mb_strlen($value) &gt; (int) $parameter ? "{$parameter} حرف على الأكثر." : null,
+        'email' =&gt; filter_var($value, FILTER_VALIDATE_EMAIL) === false ? 'البريد الإلكتروني غير صحيح.' : null,
+        'phone' =&gt; preg_match('/^0[5-7][0-9]{8}$/', $value) === 1 ? null : 'رقم الهاتف يجب أن يكون من الشكل 05XXXXXXXX.',
+        'int' =&gt; check_int($value, $parameter),
+        'in' =&gt; in_array($value, explode(',', $parameter), true) ? null : 'الرجاء اختيار قيمة من القائمة.',
+        'date' =&gt; check_date($value, (int) $parameter),
+        default =&gt; throw new InvalidArgumentException("Unknown validation rule: $name"),
+    };
+}
+
+/** 'int:1,10': a whole number between 1 and 10 ('int:0,' has no maximum). */
+function check_int(string $value, string $range): ?string
+{
+    [$min, $max] = array_pad(explode(',', $range), 2, '');
+    $options = [];
+    if ($min !== '') {
+        $options['min_range'] = (int) $min;
+    }
+    if ($max !== '') {
+        $options['max_range'] = (int) $max;
+    }
+    if (filter_var($value, FILTER_VALIDATE_INT, ['options' =&gt; $options]) !== false) {
+        return null;
+    }
+    return $max === '' ? "أدخل عدداً صحيحاً أكبر من أو يساوي {$min}." : "أدخل عدداً صحيحاً بين {$min} و {$max}.";
+}
+
+/** 'date:3': a real date in the format YYYY-MM-DD, at least 3 days from today. */
+function check_date(string $value, int $min_days): ?string
+{
+    $date = DateTime::createFromFormat('!Y-m-d', $value);
+    // createFromFormat accepts "2025-02-31" (it becomes March 3rd): compare with the original text
+    if ($date === false || $date-&gt;format('Y-m-d') !== $value) {
+        return 'التاريخ غير صحيح.';
+    }
+    if ($date &lt; new DateTime("today +{$min_days} days")) {
+        return "يجب أن يكون التاريخ بعد {$min_days} أيام على الأقل.";
+    }
+    return null;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Each field gets <strong>one message</strong>: the one of the first rule that fails (<code>break</code>). <code>['required', 'email']</code> says &quot;mandatory&quot; for an empty field, &quot;invalid&quot; for a wrong one.</li><li>An <strong>empty optional field</strong> (no <code>required</code>) is valid: the phone number is optional, but if it is typed it must be correct.</li><li><code>match</code> (PHP 8) chooses the check of each rule; an unknown rule throws an exception: a typo in a rule is a bug of the developer, it must not be silently ignored.</li><li><code>filter_var</code> checks e-mails (<code>FILTER_VALIDATE_EMAIL</code>) and integers with a range (<code>FILTER_VALIDATE_INT</code> with <code>min_range</code>/<code>max_range</code>); it returns <code>false</code> when the value is invalid.</li><li><code>preg_match</code> tests a regular expression: the same Algerian phone pattern as in Lab 4.</li><li><code>mb_strlen</code> counts characters, not bytes: <code>strlen('أمين')</code> is 8.</li><li>Dates: <code>DateTime::createFromFormat</code> accepts 31 February and moves it to March; comparing with the original text detects it.</li><li><code>in:</code> accepts only the values of a list: the value of a <code>&lt;select&gt;</code> can be changed in the developer tools as easily as a text field.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">IV. Step 3: errors under each field and sticky forms</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_6/Contact_Errors.png" alt="Contact form with an error under each field" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The contact page uses the module: its rules are the ones of the JavaScript of Lab 4, checked again.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> contact_us.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/validation.php';
+
+$subjects = [
+    'info' =&gt; 'معلومات عامة',
+    'booking' =&gt; 'حجز رحلة',
+    'custom' =&gt; 'رحلة حسب الطلب',
+    'other' =&gt; 'أخرى',
+];
+
+// the rules of the form: the same as the JavaScript of Lab 4, checked again by the server
+$rules = [
+    'name' =&gt; ['required', 'min:3', 'max:100'],
+    'email' =&gt; ['required', 'email', 'max:255'],
+    'phone' =&gt; ['phone'],
+    'subject' =&gt; ['required', 'in:' . implode(',', array_keys($subjects))],
+    'message' =&gt; ['required', 'min:20', 'max:500'],
+];
+
+// 1. initial values: empty fields
+$values = array_fill_keys(array_keys($rules), '');
+$errors = [];
+
+// 2. the form was sent: read, validate, save, redirect (Post/Redirect/Get)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // the form was submitted with method="post"
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">isset(), empty() and trim()</h3>
-      <div class="Definitions">
-        <ul>
-          <li><code>isset($_POST['email'])</code> is <code>true</code> if the field was sent and is not
-            <code>null</code>. It does not say anything about the content: an empty field is still "set".</li>
-          <li><code>empty($x)</code> is <code>true</code> for <code>''</code>, <code>'0'</code>, <code>0</code>,
-            <code>null</code>, <code>false</code> and <code>[]</code>. Be careful: a user who types <code>0</code>
-            (a quantity, a mark...) would be considered as "empty".</li>
-          <li><code>trim()</code> removes spaces, tabs and line breaks at both ends. Without it, a field containing
-            only spaces passes the "required" check.</li>
-          <li>The null coalescing operator <code>??</code> gives a default value when the key does not exist:
-            <code>$_POST['city'] ?? ''</code>.</li>
-        </ul>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-/** Returns a POST field as a string ('' if missing or not a string), trimmed by default. */
-function post_string(string $key, bool $trim = true): string
-{
-    $value = $_POST[$key] ?? '';
-    if (!is_string($value)) {
-        return '';
+    foreach ($rules as $field =&gt; $field_rules) {
+        $values[$field] = input($field);
     }
-    return $trim ? trim($value) : $value;
-}
 
-$name = post_string('full_name');
-if ($name === '') {              // more precise than empty(): '0' is a real value
-    echo 'The name is required.';
-}
-        </pre>
-      </div>
-    </section>
-    <section id="Validation_Rules">
-      <h2 class="Section_Title">III. Validation rules</h2>
-      <h3 class="Sub_Section_Title">filter_input() and filter_var()</h3>
-      <div class="Definitions">
-        <p>
-          PHP's filter extension validates common formats. <code>filter_var($value, FILTER)</code> checks a value you
-          already have; <code>filter_input(INPUT_POST, 'name', FILTER)</code> reads the field directly from the
-          request. Both return the <strong>valid value</strong> (converted to the right type) or
-          <code>false</code> if it is invalid; <code>filter_input()</code> returns <code>null</code> if the field is
-          missing. Always compare with <code>===</code>.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// Email: returns the string, or false
-$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if ($email === null || $email === false) {
-    $errors['email'] = 'Please enter a valid email address.';
-}
+    $errors = validate($values, $rules);
 
-// Integer in a range: returns an int, or false ('12abc', '3.5', '-1', '200' are rejected)
-$age = filter_input(INPUT_POST, 'age', FILTER_VALIDATE_INT, [
-    'options' =&gt; ['min_range' =&gt; 16, 'max_range' =&gt; 120],
-]);
-if ($age === null || $age === false) {
-    $errors['age'] = 'Age must be a whole number between 16 and 120.';
-}
-
-// Same thing with a value you already have
-$quantity = filter_var('3', FILTER_VALIDATE_INT, ['options' =&gt; ['min_range' =&gt; 1]]);   // int(3)
-$price    = filter_var('12.50', FILTER_VALIDATE_FLOAT);                               // float(12.5)
-$website  = filter_var('https://ensia.edu.dz', FILTER_VALIDATE_URL);                  // the string
-$agree    = filter_var('yes', FILTER_VALIDATE_BOOLEAN);                               // true ("1", "on", "yes", "true")
-        </pre>
-      </div>
-      <div class="Note"><strong>Avoid FILTER_SANITIZE_STRING:</strong> it is deprecated since PHP 8.1. Do not
-        "clean" input by deleting characters: <em>validate</em> it (accept or reject) and <em>escape</em> it when you
-        print it. Also note that <code>FILTER_VALIDATE_EMAIL</code> only checks the format, not that the mailbox
-        exists.</div>
-      <h3 class="Sub_Section_Title">Required fields, lengths and regular expressions</h3>
-      <div class="Definitions">
-        <p>
-          For rules that filters do not cover, use string functions and <code>preg_match()</code>, which returns
-          <code>1</code> if the regular expression matches, <code>0</code> otherwise. Use <code>mb_strlen()</code>
-          instead of <code>strlen()</code> to count characters: <code>strlen()</code> counts bytes, and an Arabic or
-          accented letter takes 2 bytes in UTF-8. For a <code>&lt;select&gt;</code> or radio buttons, check that the
-          value belongs to the list of allowed values (a <em>whitelist</em>), because the user can send any value.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// Required + length
-if ($name === '') {
-    $errors['full_name'] = 'Full name is required.';
-} elseif (mb_strlen($name) &lt; 3 || mb_strlen($name) &gt; 100) {
-    $errors['full_name'] = 'Full name must contain between 3 and 100 characters.';
-} elseif (!preg_match('/^\p{L}[\p{L} \'-]*$/u', $name)) {
-    // \p{L} = any letter (Latin, Arabic...), the "u" flag enables UTF-8
-    $errors['full_name'] = 'Only letters, spaces, hyphens and apostrophes are allowed.';
-}
-
-// Algerian mobile number: 10 digits starting with 05, 06 or 07 (e.g. 0551234567)
-if (!preg_match('/^0[567][0-9]{8}$/', $phone)) {
-    $errors['phone'] = 'Enter a mobile number such as 0551234567.';
-}
-
-// Password: at least 8 characters, one letter and one digit
-if (strlen($password) &lt; 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
-    $errors['password'] = 'At least 8 characters, including a letter and a digit.';
-}
-
-// Whitelist for a &lt;select&gt;
-const ACCOUNT_TYPES = ['customer' =&gt; 'Customer', 'seller' =&gt; 'Seller'];
-if (!array_key_exists($accountType, ACCOUNT_TYPES)) {
-    $errors['account_type'] = 'Please choose an account type.';
-}
-        </pre>
-      </div>
-    </section>
-    <section id="Sticky_Form">
-      <h2 class="Section_Title">IV. Errors array and sticky form</h2>
-      <div class="Definitions">
-        <p>
-          A good form never shows a blank page saying "error". Instead, it:
-        </p>
-        <ol>
-          <li>validates <strong>all</strong> the fields and stores each problem in an array
-            <code>$errors['field_name']</code>, so the user sees every error at once;</li>
-          <li>redisplays the form with the values the user typed (a <em>sticky</em> form), except passwords;</li>
-          <li>shows each message next to its field;</li>
-          <li>escapes every value it prints with <code>htmlspecialchars()</code>, including the values put back
-            into <code>value="..."</code> attributes.</li>
-        </ol>
-        <p>
-          We build a complete <code>register.php</code> for this <code>users</code> table. Create it in your
-          <code>shop_lab</code> database from Lab 5:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-sql">
-CREATE TABLE users (
-  id             INT UNSIGNED     NOT NULL AUTO_INCREMENT,
-  full_name      VARCHAR(100)     NOT NULL,
-  email          VARCHAR(255)     NOT NULL,
-  age            TINYINT UNSIGNED NOT NULL,
-  phone          CHAR(10)         NOT NULL,
-  account_type   VARCHAR(20)      NOT NULL,
-  password_hash  VARCHAR(255)     NOT NULL,
-  avatar         VARCHAR(100)     NULL,
-  created_at     TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  UNIQUE KEY uq_users_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Part 1: helpers and initial values</h3>
-      <div class="Definitions">
-        <p>The four parts below go in the same file, <code>register.php</code>, one after the other.</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// register.php
-declare(strict_types=1);
-
-require_once __DIR__ . '/includes/db.php';   // getConnection() from Lab 5
-
-// If you already include includes/helpers.php (Lab 5), do not declare e() again here.
-
-const ACCOUNT_TYPES = ['customer' =&gt; 'Customer', 'seller' =&gt; 'Seller'];
-
-function e(string $value): string
-{
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
-function post_string(string $key, bool $trim = true): string
-{
-    $value = $_POST[$key] ?? '';
-    if (!is_string($value)) {
-        return '';
+    if (!$errors) {
+        create_message([
+            'full_name' =&gt; $values['name'],
+            'email' =&gt; $values['email'],
+            'phone' =&gt; $values['phone'],
+            'subject' =&gt; $values['subject'],
+            'message' =&gt; $values['message'],
+        ]);
+        redirect('contact_us.php?sent=1#Contact');
     }
-    return $trim ? trim($value) : $value;
+    // 422: the request was understood but its data is not valid
+    http_response_code(422);
 }
 
-/** HTML for the error message of one field ('' if there is none). */
-function field_error(array $errors, string $field): string
+// 3. display the page (with the errors and the values typed, if any)
+$page_title = 'سياحة | إتصل بنا';
+$active = 'contact';
+$styles = ['Hero', 'Contact_Us'];
+$responsive = ['Hero', 'Contact_Us'];
+$scripts = ['Contact_Form'];
+
+require __DIR__ . '/includes/header.php';
+?&gt;
+    &lt;main&gt;
+        &lt;section id="Hero_ID"&gt;
+            &lt;div class="Hero"&gt;
+                &lt;img src="../../IMAGES/Oran.jpg" alt="وهران" /&gt;
+            &lt;/div&gt;
+            &lt;div class="Hero_Text"&gt;
+                &lt;h1&gt;مرحبا بكم في موقعنا&lt;/h1&gt;
+                &lt;p&gt;نحن نقدم لكم أفضل الخدمات&lt;/p&gt;
+                &lt;a href="#Contact" class="Show" id="Contact_Us_Btn_ID"&gt;تواصل معنا&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/section&gt;
+        &lt;div class="Contact_Us_Container" id="Contact"&gt;
+            &lt;h1&gt;إتصل بنا&lt;/h1&gt;
+            &lt;?php if (isset($_GET['sent'])): ?&gt;
+            &lt;p class="Flash Flash_Success" role="status"&gt;شكراً لكم! تم استلام رسالتكم وسنرد عليكم في أقرب وقت.&lt;/p&gt;
+            &lt;?php endif; ?&gt;
+            &lt;?php if ($errors): ?&gt;
+            &lt;p class="Flash Flash_Error" role="alert"&gt;
+                لم يتم إرسال الرسالة: صححوا الحقول المشار إليها (&lt;?= count($errors) ?&gt;).
+            &lt;/p&gt;
+            &lt;?php endif; ?&gt;
+            &lt;div class="Contact_Layout"&gt;
+                &lt;div class="Contact_Info"&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-location-dot"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;العنوان&lt;/h4&gt;
+                            &lt;p&gt;شارع ديدوش مراد، الجزائر العاصمة&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-phone"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;الهاتف&lt;/h4&gt;
+                            &lt;a href="tel:+213555000000"&gt;&lt;span dir="ltr"&gt;+213 555 00 00 00&lt;/span&gt;&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-envelope"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;البريد الإلكتروني&lt;/h4&gt;
+                            &lt;a href="mailto:contact@syaha.example"&gt;contact@syaha.example&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class="Contact_Info_Item"&gt;
+                        &lt;i class="fa-solid fa-clock"&gt;&lt;/i&gt;
+                        &lt;div&gt;
+                            &lt;h4&gt;ساعات العمل&lt;/h4&gt;
+                            &lt;p&gt;الأحد - الخميس: 08:00 - 17:00&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- sticky form: the values typed come back in the fields, each error is under its field --&gt;
+                &lt;form action="contact_us.php#Contact" method="post"&gt;
+                    &lt;label for="Name"&gt;الإسم الكامل&lt;/label&gt;
+                    &lt;input type="text" id="Name" name="name" value="&lt;?= e($values['name']) ?&gt;" autocomplete="name"
+                        required&lt;?= invalid_attributes($errors, 'name', 'Name') ?&gt; /&gt;
+                    &lt;?= field_error($errors, 'name', 'Name') ?&gt;
+
+                    &lt;label for="Email"&gt;البريد الإلكتروني&lt;/label&gt;
+                    &lt;input type="email" id="Email" name="email" value="&lt;?= e($values['email']) ?&gt;" autocomplete="email"
+                        required&lt;?= invalid_attributes($errors, 'email', 'Email') ?&gt; /&gt;
+                    &lt;?= field_error($errors, 'email', 'Email') ?&gt;
+
+                    &lt;label for="Phone"&gt;رقم الهاتف&lt;/label&gt;
+                    &lt;input type="tel" id="Phone" name="phone" value="&lt;?= e($values['phone']) ?&gt;" autocomplete="tel"
+                        placeholder="05XXXXXXXX" pattern="0[5-7][0-9]{8}"&lt;?= invalid_attributes($errors, 'phone', 'Phone') ?&gt; /&gt;
+                    &lt;?= field_error($errors, 'phone', 'Phone') ?&gt;
+
+                    &lt;label for="Subject"&gt;الموضوع&lt;/label&gt;
+                    &lt;select id="Subject" name="subject" required&lt;?= invalid_attributes($errors, 'subject', 'Subject') ?&gt;&gt;
+                        &lt;option value=""&gt;اختر موضوعاً&lt;/option&gt;
+                        &lt;?php foreach ($subjects as $key =&gt; $label): ?&gt;
+                        &lt;option value="&lt;?= $key ?&gt;" &lt;?= $key === $values['subject'] ? 'selected' : '' ?&gt;&gt;&lt;?= $label ?&gt;&lt;/option&gt;
+                        &lt;?php endforeach; ?&gt;
+                    &lt;/select&gt;
+                    &lt;?= field_error($errors, 'subject', 'Subject') ?&gt;
+
+                    &lt;label for="Message"&gt;الرسالة&lt;/label&gt;
+                    &lt;textarea id="Message" name="message" rows="5" maxlength="500"
+                        required&lt;?= invalid_attributes($errors, 'message', 'Message') ?&gt;&gt;&lt;?= e($values['message']) ?&gt;&lt;/textarea&gt;
+                    &lt;?= field_error($errors, 'message', 'Message') ?&gt;
+
+                    &lt;button type="submit"&gt;إرسال&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+            &lt;iframe class="Contact_Map" title="موقع الوكالة على الخريطة" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=3.03%2C36.75%2C3.07%2C36.78&amp;amp;layer=mapnik&amp;amp;marker=36.765%2C3.05"&gt;&lt;/iframe&gt;
+        &lt;/div&gt;
+    &lt;/main&gt;
+&lt;?php require __DIR__ . '/includes/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          The page follows three steps:<ol><li><strong>Initial values</strong>: empty fields, no errors (first display of the page).</li><li><strong>The form was sent</strong>: read the values, validate them. If everything is valid, save and <strong>redirect</strong> (Post/Redirect/Get: reloading the next page does not send the message again). Otherwise answer with the status <code>422</code> (<em>Unprocessable Entity</em>): the request was understood but its data is invalid.</li><li><strong>Display</strong>: the same HTML in both cases. The values typed are put back in the fields (<em>sticky form</em>: nobody wants to type a long message again because of a wrong e-mail), always through <code>e()</code>, and each error is written under its field.</li></ol>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/functions.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ displaying the errors of a form
+
+/** The message of a field, under the field (the class is the one used by the JavaScript of Lab 4). */
+function field_error(array $errors, string $field, string $id): string
 {
     if (!isset($errors[$field])) {
         return '';
     }
-    return '&lt;span class="error"&gt;' . e($errors[$field]) . '&lt;/span&gt;';
+    return '&lt;small class="Field_Error" id="' . $id . '_Error" aria-live="polite"&gt;' . e($errors[$field]) . '&lt;/small&gt;';
 }
 
-$errors = [];
-$old = [                      // values redisplayed in the form
-    'full_name'    =&gt; '',
-    'email'        =&gt; '',
-    'age'          =&gt; '',
-    'phone'        =&gt; '',
-    'account_type' =&gt; '',
+/** Attributes of an invalid field: red border and link to its message for screen readers. */
+function invalid_attributes(array $errors, string $field, string $id): string
+{
+    return isset($errors[$field]) ? ' class="Invalid" aria-invalid="true" aria-describedby="' . $id . '_Error"' : '';
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>invalid_attributes()</code> adds the class <code>Invalid</code> (red border) and <code>aria-invalid</code>/<code>aria-describedby</code>, which make screen readers announce the error with the field. The message uses the class <code>Field_Error</code>, the one of the JavaScript of Lab 4: the script now reuses the message written by the server instead of adding a second one.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> Contact_Form.js (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// a message element after each field; the server (Lab 6) may already have written one: reuse it
+Rules.forEach(([Field]) =&gt; {
+  let Error = Field.nextElementSibling;
+  if (!Error || !Error.classList.contains("Field_Error")) {
+    Error = document.createElement("small");
+    Error.className = "Field_Error";
+    Field.after(Error);
+  }
+  Error.id = Field.id + "_Error";
+  Error.setAttribute("aria-live", "polite");
+  Field.setAttribute("aria-describedby", Error.id);
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Careful:</strong> a value put back in a field must be escaped like any other output: a visitor could type <code>"&gt;&lt;script&gt;...</code> in the name. Without <code>e()</code>, the sticky form would become an XSS hole.</div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">V. Step 4: a booking page that works without JavaScript</h2>
+      <div class="Definitions">
+        <p>
+          In Lab 5 the &quot;احجز الآن&quot; button was created by JavaScript: without JavaScript there was no way to book, and the errors of <code>book.php</code> were reduced to one generic message. Now the server writes a real link on each trip card:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/trips_section.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;!-- a real link: it works without JavaScript; with JavaScript it opens the dialog (Booking.js) --&gt;
+&lt;a href="book.php?trip=&lt;?= (int) $trip['id'] ?&gt;&amp;amp;return=&lt;?= e($return) ?&gt;" class="Book_Btn"&gt;
+    &lt;i class="fa-solid fa-calendar-check"&gt;&lt;/i&gt; احجز الآن
+&lt;/a&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>book.php</code> becomes a page: <code>GET book.php?trip=3</code> shows the form with the trip already chosen; the form (or the dialog) is sent to <code>POST book.php</code>, which saves and redirects, or shows the form again with an error under each field.
+        </p>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_6/Booking_Errors.png" alt="The booking page with errors" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> book.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// The booking page.
+//   GET  book.php?trip=3          shows the form (visitors without JavaScript, or a link shared)
+//   POST book.php                 the dialog or the form was sent: validate, then save and redirect,
+//                                 or show the form again with the errors under the fields
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/validation.php';
+
+$trips = get_trips();
+$trip_ids = array_map(fn ($trip) =&gt; (string) $trip['id'], $trips);
+
+$rules = [
+    'trip_id' =&gt; ['required', 'in:' . implode(',', $trip_ids)],
+    'name' =&gt; ['required', 'min:3', 'max:100'],
+    'email' =&gt; ['required', 'email', 'max:255'],
+    'date' =&gt; ['required', 'date:' . BOOKING_MIN_DAYS],
+    'people' =&gt; ['required', 'int:1,10'],
 ];
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Part 2: validation</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
+
+// only come back to one of our own pages
+$return = input('return', $_SERVER['REQUEST_METHOD'] === 'POST' ? 'post' : 'get');
+$return = in_array($return, ['index.php', 'services.php'], true) ? $return : 'index.php';
+
+$values = array_fill_keys(array_keys($rules), '');
+$values['trip_id'] = input('trip', 'get');
+$values['people'] = '1';
+$errors = [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    foreach (array_keys($old) as $field) {
-        $old[$field] = post_string($field);
+    foreach ($rules as $field =&gt; $field_rules) {
+        $values[$field] = input($field);
     }
-    $password        = post_string('password', false);     // never trim a password
-    $passwordConfirm = post_string('password_confirm', false);
+    $errors = validate($values, $rules);
 
-    // Full name
-    if ($old['full_name'] === '') {
-        $errors['full_name'] = 'Full name is required.';
-    } elseif (mb_strlen($old['full_name']) &lt; 3 || mb_strlen($old['full_name']) &gt; 100) {
-        $errors['full_name'] = 'Full name must contain between 3 and 100 characters.';
-    } elseif (!preg_match('/^\p{L}[\p{L} \'-]*$/u', $old['full_name'])) {
-        $errors['full_name'] = 'Only letters, spaces, hyphens and apostrophes are allowed.';
-    }
-
-    // Email
-    if ($old['email'] === '') {
-        $errors['email'] = 'Email is required.';
-    } elseif (mb_strlen($old['email']) &gt; 255 || filter_var($old['email'], FILTER_VALIDATE_EMAIL) === false) {
-        $errors['email'] = 'Please enter a valid email address.';
-    }
-
-    // Age
-    $age = filter_var($old['age'], FILTER_VALIDATE_INT, [
-        'options' =&gt; ['min_range' =&gt; 16, 'max_range' =&gt; 120],
-    ]);
-    if ($old['age'] === '') {
-        $errors['age'] = 'Age is required.';
-    } elseif ($age === false) {
-        $errors['age'] = 'Age must be a whole number between 16 and 120.';
-    }
-
-    // Phone
-    if (!preg_match('/^0[567][0-9]{8}$/', $old['phone'])) {
-        $errors['phone'] = 'Enter a mobile number such as 0551234567.';
-    }
-
-    // Account type (whitelist)
-    if (!array_key_exists($old['account_type'], ACCOUNT_TYPES)) {
-        $errors['account_type'] = 'Please choose an account type.';
-    }
-
-    // Password
-    if (strlen($password) &lt; 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
-        $errors['password'] = 'At least 8 characters, including a letter and a digit.';
-    } elseif ($password !== $passwordConfirm) {
-        $errors['password_confirm'] = 'The two passwords do not match.';
-    }
-
-    // Part 3 (insertion + redirect) goes here, still inside this if block.
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Part 4: the form</h3>
-      <div class="Definitions">
-        <p>(Part 3 is in the next section.) Note the <code>novalidate</code> attribute: it disables the browser
-          checks while you test the server-side validation. Remove it afterwards to get both. Each
-          <code>value</code> is escaped; the password fields are never refilled.</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-// Still in PHP mode: parts 1 to 3 are above this line.
-$registered = isset($_GET['registered']);
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;title&gt;Create an account&lt;/title&gt;
-  &lt;style&gt;.error { color: #8c1515; display: block; } .success { color: green; }&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;Create an account&lt;/h1&gt;
-
-  &lt;?php if ($registered): ?&gt;
-    &lt;p class="success"&gt;Your account has been created. You can now log in.&lt;/p&gt;
-  &lt;?php endif; ?&gt;
-
-  &lt;?php if (isset($errors['form'])): ?&gt;
-    &lt;p class="error"&gt;&lt;?= e($errors['form']) ?&gt;&lt;/p&gt;
-  &lt;?php endif; ?&gt;
-
-  &lt;form method="post" action="register.php" novalidate&gt;
-    &lt;label for="full_name"&gt;Full name&lt;/label&gt;
-    &lt;input type="text" id="full_name" name="full_name" maxlength="100" required
-           value="&lt;?= e($old['full_name']) ?&gt;"&gt;
-    &lt;?= field_error($errors, 'full_name') ?&gt;
-
-    &lt;label for="email"&gt;Email&lt;/label&gt;
-    &lt;input type="email" id="email" name="email" required value="&lt;?= e($old['email']) ?&gt;"&gt;
-    &lt;?= field_error($errors, 'email') ?&gt;
-
-    &lt;label for="age"&gt;Age&lt;/label&gt;
-    &lt;input type="number" id="age" name="age" min="16" max="120" required value="&lt;?= e($old['age']) ?&gt;"&gt;
-    &lt;?= field_error($errors, 'age') ?&gt;
-
-    &lt;label for="phone"&gt;Mobile phone&lt;/label&gt;
-    &lt;input type="tel" id="phone" name="phone" pattern="0[567][0-9]{8}" required value="&lt;?= e($old['phone']) ?&gt;"&gt;
-    &lt;?= field_error($errors, 'phone') ?&gt;
-
-    &lt;label for="account_type"&gt;Account type&lt;/label&gt;
-    &lt;select id="account_type" name="account_type" required&gt;
-      &lt;option value=""&gt;-- Choose --&lt;/option&gt;
-      &lt;?php foreach (ACCOUNT_TYPES as $value =&gt; $label): ?&gt;
-        &lt;option value="&lt;?= e($value) ?&gt;" &lt;?= $old['account_type'] === $value ? 'selected' : '' ?&gt;&gt;
-          &lt;?= e($label) ?&gt;
-        &lt;/option&gt;
-      &lt;?php endforeach; ?&gt;
-    &lt;/select&gt;
-    &lt;?= field_error($errors, 'account_type') ?&gt;
-
-    &lt;label for="password"&gt;Password&lt;/label&gt;
-    &lt;input type="password" id="password" name="password" minlength="8" required&gt;
-    &lt;?= field_error($errors, 'password') ?&gt;
-
-    &lt;label for="password_confirm"&gt;Confirm password&lt;/label&gt;
-    &lt;input type="password" id="password_confirm" name="password_confirm" required&gt;
-    &lt;?= field_error($errors, 'password_confirm') ?&gt;
-
-    &lt;button type="submit"&gt;Create my account&lt;/button&gt;
-  &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-        </pre>
-      </div>
-      <div class="Note"><strong>Why escape the sticky values?</strong> If a user types
-        <code>"&gt;&lt;script&gt;alert(1)&lt;/script&gt;</code> in the name field and you print
-        <code>value="&lt;?= $old['full_name'] ?&gt;"</code> without escaping, the quote closes the attribute and the
-        script runs in the page: this is reflected XSS. With <code>e()</code> the quote becomes
-        <code>&amp;quot;</code> and the text is displayed harmlessly.</div>
-    </section>
-    <section id="PRG">
-      <h2 class="Section_Title">V. Saving with PDO and the Post/Redirect/Get pattern</h2>
-      <div class="Definitions">
-        <p>
-          When the data is valid, we insert it with a prepared statement (Lab 5). Then we must not display the result
-          page directly: if the user refreshes it, the browser re-sends the <code>POST</code> request ("Confirm form
-          resubmission") and the account would be created twice. The <strong>Post/Redirect/Get</strong> (PRG) pattern
-          avoids this:
-        </p>
-        <ol>
-          <li>the browser <strong>POSTs</strong> the form;</li>
-          <li>on success, the server answers with a <strong>redirect</strong> (<code>header('Location: ...')</code>,
-            status 303 "See Other") and stops the script with <code>exit</code>;</li>
-          <li>the browser follows it with a <strong>GET</strong> request. Refreshing now only repeats the harmless
-            GET.</li>
-        </ol>
-        <p>
-          On failure (validation errors), there is no redirect: the same request displays the form with the errors
-          and the sticky values. Passwords are stored with <code>password_hash()</code>, never in clear text.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">Part 3: insertion and redirect</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-    // Inside "if ($_SERVER['REQUEST_METHOD'] === 'POST') { ... }", after the validation:
-    if (count($errors) === 0) {
-        try {
-            $stmt = getConnection()-&gt;prepare(
-                'INSERT INTO users (full_name, email, age, phone, account_type, password_hash)
-                 VALUES (:full_name, :email, :age, :phone, :account_type, :password_hash)'
-            );
-            $stmt-&gt;execute([
-                ':full_name'     =&gt; $old['full_name'],
-                ':email'         =&gt; $old['email'],
-                ':age'           =&gt; $age,                 // the int returned by filter_var()
-                ':phone'         =&gt; $old['phone'],
-                ':account_type'  =&gt; $old['account_type'],
-                ':password_hash' =&gt; password_hash($password, PASSWORD_DEFAULT),
-            ]);
-
-            // Post/Redirect/Get
-            header('Location: register.php?registered=1', true, 303);
-            exit;
-        } catch (PDOException $e) {
-            if (($e-&gt;errorInfo[1] ?? null) === 1062) {    // duplicate key: the UNIQUE email
-                $errors['email'] = 'An account with this email already exists.';
-            } else {
-                error_log($e-&gt;getMessage());
-                $errors['form'] = 'Something went wrong. Please try again later.';
-            }
+    if (!$errors) {
+        $id = create_booking([
+            'trip_id' =&gt; (int) $values['trip_id'],
+            'full_name' =&gt; $values['name'],
+            'email' =&gt; $values['email'],
+            'departure_date' =&gt; $values['date'],
+            'people' =&gt; (int) $values['people'],
+        ]);
+        if ($id !== null) {
+            redirect($return . '?booked=' . $id . '#Trips');
         }
+        // the trip was unpublished between the display of the form and its sending
+        $errors['trip_id'] = 'هذه الرحلة لم تعد متاحة.';
     }
+    http_response_code(422);
+}
+
+$earliest = (new DateTime('today +' . BOOKING_MIN_DAYS . ' days'))-&gt;format('Y-m-d');
+
+$page_title = 'سياحة | احجز رحلتك';
+$active = '';
+$styles = [];
+$responsive = [];
+$scripts = [];
+
+require __DIR__ . '/includes/header.php';
+?&gt;
+    &lt;main class="Booking_Page"&gt;
+        &lt;form class="Booking_Form" action="book.php" method="post"&gt;
+            &lt;h2&gt;احجز رحلتك&lt;/h2&gt;
+            &lt;?php if ($errors): ?&gt;
+            &lt;p class="Flash Flash_Error" role="alert"&gt;لم يتم تسجيل الحجز: صححوا الحقول المشار إليها.&lt;/p&gt;
+            &lt;?php endif; ?&gt;
+            &lt;input type="hidden" name="return" value="&lt;?= e($return) ?&gt;" /&gt;
+
+            &lt;label for="Booking_Trip"&gt;الرحلة&lt;/label&gt;
+            &lt;select id="Booking_Trip" name="trip_id" required&lt;?= invalid_attributes($errors, 'trip_id', 'Booking_Trip') ?&gt;&gt;
+                &lt;option value=""&gt;اختر رحلة&lt;/option&gt;
+                &lt;?php foreach ($trips as $trip): ?&gt;
+                &lt;option value="&lt;?= (int) $trip['id'] ?&gt;" &lt;?= (string) $trip['id'] === $values['trip_id'] ? 'selected' : '' ?&gt;&gt;
+                    &lt;?= e($trip['title']) ?&gt; (&lt;?= money((int) $trip['price']) ?&gt; للشخص)
+                &lt;/option&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/select&gt;
+            &lt;?= field_error($errors, 'trip_id', 'Booking_Trip') ?&gt;
+
+            &lt;label for="Booking_Name"&gt;الإسم الكامل&lt;/label&gt;
+            &lt;input type="text" id="Booking_Name" name="name" value="&lt;?= e($values['name']) ?&gt;" autocomplete="name"
+                required&lt;?= invalid_attributes($errors, 'name', 'Booking_Name') ?&gt; /&gt;
+            &lt;?= field_error($errors, 'name', 'Booking_Name') ?&gt;
+
+            &lt;label for="Booking_Email"&gt;البريد الإلكتروني&lt;/label&gt;
+            &lt;input type="email" id="Booking_Email" name="email" value="&lt;?= e($values['email']) ?&gt;" autocomplete="email"
+                required&lt;?= invalid_attributes($errors, 'email', 'Booking_Email') ?&gt; /&gt;
+            &lt;?= field_error($errors, 'email', 'Booking_Email') ?&gt;
+
+            &lt;label for="Booking_Date"&gt;تاريخ الانطلاق&lt;/label&gt;
+            &lt;input type="date" id="Booking_Date" name="date" value="&lt;?= e($values['date']) ?&gt;" min="&lt;?= $earliest ?&gt;"
+                required&lt;?= invalid_attributes($errors, 'date', 'Booking_Date') ?&gt; /&gt;
+            &lt;?= field_error($errors, 'date', 'Booking_Date') ?&gt;
+
+            &lt;label for="Booking_People"&gt;عدد المسافرين&lt;/label&gt;
+            &lt;input type="number" id="Booking_People" name="people" value="&lt;?= e($values['people']) ?&gt;" min="1" max="10"
+                required&lt;?= invalid_attributes($errors, 'people', 'Booking_People') ?&gt; /&gt;
+            &lt;?= field_error($errors, 'people', 'Booking_People') ?&gt;
+
+            &lt;div class="Booking_Buttons"&gt;
+                &lt;button type="submit" class="Booking_Confirm"&gt;تأكيد الحجز&lt;/button&gt;
+                &lt;a href="&lt;?= e($return) ?&gt;#Trips" class="Booking_Cancel"&gt;إلغاء&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+    &lt;/main&gt;
+&lt;?php require __DIR__ . '/includes/footer.php'; ?&gt;
         </pre>
       </div>
-      <div class="Note"><strong>Important:</strong> <code>header()</code> only works if nothing has been sent to the
-        browser yet, not even a space or an empty line before <code>&lt;?php</code>. That is why all the processing
-        is at the top of the file and the HTML at the bottom. Always write <code>exit;</code> after a redirect,
-        otherwise the rest of the script keeps running. In <a href="Lab_7.html">Lab 7</a> you will replace
-        <code>?registered=1</code> by a "flash message" stored in the session.</div>
-    </section>
-    <section id="File_Upload">
-      <h2 class="Section_Title">VI. Secure file upload</h2>
       <div class="Definitions">
         <p>
-          An upload form must use <code>method="post"</code> and <code>enctype="multipart/form-data"</code>. PHP
-          stores the file in a temporary folder and describes it in <code>$_FILES['field_name']</code>:
+          With JavaScript, <code>Booking.js</code> keeps the dialog: it finds the link written by the server and opens the dialog instead of following it (<code>preventDefault()</code>). This is <strong>progressive enhancement</strong>: the page works with HTML and PHP alone, and JavaScript makes it nicer when it is available.
         </p>
-        <ul>
-          <li><code>name</code>: the original file name, chosen by the user. <strong>Never trust it</strong> and never
-            use it to save the file.</li>
-          <li><code>type</code>: the MIME type sent by the browser. <strong>Never trust it</strong> either; it is
-            just text the client can change.</li>
-          <li><code>tmp_name</code>: where PHP stored the file on the server.</li>
-          <li><code>size</code>: the size in bytes.</li>
-          <li><code>error</code>: <code>UPLOAD_ERR_OK</code> (0) on success, otherwise
-            <code>UPLOAD_ERR_INI_SIZE</code> (bigger than <code>upload_max_filesize</code> in php.ini),
-            <code>UPLOAD_ERR_FORM_SIZE</code> (bigger than the form's <code>MAX_FILE_SIZE</code>),
-            <code>UPLOAD_ERR_PARTIAL</code>, <code>UPLOAD_ERR_NO_FILE</code> (no file chosen),
-            <code>UPLOAD_ERR_NO_TMP_DIR</code>, <code>UPLOAD_ERR_CANT_WRITE</code> or
-            <code>UPLOAD_ERR_EXTENSION</code> (server problems).</li>
-        </ul>
-        <p>A secure upload follows these steps: check the error code, check the size, detect the real type from the
-          file <em>content</em> with <code>finfo</code> (if PHP says <em>Class "finfo" not found</em>, enable <code>extension=fileinfo</code> in php.ini and restart Apache), accept only a whitelist of types, generate a random file
-          name with an extension chosen by <em>you</em>, then move the file with <code>move_uploaded_file()</code>.
-          The lecture <a href="PHP_MySQL.html">Storing data with PHP</a> shows the basic upload; here is the secure
-          version.</p>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> Booking.js (extract)</p>
       <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;form method="post" action="upload_avatar.php" enctype="multipart/form-data"&gt;
-  &lt;!-- MAX_FILE_SIZE must come before the file input; it is only a hint, PHP checks the size again --&gt;
-  &lt;input type="hidden" name="MAX_FILE_SIZE" value="2097152"&gt;
-  &lt;label for="avatar"&gt;Profile picture (JPEG, PNG or WebP, 2 MB max)&lt;/label&gt;
-  &lt;input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/webp"&gt;
-  &lt;button type="submit"&gt;Upload&lt;/button&gt;
+        <pre class="prettyprint lang-js">
+// a "book now" button at the bottom of each trip card.
+// From Lab 6, the server writes a link to the booking page (it works without JavaScript):
+// with JavaScript, the same link opens the dialog instead.
+document.querySelectorAll(".Trip_Card").forEach((Card) =&gt; {
+  let Button = Card.querySelector(".Book_Btn");
+  if (!Button) {
+    Button = document.createElement("button");
+    Button.type = "button";
+    Button.className = "Book_Btn";
+    Button.innerHTML = '&lt;i class="fa-solid fa-calendar-check"&gt;&lt;/i&gt; احجز الآن';
+    Card.appendChild(Button);
+  }
+  Button.addEventListener("click", (event) =&gt; {
+    event.preventDefault();
+    Open(Card.querySelector("h4").textContent.trim());
+  });
+});
+        </pre>
+      </div>
+      <div class="Note"><strong>Notice:</strong> the list of valid trips used by the rule <code>in:</code> comes from the database: a trip unpublished in the admin area can no longer be booked, even with an old form.</div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">VI. Step 5: a search form with GET</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_6/Search_Form.png" alt="Search form of the services page" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The services page gets a search form. It only <em>reads</em> data, so it uses <code>method="get"</code>: the choices appear in the URL (<code>services.php?max_price=20000&amp;sort=price_asc</code>) and a search can be bookmarked or shared.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> services.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// search form (GET): the choices are in the URL (services.php?max_price=20000&amp;sort=price_asc#Trips),
+// so a search can be bookmarked or shared. Each value is checked against the list of allowed choices.
+$price_choices = ['' =&gt; 'كل الأسعار', '10000' =&gt; 'حتى 10 000 دج', '20000' =&gt; 'حتى 20 000 دج', '40000' =&gt; 'حتى 40 000 دج'];
+$days_choices = ['' =&gt; 'كل المدد', '1' =&gt; 'يوم واحد', '3' =&gt; '3 أيام على الأكثر', '7' =&gt; 'أسبوع على الأكثر'];
+$sort_choices = ['' =&gt; 'الترتيب الافتراضي', 'price_asc' =&gt; 'الأرخص أولاً', 'price_desc' =&gt; 'الأغلى أولاً', 'duration' =&gt; 'الأقصر أولاً'];
+
+$search = [];
+foreach (['max_price' =&gt; $price_choices, 'max_days' =&gt; $days_choices, 'sort' =&gt; $sort_choices] as $name =&gt; $choices) {
+    $value = input($name, 'get');
+    $search[$name] = array_key_exists($value, $choices) ? $value : '';   // an unknown value is ignored
+}
+
+$trips = search_trips(
+    $search['max_price'] === '' ? null : (int) $search['max_price'],
+    $search['max_days'] === '' ? null : (int) $search['max_days'],
+    $search['sort']
+);
+$booking_trips = get_trips();   // the dialog offers every trip, not only the ones found
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> services.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;!--Search form starts here: GET, because it only reads data--&gt;
+&lt;form class="Search_Form" action="services.php#Trips" method="get"&gt;
+    &lt;h2&gt;&lt;i class="fa-solid fa-magnifying-glass"&gt;&lt;/i&gt; ابحث عن رحلة&lt;/h2&gt;
+    &lt;?php foreach (['max_price' =&gt; ['السعر', $price_choices], 'max_days' =&gt; ['المدة', $days_choices], 'sort' =&gt; ['الترتيب', $sort_choices]] as $name =&gt; [$label, $choices]): ?&gt;
+    &lt;label&gt;
+        &lt;?= $label ?&gt;
+        &lt;select name="&lt;?= $name ?&gt;"&gt;
+            &lt;?php foreach ($choices as $value =&gt; $text): ?&gt;
+            &lt;option value="&lt;?= e((string) $value) ?&gt;" &lt;?= (string) $value === $search[$name] ? 'selected' : '' ?&gt;&gt;&lt;?= $text ?&gt;&lt;/option&gt;
+            &lt;?php endforeach; ?&gt;
+        &lt;/select&gt;
+    &lt;/label&gt;
+    &lt;?php endforeach; ?&gt;
+    &lt;button type="submit"&gt;بحث&lt;/button&gt;
+    &lt;a href="services.php#Trips"&gt;إعادة تعيين&lt;/a&gt;
 &lt;/form&gt;
         </pre>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/upload.php
-declare(strict_types=1);
-
-const MAX_UPLOAD_SIZE = 2 * 1024 * 1024;            // 2 MB
-const ALLOWED_IMAGE_TYPES = [                        // real MIME type =&gt; extension we choose
-    'image/jpeg' =&gt; 'jpg',
-    'image/png'  =&gt; 'png',
-    'image/webp' =&gt; 'webp',
-];
-const UPLOAD_DIR = __DIR__ . '/../uploads/avatars/';
-
 /**
- * Validates an uploaded image and moves it to UPLOAD_DIR.
- * Returns the new file name, or throws a RuntimeException with a message for the user.
+ * Published trips filtered by the search form of the services page (Lab 6).
+ * $max_price and $max_days are null when the visitor did not choose them.
  */
-function storeUploadedImage(array $file): string
+function search_trips(?int $max_price, ?int $max_days, string $sort): array
 {
-    if (!isset($file['error']) || is_array($file['error'])) {
-        throw new RuntimeException('Invalid upload.');   // missing field or several files sent
+    // ORDER BY cannot use a placeholder: the column comes from this fixed list, never from the visitor
+    $orders = [
+        'price_asc' =&gt; 'price ASC',
+        'price_desc' =&gt; 'price DESC',
+        'duration' =&gt; 'duration_days ASC, price ASC',
+    ];
+    $order = $orders[$sort] ?? 'id';
+
+    // the conditions are added only when needed; the values always go through placeholders
+    $where = ['is_published = 1'];
+    $parameters = [];
+    if ($max_price !== null) {
+        $where[] = 'price &lt;= :max_price';
+        $parameters['max_price'] = $max_price;
+    }
+    if ($max_days !== null) {
+        $where[] = 'duration_days &lt;= :max_days';
+        $parameters['max_days'] = $max_days;
     }
 
-    $message = match ($file['error']) {
-        UPLOAD_ERR_OK                             =&gt; null,
-        UPLOAD_ERR_NO_FILE                        =&gt; 'Please choose a file.',
-        UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE =&gt; 'The file is too large (2 MB max).',
-        UPLOAD_ERR_PARTIAL                        =&gt; 'The upload was interrupted. Please try again.',
-        default                                   =&gt; 'The server could not receive the file.',
-    };
-    if ($message !== null) {
-        throw new RuntimeException($message);
-    }
-
-    if ($file['size'] &gt; MAX_UPLOAD_SIZE) {
-        throw new RuntimeException('The file is too large (2 MB max).');
-    }
-
-    // Real type, detected from the content of the file (not from its name or from the browser)
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mime = $finfo-&gt;file($file['tmp_name']);
-    if ($mime === false || !array_key_exists($mime, ALLOWED_IMAGE_TYPES)) {
-        throw new RuntimeException('Only JPEG, PNG and WebP images are allowed.');
-    }
-
-    // Random name: no overwriting, no guessing, no "../" or ".php" coming from the user
-    $newName = bin2hex(random_bytes(16)) . '.' . ALLOWED_IMAGE_TYPES[$mime];
-
-    if (!is_dir(UPLOAD_DIR) &amp;&amp; !mkdir(UPLOAD_DIR, 0755, true)) {
-        throw new RuntimeException('The server could not save the file.');
-    }
-    // move_uploaded_file() also checks that tmp_name really is a file uploaded by this request
-    if (!move_uploaded_file($file['tmp_name'], UPLOAD_DIR . $newName)) {
-        throw new RuntimeException('The server could not save the file.');
-    }
-
-    return $newName;
+    $statement = db()-&gt;prepare('SELECT * FROM trips WHERE ' . implode(' AND ', $where) . ' ORDER BY ' . $order);
+    $statement-&gt;execute($parameters);
+    return $statement-&gt;fetchAll();
 }
         </pre>
       </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Each value of the URL is compared with the list of the choices of its <code>&lt;select&gt;</code>; an unknown value (<code>?sort=DROP</code>) is simply ignored.</li><li>The conditions are added to the SQL only when the visitor chose them, and their values go through placeholders as always.</li><li><strong><code>ORDER BY</code> cannot use a placeholder</strong> (it expects a column, not a value): the column is taken from a fixed array in the code, never from the URL.</li><li>The selected options are kept (<code>selected</code>): a GET form is sticky too.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">VII. Step 6: upload the photos of the trips</h2>
+      <div class="Definitions">
+        <p>
+          In the admin area, the photo of a trip can now be uploaded. A form that sends files needs <code>method="post"</code> and <code>enctype="multipart/form-data"</code>; PHP then describes each file in <code>$_FILES</code>:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+$_FILES['image_file'] = [
+    'name'     =&gt; 'my photo.jpg',          // chosen by the visitor: never trust it
+    'type'     =&gt; 'image/jpeg',            // sent by the browser: never trust it either
+    'tmp_name' =&gt; 'C:\xampp\tmp\php1A2B.tmp',  // where PHP stored the file temporarily
+    'error'    =&gt; 0,                       // UPLOAD_ERR_OK, or one of the error codes below
+    'size'     =&gt; 184320,                  // in bytes
+];
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Error code</th><th>Meaning</th></tr><tr><td><code>UPLOAD_ERR_OK</code> (0)</td><td>the file was received</td></tr><tr><td><code>UPLOAD_ERR_INI_SIZE</code> (1)</td><td>larger than <code>upload_max_filesize</code> of <code>php.ini</code></td></tr><tr><td><code>UPLOAD_ERR_FORM_SIZE</code> (2)</td><td>larger than the <code>MAX_FILE_SIZE</code> field of the form</td></tr><tr><td><code>UPLOAD_ERR_PARTIAL</code> (3)</td><td>only part of the file was received</td></tr><tr><td><code>UPLOAD_ERR_NO_FILE</code> (4)</td><td>no file was chosen</td></tr></table>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/upload.php</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
-// upload_avatar.php (processing part)
-declare(strict_types=1);
+// Secure upload of the photos of the trips (Lab 6).
 
-require_once __DIR__ . '/includes/upload.php';
+const UPLOAD_FOLDER = 'uploads/trips/';     // relative to SRC/Labs/Lab_6
+const UPLOAD_MAX_BYTES = 2 * 1024 * 1024;   // 2 MB
+const UPLOAD_TYPES = ['image/jpeg' =&gt; 'jpg', 'image/png' =&gt; 'png', 'image/webp' =&gt; 'webp'];
 
+/**
+ * Checks and stores one uploaded image.
+ * Returns [path, error]: [null, null] when no file was chosen, [null, 'message'] when the file is refused,
+ * ['uploads/trips/xxx.jpg', null] when it was saved.
+ */
+function store_uploaded_image(?array $file): array
+{
+    if ($file === null || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return [null, null];
+    }
+
+    // 1. did the upload itself work?
+    $error = match ($file['error']) {
+        UPLOAD_ERR_OK =&gt; null,
+        UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE =&gt; 'الصورة كبيرة جداً (2 ميغابايت على الأكثر).',
+        UPLOAD_ERR_PARTIAL =&gt; 'لم يكتمل رفع الصورة، أعيدوا المحاولة.',
+        default =&gt; 'تعذر رفع الصورة.',
+    };
+    if ($error !== null) {
+        return [null, $error];
+    }
+
+    // 2. the size, checked by the server (MAX_FILE_SIZE in the form is only a hint for the browser)
+    if ($file['size'] &gt; UPLOAD_MAX_BYTES) {
+        return [null, 'الصورة كبيرة جداً (2 ميغابايت على الأكثر).'];
+    }
+
+    // 3. the real type, read from the content of the file: the name and the type sent by the browser can lie
+    $type = (new finfo(FILEINFO_MIME_TYPE))-&gt;file($file['tmp_name']);
+    if (!isset(UPLOAD_TYPES[$type]) || getimagesize($file['tmp_name']) === false) {
+        return [null, 'يجب أن تكون الصورة من نوع JPEG أو PNG أو WebP.'];
+    }
+
+    // 4. a new random name: never keep the name chosen by the visitor (../../index.php, photo.php.jpg...)
+    $name = bin2hex(random_bytes(16)) . '.' . UPLOAD_TYPES[$type];
+    $path = UPLOAD_FOLDER . $name;
+    if (!move_uploaded_file($file['tmp_name'], __DIR__ . '/../' . $path)) {
+        return [null, 'تعذر حفظ الصورة.'];
+    }
+    return [$path, null];
+}
+
+/** Deletes an uploaded image (the photos of SRC/IMAGES are never deleted). */
+function delete_uploaded_image(string $path): void
+{
+    if (str_starts_with($path, UPLOAD_FOLDER) &amp;&amp; basename($path) === substr($path, strlen(UPLOAD_FOLDER))) {
+        $file = __DIR__ . '/../' . $path;
+        if (is_file($file)) {
+            unlink($file);
+        }
+    }
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          An uploaded file is the most dangerous input of a website: if a visitor manages to upload <code>shell.php</code> and to open it, they run their code on your server. Every check matters:<ol><li>the error code and the size are checked by the server (<code>MAX_FILE_SIZE</code> in the form is only a hint for the browser);</li><li>the <strong>real type</strong> is read from the content of the file with <code>finfo</code>, and <code>getimagesize</code> confirms that it is an image; the name and the type sent by the browser can lie (<code>photo.php.jpg</code>);</li><li>the file gets a <strong>random name</strong> with the extension of its real type: the name of the visitor (<code>../../index.php</code>) is never used;</li><li><code>move_uploaded_file</code> only moves files that really come from an upload;</li><li>the folder refuses to run scripts, as a last protection:</li></ol>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> uploads/trips/.htaccess</p>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# Folder of the uploaded photos: files here must never be run as code.
+&lt;FilesMatch "\.(php|phtml|phar|php\d|pl|py|cgi|sh)$"&gt;
+    Require all denied
+&lt;/FilesMatch&gt;
+
+# PHP as an Apache module (XAMPP): switch PHP off in this folder
+&lt;IfModule mod_php.c&gt;
+    php_flag engine off
+&lt;/IfModule&gt;
+
+# no list of the files when the folder itself is requested
+Options -Indexes
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> uploads/trips/.gitignore</p>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# the uploaded photos stay on the server: only these two files are kept in Git
+*
+!.htaccess
+!.gitignore
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The form of the trips uses the module, and shows its errors under the fields like the public forms:
+        </p>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_6/Admin_Trip_Errors.png" alt="Admin form of a trip with errors" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/trip_form.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Creates a trip (trip_form.php) or edits one (trip_form.php?id=3).
+// The photo is chosen among the photos of the demo, or uploaded (Lab 6).
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+require __DIR__ . '/../includes/validation.php';
+require __DIR__ . '/../includes/upload.php';
+
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT) ?: null;
+$trip = ['title' =&gt; '', 'description' =&gt; '', 'image' =&gt; '', 'price' =&gt; '', 'duration_days' =&gt; '1', 'is_published' =&gt; 1];
+
+if ($id !== null) {
+    $trip = get_trip($id);
+    if ($trip === null) {
+        redirect('trips.php?status=not_found');
+    }
+}
+
+// the photos of SRC/IMAGES that can be chosen in the list
+$images = array_map(
+    fn ($path) =&gt; substr($path, strlen(__DIR__ . '/../' . IMAGES_URL)),
+    array_merge(glob(__DIR__ . '/../' . IMAGES_URL . 'Lab_2/*.jpg'), glob(__DIR__ . '/../' . IMAGES_URL . '*.jpg'))
+);
+// an uploaded photo of this trip stays a valid choice
+if (str_starts_with($trip['image'], 'uploads/')) {
+    array_unshift($images, $trip['image']);
+}
+
+$rules = [
+    'title' =&gt; ['required', 'max:100'],
+    'description' =&gt; ['required', 'min:20'],
+    'price' =&gt; ['required', 'int:0,'],
+    'duration_days' =&gt; ['required', 'int:1,30'],
+];
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $avatar = storeUploadedImage($_FILES['avatar'] ?? []);
-        // Save $avatar (the file name only, not the full path) in the database with PDO,
-        // e.g. UPDATE users SET avatar = :avatar WHERE id = :id, then redirect (PRG).
-        header('Location: upload_avatar.php?uploaded=1', true, 303);
-        exit;
-    } catch (RuntimeException $e) {
-        $errors['avatar'] = $e-&gt;getMessage();   // displayed next to the field with field_error()
+    $old_image = $trip['image'];
+    foreach (array_keys($rules) as $field) {
+        $trip[$field] = input($field);
     }
+    $trip['is_published'] = isset($_POST['is_published']) ? 1 : 0;   // an unchecked checkbox is not sent at all
+    $errors = validate($trip, $rules);
+
+    // the photo: an uploaded file wins over the list
+    [$uploaded, $upload_error] = store_uploaded_image($_FILES['image_file'] ?? null);
+    if ($upload_error !== null) {
+        $errors['image'] = $upload_error;
+    } elseif ($uploaded !== null) {
+        $trip['image'] = $uploaded;
+    } else {
+        $trip['image'] = input('image');
+        if (!in_array($trip['image'], $images, true)) {
+            $errors['image'] = 'اختاروا صورة من القائمة أو ارفعوا صورة.';
+        }
+    }
+
+    if (!$errors) {
+        $trip['price'] = (int) $trip['price'];
+        $trip['duration_days'] = (int) $trip['duration_days'];
+        if ($id === null) {
+            create_trip($trip);
+        } else {
+            update_trip($id, $trip);
+        }
+        // the previous uploaded photo is not used any more
+        if ($old_image !== $trip['image']) {
+            delete_uploaded_image($old_image);
+        }
+        redirect('trips.php?status=' . ($id === null ? 'created' : 'updated'));
+    }
+
+    // the form is shown again: a photo uploaded with other errors is not kept
+    if ($uploaded !== null) {
+        delete_uploaded_image($uploaded);
+        $trip['image'] = $old_image;
+    }
+    http_response_code(422);
 }
+
+$page_title = $id === null ? 'إضافة رحلة' : 'تعديل رحلة';
+$active = 'trips';
+require __DIR__ . '/header.php';
+?&gt;
+        &lt;?php if ($errors): ?&gt;
+        &lt;p class="Flash Flash_Error"&gt;صححوا الحقول المشار إليها (&lt;?= count($errors) ?&gt;).&lt;/p&gt;
+        &lt;?php endif; ?&gt;
+        &lt;!-- enctype="multipart/form-data" is required to send files --&gt;
+        &lt;form method="post" enctype="multipart/form-data" class="Admin_Form"&gt;
+            &lt;label for="Title"&gt;العنوان&lt;/label&gt;
+            &lt;input type="text" id="Title" name="title" value="&lt;?= e($trip['title']) ?&gt;" maxlength="100"
+                required&lt;?= invalid_attributes($errors, 'title', 'Title') ?&gt; /&gt;
+            &lt;?= field_error($errors, 'title', 'Title') ?&gt;
+
+            &lt;label for="Description"&gt;الوصف&lt;/label&gt;
+            &lt;textarea id="Description" name="description" rows="6"
+                required&lt;?= invalid_attributes($errors, 'description', 'Description') ?&gt;&gt;&lt;?= e($trip['description']) ?&gt;&lt;/textarea&gt;
+            &lt;?= field_error($errors, 'description', 'Description') ?&gt;
+
+            &lt;label for="Image"&gt;الصورة&lt;/label&gt;
+            &lt;div class="Image_Choice"&gt;
+                &lt;?php if ($trip['image'] !== ''): ?&gt;
+                &lt;img src="&lt;?= e(image_url($trip['image'], '../')) ?&gt;" alt="" class="Thumbnail" /&gt;
+                &lt;?php endif; ?&gt;
+                &lt;div&gt;
+                    &lt;select id="Image" name="image"&lt;?= invalid_attributes($errors, 'image', 'Image') ?&gt;&gt;
+                        &lt;option value=""&gt;اختر صورة&lt;/option&gt;
+                        &lt;?php foreach ($images as $image): ?&gt;
+                        &lt;option value="&lt;?= e($image) ?&gt;" &lt;?= $image === $trip['image'] ? 'selected' : '' ?&gt;&gt;&lt;?= e($image) ?&gt;&lt;/option&gt;
+                        &lt;?php endforeach; ?&gt;
+                    &lt;/select&gt;
+                    &lt;label for="Image_File" class="Small_Label"&gt;أو ارفعوا صورة (JPEG أو PNG أو WebP، 2 ميغابايت على الأكثر)&lt;/label&gt;
+                    &lt;input type="hidden" name="MAX_FILE_SIZE" value="&lt;?= UPLOAD_MAX_BYTES ?&gt;" /&gt;
+                    &lt;input type="file" id="Image_File" name="image_file" accept="image/jpeg,image/png,image/webp" /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;?= field_error($errors, 'image', 'Image') ?&gt;
+
+            &lt;div class="Row"&gt;
+                &lt;div&gt;
+                    &lt;label for="Price"&gt;السعر للشخص (دج)&lt;/label&gt;
+                    &lt;input type="number" id="Price" name="price" value="&lt;?= e((string) $trip['price']) ?&gt;" min="0" step="500"
+                        required&lt;?= invalid_attributes($errors, 'price', 'Price') ?&gt; /&gt;
+                    &lt;?= field_error($errors, 'price', 'Price') ?&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for="Duration"&gt;المدة (أيام)&lt;/label&gt;
+                    &lt;input type="number" id="Duration" name="duration_days" value="&lt;?= e((string) $trip['duration_days']) ?&gt;" min="1" max="30"
+                        required&lt;?= invalid_attributes($errors, 'duration_days', 'Duration') ?&gt; /&gt;
+                    &lt;?= field_error($errors, 'duration_days', 'Duration') ?&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;label class="Checkbox"&gt;
+                &lt;input type="checkbox" name="is_published" &lt;?= $trip['is_published'] ? 'checked' : '' ?&gt; /&gt;
+                منشورة على الموقع
+            &lt;/label&gt;
+
+            &lt;div class="Row"&gt;
+                &lt;button type="submit" class="Button"&gt;&lt;i class="fa-solid fa-floppy-disk"&gt;&lt;/i&gt; حفظ&lt;/button&gt;
+                &lt;a href="trips.php" class="Button Secondary"&gt;إلغاء&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+&lt;?php require __DIR__ . '/footer.php'; ?&gt;
         </pre>
       </div>
       <div class="Definitions">
-        <p>Finally, make sure a file placed in the upload folder can never be executed as PHP. The best solution is
-          a folder outside <code>htdocs</code>, served through a PHP script. If the folder must stay inside your
-          project, add this <code>.htaccess</code> file in it (Apache, as in XAMPP):</p>
+        <div>
+          <ul><li>An uploaded photo is only kept when the whole form is valid: otherwise it is deleted, and the form asks for it again (a file input can never be pre-filled).</li><li>When a trip changes its photo, or is deleted (<a href="SRC/Labs/Lab_6/admin/trip_delete.php" target="_blank" rel="noopener">admin/trip_delete.php</a>), its old uploaded photo is deleted: no orphan files.</li><li><code>image_url()</code> finds the uploaded photos in <code>uploads/</code> and the photos of the demo in <code>SRC/IMAGES</code>.</li></ul>
+        </div>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint">
-# uploads/.htaccess : refuse to serve or run scripts from this folder
-&lt;FilesMatch "\.(php|phtml|phar|php[0-9])$"&gt;
-    Require all denied
-&lt;/FilesMatch&gt;
-Options -ExecCGI -Indexes
+; C:\xampp\php\php.ini (restart Apache after a change)
+file_uploads = On
+upload_max_filesize = 2M     ; maximum size of one file
+post_max_size = 8M           ; maximum size of the whole request (all fields + files)
         </pre>
       </div>
-      <div class="Note"><strong>Watch out:</strong> if the whole request is bigger than <code>post_max_size</code>
-        (php.ini), PHP silently empties both <code>$_POST</code> and
-        <code>$_FILES</code>. Your code then sees a POST request with no fields: treat it as an error, do not crash.
-        See also the "Filesystem Security" part of the <a href="Security.html">Security</a> lecture.</div>
+      <div class="Note"><strong>Tip:</strong> if an upload &quot;does nothing&quot;, check <code>post_max_size</code>: when the request is bigger, PHP empties <code>$_POST</code> and <code>$_FILES</code> completely.</div>
+    </section>
+    <section id="Testing">
+      <h2 class="Section_Title">VIII. Step 7: test your validation like an attacker</h2>
+      <div class="Definitions">
+        <div>
+          A validation is only as good as its tests. For every form, try:<table><tr><th>Test</th><th>How</th><th>Expected</th></tr><tr><td>Browser checks removed</td><td>developer tools: delete <code>required</code>, <code>maxlength</code>, <code>type="email"</code>, then send</td><td>the server shows the errors</td></tr><tr><td>Empty and spaces only</td><td>type only spaces</td><td>&quot;mandatory&quot; (<code>trim</code>)</td></tr><tr><td>Too long</td><td>paste 1000 characters</td><td>the <code>max:</code> message</td></tr><tr><td>Wrong choice</td><td>change the value of an <code>&lt;option&gt;</code> in the developer tools</td><td>the <code>in:</code> message</td></tr><tr><td>Impossible values</td><td><code>people=0</code>, <code>-5</code>, <code>2.5</code>, <code>abc</code>; date <code>2025-02-31</code></td><td>refused</td></tr><tr><td>HTML in a field</td><td><code>&lt;b&gt;test&lt;/b&gt;</code> in the name</td><td>shown as text, everywhere</td></tr><tr><td>Sending again</td><td>reload the page after a successful form</td><td>nothing is saved twice (PRG)</td></tr><tr><td>Without JavaScript</td><td>disable JavaScript and book a trip</td><td>the booking page works</td></tr><tr><td>Fake image</td><td>rename a <code>.txt</code> or <code>.php</code> file to <code>.jpg</code> and upload it</td><td>refused</td></tr><tr><td>Request without a browser</td><td>the <code>curl</code> command of Section I</td><td>status 422 and the errors</td></tr></table>
+        </div>
+      </div>
     </section>
     <section id="Your_Turn">
-      <h2 class="Section_Title">VII. Your turn</h2>
+      <h2 class="Section_Title">IX. Your turn</h2>
       <div class="Definitions">
-        <ol>
-          <li>Create the <code>users</code> table, assemble the four parts of <code>register.php</code> in the order
-            1, 2, 3, 4 (part 3 goes at the end of the <code>if</code> block of part 2), and test it in the browser.
-          </li>
-          <li>Try to break it: leave fields empty, type spaces only, an age of <code>abc</code>, <code>15</code> and
-            <code>200</code>, a phone number with 9 digits, the same email twice, and
-            <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> as a name. Check that every error is shown next to the
-            right field and that the other values stay in the form.</li>
-          <li>Remove the <code>&lt;option&gt;</code> elements with the developer tools (F12) and add your own
-            <code>&lt;option value="admin"&gt;</code>. Submit: the whitelist must reject it.</li>
-          <li>Create an account successfully, then press F5 on the confirmation page: no second account must be
-            created (check in phpMyAdmin).</li>
-          <li>Add an optional profile picture to the registration form (<code>enctype</code> and file input). If the
-            error code is <code>UPLOAD_ERR_NO_FILE</code>, accept the form without picture; otherwise use
-            <code>storeUploadedImage()</code> and save the file name in the <code>avatar</code> column. Only move
-            the file when all the other fields are valid.</li>
-          <li>Test the upload with a 5 MB image, a PDF, and a text file renamed <code>photo.jpg</code>: all three
-            must be rejected.</li>
-          <li>Now apply the same approach to <strong>every form of your project</strong>: list each field with its
-            rules (required, type, length, format, allowed values), write the validation in PHP, and display the
-            errors with sticky values. Keep your JavaScript validation from Lab 4 with the same rules.</li>
-          <li>Use PRG after every successful POST, and use the PDO functions written in Lab 5 to save the data.</li>
-          <li>Commit and push your work to your team repository.</li>
-        </ol>
+        <div>
+          Validate every form of your team project on the server:<ol><li>Copy <code>includes/validation.php</code> (or write your own) and describe the rules of each form in an array. Use the same rules as your JavaScript of Lab 4.</li><li>For each form: initial values, validation, save + redirect on success, 422 + sticky form with an error under each field on failure. Escape every value put back in a field.</li><li>Check every value that comes from a list (<code>&lt;select&gt;</code>, radio buttons, ids in the URL) against the list of allowed values.</li><li>Add at least one search or filter form with GET to one of your lists.</li><li>If your project uploads files, apply the checks of Step 6 and protect the upload folder.</li><li>Run the tests of Section VIII on every form.</li></ol>
+        </div>
       </div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>Every form of your project validated on the server (required fields, types, lengths, formats,
-          whitelists), even with JavaScript disabled.</li>
-        <li>Errors collected in an array and displayed next to each field; the form keeps the user's values
-          (except passwords).</li>
-        <li>Every value printed in HTML escaped with <code>htmlspecialchars()</code>.</li>
-        <li><code>POST</code> used for every action that changes data, followed by a Post/Redirect/Get redirect on
-          success.</li>
-        <li>Validated data saved with PDO prepared statements; passwords stored with
-          <code>password_hash()</code>.</li>
-        <li>If your project has uploads: error code, size and real MIME type checked, random file names,
-          <code>move_uploaded_file()</code>, and no script execution in the upload folder.</li>
-        <li>Work pushed to your team repository.</li>
+        <li>Every form of the project is validated on the server, whatever the browser sends.</li>
+        <li>Errors are shown next to their field, and the values typed are kept (and escaped).</li>
+        <li>Forms that change data use POST and redirect after success; search forms use GET.</li>
+        <li>Uploaded files (if any) are checked by content, renamed, and stored in a protected folder.</li>
+        <li>This lab counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
       </ul>
     </section>
   </main>

@@ -405,7 +405,7 @@ curl -i -X DELETE http://localhost/shop/api.php?id=3</pre>
       </div>
       <h3 class="Sub_Section_Title">GET: reading the list</h3>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
+        <pre class="prettyprint lang-js" data-live="off">
 async function loadProducts() {
     const response = await fetch('api.php');      // 1. send the request, wait for the headers
     if (!response.ok) {                             // 2. ok is true for status 200-299
@@ -424,7 +424,7 @@ loadProducts()
       </div>
       <h3 class="Sub_Section_Title">A small reusable helper for all the verbs</h3>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
+        <pre class="prettyprint lang-js" data-live="off">
 const API_URL = 'api.php';
 
 // Sends a request to the API and returns the decoded JSON (or null for 204)
@@ -462,7 +462,7 @@ const deleteProduct = (id) =&gt;
 &lt;ul id="product-list"&gt;&lt;/ul&gt;</pre>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
+        <pre class="prettyprint lang-js" data-live="off">
 const form = document.querySelector('#product-form');
 const list = document.querySelector('#product-list');
 const message = document.querySelector('#message');
@@ -573,6 +573,9 @@ showProducts();</pre>
         <h2 class="Code_Tag">JavaScript</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-js">
+const button = document.getElementById('Weather_Btn');
+const output = document.getElementById('Weather_Output');
+
 const url = 'https://api.open-meteo.com/v1/forecast'
     + '?latitude=36.75&amp;longitude=3.06'
     + '&amp;current=temperature_2m,wind_speed_10m'
@@ -1090,35 +1093,6 @@ server.listen(3000, () =&gt; console.log('Server running on http://localhost:300
   <script src="SRC/JS/Script.js" type="module"></script>
   <script
     src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
-  <script type="module">
-    // Live demo of section IV: current weather in Algiers from Open-Meteo
-    const button = document.getElementById('Weather_Btn');
-    const output = document.getElementById('Weather_Output');
-    const url = 'https://api.open-meteo.com/v1/forecast'
-      + '?latitude=36.75&longitude=3.06'
-      + '&current=temperature_2m,wind_speed_10m'
-      + '&timezone=Africa%2FAlgiers';
-
-    async function showAlgiersWeather() {
-      output.textContent = 'Loading...';
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-        const data = await response.json();
-        const { current, current_units: units } = data;
-        output.textContent =
-          `Algiers, ${current.time.replace('T', ' ')}: ` +
-          `${current.temperature_2m} ${units.temperature_2m}, ` +
-          `wind ${current.wind_speed_10m} ${units.wind_speed_10m}`;
-      } catch (error) {
-        output.textContent = `Could not load the weather: ${error.message}`;
-      }
-    }
-
-    button.addEventListener('click', showAlgiersWeather);
-  </script>
 </body>
 
 </html>

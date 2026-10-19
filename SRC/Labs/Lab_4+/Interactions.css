@@ -258,6 +258,12 @@
   cursor: pointer;
 }
 
+/* the same look for the link written by the server (Lab 6) */
+a.Book_Btn {
+  text-align: center;
+  text-decoration: none;
+}
+
 .Book_Btn:hover {
   background-image: linear-gradient(to left, #79fad5, #027b92);
 }

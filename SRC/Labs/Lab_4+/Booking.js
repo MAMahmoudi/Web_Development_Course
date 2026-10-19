@@ -71,14 +71,22 @@
     Form.querySelector("#Booking_Name").focus();
   }
 
-  // a "book now" button at the bottom of each trip card
+  // a "book now" button at the bottom of each trip card.
+  // From Lab 6, the server writes a link to the booking page (it works without JavaScript):
+  // with JavaScript, the same link opens the dialog instead.
   document.querySelectorAll(".Trip_Card").forEach((Card) => {
-    const Button = document.createElement("button");
-    Button.type = "button";
-    Button.className = "Book_Btn";
-    Button.innerHTML = '<i class="fa-solid fa-calendar-check"></i> احجز الآن';
-    Button.addEventListener("click", () => Open(Card.querySelector("h4").textContent.trim()));
-    Card.appendChild(Button);
+    let Button = Card.querySelector(".Book_Btn");
+    if (!Button) {
+      Button = document.createElement("button");
+      Button.type = "button";
+      Button.className = "Book_Btn";
+      Button.innerHTML = '<i class="fa-solid fa-calendar-check"></i> احجز الآن';
+      Card.appendChild(Button);
+    }
+    Button.addEventListener("click", (event) => {
+      event.preventDefault();
+      Open(Card.querySelector("h4").textContent.trim());
+    });
   });
 
   Form.querySelector("#Booking_Cancel").addEventListener("click", () => Dialog.close());

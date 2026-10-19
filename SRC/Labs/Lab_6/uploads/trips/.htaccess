@@ -1,0 +1,12 @@
+# Folder of the uploaded photos: files here must never be run as code.
+<FilesMatch "\.(php|phtml|phar|php\d|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>
+
+# PHP as an Apache module (XAMPP): switch PHP off in this folder
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# no list of the files when the folder itself is requested
+Options -Indexes

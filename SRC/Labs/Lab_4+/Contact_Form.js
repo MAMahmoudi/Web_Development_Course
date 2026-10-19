@@ -21,13 +21,16 @@
   // our own messages replace the browser's bubbles
   Form.noValidate = true;
 
-  // an empty message element after each field
+  // a message element after each field; the server (Lab 6) may already have written one: reuse it
   Rules.forEach(([Field]) => {
-    const Error = document.createElement("small");
-    Error.className = "Field_Error";
+    let Error = Field.nextElementSibling;
+    if (!Error || !Error.classList.contains("Field_Error")) {
+      Error = document.createElement("small");
+      Error.className = "Field_Error";
+      Field.after(Error);
+    }
     Error.id = Field.id + "_Error";
     Error.setAttribute("aria-live", "polite");
-    Field.after(Error);
     Field.setAttribute("aria-describedby", Error.id);
   });
 

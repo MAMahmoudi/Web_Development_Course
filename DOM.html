@@ -46,8 +46,16 @@
       let My_DIV = document.getElementById("DIV_ID"); <br><br>
       let My_Input = document.getElementsByName("Input_Name"); <br><br>
       let The_H1 = document.getElementsByTagName("h1"); <br><br>
-      let Btn = document.getElementsByClassName("Btn_Class"); 
+      let Btn = document.getElementsByClassName("Btn_Class"); <br><br>
+      console.log(My_DIV, My_Input, The_H1, Btn);
     </pre>
+    <template data-live-html>
+      <h1>The Document Object Model</h1>
+      <div id="DIV_ID">A div with id="DIV_ID"</div>
+      <input name="Input_Name" value="An input with name=&quot;Input_Name&quot;">
+      <button class="Btn_Class">Button 1</button>
+      <button class="Btn_Class">Button 2</button>
+    </template>
       <div class="Definitions">
         <p>
           <font color="red">These selection methods that are more or less obsolete now.</font>
@@ -75,8 +83,16 @@
         let MY_DIV = document.querySelector("#DIV_ID") <br><br>
         let Input_Name = document.querySelectorAll('*[name="Input_Name"]'); <br><br>
         let The_H1 = document.querySelectorAll("h1") <br><br>
-        let Btn = document.querySelectorAll(".Btn_Class")
+        let Btn = document.querySelectorAll(".Btn_Class") <br><br>
+        console.log(MY_DIV, Input_Name, The_H1, Btn);
         </pre>
+        <template data-live-html>
+          <h1>The Document Object Model</h1>
+          <div id="DIV_ID">A div with id="DIV_ID"</div>
+          <input name="Input_Name" value="An input with name=&quot;Input_Name&quot;">
+          <button class="Btn_Class">Button 1</button>
+          <button class="Btn_Class">Button 2</button>
+        </template>
       <div class="Definitions">
         <p>
           <font color="red">Unlike querySelectorAll(), however, the NodeLists returned by these older selection methods
@@ -112,7 +128,8 @@
         </ul>
         <pre class="prettyprint lang-js">
           let MY_ELEMENT  = document.children[0].children[1] <br><br>
-          let MY_OTHER_ELEMENT  = document.firstElementChild.firstElementChild.nextElementSibling
+          let MY_OTHER_ELEMENT  = document.firstElementChild.firstElementChild.nextElementSibling <br><br>
+          console.log(MY_ELEMENT, MY_OTHER_ELEMENT); // both are the &lt;body&gt;
         </pre>
       </div>
       <div class="Definitions">
@@ -136,8 +153,11 @@
           <li>nodeName: The HTML tag name of an Element, converted to uppercase.</li>
         </ul>
         <pre class="prettyprint lang-js">
-          let MY_ELEMENT  = document.childNodes[0].childNodes[1] <br><br>
-          let MY_ELEMENT2  = document.firstChild.firstChild.nextSibling</pre><br><br>
+          // childNodes also contains the doctype, the comments and the text (spaces, new lines) between the tags
+          console.log(document.childNodes);                   // [&lt;!DOCTYPE html&gt;, &lt;html&gt;] <br><br>
+          let MY_ELEMENT  = document.childNodes[1].childNodes[1] <br><br>
+          let MY_ELEMENT2  = document.lastChild.firstChild.nextSibling <br><br>
+          console.log(MY_ELEMENT, MY_ELEMENT2);               // a text node: the new line after &lt;/head&gt;</pre><br><br>
         Then the second child of the first child is the &lt;body&gt; element. It has a nodeType of 1 and a nodeName of
         “BODY”.
       </div>
@@ -189,10 +209,14 @@
         &lt;div id="Section1" data-section-number="1"&gt;...&lt;/div&gt;
       </pre>
       <pre class="prettyprint lang-js">
+        let element = document.getElementById("Section1");
         let sectionNumber = element.dataset.sectionNumber;
         console.log(sectionNumber);
 
       </pre>
+      <template data-live-html>
+        <div id="Section1" data-section-number="1">Section 1</div>
+      </template>
       <h1 class="Section_Title">Element Content</h1>
       <div class="Definitions">
         <p>
@@ -246,10 +270,15 @@
           If you do want to make a copy of an element, use the cloneNode() method, passing
           true to copy all of its content: <br><br>
         <pre class="prettyprint lang-js">
-            let DIV = document.createElement("div"); 
-            let Parent_Div = document.getElementById("Parent_Div"); 
+            let DIV = document.createElement("div");
+            DIV.textContent = "A new div";
+            let Parent_Div = document.getElementById("Parent_Div");
             Parent_Div.after(DIV.cloneNode(true));
+            console.log(Parent_Div.nextElementSibling);
         </pre>
+            <template data-live-html>
+              <div id="Parent_Div" style="padding: 8px; border: 2px solid green">Parent_Div</div>
+            </template>
         You can remove an Element or Text node from the document by calling its remove()
         method, or you can replace it by calling replaceWith() instead. remove() takes no
         arguments, and replaceWith() takes any number of strings and elements just like

@@ -1,0 +1,202 @@
+/* Live demos (SRC/JS/Live_Demo.js): editor on the left, result on the right */
+
+.card.Live_Card,
+.Vertical_Demo.Live_Card {
+  display: block;
+  width: auto;
+  height: auto;
+  max-height: none;
+  margin: 3vh 4vw 6vh 4vw;
+}
+
+.Live_Demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  /* the same size everywhere, even inside a paragraph with a bigger font */
+  font-size: 16px;
+  line-height: normal;
+  text-align: left;
+}
+
+/* the display rules below must not show what the script hides */
+.Live_Demo [hidden] {
+  display: none !important;
+}
+
+.Live_Editor,
+.Live_Result {
+  min-width: 0;
+  overflow: hidden;
+  border: 3px solid green;
+  border-radius: 8px;
+  background-color: #212121;
+}
+
+.Live_Result {
+  background-color: white;
+}
+
+/* top bar: tabs and buttons */
+.Live_Bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  padding: 0 0.6rem;
+  background-color: #1e1e1e;
+  color: #f36619;
+  font-family: monospace;
+}
+
+.Live_Tabs {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.Live_Tab,
+.Live_Actions button {
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #bbb;
+  background: none;
+  cursor: pointer;
+}
+
+.Live_Tab.Active {
+  color: #f36619;
+  background-color: #333;
+}
+
+.Live_Tab:hover,
+.Live_Actions button:hover {
+  color: white;
+  background-color: #444;
+}
+
+.Live_Title {
+  font-weight: bold;
+}
+
+.Live_Status {
+  overflow: hidden;
+  font-size: 0.85rem;
+  color: #79fad5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Live_Status.Error {
+  color: #ff8a80;
+}
+
+/* editors */
+.Live_Panes .CodeMirror {
+  height: auto;
+  max-height: 70vh;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.Live_Panes .CodeMirror-scroll {
+  max-height: 70vh;
+}
+
+.Live_Textarea {
+  display: block;
+  width: 100%;
+  min-height: 14rem;
+  padding: 0.8rem;
+  border: none;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #eee;
+  background-color: #212121;
+  resize: vertical;
+  tab-size: 2;
+}
+
+/* result */
+.Live_Frame {
+  display: block;
+  width: 100%;
+  height: 160px;
+  border: none;
+  background-color: white;
+}
+
+/* --- JavaScript snippets with a console --- */
+.Live_Snippet {
+  margin: 3vh 4vw 4vh 4vw;
+}
+
+.Console_Mode .Live_Result {
+  background-color: #1b1b1b;
+}
+
+.Console_Bar {
+  border-top: 1px solid #333;
+}
+
+.Live_Console {
+  max-height: 320px;
+  min-height: 3rem;
+  margin: 0;
+  padding: 0.4rem 0;
+  overflow: auto;
+  list-style: none;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e0e0e0;
+  background-color: #1b1b1b;
+}
+
+.Live_Console li {
+  padding: 0.15rem 0.9rem;
+  border-bottom: 1px solid #2a2a2a;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.Live_Console .Log_info {
+  color: #82b1ff;
+}
+
+.Live_Console .Log_warn {
+  color: #ffd54f;
+  background-color: #332b00;
+}
+
+.Live_Console .Log_error {
+  color: #ff8a80;
+  background-color: #3a1212;
+}
+
+.Live_Console .Log_result {
+  color: #b9f6ca;
+}
+
+.Live_Console .Log_empty {
+  color: #888;
+  font-style: italic;
+}
+
+@media screen and (max-width: 850px) {
+  .Live_Demo {
+    grid-template-columns: 1fr;
+  }
+
+  .card.Live_Card,
+  .Vertical_Demo.Live_Card,
+  .Live_Snippet {
+    margin: 3vh 2vw 5vh 2vw;
+  }
+}

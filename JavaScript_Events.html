@@ -94,9 +94,11 @@ Properties_Result.appendChild(H1); <br>
                 <h2 class="Code_Tag">HTML</h2>
                 <div class="HTML_Code">
                     <pre class="prettyprint lang-js lang HTML">
-&lt;button onclick="Attributes_Result.appendChild(H2);"&gt;
+&lt;button onclick="Attributes_Result.innerHTML += '&lt;h2&gt;You clicked on Attributes&lt;/h2&gt;';"&gt;
 Attributes
 &lt;/button&gt;
+&lt;!-- an element with an id can be used by its name in the attribute --&gt;
+&lt;div id="Attributes_Result"&gt;&lt;/div&gt;
                     </pre>
                 </div>
                 <h2 class="Code_Tag">Result</h2>
@@ -335,6 +337,8 @@ Attributes.scrollIntoView(); <br>
                 <h2 class="Code_Tag">Result</h2>
                 <div class="Result_Demo" id="Scrolling_Result">
                     <button type="button" id="To_Attributes" class="Try_It_Btn">To Attributes</button>
+                    <div style="height: 900px"></div>
+                    <h3 id="Attributes">The element with id="Attributes"</h3>
                 </div>
             </div>
             <h1 class="Section_Title">5. Summary</h1>

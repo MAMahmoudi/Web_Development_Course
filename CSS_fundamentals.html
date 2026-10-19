@@ -381,206 +381,137 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Squares"&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;div&gt;
-          &lt;/div&gt;<br>
-          &lt;/div&gt;<br>
-          </pre>
+&lt;p&gt;:first-child&lt;/p&gt;
+&lt;div class="Boxes B1"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:last-child&lt;/p&gt;
+&lt;div class="Boxes B2"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:nth-child(2n)&lt;/p&gt;
+&lt;div class="Boxes B3"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:nth-child(n+3)&lt;/p&gt;
+&lt;div class="Boxes B4"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:nth-child(-n+2)&lt;/p&gt;
+&lt;div class="Boxes B5"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:nth-last-child(2)&lt;/p&gt;
+&lt;div class="Boxes B6"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:only-child&lt;/p&gt;
+&lt;div class="Boxes B7"&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Squares :first-child <br>
-          { <br>
-          background-color: #8c1515;<br>
-          }
+p {
+  margin: 10px 0 4px;
+  font-weight: bold;
+}
+.Boxes {
+  display: flex;
+  gap: 8px;
+}
+.Boxes i { /* each &lt;i&gt; is an empty square */
+  width: 30px;
+  height: 30px;
+  border: 3px solid #8c1515;
+}
+/* the squares targeted by each selector are filled */
+.B1 i:first-child { background-color: #8c1515; }
+.B2 i:last-child { background-color: #8c1515; }
+.B3 i:nth-child(2n) { background-color: #8c1515; }
+.B4 i:nth-child(n+3) { background-color: #8c1515; }
+.B5 i:nth-child(-n+2) { background-color: #8c1515; }
+.B6 i:nth-last-child(2) { background-color: #8c1515; }
+.B7 i:only-child { background-color: #8c1515; }
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Table_Div">
-            <div class="Row_Div">
-              <p>:first-child</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:last-child</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:nth-child(2n)</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:nth-child(n+2)</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:nth-child(-n+2)</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:nth-last-child(n+2)</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:nth-last-child(-n + 2)</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:only-child</p>
-              <div class="Squares">
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h3:first-of-type</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h3:last-of-type</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h5:only-of-type</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h1:nth-of-type(2)</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h3:nth-last-of-type(2)</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:not(h3)</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>h3:empty</p>
-              <div class="Squares">
-                <h1>H1</h1>
-                <h1>H1</h1>
-                <h3>H3</h3>
-                <h3>H3</h3>
-                <h3></h3>
-                <h5>H5</h5>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:hover</p>
-              <div class="Squares">
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-                <div class="Square"></div>
-              </div>
-            </div>
-            <div class="Row_Div">
-              <p>:focus</p>
-              <div class="Squares">
-                <label for="Input_1">1</label>
-                <input type="text" id="Input_1" class="Input"></input>
-                <label for="Input_2">2</label>
-                <input type="text" id="Input_2" class="Input"></input>
-                <label for="Input_3">3</label>
-                <input type="text" id="Input_3" class="Input"></input>
-              </div>
-            </div>
-          </div>
+          <p>:first-child</p>
+          <div class="Boxes B1"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:last-child</p>
+          <div class="Boxes B2"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:nth-child(2n)</p>
+          <div class="Boxes B3"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:nth-child(n+3)</p>
+          <div class="Boxes B4"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:nth-child(-n+2)</p>
+          <div class="Boxes B5"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:nth-last-child(2)</p>
+          <div class="Boxes B6"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:only-child</p>
+          <div class="Boxes B7"><i></i></div>
+        </div>
+      </div>
+      <div class="Vertical_Demo">
+        <h2 class="Code_Tag">HTML</h2>
+        <div class="HTML_Code">
+          <pre class="prettyprint lang-html">
+&lt;p&gt;h3:first-of-type&lt;/p&gt;
+&lt;div class="Tags T1"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;h3:last-of-type&lt;/p&gt;
+&lt;div class="Tags T2"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;h5:only-of-type&lt;/p&gt;
+&lt;div class="Tags T3"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;h1:nth-of-type(2)&lt;/p&gt;
+&lt;div class="Tags T4"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;:not(h3)&lt;/p&gt;
+&lt;div class="Tags T5"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;h3:empty&lt;/p&gt;
+&lt;div class="Tags T6"&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;H3&lt;/h3&gt;&lt;h3&gt;&lt;/h3&gt;&lt;h5&gt;H5&lt;/h5&gt;&lt;/div&gt;
+&lt;p&gt;:hover (move the mouse over the squares)&lt;/p&gt;
+&lt;div class="Tags Hover"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;p&gt;:focus (click in a field)&lt;/p&gt;
+&lt;div class="Tags Focus"&gt;&lt;input&gt;&lt;input&gt;&lt;input&gt;&lt;/div&gt;
+</pre>
+        </div>
+        <h2 class="Code_Tag">CSS</h2>
+        <div class="CSS_Code">
+          <pre class="prettyprint lang-css">
+p {
+  margin: 10px 0 4px;
+  font-weight: bold;
+}
+.Tags {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.Tags * {
+  margin: 0;
+  color: #aaa;
+}
+/* the elements targeted by each selector are red */
+.T1 h3:first-of-type { color: #8c1515; }
+.T2 h3:last-of-type { color: #8c1515; }
+.T3 h5:only-of-type { color: #8c1515; }
+.T4 h1:nth-of-type(2) { color: #8c1515; }
+.T5 &gt; :not(h3) { color: #8c1515; }
+.T6 h3:empty { width: 30px; height: 30px; background-color: #8c1515; }
+
+.Hover i { width: 30px; height: 30px; border: 3px solid #8c1515; }
+.Hover i:hover { background-color: #8c1515; }
+
+.Focus input { width: 90px; border: 2px solid #8c1515; }
+.Focus input:focus { background-color: #8c1515; color: #fff; }
+</pre>
+        </div>
+        <h2 class="Code_Tag">Result</h2>
+        <div class="Result_Demo">
+          <p>h3:first-of-type</p>
+          <div class="Tags T1"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3>H3</h3><h5>H5</h5></div>
+          <p>h3:last-of-type</p>
+          <div class="Tags T2"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3>H3</h3><h5>H5</h5></div>
+          <p>h5:only-of-type</p>
+          <div class="Tags T3"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3>H3</h3><h5>H5</h5></div>
+          <p>h1:nth-of-type(2)</p>
+          <div class="Tags T4"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3>H3</h3><h5>H5</h5></div>
+          <p>:not(h3)</p>
+          <div class="Tags T5"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3>H3</h3><h5>H5</h5></div>
+          <p>h3:empty</p>
+          <div class="Tags T6"><h1>H1</h1><h1>H1</h1><h3>H3</h3><h3>H3</h3><h3></h3><h5>H5</h5></div>
+          <p>:hover (move the mouse over the squares)</p>
+          <div class="Tags Hover"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>:focus (click in a field)</p>
+          <div class="Tags Focus"><input><input><input></div>
         </div>
       </div>
       <h3 class="Sub_Section_Title">4. Pseudo-element selectors</h3>
@@ -598,49 +529,83 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;h1&gt;
-          Nothing was there before.
-          &lt;/h1&gt;
-          </pre>
+&lt;p class="Label"&gt;::before&lt;/p&gt;
+&lt;h2 class="Add_Before"&gt;Nothing was there before.&lt;/h2&gt;
+
+&lt;p class="Label"&gt;::after&lt;/p&gt;
+&lt;h2 class="Add_After"&gt;Nothing was there after.&lt;/h2&gt;
+
+&lt;p class="Label"&gt;::first-letter&lt;/p&gt;
+&lt;h2 class="Big_Letter"&gt;The first letter was black.&lt;/h2&gt;
+
+&lt;p class="Label"&gt;::first-line&lt;/p&gt;
+&lt;p class="First_Line"&gt;
+  All the lines of this paragraph were black. We can change the styling
+  of the first line of a paragraph using the ::first-line pseudo-element.
+&lt;/p&gt;
+
+&lt;p class="Label"&gt;::selection&lt;/p&gt;
+&lt;p class="Highlight"&gt;
+  If you select a portion of this text, its background becomes yellow. Like a highlighter.
+&lt;/p&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          h1::before
-          { <br>
-          content: "Before";<br>
-          color: #8c1515;<br>
-          }
+.Label {
+  margin: 16px 0 4px;
+  font-weight: bold;
+  color: #777;
+}
+h2 {
+  margin: 0;
+}
+.Add_Before::before {
+  content: "Before ";
+  color: #8c1515;
+}
+.Add_After::after {
+  content: " After";
+  color: #8c1515;
+}
+.Big_Letter::first-letter {
+  color: #8c1515;
+  font-size: 2em;
+}
+.First_Line {
+  max-width: 500px;
+}
+.First_Line::first-line {
+  color: #8c1515;
+  font-weight: bold;
+}
+.Highlight::selection {
+  background-color: yellow;
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Table_Div">
-            <div class="Row_Div">
-              <p>::before</p>
-              <h1>Nothing was there before.</h1>
-            </div>
-            <div class="Row_Div">
-              <p>::after</p>
-              <h1>Nothing was there after.</h1>
-            </div>
-            <div class="Row_Div">
-              <p>::first-letter</p>
-              <h1>The first letter was black.</h1>
-            </div>
-            <div class="Row_Div">
-              <p>::first-line</p>
-              <h3>
-                All the lines of this paragraph were black. We can change the styling of the first line of a paragraph
-                using the ::first-line pseudo-element.
-              </h3>
-            </div>
-            <div class="Row_Div">
-              <p>::selection</p>
-              <h3>
-                If you select a portion of the text, its background will be changed to yellow. Like a highlighter.
-              </h3>
-            </div>
-          </div>
+          <p class="Label">::before</p>
+          <h2 class="Add_Before">Nothing was there before.</h2>
+
+          <p class="Label">::after</p>
+          <h2 class="Add_After">Nothing was there after.</h2>
+
+          <p class="Label">::first-letter</p>
+          <h2 class="Big_Letter">The first letter was black.</h2>
+
+          <p class="Label">::first-line</p>
+          <p class="First_Line">
+            All the lines of this paragraph were black. We can change the styling
+            of the first line of a paragraph using the ::first-line pseudo-element.
+          </p>
+
+          <p class="Label">::selection</p>
+          <p class="Highlight">
+            If you select a portion of this text, its background becomes yellow. Like a highlighter.
+          </p>
         </div>
       </div>
     </section>
@@ -700,113 +665,55 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;p class="My_Font_1"&gt;<br>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-          repellat ullam repudiandae
-          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-          maiores.
-          <br>
-          &lt;/p&gt;<br>
-          &lt;p class="My_Font_2"&gt;
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-          repellat ullam repudiandae
-          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-          maiores.
-          &lt;/p&gt;<br>
-          &lt;p class="My_Font_3"&gt;<br>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-          repellat ullam repudiandae
-          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-          maiores.
-          <br>
-          &lt;/p&gt;<br>
-          &lt;p class="My_Font_4"&gt;<br>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-          repellat ullam repudiandae
-          quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-          maiores.
-          <br>
-          &lt;/p&gt;
-          </pre>
+&lt;p class="Sport_Font"&gt;This paragraph uses the "Sport_Center" web font.&lt;/p&gt;
+&lt;p class="College_Font"&gt;This paragraph uses the "Jackport_College" web font.&lt;/p&gt;
+&lt;p class="Greek_Font"&gt;This paragraph uses the "Jackport_Greek" web font.&lt;/p&gt;
+&lt;p&gt;This paragraph uses the default font of the page.&lt;/p&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          @font-face { <br>
-          font-family: "My_Font_1";<br>
-          src: url("../Fonts/My_Font.woff2") format("woff2"),<br>
-          url("../Fonts/My_Font.woff") format("woff");<br>
-          font-weight: normal;<br>
-          font-style: normal;<br>
-          font-display: fallback;<br>
-          }<br>
-          .My_Font_1
-          { <br>
-          font-family: "My_Font_1", sans-serif;<br>
-          } <br><br>
-          @font-face { <br>
-          font-family: "My_Font_2";<br>
-          src: url("../Fonts/My_Font.woff2") format("woff2"),<br>
-          url("../Fonts/My_Font.woff") format("woff");<br>
-          font-weight: normal;<br>
-          font-style: normal;<br>
-          font-display: fallback;<br>
-          }<br>
-          .My_Font_2
-          { <br>
-          font-family: "My_Font_2", sans-serif;<br>
-          } <br><br>
-          @font-face { <br>
-          font-family: "My_Font_3";<br>
-          src: url("../Fonts/My_Font.woff2") format("woff2"),<br>
-          url("../Fonts/My_Font.woff") format("woff");<br>
-          font-weight: normal;<br>
-          font-style: normal;<br>
-          font-display: fallback;<br>
-          }<br>
-          .My_Font_3
-          { <br>
-          font-family: "My_Font_3", sans-serif;<br>
-          } <br><br>
-          @font-face { <br>
-          font-family: "My_Font_4";<br>
-          src: url("../Fonts/My_Font.woff2") format("woff2"),<br>
-          url("../Fonts/My_Font.woff") format("woff");<br>
-          font-weight: normal;<br>
-          font-style: normal;<br>
-          font-display: fallback;<br>
-          }<br>
-          .My_Font_4
-          { <br>
-          font-family: "My_Font_2", sans-serif;<br>
-          }
+/* 1. Declare each font: a name and the file to download */
+@font-face {
+  font-family: "Sport_Center";
+  src: url("SRC/Fonts/SportCenter-DO9Od.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: fallback;
+}
+@font-face {
+  font-family: "Jackport_College";
+  src: url("SRC/Fonts/JackportCollegeNcv-1MZe.ttf") format("truetype");
+  font-display: fallback;
+}
+@font-face {
+  font-family: "Jackport_Greek";
+  src: url("SRC/Fonts/JackportGreekNcv-RGdo.ttf") format("truetype");
+  font-display: fallback;
+}
+
+/* 2. Use the declared names like any other font */
+.Sport_Font {
+  font-family: "Sport_Center", sans-serif;
+  font-size: 1.6rem;
+}
+.College_Font {
+  font-family: "Jackport_College", sans-serif;
+  font-size: 1.6rem;
+}
+.Greek_Font {
+  font-family: "Jackport_Greek", sans-serif;
+  font-size: 1.6rem;
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <p class="My_Font_1">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-            repellat ullam repudiandae
-            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-            maiores.
-          </p>
-          <p class="My_Font_2">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-            repellat ullam repudiandae
-            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-            maiores.
-          </p>
-          <p class="My_Font_3">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-            repellat ullam repudiandae
-            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-            maiores.
-          </p>
-          <p class="My_Font_4">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur laudantium illo
-            repellat ullam repudiandae
-            quia quos quibusdam molestiae totam, provident id nisi tenetur! In aliquam, reiciendis iste amet minus
-            maiores.
-          </p>
+          <p class="Sport_Font">This paragraph uses the "Sport_Center" web font.</p>
+          <p class="College_Font">This paragraph uses the "Jackport_College" web font.</p>
+          <p class="Greek_Font">This paragraph uses the "Jackport_Greek" web font.</p>
+          <p>This paragraph uses the default font of the page.</p>
         </div>
       </div>
       <h3 class="Sub_Section_Title">3. Optimizing font loading with font-display</h3>
@@ -919,29 +826,36 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;<br>
-          &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;<br>
-          &lt;link
-            href="https://fonts.googleapis.com/css2?family=Amiri:ital, wght@0,400; 0,700; 1,400; 1,700&display=swap"
-            rel="stylesheet"&gt;
-            </pre>
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&amp;display=swap" rel="stylesheet"&gt;
+
+&lt;p class="Arabic_Text"&gt;
+  لقد أصبح الذكاء الاصطناعي مصطلحًا شاملًا للتطبيقات التي تؤدي مهام مُعقدة كانت تتطلب في الماضي إدخالات بشرية
+  مثل التواصل مع العملاء عبر الإنترنت أو ممارسة لعبة الشطرنج.
+&lt;/p&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .New_Font
-          { <br>
-          font-family: "Amiri Quran", serif; <br>
-          font-size: 2rem; <br>
-          font-weight: normal; <br>
-          }
+.Arabic_Text {
+  font-family: "Amiri Quran", serif;
+  font-size: 2rem;
+  font-weight: normal;
+  direction: rtl;
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <p class="New_Font">
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+
+          <p class="Arabic_Text">
             لقد أصبح الذكاء الاصطناعي مصطلحًا شاملًا للتطبيقات التي تؤدي مهام مُعقدة كانت تتطلب في الماضي إدخالات بشرية
-            مثل التواصل مع العملاء عبر الإنترنت أو ممارسة لعبة الشطرنج. يُستخدم غالبًا هذا المصطلح بالتبادل مع مجالاته
-            الفرعية، والتي تشمل التعلم الآلي (ML) والتعلم العميق.
+            مثل التواصل مع العملاء عبر الإنترنت أو ممارسة لعبة الشطرنج.
           </p>
         </div>
       </div>
@@ -1014,30 +928,25 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;h1 class="Blue"&gt;
-          This is blue
-          &lt;/h1&gt; <br><br>
-          &lt;h1 class="Darker_Blue"&gt;
-          This is Darker Blue
-          &lt;/h1&gt;
-          </pre>
+&lt;h1 class="Hsl_Blue"&gt;This is blue&lt;/h1&gt;
+&lt;h1 class="Hsl_Darker_Blue"&gt;This is darker blue&lt;/h1&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Blue
-          { <br>
-          color: hsl(240, 99%, 50%);<br>
-          } <br><br>
-          .Darker_Blue
-          { <br>
-          color: hsl(240, 99%, 30%);<br>
-          } <br><br>
+.Hsl_Blue {
+  color: hsl(240, 99%, 50%);
+}
+.Hsl_Darker_Blue {
+  color: hsl(240, 99%, 30%); /* same hue, less lightness */
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <h1 class="Blue_H1">This is blue</h1>
-          <h1 class="Darker_Blue">This is Darker Blue</h1>
+          <h1 class="Hsl_Blue">This is blue</h1>
+          <h1 class="Hsl_Darker_Blue">This is darker blue</h1>
         </div>
       </div>
       <h3 class="Sub_Section_Title">3. Alpha channels</h3>
@@ -1057,57 +966,52 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Alpha_HEX_4"&gt;
-          &lt;/div&gt; <br> <br>
-          &lt;div class="Alpha_HEX_8"&gt;
-          &lt;/div&gt; <br> <br>
-          &lt;div class="Alpha_HSL"&gt;
-          &lt;/div&gt; <br> <br>
-          &lt;div class="Alpha_HSL_Percent"&gt;
-          &lt;/div&gt; <br> <br>
-          &lt;div class="Alpha_RGB"&gt;
-          &lt;/div&gt; <br><br>
-          &lt;div class="Alpha_RGB_Space_Separated"&gt;
-          <>&lt;/div&gt;
-          </pre>
+&lt;div class="Alpha_Row"&gt;
+  &lt;div class="Alpha_Box Hex_4"&gt;#0007&lt;/div&gt;
+  &lt;div class="Alpha_Box Hex_8"&gt;#00000077&lt;/div&gt;
+  &lt;div class="Alpha_Box Hsl_Alpha"&gt;hsl(359, 99%, 50%, 0.5)&lt;/div&gt;
+  &lt;div class="Alpha_Box Hsl_Percent"&gt;hsl(359, 99%, 50%, 50%)&lt;/div&gt;
+  &lt;div class="Alpha_Box Rgb_Alpha"&gt;rgb(0, 0, 0, 0.5)&lt;/div&gt;
+  &lt;div class="Alpha_Box Rgb_Slash"&gt;rgb(0 0 0 / 0.5)&lt;/div&gt;
+&lt;/div&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Alpha_HEX_4
-          { <br>
-          background-color: #0007;<br>
-          } <br><br>
-          .Alpha_HEX_8
-          { <br>
-          background-color: #00000077;<br>
-          } <br><br>
-          .Alpha_HSL
-          { <br>
-          background-color: hsl(359, 99%, 50%, 0.5);<br>
-          } <br><br>
-          .Alpha_HSL_Percent
-          { <br>
-          background-color: hsl(359, 99%, 50%, 50%);<br>
-          } <br><br>
-          .Alpha_RGB
-          { <br>
-          background-color: rgb(0, 0, 0, 0.5);<br>
-          } <br><br>
-          .Alpha_RGB_Space_Separated
-          { <br>
-          background-color: rgb(0 0 0 / 0.5);<br>
-          } <br><br>
+/* a picture behind the boxes shows the transparency */
+.Alpha_Row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  background-image: url("SRC/IMAGES/Oran.jpg");
+  background-size: cover;
+}
+.Alpha_Box {
+  width: 130px;
+  height: 110px;
+  padding: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+}
+.Hex_4 { background-color: #0007; }
+.Hex_8 { background-color: #00000077; }
+.Hsl_Alpha { background-color: hsl(359, 99%, 50%, 0.5); }
+.Hsl_Percent { background-color: hsl(359, 99%, 50%, 50%); }
+.Rgb_Alpha { background-color: rgb(0, 0, 0, 0.5); }
+.Rgb_Slash { background-color: rgb(0 0 0 / 0.5); }
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Squares">
-            <div class="Alpha_HEX_4 Square"></div>
-            <div class="Alpha_HEX_8 Square"></div>
-            <div class="Alpha_HSL Square"></div>
-            <div class="Alpha_HSL_Percent Square"></div>
-            <div class="Alpha_RGB Square"></div>
-            <div class="Alpha_RGB_Space_Separated Square"></div>
+          <div class="Alpha_Row">
+            <div class="Alpha_Box Hex_4">#0007</div>
+            <div class="Alpha_Box Hex_8">#00000077</div>
+            <div class="Alpha_Box Hsl_Alpha">hsl(359, 99%, 50%, 0.5)</div>
+            <div class="Alpha_Box Hsl_Percent">hsl(359, 99%, 50%, 50%)</div>
+            <div class="Alpha_Box Rgb_Alpha">rgb(0, 0, 0, 0.5)</div>
+            <div class="Alpha_Box Rgb_Slash">rgb(0 0 0 / 0.5)</div>
           </div>
         </div>
       </div>
@@ -1124,22 +1028,39 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Display_P3"&gt;
-          <pre>&lt;/div&gt;
-          </pre>
+&lt;div class="Color_Row"&gt;
+  &lt;div class="Swatch Srgb_Green"&gt;rgb(0, 255, 0)&lt;/div&gt;
+  &lt;div class="Swatch P3_Green"&gt;color(display-p3 0 1 0)&lt;/div&gt;
+&lt;/div&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Display_P3
-          { <br>
-          background-color: color(display-p3 0 1 0);<br>
-          }
+.Color_Row {
+  display: flex;
+  gap: 15px;
+}
+.Swatch {
+  width: 200px;
+  height: 100px;
+  padding: 6px;
+  font-size: 0.9rem;
+}
+.Srgb_Green {
+  background-color: rgb(0, 255, 0);
+}
+/* on a wide-gamut screen, this green is more vivid */
+.P3_Green {
+  background-color: color(display-p3 0 1 0);
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Squares">
-            <div class="Display_P3 Square"></div>
+          <div class="Color_Row">
+            <div class="Swatch Srgb_Green">rgb(0, 255, 0)</div>
+            <div class="Swatch P3_Green">color(display-p3 0 1 0)</div>
           </div>
         </div>
       </div>
@@ -1161,22 +1082,44 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="LCH"&gt;
-          &lt;/div&gt;</font>
-          </font></pre>
+&lt;div class="Color_Row"&gt;
+  &lt;div class="Swatch Lch_Dark"&gt;lch(30% 132 43)&lt;/div&gt;
+  &lt;div class="Swatch Lch_Base"&gt;lch(50% 132 43)&lt;/div&gt;
+  &lt;div class="Swatch Lch_Light"&gt;lch(70% 132 43)&lt;/div&gt;
+  &lt;div class="Swatch Lch_Alpha"&gt;lch(50% 132 43 / 0.4)&lt;/div&gt;
+&lt;/div&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .LCH
-          { <br>
-          background-color: lch(50% 132 43);<br>
-          }
+.Color_Row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.Swatch {
+  width: 160px;
+  height: 100px;
+  padding: 6px;
+  color: #fff;
+  font-size: 0.9rem;
+}
+/* same chroma and hue: only the lightness changes */
+.Lch_Dark { background-color: lch(30% 132 43); }
+.Lch_Base { background-color: lch(50% 132 43); }
+.Lch_Light { background-color: lch(70% 132 43); }
+/* the alpha channel comes after a slash */
+.Lch_Alpha { background-color: lch(50% 132 43 / 0.4); }
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Squares">
-            <div class="LCH Square"></div>
+          <div class="Color_Row">
+            <div class="Swatch Lch_Dark">lch(30% 132 43)</div>
+            <div class="Swatch Lch_Base">lch(50% 132 43)</div>
+            <div class="Swatch Lch_Light">lch(70% 132 43)</div>
+            <div class="Swatch Lch_Alpha">lch(50% 132 43 / 0.4)</div>
           </div>
         </div>
       </div>
@@ -1195,44 +1138,54 @@ h4 { color: #8c1515; }
         <h2 class="Code_Tag">HTML</h2>
         <div class="HTML_Code">
           <pre class="prettyprint lang-html">
-          &lt;div class="Pixels"&gt;
-          &lt;/div&gt;</font></font></pre>
+&lt;div class="Units_Row"&gt;
+  &lt;div class="Unit_Px"&gt;50px&lt;/div&gt;
+  &lt;div class="Unit_Cm"&gt;2cm&lt;/div&gt;
+  &lt;div class="Unit_Pt"&gt;50pt&lt;/div&gt;
+  &lt;div class="Unit_Pc"&gt;5pc&lt;/div&gt;
+&lt;/div&gt;
+</pre>
         </div>
         <h2 class="Code_Tag">CSS</h2>
         <div class="CSS_Code">
           <pre class="prettyprint lang-css">
-          .Pixels
-          { <br>
-          width: 50px;<br>
-          height: 50px;<br>
-          background-color: #8c1515;<br>
-          } <br>
-          .centimeter
-          { <br>
-          width: 2cm;<br>
-          height: 2cm;<br>
-          background-color: yellow;<br>
-          } <br>
-          .point
-          { <br>
-          width: 50pt;<br>
-          height: 50pt;<br>
-          background-color: blue;<br>
-          } <br>
-          .pica
-          { <br>
-          width: 5pc;<br>
-          height: 5pc;<br>
-          background-color: green;<br>
-          }
+.Units_Row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  color: #fff;
+}
+.Unit_Px {
+  width: 50px;
+  height: 50px;
+  background-color: #8c1515;
+}
+.Unit_Cm {
+  width: 2cm;
+  height: 2cm;
+  background-color: yellow;
+  color: #000;
+}
+.Unit_Pt {
+  width: 50pt;
+  height: 50pt;
+  background-color: blue;
+}
+.Unit_Pc {
+  width: 5pc;
+  height: 5pc;
+  background-color: green;
+}
+</pre>
         </div>
         <h2 class="Code_Tag">Result</h2>
         <div class="Result_Demo">
-          <div class="Squares">
-            <div class="Pixels"></div>
-            <div class="centimeter"></div>
-            <div class="point"></div>
-            <div class="pica"></div>
+          <div class="Units_Row">
+            <div class="Unit_Px">50px</div>
+            <div class="Unit_Cm">2cm</div>
+            <div class="Unit_Pt">50pt</div>
+            <div class="Unit_Pc">5pc</div>
           </div>
         </div>
       </div>

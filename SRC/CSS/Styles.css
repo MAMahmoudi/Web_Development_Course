@@ -1082,3 +1082,12 @@ tr:hover > td {
   border-radius: 8px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
 }
+
+/* name of the file shown above a code listing */
+.File_Name {
+  margin: 3vh 4vw -1vh 4vw;
+  font-family: monospace;
+  font-size: 1.05em;
+  font-weight: bold;
+  color: #8c1515;
+}

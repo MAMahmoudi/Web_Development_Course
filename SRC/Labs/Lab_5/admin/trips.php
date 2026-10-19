@@ -38,13 +38,15 @@ require __DIR__ . '/header.php';
                 <td><?= money((int) $trip['price']) ?></td>
                 <td><?= (int) $trip['duration_days'] ?> يوم</td>
                 <td><?= $trip['is_published'] ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>' ?></td>
-                <td class="Actions">
-                    <a href="trip_form.php?id=<?= (int) $trip['id'] ?>" class="Button Small">تعديل</a>
-                    <!-- deleting changes data: a POST form, never a simple link (GET) -->
-                    <form action="trip_delete.php" method="post" data-confirm="حذف الرحلة «<?= e($trip['title']) ?>»؟">
-                        <input type="hidden" name="id" value="<?= (int) $trip['id'] ?>" />
-                        <button type="submit" class="Button Small Danger">حذف</button>
-                    </form>
+                <td>
+                    <div class="Actions">
+                        <a href="trip_form.php?id=<?= (int) $trip['id'] ?>" class="Button Small">تعديل</a>
+                        <!-- deleting changes data: a POST form, never a simple link (GET) -->
+                        <form action="trip_delete.php" method="post" data-confirm="حذف الرحلة «<?= e($trip['title']) ?>»؟">
+                            <input type="hidden" name="id" value="<?= (int) $trip['id'] ?>" />
+                            <button type="submit" class="Button Small Danger">حذف</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             <?php endforeach; ?>

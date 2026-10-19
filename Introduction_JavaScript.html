@@ -303,7 +303,7 @@ console.log("Outside the block: "+Student_Name + " is " + age + " years old");
         <p>
           The general syntax for a function is:
         </p>
-        <pre class="prettyprint lang-js">
+        <pre class="prettyprint lang-js" data-live="off">
           function function_name([parameter [, ...]])
           { 
             &nbsp; statements
@@ -437,18 +437,21 @@ console.log("Outside the block: "+Student_Name + " is " + age + " years old");
       <h2 class="Section_Title">VII. Loops</h2>
       <h2 class="Sub_Section_Title">For loop</h2>
       <pre class="prettyprint lang-js">
+        const Teachers = ["Karim", "Kamel", "Ahmed", "Khaled"];
         for (let i = 0; i &lt; 4; i++) {
           console.log(Teachers[i]);
         }
                     </pre>
       <h2 class="Sub_Section_Title">While loop</h2>
       <pre class="prettyprint lang-js">
+        const students = ["Omar", "Kamel", "Manel", "Nour"];
         while (students.length > 0) {
           console.log(students.pop());
         }
         </pre>
       <h2 class="Sub_Section_Title">Do...While loop</h2>
       <pre class="prettyprint lang-js">
+        const Modules = ["Web Development", "Mobile Development", "Data Science", "AI", "Cyber Security"];
         i = 0;
         do {
           console.log(Modules[i]);
@@ -457,12 +460,14 @@ console.log("Outside the block: "+Student_Name + " is " + age + " years old");
           </pre>
       <h2 class="Sub_Section_Title">For...in</h2>
       <pre class="prettyprint lang-js">
+        const Teachers = ["Karim", "Kamel", "Ahmed", "Khaled"];
         for (let index in Teachers) {
           console.log(Teachers[index]);
         }
           </pre>
       <h2 class="Sub_Section_Title">Break</h2>
       <pre class="prettyprint lang-js">
+        const Modules = ["Web Development", "Mobile Development", "Data Science", "AI", "Cyber Security"];
         for (let index in Modules) {
           if (index == 2) break;
           console.log(Modules[index]);
@@ -470,6 +475,7 @@ console.log("Outside the block: "+Student_Name + " is " + age + " years old");
         </pre>
       <h2 class="Sub_Section_Title">Continue</h2>
       <pre class="prettyprint lang-js">
+        const Modules = ["Web Development", "Mobile Development", "Data Science", "AI", "Cyber Security"];
         for (let index in Modules) {
           if (index == 2) continue;
           console.log(Modules[index]);
@@ -544,7 +550,9 @@ switch (day) {
         place a : and the code to execute if the expression evaluates to false.
       </div>
       <pre class="prettyprint lang-js">
+        var Exam = 12;
         var Pass = (Exam >= 10) ? true : false;
+        console.log(Pass); // true: try with Exam = 8
       </pre>
     </section>
 
@@ -693,6 +701,10 @@ switch (day) {
           reader.readAsText(input.files[0]);
         }
       </pre>
+        <template data-live-html>
+          <input type="file" accept=".txt" onchange="openFile(event)">
+          <p id="output">Choose a text file: its content appears here.</p>
+        </template>
 
     </section>
   </main>
