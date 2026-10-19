@@ -1,0 +1,4 @@
+# the uploaded photos stay on the server: only these two files are kept in Git
+*
+!.htaccess
+!.gitignore

@@ -1,19 +1,957 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="SRC/CSS/HTML.css" />
-    <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
-    <link rel="stylesheet" href="SRC/CSS/Styles.css" />
-    <title>Lab 7</title>
-  </head>
-  <body>
-    <main>
-      <section>
-        <h1 class="Title">Lab 7</h1>
-      </section>
-    </main>
-    <script src="SRC/JS/Script.js" type="module"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="SRC/CSS/Styles.css" />
+  <link rel="stylesheet" href="SRC/CSS/Nav_Bar.css" />
+  <link rel="stylesheet" href="SRC/CSS/HTML.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Lab 7: Sessions, cookies and authentication</title>
+</head>
+
+<body>
+  <main>
+    <h1 class="Title">Lab 7: Sessions, cookies and authentication</h1>
+    <section>
+      <h2 class="Section_Title">Instructions</h2>
+      <div class="Instructions">
+        <p>
+          Until now <strong>Syaha</strong> did not know who its visitors were: the login page of
+          <a href="Lab_2.html">Lab 2</a> sent nothing, and the admin area of <a href="Lab_5.html">Lab 5</a> was open
+          to anyone who knew its address. In this lab you give the website a memory: sessions to recognise a visitor
+          from one page to the next, accounts with hashed passwords, a real login and logout, pages reserved to
+          logged-in users or to admins, messages that survive a redirect, and a cookie that remembers a preference.
+          Then you add accounts and protected pages to your team project.
+        </p>
+      </div>
+    </section>
+    <section id="Overview">
+      <h2 class="Section_Title">I. What this lab adds to the back end</h2>
+      <div class="Definitions">
+        <div>
+          The result is in <a href="SRC/Labs/Lab_7/" target="_blank" rel="noopener">SRC/Labs/Lab_7</a>: a copy of the back end of <a href="Lab_6.html">Lab 6</a> with the changes of this lab:<table><tr><th>File</th><th>Change</th></tr><tr><td><code>database/syaha.sql</code></td><td>table <code>users</code>, column <code>bookings.user_id</code>, two demo accounts</td></tr><tr><td><code>includes/session.php</code></td><td><strong>new</strong>: starts the session with safe settings, idle timeout</td></tr><tr><td><code>includes/auth.php</code></td><td><strong>new</strong>: <code>current_user()</code>, <code>login_user()</code>, <code>logout_user()</code>, <code>require_login()</code>, flash messages</td></tr><tr><td><code>includes/forbidden.php</code></td><td><strong>new</strong>: the 403 page</td></tr><tr><td><code>login.php</code></td><td>a real login (it was a static form), &quot;remember my e-mail&quot; cookie</td></tr><tr><td><code>register.php</code>, <code>logout.php</code>, <code>my_bookings.php</code></td><td><strong>new</strong>: create an account, log out, the bookings of the customer</td></tr><tr><td><code>includes/header.php</code></td><td>the menu depends on the visitor; flash messages</td></tr><tr><td><code>admin/guard.php</code></td><td><strong>new</strong>: included by every admin page: admins only</td></tr><tr><td><code>book.php</code>, <code>contact_us.php</code>, <code>includes/booking_dialog.php</code></td><td>pre-filled for a logged-in user; bookings linked to the account</td></tr><tr><td><code>admin/*.php</code></td><td>flash messages instead of <code>?status=</code> in the URL</td></tr></table>
+        </div>
+      </div>
+      <div class="Definitions">
+        <div>
+          Import <code>SRC/Labs/Lab_7/database/syaha.sql</code> again in phpMyAdmin (it re-creates the <code>syaha</code> database with the new table), then open <code>http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/index.php</code>. Two accounts are ready:<table><tr><th>Account</th><th>E-mail</th><th>Password</th><th>Can</th></tr><tr><td>Admin</td><td><code>admin@syaha.example</code></td><td><code>Syaha_Admin1</code></td><td>open the admin area</td></tr><tr><td>Customer</td><td><code>amine@example.com</code></td><td><code>Syaha_2025</code></td><td>see their bookings, book without typing their name</td></tr></table>
+        </div>
+      </div>
+      <div class="Note"><strong>Careful:</strong> these passwords are published on this page: they are for your computer only. A real website never ships with known passwords.</div>
+    </section>
+    <section id="Step_1">
+      <h2 class="Section_Title">II. Step 1: HTTP forgets, cookies and sessions remember</h2>
+      <div class="Definitions">
+        <p>
+          HTTP is <strong>stateless</strong>: each request is independent, and nothing in it says that the visitor who opens <code>services.php</code> is the one who logged in a second ago. The solution is a small &quot;ticket&quot; that the server gives to the browser and that the browser shows with every request: a <strong>cookie</strong>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+GET /SRC/Labs/Lab_7/my_bookings.php HTTP/1.1      &lt;- who is asking? HTTP does not say
+Host: localhost
+
+HTTP/1.1 200 OK
+Set-Cookie: SYAHA_SESSION=k3j9f0a1...; path=/; HttpOnly; SameSite=Lax   &lt;- the server gives a "ticket"
+
+GET /SRC/Labs/Lab_7/services.php HTTP/1.1
+Host: localhost
+Cookie: SYAHA_SESSION=k3j9f0a1...                                       &lt;- the browser shows it every time
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th></th><th>Cookie</th><th>Session</th></tr><tr><td>Where is the data?</td><td>in the browser of the visitor</td><td>on the server (a file in <code>C:\xampp\tmp</code>)</td></tr><tr><td>Who can read and change it?</td><td>the visitor: developer tools, extensions, JavaScript (without <code>HttpOnly</code>)</td><td>only your PHP code</td></tr><tr><td>Size</td><td>about 4 KB per cookie</td><td>no practical limit</td></tr><tr><td>Lifetime</td><td>chosen by <code>expires</code></td><td>until logout, timeout, or the browser is closed</td></tr><tr><td>In PHP</td><td><code>setcookie()</code> / <code>$_COOKIE</code></td><td><code>session_start()</code> / <code>$_SESSION</code></td></tr><tr><td>In Syaha</td><td>the e-mail to pre-fill (a preference)</td><td>who is logged in, the role, flash messages, failed logins</td></tr></table>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          A session uses a cookie too, but this cookie only contains a long <strong>random id</strong>; the data stays on the server, in a file named after this id:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+; C:\xampp\tmp\sess_k3j9f0a1... : the data of ONE visitor, on the server
+user|a:4:{s:2:"id";i:2;s:9:"full_name";s:21:"أمين بن علي";s:5:"email";s:17:"amine@example.com";s:4:"role";s:8:"customer";}
+last_activity|i:1760000000;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+session_start();                      // BEFORE any HTML: it may send the Set-Cookie header
+
+$_SESSION['visits'] = ($_SESSION['visits'] ?? 0) + 1;   // written on the server, kept between requests
+echo 'Visits: ' . $_SESSION['visits'];
+
+unset($_SESSION['visits']);           // remove one value
+$_SESSION = [];                       // remove everything (the session itself still exists)
+session_destroy();                    // delete the file of the session on the server
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>session_start()</code> and <code>setcookie()</code> send HTTP <em>headers</em>, and headers are sent before the first character of HTML. Called too late (even after a space before <code>&lt;?php</code>), they fail:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+Warning: session_start(): Session cannot be started after headers have already been sent
+Warning: Cannot modify header information - headers already sent by (output started at index.php:1)
+        </pre>
+      </div>
+      <div class="Note"><strong>Try it:</strong> open Syaha, then the developer tools: <em>Application</em> (Chrome, Edge) or <em>Storage</em> (Firefox) &gt; <em>Cookies</em>. Find <code>SYAHA_SESSION</code>, log in, and see its value change.</div>
+    </section>
+    <section id="Step_2">
+      <h2 class="Section_Title">III. Step 2: start the session safely</h2>
+      <div class="Definitions">
+        <p>
+          Every page of Syaha needs the session (the menu shows the name of the user), so it is started in one file, included by <code>auth.php</code>:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/session.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Starts the session of the visitor, with safe settings (Lab 7).
+// Included at the top of every page, BEFORE any HTML: session_start() sends a cookie, that is an HTTP header.
+
+const SESSION_IDLE_MINUTES = 30;   // a logged-in visitor who does nothing for 30 minutes is logged out
+
+if (session_status() === PHP_SESSION_NONE) {
+    // refuse a session id that this server did not create (protection against session fixation)
+    ini_set('session.use_strict_mode', '1');
+    session_name('SYAHA_SESSION');
+    session_set_cookie_params([
+        'lifetime' =&gt; 0,                           // the cookie disappears when the browser is closed
+        'path' =&gt; '/',
+        'httponly' =&gt; true,                        // JavaScript cannot read it (an XSS cannot steal it)
+        'samesite' =&gt; 'Lax',                       // not sent with forms posted by other websites
+        'secure' =&gt; !empty($_SERVER['HTTPS']),     // over HTTPS only, when the site uses HTTPS
+    ]);
+    session_start();
+}
+
+// idle timeout: a session unused for too long is emptied
+if (isset($_SESSION['user'], $_SESSION['last_activity'])
+    &amp;&amp; time() - $_SESSION['last_activity'] &gt; SESSION_IDLE_MINUTES * 60) {
+    $_SESSION = [];
+    session_regenerate_id(true);
+    $_SESSION['flash'][] = ['Error', 'انتهت الجلسة بعد ' . SESSION_IDLE_MINUTES . ' دقيقة من عدم النشاط. سجلوا الدخول من جديد.'];
+}
+$_SESSION['last_activity'] = time();
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>session_name()</code>: a name of our own instead of <code>PHPSESSID</code>, which tells everyone that the site uses PHP.</li><li><code>use_strict_mode</code>: PHP refuses a session id that it did not create. Without it an attacker can choose an id, make the victim use it (<em>session fixation</em>), and share the session after the login.</li><li>The options of the cookie: <code>HttpOnly</code> keeps it away from JavaScript, so an XSS cannot steal it; <code>SameSite=Lax</code> stops the browser from sending it with a form posted by another website (a first protection against CSRF, see <a href="Lab_10.html">Lab 10</a>); <code>Secure</code> keeps it on HTTPS.</li><li><strong>Idle timeout</strong>: a session left open on a shared computer is closed after 30 minutes without activity. The time of the last request is kept in the session itself.</li><li><code>session_status()</code>: the file can be included twice without starting the session twice.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          All the functions about users are in <a href="SRC/Labs/Lab_7/includes/auth.php" target="_blank" rel="noopener">includes/auth.php</a>, which every page includes after <code>functions.php</code> and <code>queries.php</code>:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> index.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/auth.php';
+
+// 1. read the data
+$destinations = get_destinations();
+        </pre>
+      </div>
+    </section>
+    <section id="Step_3">
+      <h2 class="Section_Title">IV. Step 3: accounts and hashed passwords</h2>
+      <div class="Definitions">
+        <p>
+          A new table keeps the accounts. A booking can now belong to an account; it stays possible to book without one (<code>user_id</code> is <code>NULL</code>).
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> database/syaha.sql (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+-- the accounts (Lab 7): the password is never stored, only its hash (password_hash)
+CREATE TABLE users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,     -- UNIQUE: two accounts cannot share an e-mail
+  password_hash VARCHAR(255) NOT NULL,    -- 60 characters today, 255 leaves room for future algorithms
+  role ENUM('customer', 'admin') NOT NULL DEFAULT 'customer',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- one booking = one trip (many bookings can concern the same trip: one-to-many relationship)
+CREATE TABLE bookings (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  trip_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NULL,              -- the account that booked (NULL: booked without an account)
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  departure_date DATE NOT NULL,
+  people TINYINT UNSIGNED NOT NULL,
+  total_price INT UNSIGNED NOT NULL,      -- computed by the server, never taken from the browser
+  status ENUM('pending', 'confirmed', 'cancelled') NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_bookings_trip FOREIGN KEY (trip_id) REFERENCES trips (id)
+    ON DELETE RESTRICT ON UPDATE CASCADE,  -- a trip that has bookings cannot be deleted
+  CONSTRAINT fk_bookings_user FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE SET NULL                     -- an account deleted: its bookings stay, without account
+) ENGINE=InnoDB;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <strong>The password itself is never stored</strong>: if the database leaks (a backup, an SQL injection, a stolen laptop), the attackers must not be able to log in as your users, nor try their passwords on other websites. The database keeps a <strong>hash</strong>: a one-way fingerprint, from which the password cannot be computed back.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+$hash = password_hash('Syaha_2025', PASSWORD_DEFAULT);
+echo $hash;   // $2y$10$fCbx4JzpwZd1NVO6sr.kCuALpXIS7xO1t2bkSKBqYXmwgmXAb0ejm
+//              |  |  |                     |
+//              |  |  salt (random)          hash
+//              |  cost: 2^10 rounds (slow on purpose)
+//              algorithm: bcrypt
+
+password_hash('Syaha_2025', PASSWORD_DEFAULT);   // another salt: another hash, every time
+password_verify('Syaha_2025', $hash);            // true
+password_verify('syaha_2025', $hash);            // false
+
+md5('Syaha_2025');      // NEVER for passwords: fast, no salt, found in seconds with tables
+sha1('Syaha_2025');     // NEVER either
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>password_hash()</code> adds a random <strong>salt</strong>: two users with the same password get different hashes, and precomputed tables are useless.</li><li>It is <strong>slow on purpose</strong> (the cost): trying millions of passwords takes years instead of minutes.</li><li>The hash contains its algorithm, its cost and its salt: <code>password_verify()</code> needs nothing else. Store it in a <code>VARCHAR(255)</code>: future algorithms make longer hashes.</li></ul>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ users (Lab 7)
+
+/** The account of an e-mail address, or null. */
+function find_user_by_email(string $email): ?array
+{
+    $statement = db()-&gt;prepare('SELECT * FROM users WHERE email = ?');
+    $statement-&gt;execute([$email]);
+    return $statement-&gt;fetch() ?: null;
+}
+
+/** Creates a customer account and returns its id. The password is hashed here, never stored as such. */
+function create_user(string $full_name, string $email, string $password): int
+{
+    $statement = db()-&gt;prepare('INSERT INTO users (full_name, email, password_hash) VALUES (?, ?, ?)');
+    $statement-&gt;execute([$full_name, $email, password_hash($password, PASSWORD_DEFAULT)]);
+    return (int) db()-&gt;lastInsertId();
+}
+
+/** Replaces the hash of a password (when PHP recommends a stronger algorithm, see password_needs_rehash). */
+function update_password_hash(int $user_id, string $password): void
+{
+    db()-&gt;prepare('UPDATE users SET password_hash = ? WHERE id = ?')
+        -&gt;execute([password_hash($password, PASSWORD_DEFAULT), $user_id]);
+}
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">The registration page</h3>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_7/Register_Errors.png" alt="The registration form with an error under each field" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> register.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Registration of a customer account (Lab 7).
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/includes/validation.php';
+
+if (current_user() !== null) {
+    redirect('my_bookings.php');
+}
+
+$rules = [
+    'name' =&gt; ['required', 'min:3', 'max:100'],
+    'email' =&gt; ['required', 'email', 'max:255'],
+    'password' =&gt; ['required', 'min:8', 'max:72'],   // bcrypt only uses the first 72 bytes
+    'confirm' =&gt; ['required'],
+];
+$values = array_fill_keys(array_keys($rules), '');
+$errors = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach (['name', 'email'] as $field) {
+        $values[$field] = input($field);
+    }
+    // a password is never trimmed: its spaces are part of it
+    $values['password'] = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
+    $values['confirm'] = is_string($_POST['confirm'] ?? null) ? $_POST['confirm'] : '';
+    $errors = validate($values, $rules);
+
+    if (!isset($errors['password']) &amp;&amp; !preg_match('/[A-Za-z]/', $values['password'])) {
+        $errors['password'] = 'كلمة المرور يجب أن تحتوي على حرف واحد على الأقل.';
+    } elseif (!isset($errors['password']) &amp;&amp; !preg_match('/[0-9]/', $values['password'])) {
+        $errors['password'] = 'كلمة المرور يجب أن تحتوي على رقم واحد على الأقل.';
+    }
+    if (!isset($errors['confirm']) &amp;&amp; $values['confirm'] !== $values['password']) {
+        $errors['confirm'] = 'كلمتا المرور غير متطابقتين.';
+    }
+    if (!isset($errors['email']) &amp;&amp; find_user_by_email($values['email']) !== null) {
+        $errors['email'] = 'يوجد حساب بهذا البريد الإلكتروني. سجلوا الدخول.';
+    }
+
+    if (!$errors) {
+        $id = create_user($values['name'], $values['email'], $values['password']);
+        login_user(['id' =&gt; $id, 'full_name' =&gt; $values['name'], 'email' =&gt; $values['email'], 'role' =&gt; 'customer']);
+        flash('Success', 'تم إنشاء حسابكم. مرحباً ' . $values['name'] . '!');
+        redirect('my_bookings.php');
+    }
+    http_response_code(422);
+    // the password fields are never sent back to the browser
+    $values['password'] = $values['confirm'] = '';
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link rel="stylesheet" href="../Lab_2/Lab_2_Page.css"&gt;
+    &lt;link rel="stylesheet" href="../Lab_2/Logins.css"&gt;
+    &lt;link rel="stylesheet" href="../Lab_3/Logins_Responsive.css"&gt;
+    &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+    &lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap"&gt;
+    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" /&gt;
+    &lt;link rel="stylesheet" href="backend.css"&gt;
+    &lt;title&gt;سياحة | إنشاء حساب&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;section class="Logins"&gt;
+        &lt;a href="index.php" class="Back_Home"&gt;&amp;larr; الرئيسية&lt;/a&gt;
+        &lt;div class="Account_Login Register"&gt;
+            &lt;form class="Register_Form" action="register.php" method="post" dir="rtl"&gt;
+                &lt;h1&gt;إنشاء حساب&lt;/h1&gt;
+                &lt;label for="Name"&gt;الإسم الكامل&lt;/label&gt;
+                &lt;input type="text" id="Name" name="name" value="&lt;?= e($values['name']) ?&gt;" autocomplete="name"
+                    required&lt;?= invalid_attributes($errors, 'name', 'Name') ?&gt; /&gt;
+                &lt;?= field_error($errors, 'name', 'Name') ?&gt;
+
+                &lt;label for="Email"&gt;البريد الإلكتروني&lt;/label&gt;
+                &lt;input type="email" id="Email" name="email" value="&lt;?= e($values['email']) ?&gt;" autocomplete="email"
+                    required&lt;?= invalid_attributes($errors, 'email', 'Email') ?&gt; /&gt;
+                &lt;?= field_error($errors, 'email', 'Email') ?&gt;
+
+                &lt;label for="Password"&gt;كلمة المرور (8 أحرف على الأقل، حرف ورقم)&lt;/label&gt;
+                &lt;input type="password" id="Password" name="password" autocomplete="new-password" minlength="8"
+                    required&lt;?= invalid_attributes($errors, 'password', 'Password') ?&gt; /&gt;
+                &lt;?= field_error($errors, 'password', 'Password') ?&gt;
+
+                &lt;label for="Confirm"&gt;تأكيد كلمة المرور&lt;/label&gt;
+                &lt;input type="password" id="Confirm" name="confirm" autocomplete="new-password"
+                    required&lt;?= invalid_attributes($errors, 'confirm', 'Confirm') ?&gt; /&gt;
+                &lt;?= field_error($errors, 'confirm', 'Confirm') ?&gt;
+
+                &lt;button type="submit" class="LoginBtn"&gt;إنشاء الحساب&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;a href="login.php" class="Forgot_Password"&gt;لديكم حساب؟ سجلوا الدخول&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>The validation of <a href="Lab_6.html">Lab 6</a> is reused, with two rules of its own: a letter and a digit, and the confirmation must match.</li><li>A password is <strong>never trimmed</strong> (its spaces are part of it) and <strong>never sent back</strong> to the browser: the password fields are empty when the form is shown again.</li><li><code>max:72</code>: bcrypt ignores what comes after 72 bytes.</li><li>The <code>UNIQUE</code> index is the real guarantee that two accounts cannot share an e-mail; the check in PHP only gives a nice message.</li><li>After the registration, the visitor is logged in directly.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_4">
+      <h2 class="Section_Title">V. Step 4: log in and log out</h2>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_7/Login_Error.png" alt="The login page after a wrong password" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> login.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Login (Lab 7): checks the e-mail and the password, then stores the user in the session.
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/includes/validation.php';
+
+const REMEMBER_COOKIE = 'syaha_email';   // a harmless preference: the e-mail typed last time
+const REMEMBER_DAYS = 30;
+
+// already logged in: nothing to do here
+if (current_user() !== null) {
+    redirect(is_admin() ? 'admin/index.php' : 'my_bookings.php');
+}
+
+$next = input('next', $_SERVER['REQUEST_METHOD'] === 'POST' ? 'post' : 'get');
+$values = ['email' =&gt; $_COOKIE[REMEMBER_COOKIE] ?? '', 'password' =&gt; ''];
+$remember = isset($_COOKIE[REMEMBER_COOKIE]);
+$errors = [];
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $values = ['email' =&gt; input('email'), 'password' =&gt; $_POST['password'] ?? ''];
+    $remember = isset($_POST['remember']);
+    $errors = validate($values, ['email' =&gt; ['required', 'email'], 'password' =&gt; ['required']]);
+
+    if (login_wait() &gt; 0) {
+        $error = 'محاولات كثيرة. أعيدوا المحاولة بعد ' . login_wait() . ' ثانية.';
+    } elseif (!$errors) {
+        $user = find_user_by_email($values['email']);
+        // the same message whether the e-mail or the password is wrong: do not tell which accounts exist
+        if ($user === null || !password_verify($values['password'], $user['password_hash'])) {
+            login_failed();
+            $error = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+        } else {
+            // PHP may recommend a stronger algorithm than the one used for this hash: update it now
+            if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+                update_password_hash((int) $user['id'], $values['password']);
+            }
+            login_user($user);
+
+            // "remember my e-mail": a cookie with the e-mail only (never the password, never the role)
+            setcookie(REMEMBER_COOKIE, $remember ? $values['email'] : '', [
+                'expires' =&gt; $remember ? time() + REMEMBER_DAYS * 24 * 3600 : time() - 3600,
+                'path' =&gt; '/',
+                'httponly' =&gt; true,
+                'samesite' =&gt; 'Lax',
+                'secure' =&gt; !empty($_SERVER['HTTPS']),
+            ]);
+
+            flash('Success', 'مرحباً ' . $user['full_name'] . '!');
+            redirect(safe_next($next, is_admin() ? 'admin/index.php' : 'my_bookings.php'));
+        }
+    }
+    http_response_code($error !== '' || $errors ? 422 : 200);
+}
+$flashes = take_flashes();
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ol><li>The account is found by its e-mail, then <code>password_verify()</code> compares the password with the hash.</li><li><strong>One message for both mistakes</strong>: &quot;wrong e-mail&quot; and &quot;wrong password&quot; would tell an attacker which e-mails have an account.</li><li><code>password_needs_rehash()</code>: when PHP adopts a stronger algorithm or cost, the hash of the user is updated at their next login, the only moment the password is known.</li><li><strong>Too many attempts</strong>: after 5 wrong passwords, the form waits one minute. The counter is in the session; a real website also counts per account and per IP address in the database, because an attacker can simply drop the cookie.</li><li>The visitor goes back to the page they wanted (<code>next</code>), or to their own page.</li></ol>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/auth.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/** Stores the user in the session after a successful login or registration. */
+function login_user(array $user): void
+{
+    // a new session id: an id known before the login (given by an attacker) becomes useless
+    session_regenerate_id(true);
+    $_SESSION['user'] = [
+        'id' =&gt; (int) $user['id'],
+        'full_name' =&gt; $user['full_name'],
+        'email' =&gt; $user['email'],
+        'role' =&gt; $user['role'],
+    ];
+    unset($_SESSION['login_failures'], $_SESSION['login_locked_until']);
+}
+
+/** Destroys the session: data on the server and cookie in the browser. */
+function logout_user(): void
+{
+    $_SESSION = [];
+    $cookie = session_get_cookie_params();
+    setcookie(session_name(), '', [
+        'expires' =&gt; time() - 3600,     // a date in the past deletes the cookie
+        'path' =&gt; $cookie['path'],
+        'httponly' =&gt; $cookie['httponly'],
+        'samesite' =&gt; $cookie['samesite'],
+        'secure' =&gt; $cookie['secure'],
+    ]);
+    session_destroy();
+    session_start();                    // a new, empty session for the flash message
+    session_regenerate_id(true);
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>session_regenerate_id(true)</code> gives the session a <strong>new id at the login</strong> and deletes the old one: an id known before the login (fixation, an id seen on a shared computer) becomes useless. Always do it when the privileges change.</li><li>Only what the pages need is copied in the session: never the hash of the password.</li><li>Logging out empties <code>$_SESSION</code>, deletes the file on the server (<code>session_destroy()</code>) <em>and</em> the cookie in the browser.</li></ul>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> logout.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Logout (Lab 7). POST only: a link (GET) could be triggered by an image or a page of another website.
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/auth.php';
+
+require_post('index.php');
+
+logout_user();
+flash('Success', 'تم تسجيل الخروج.');
+redirect('index.php');
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Logging out changes the state of the session, so it is a <strong>POST form</strong>, not a link: an <code>&lt;img src="logout.php"&gt;</code> on another website would otherwise log your visitors out. The menu shows a button that looks like the other links:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/header.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;?php if ($user !== null): ?&gt;
+&lt;li&gt;
+    &lt;!-- logging out changes the session: a POST form, not a link --&gt;
+    &lt;form action="logout.php" method="post" class="Logout_Form"&gt;
+        &lt;button type="submit" class="Nav_Bar_Menu_Item" title="&lt;?= e($user['full_name']) ?&gt;"&gt;
+            &lt;span&gt;خروج&lt;/span&gt;
+            &lt;i class="fa-solid fa-right-from-bracket"&gt;&lt;/i&gt;
+        &lt;/button&gt;
+    &lt;/form&gt;
+&lt;/li&gt;
+&lt;?php endif; ?&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Login_Form.js of <a href="Lab_4.html">Lab 4</a> still checks the fields in the browser; when the form has an <code>action</code> (Lab 7), it now sends it once the fields are valid:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> Login_Form.js (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// with a back end (Lab 7), the form has an action: send it; the server checks the password
+if (Form.getAttribute("action")) {
+  Form.submit();
+  return;
+}
+        </pre>
+      </div>
+    </section>
+    <section id="Step_5">
+      <h2 class="Section_Title">VI. Step 5: protect pages and check the role</h2>
+      <div class="Definitions">
+        <p>
+          Two questions protect a page: is the visitor <strong>authenticated</strong> (who are you?) and are they <strong>authorised</strong> (are you allowed?). <code>require_login()</code> answers both, before the page reads or changes anything:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/auth.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ protected pages
+
+/**
+ * Stops the page if the visitor is not logged in (or does not have the role).
+ * $login is the URL of login.php seen from the page ("../login.php" from the admin folder).
+ */
+function require_login(?string $role = null, string $login = 'login.php'): void
+{
+    $user = current_user();
+    if ($user === null) {
+        flash('Error', 'سجلوا الدخول للوصول إلى هذه الصفحة.');
+        redirect($login . '?next=' . urlencode($_SERVER['REQUEST_URI']));
+    }
+    if ($role !== null &amp;&amp; $user['role'] !== $role) {
+        // logged in, but not allowed: 403 Forbidden
+        http_response_code(403);
+        $base = dirname($login) === '.' ? '' : dirname($login) . '/';   // '../' from the admin folder
+        require __DIR__ . '/forbidden.php';
+        exit;
+    }
+}
+
+/**
+ * The address to go to after the login: only a page of this website.
+ * "next" comes from the URL: an attacker could put https://evil.example in it.
+ */
+function safe_next(string $next, string $default): string
+{
+    $path = parse_url($next, PHP_URL_PATH) ?? '';
+    $dir = dirname($_SERVER['SCRIPT_NAME']);   // the folder of Lab_7, e.g. /SRC/Labs/Lab_7
+    if (str_starts_with($next, $dir . '/') &amp;&amp; !str_contains($next, '..') &amp;&amp; !str_contains($next, '//')
+        &amp;&amp; preg_match('#\.php$#', $path)) {
+        return $next;
+    }
+    return $default;
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Visitor</th><th>Answer</th><th>Why</th></tr><tr><td>not logged in</td><td><code>302</code> to <code>login.php?next=...</code></td><td>they may have an account: let them log in, then come back</td></tr><tr><td>logged in, wrong role</td><td><code>403 Forbidden</code></td><td>logging in again will not help</td></tr><tr><td>logged in, right role</td><td>the page</td><td></td></tr></table>
+        </div>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_7/Forbidden.png" alt="The 403 page shown to a customer who opens the admin area" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          <code>safe_next()</code> prevents an <strong>open redirect</strong>: without it, <code>login.php?next=https://evil.example</code> sent by e-mail would show the real login page of Syaha, then send the victim to a copy of it.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">The admin area</h3>
+      <div class="Definitions">
+        <p>
+          Every page of the admin area starts with one line, before any query:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/guard.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Included at the very top of EVERY page of the admin area (Lab 7), before anything is read or changed:
+// a visitor who is not logged in as an admin never reaches the code of the page.
+require_once __DIR__ . '/../includes/auth.php';
+
+require_login('admin', '../login.php');
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/trips.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/queries.php';
+require __DIR__ . '/guard.php';   // admins only (Lab 7)
+
+$trips = get_trips(false);   // also the unpublished ones
+        </pre>
+      </div>
+      <div class="Note"><strong>Careful:</strong> hiding the link to the admin area protects nothing: an address can be typed. Every protected page must check by itself, including the pages that only receive a form (<code>trip_delete.php</code>): <code>guard.php</code> is included by all of them.</div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_7/Admin_Logged_In.png" alt="The admin dashboard with the name of the admin and the logout button" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/header.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+    &lt;div class="Admin_User"&gt;
+        &lt;i class="fa-solid fa-user-shield"&gt;&lt;/i&gt; &lt;?= e($admin['full_name']) ?&gt;
+        &lt;form action="../logout.php" method="post"&gt;
+            &lt;button type="submit"&gt;&lt;i class="fa-solid fa-right-from-bracket"&gt;&lt;/i&gt; خروج&lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/aside&gt;
+&lt;main class="Admin_Main"&gt;
+    &lt;?php foreach (take_flashes() as [$type, $message]): ?&gt;
+    &lt;p class="Flash Flash_&lt;?= e($type) ?&gt;"&gt;&lt;?= e($message) ?&gt;&lt;/p&gt;
+    &lt;?php endforeach; ?&gt;
+        </pre>
+      </div>
+    </section>
+    <section id="Step_6">
+      <h2 class="Section_Title">VII. Step 6: a website that knows its visitor</h2>
+      <div class="Definitions">
+        <p>
+          The header builds its menu from the session: &quot;login&quot; for a visitor, &quot;my bookings&quot; for a customer, &quot;admin&quot; for an admin.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/header.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+$user = current_user();
+
+// the first item depends on the visitor (Lab 7): login, or their own page
+$menu = $user === null
+    ? ['login' =&gt; ['login.php', 'تسجيل الدخول', 'fa-solid fa-right-to-bracket']]
+    : ['account' =&gt; is_admin()
+        ? ['admin/index.php', 'الإدارة', 'fa-solid fa-gauge']
+        : ['my_bookings.php', 'حجوزاتي', 'fa-solid fa-suitcase-rolling']];
+$menu += [
+    'contact' =&gt; ['contact_us.php', 'إتصل بنا', 'fa-solid fa-envelope'],
+    'services' =&gt; ['services.php', 'جميع الخدمات', 'fa-solid fa-briefcase'],
+    'about' =&gt; ['about_us.php', 'من نحن؟', 'fa-solid fa-circle-info'],
+    'home' =&gt; ['index.php', 'الرئيسية', 'fa-solid fa-house'],
+];
+        </pre>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_7/My_Bookings.png" alt="The page of the bookings of a logged-in customer" loading="lazy" />
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> my_bookings.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// The bookings of the logged-in customer (Lab 7): a page that only exists for a logged-in visitor.
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/auth.php';
+
+require_login();
+$user = current_user();
+
+// the id comes from the session, never from the URL: a visitor cannot see the bookings of someone else
+$bookings = get_user_bookings($user['id']);
+$statuses = ['pending' =&gt; 'في الانتظار', 'confirmed' =&gt; 'مؤكد', 'cancelled' =&gt; 'ملغى'];
+
+$page_title = 'سياحة | حجوزاتي';
+$active = 'account';
+$styles = [];
+$responsive = [];
+$scripts = [];
+
+require __DIR__ . '/includes/header.php';
+?&gt;
+    &lt;main class="Account_Page"&gt;
+        &lt;section class="Account"&gt;
+            &lt;h1&gt;حجوزاتي&lt;/h1&gt;
+            &lt;p class="Account_Who"&gt;
+                &lt;i class="fa-solid fa-user"&gt;&lt;/i&gt; &lt;?= e($user['full_name']) ?&gt; &amp;ndash; &lt;?= e($user['email']) ?&gt;
+            &lt;/p&gt;
+            &lt;?php if (!$bookings): ?&gt;
+            &lt;p class="Flash Flash_Info"&gt;لا توجد حجوزات بعد. &lt;a href="services.php#Trips"&gt;اكتشفوا رحلاتنا&lt;/a&gt;.&lt;/p&gt;
+            &lt;?php else: ?&gt;
+            &lt;div class="Account_Bookings"&gt;
+                &lt;?php foreach ($bookings as $booking): ?&gt;
+                &lt;article class="Account_Booking"&gt;
+                    &lt;img src="&lt;?= e(image_url($booking['trip_image'])) ?&gt;" alt="&lt;?= e($booking['trip_title']) ?&gt;" /&gt;
+                    &lt;div&gt;
+                        &lt;h2&gt;&lt;?= e($booking['trip_title']) ?&gt;&lt;/h2&gt;
+                        &lt;p&gt;&lt;i class="fa-solid fa-calendar"&gt;&lt;/i&gt; &lt;?= e($booking['departure_date']) ?&gt;&lt;/p&gt;
+                        &lt;p&gt;&lt;i class="fa-solid fa-users"&gt;&lt;/i&gt; &lt;?= (int) $booking['people'] ?&gt; مسافر(ين) &amp;ndash; &lt;?= money((int) $booking['total_price']) ?&gt;&lt;/p&gt;
+                        &lt;span class="Status Status_&lt;?= e($booking['status']) ?&gt;"&gt;&lt;?= e($statuses[$booking['status']] ?? $booking['status']) ?&gt;&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/article&gt;
+                &lt;?php endforeach; ?&gt;
+            &lt;/div&gt;
+            &lt;?php endif; ?&gt;
+            &lt;p&gt;&lt;a href="services.php#Trips" class="Account_Link"&gt;&lt;i class="fa-solid fa-plus"&gt;&lt;/i&gt; حجز رحلة جديدة&lt;/a&gt;&lt;/p&gt;
+        &lt;/section&gt;
+    &lt;/main&gt;
+&lt;?php require __DIR__ . '/includes/footer.php'; ?&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Careful:</strong> the id of the customer comes from the session, never from the URL. With <code>my_bookings.php?user=2</code>, a visitor would only have to change the number to read the bookings of someone else (an <em>IDOR</em>: insecure direct object reference).</div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/** The bookings of one account, with the title of their trip, most recent first (Lab 7). */
+function get_user_bookings(int $user_id): array
+{
+    $statement = db()-&gt;prepare(
+        'SELECT bookings.*, trips.title AS trip_title, trips.image AS trip_image
+         FROM bookings
+         JOIN trips ON trips.id = bookings.trip_id
+         WHERE bookings.user_id = ?
+         ORDER BY bookings.departure_date DESC'
+    );
+    $statement-&gt;execute([$user_id]);
+    return $statement-&gt;fetchAll();
+}
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The forms are pre-filled with the name and e-mail of the account, and a booking is linked to it:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> book.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+$values = array_fill_keys(array_keys($rules), '');
+$values['trip_id'] = input('trip', 'get');
+// a logged-in customer does not type their name and e-mail again (Lab 7)
+$values['name'] = current_user()['full_name'] ?? '';
+$values['email'] = current_user()['email'] ?? '';
+$values['people'] = '1';
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> book.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+    'user_id' =&gt; current_user()['id'] ?? null,   // the booking belongs to the account (Lab 7)
+]);
+if ($id !== null) {
+    flash('Success', 'تم تسجيل حجزكم رقم ' . $id . ' بنجاح. سنتصل بكم لتأكيده.');
+    redirect(current_user() !== null ? 'my_bookings.php' : $return . '#Trips');
+        </pre>
+      </div>
+    </section>
+    <section id="Step_7">
+      <h2 class="Section_Title">VIII. Step 7: flash messages</h2>
+      <div class="Definitions">
+        <p>
+          After a form, the page redirects (Post/Redirect/Get, <a href="Lab_6.html">Lab 6</a>), so the message &quot;thank you&quot; must survive the redirect. Until now it travelled in the URL; with a session it can wait on the server until the next page shows it, once:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// Labs 5 and 6: the message travels in the URL
+redirect('contact_us.php?sent=1');          // anyone can open contact_us.php?sent=1
+if (isset($_GET['sent'])) { echo 'Thank you!'; }
+
+// Lab 7: the message travels in the session, and is shown once
+flash('Success', 'Thank you!');            // stored in $_SESSION['flash']
+redirect('contact_us.php');
+// ... header.php of the next page: foreach (take_flashes() as [$type, $message]) ...
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/auth.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// ------------------------------------------------------------------ flash messages
+
+/** A message kept in the session until the next page displays it (after a redirect). */
+function flash(string $type, string $message): void
+{
+    $_SESSION['flash'][] = [$type, $message];
+}
+
+/** The messages waiting, which are removed from the session: they are shown only once. */
+function take_flashes(): array
+{
+    $messages = $_SESSION['flash'] ?? [];
+    unset($_SESSION['flash']);
+    return $messages;
+}
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/header.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;?php $flashes = take_flashes(); ?&gt;
+&lt;?php if ($flashes): ?&gt;
+&lt;!-- messages kept in the session by the previous page (Lab 7) --&gt;
+&lt;div class="Flash_Stack" role="status"&gt;
+    &lt;?php foreach ($flashes as [$type, $message]): ?&gt;
+    &lt;p class="Flash Flash_&lt;?= e($type) ?&gt;"&gt;&lt;?= e($message) ?&gt;&lt;/p&gt;
+    &lt;?php endforeach; ?&gt;
+&lt;/div&gt;
+&lt;?php endif; ?&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li>Reloading the page or bookmarking it does not show the message again.</li><li>Nobody can make Syaha display a message by crafting a URL.</li><li>The messages are escaped with <code>e()</code>: they may contain the name typed by a visitor.</li></ul>
+        </div>
+      </div>
+    </section>
+    <section id="Step_8">
+      <h2 class="Section_Title">IX. Step 8: a cookie to remember a preference</h2>
+      <div class="Definitions">
+        <p>
+          The checkbox &quot;remember my e-mail&quot; of the login page writes a cookie for 30 days; the next time, the field is pre-filled (see the end of Step 4).
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// write: sent to the browser in a Set-Cookie header (so before any HTML, like session_start)
+setcookie('theme', 'dark', [
+    'expires' =&gt; time() + 30 * 24 * 3600,   // 30 days; 0 = until the browser is closed
+    'path' =&gt; '/',                          // sent with every page of the site
+    'httponly' =&gt; true,                     // invisible to JavaScript (document.cookie)
+    'samesite' =&gt; 'Lax',                    // not sent with forms posted by other websites
+    'secure' =&gt; true,                       // HTTPS only
+]);
+
+// read: on the NEXT requests only, and as text typed by the visitor
+$theme = $_COOKIE['theme'] ?? 'light';
+if (!in_array($theme, ['light', 'dark'], true)) {
+    $theme = 'light';                       // a cookie can be edited in the developer tools
+}
+
+// delete: the same cookie with a date in the past
+setcookie('theme', '', ['expires' =&gt; time() - 3600, 'path' =&gt; '/']);
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <ul><li><code>$_COOKIE</code> is filled with the cookies <em>sent by the browser</em>: a cookie written by <code>setcookie()</code> appears there on the next request only.</li><li>A cookie is an input like <code>$_POST</code>: the visitor can change it. Validate it and escape it (<code>e($values['email'])</code> in <code>login.php</code>).</li><li>A cookie is deleted by writing it again with a date in the past, with the same <code>path</code>.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          What a cookie must <strong>never</strong> contain:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// NEVER: the visitor edits the cookie in the developer tools and becomes admin
+setcookie('role', 'customer');
+if ($_COOKIE['role'] === 'admin') { ... }
+
+// NEVER: anyone who sees the cookie (shared computer, XSS, backup...) has the password
+setcookie('password', $_POST['password']);
+
+// RIGHT: the cookie only carries a random id; the role stays on the server, in $_SESSION
+$_SESSION['user'] = ['id' =&gt; 2, 'role' =&gt; 'customer'];
+        </pre>
+      </div>
+      <div class="Note"><strong>Notice:</strong> a &quot;remember me&quot; that keeps the user <em>logged in</em> for weeks is a different feature: it needs a long random token, stored hashed in the database, renewed at each use and deleted at logout. Syaha only remembers the e-mail, which is harmless.</div>
+    </section>
+    <section id="Testing">
+      <h2 class="Section_Title">X. Step 9: test it like an attacker</h2>
+      <div class="Definitions">
+        <p>
+          Use the developer tools and <code>curl</code>, which keeps cookies in a file:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# 1. log in with curl and keep the cookies in a file
+curl -i -c jar.txt -d "email=amine@example.com" -d "password=Syaha_2025" \
+     http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/login.php
+# -&gt; 302 Found, Location: my_bookings.php, Set-Cookie: SYAHA_SESSION=...
+
+# 2. reuse the session: a logged-in page
+curl -i -b jar.txt http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/my_bookings.php      # 200
+
+# 3. a customer in the admin area
+curl -i -b jar.txt http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/admin/index.php      # 403 Forbidden
+
+# 4. logout with a link (GET) is refused: only the form (POST) logs out
+curl -i -b jar.txt http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/logout.php           # 302, still logged in
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Test</th><th>How</th><th>Expected</th></tr><tr><td>Protected page</td><td>open <code>my_bookings.php</code> and <code>admin/trips.php</code> without logging in</td><td>the login page, then back to the page</td></tr><tr><td>Wrong role</td><td>log in as the customer, open <code>admin/index.php</code></td><td>403</td></tr><tr><td>Hidden page</td><td>as the customer, send the form of <code>admin/trip_delete.php</code> with <code>curl</code></td><td>403, nothing deleted</td></tr><tr><td>New id at login</td><td>note the value of <code>SYAHA_SESSION</code>, log in</td><td>the value changed</td></tr><tr><td>Logout</td><td>log out, then press the Back button and reload</td><td>the login page</td></tr><tr><td>Cookie stolen by JavaScript</td><td>type <code>document.cookie</code> in the console</td><td><code>SYAHA_SESSION</code> is not listed (HttpOnly)</td></tr><tr><td>Cookie edited</td><td>change <code>syaha_email</code> to <code>&lt;b&gt;x</code></td><td>shown as text</td></tr><tr><td>Brute force</td><td>6 wrong passwords</td><td>the form waits one minute</td></tr><tr><td>Accounts enumeration</td><td>a wrong e-mail, then a wrong password</td><td>the same message</td></tr><tr><td>Open redirect</td><td><code>login.php?next=https://example.com/x.php</code></td><td>stays on Syaha</td></tr><tr><td>Database</td><td>look at the table <code>users</code> in phpMyAdmin</td><td>only hashes, starting with <code>$2y$</code></td></tr></table>
+        </div>
+      </div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">XI. Your turn</h2>
+      <div class="Definitions">
+        <div>
+          Add accounts to your team project:<ol><li>A <code>users</code> table (unique e-mail, <code>password_hash</code> in a <code>VARCHAR(255)</code>, a role if your project has an admin part), and the pages to register, log in and log out (POST).</li><li>One file that starts the session with safe settings, included by every page before any HTML.</li><li>Regenerate the session id at login; store only what the pages need; destroy everything at logout.</li><li>Protect every private page with a function like <code>require_login()</code>, with the role when needed. Take the id of the user from the session, never from the URL.</li><li>Replace the messages in the URL by flash messages.</li><li>Add one cookie for a harmless preference (language, theme, last search...), validated when it is read.</li><li>Run the tests of Section X.</li></ol>
+        </div>
+      </div>
+    </section>
+    <section id="Deliverables">
+      <h2 class="Section_Title">Deliverables</h2>
+      <ul class="Checklist">
+        <li>Users can register, log in and log out; passwords are stored with <code>password_hash()</code> only.</li>
+        <li>The session cookie is HttpOnly and SameSite, and its id changes at login.</li>
+        <li>Every private page checks the login (and the role) on the server, before doing anything.</li>
+        <li>Messages after a redirect are flash messages; the logout is a POST form.</li>
+        <li>Cookies only hold harmless preferences, and are validated when they are read.</li>
+        <li>This lab counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
+      </ul>
+    </section>
+  </main>
+  <footer class="Inter_Pages">
+    <a href="Lab_6.html" class="Arrow">
+      <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
+      <h1>Lab 6: PHP forms</h1>
+    </a>
+    <a href="Lab_8.html" class="Arrow">
+      <h1>Lab 8: OOP PHP and MVC</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    </a>
+  </footer>
+  <script src="SRC/JS/Script.js" type="module"></script>
+  <script
+    src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=c&amp;skin=sunburst"></script>
+</body>
+
 </html>

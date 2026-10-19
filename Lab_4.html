@@ -1320,8 +1320,12 @@ Form.addEventListener("submit", (event) =&gt; {
       Password = Form.querySelector('input[type="password"]');
     if (!Login || !Password) return;
 
-    // the field accepts an e-mail address OR a phone number: type="email" would refuse phone numbers
-    Login.type = "text";
+    // Lab 7: the real login of the back end accepts e-mail addresses only (data-email-only)
+    const Email_Only = Login.hasAttribute("data-email-only"),
+      Arabic = document.documentElement.lang === "ar";
+
+    // the field of the demo accepts an e-mail address OR a phone number: type="email" would refuse phone numbers
+    if (!Email_Only) Login.type = "text";
     Login.autocomplete = "username";
     Password.autocomplete = "current-password";
     Form.noValidate = true;
@@ -1350,18 +1354,34 @@ Form.addEventListener("submit", (event) =&gt; {
     Form.appendChild(Message);
 
     Form.addEventListener("submit", (event) =&gt; {
-      // no back end yet: logging in will work after the sessions lab (Lab 7)
       event.preventDefault();
       const Value = Login.value.trim(),
         Is_Email = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(Value),
-        Is_Phone = /^0[5-7][0-9]{8}$/.test(Value);
+        Is_Phone = !Email_Only &amp;&amp; /^0[5-7][0-9]{8}$/.test(Value),
+        Login_Ok = Is_Email || Is_Phone;
       let Error = "";
-      if (!Is_Email &amp;&amp; !Is_Phone) Error = "Enter a valid e-mail or an Algerian phone number (05XXXXXXXX).";
-      else if (Password.value.length &lt; 8) Error = "The password has at least 8 characters.";
-      Login.classList.toggle("Invalid", !Is_Email &amp;&amp; !Is_Phone);
-      Password.classList.toggle("Invalid", Error !== "" &amp;&amp; (Is_Email || Is_Phone));
+      if (!Login_Ok) {
+        Error = Email_Only
+          ? (Arabic ? "أدخلوا بريداً إلكترونياً صحيحاً." : "Enter a valid e-mail address.")
+          : "Enter a valid e-mail or an Algerian phone number (05XXXXXXXX).";
+      } else if (Email_Only ? Password.value === "" : Password.value.length &lt; 8) {
+        // a login only checks that a password was typed; the static demo also checks its length
+        Error = Email_Only ? (Arabic ? "أدخلوا كلمة المرور." : "Enter your password.") : "The password has at least 8 characters.";
+      }
+      Login.classList.toggle("Invalid", !Login_Ok);
+      Password.classList.toggle("Invalid", Error !== "" &amp;&amp; Login_Ok);
       Message.classList.toggle("Error", Error !== "");
-      Message.textContent = Error || "Checked! Logging in will be connected to the server in Lab 7.";
+      if (Error) {
+        Message.textContent = Error;
+        return;
+      }
+      // with a back end (Lab 7), the form has an action: send it; the server checks the password
+      if (Form.getAttribute("action")) {
+        Form.submit();
+        return;
+      }
+      // static demo (Labs 2 to 6): nothing is sent
+      Message.textContent = "Checked! Logging in is connected to the server in Lab 7.";
     });
   });
 })();

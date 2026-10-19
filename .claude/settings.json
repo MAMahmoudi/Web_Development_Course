@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n '^\\\\$trips' SRC/Labs/Lab_7/index.php)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/Mahmoudi/AppData/Local/Temp/claude/d--My-Projects-Web-Development-Course/0420caad-e796-4acb-99a3-c8725f7bb25a/scratchpad/lab7.py\")",
+      "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/lab4.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/check.py)",
+      "Bash(rm -f _l7phone.html _l7post.html)",
+      "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/check.py .)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/Mahmoudi/AppData/Local/Temp/claude/d--My-Projects-Web-Development-Course/0420caad-e796-4acb-99a3-c8725f7bb25a/scratchpad/check.py\" .)"
+    ]
+  }
+}
