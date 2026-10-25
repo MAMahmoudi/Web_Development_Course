@@ -10,889 +10,459 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 10: Securing your web application</title>
+  <title>Lab 11: Final project integration and presentation</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 10: Securing your web application</h1>
+    <h1 class="Title">Lab 11: Final project integration and presentation</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab, your team performs a hands-on security audit of its own project. For every web service (each
-          CRUD operation), you will look for the most common web vulnerabilities: SQL injection, Cross-Site Scripting
-          (XSS), Cross-Site Request Forgery (CSRF), weak password storage, insecure sessions, missing authorization
-          checks, unsafe file uploads and leaked secrets. You will fix what you find, record everything in an audit
-          report, and finally audit another team's project. The theory behind this lab is covered in the lectures
-          <a href="Security.html">Security</a> and <a href="Sessions_Cookies.html">Sessions and Cookies</a>; read them
-          before you start.
+          This is the last lab of the semester. Your team will bring all the parts of the project together, check
+          that everything works from a fresh installation, clean up the Git repository, write a README that lets
+          anyone install and run your website, export the database, test the application end to end and prepare the
+          final presentation. At the end of this lab, a person who has never seen your project should be able to
+          clone it, follow the README and use every feature in less than 15 minutes.
         </p>
       </div>
     </section>
-    <section id="Audit_Setup">
-      <h2 class="Section_Title">I. Preparing the audit</h2>
+    <section id="Integration">
+      <h2 class="Section_Title">I. Integration checklist</h2>
       <div class="Definitions">
         <p>
-          A security audit is a systematic review: you do not just "look around", you list every entry point of your
-          application and check each one against the same list of attacks. An entry point is anything that receives
-          data from the user: a form, a URL parameter (<code>?id=</code>), a cookie, an uploaded file or an AJAX
-          request. Remember the golden rule from the lecture: <strong>never trust user input</strong>, and that
-          includes the data sent by your own JavaScript, because anyone can modify or replay a request with the
-          browser DevTools.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">Step 1: list your services and entry points</h3>
-      <div class="Definitions">
-        <p>
-          Create a branch for the audit and a file <code>SECURITY_AUDIT.md</code> at the root of your repository.
-          In this file, list each of your (at least 5) web services, the PHP file(s) that implement it, the HTTP
-          method, the parameters it receives and who is allowed to use it (visitor, logged-in user, owner, admin).
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-git checkout main
-git pull
-git checkout -b security-audit
-# create SECURITY_AUDIT.md, then commit it
-git add SECURITY_AUDIT.md
-git commit -m "Add security audit inventory of web services"
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint">
-# Security audit - Team X
-
-| Service           | File(s)                    | Method | Parameters              | Allowed users   |
-|-------------------|----------------------------|--------|-------------------------|-----------------|
-| Create a product  | products/create.php        | POST   | name, price, image      | admin           |
-| List products     | products/list.php (AJAX)   | GET    | q, page                 | everyone        |
-| Edit a product    | products/edit.php          | POST   | id, name, price         | admin           |
-| Delete a product  | products/delete.php        | POST   | id                      | admin           |
-| Post a review     | reviews/create.php         | POST   | product_id, text        | logged-in user  |
-        </pre>
-      </div>
-      <div class="Note"><strong>Important:</strong> all the attack examples of this lab must be tried <strong>only on
-          your own local copy</strong> (XAMPP on your machine) or on a copy of a classmate's project they agreed to
-        share with you. Attacking a real website without written permission is illegal.</div>
-    </section>
-    <section id="SQL_Injection">
-      <h2 class="Section_Title">II. SQL injection</h2>
-      <div class="Definitions">
-        <p>
-          SQL injection happens when user input is pasted directly into the text of an SQL query. The attacker then
-          writes SQL instead of data and changes the meaning of the query. Search your code for every query built
-          with string concatenation or variables inside a double-quoted string (<code>"... '$email' ..."</code>).
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">The vulnerable version</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// login.php - VULNERABLE, do not use
-$email    = $_POST['email'];
-$password = $_POST['password'];
-
-$conn = mysqli_connect('localhost', 'root', '', 'shop');
-$sql  = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-$result = mysqli_query($conn, $sql);
-
-if (mysqli_num_rows($result) &gt; 0) {
-    echo 'Welcome!';
-}
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          Try it on your local copy: type <code>' OR '1'='1' -- </code> (with a space after the two dashes) in the
-          email field and anything in the password field. The query becomes
-          <code>SELECT * FROM users WHERE email = '' OR '1'='1' -- ' AND password = '...'</code>: the condition is
-          always true and the rest is a comment, so you are logged in without knowing any password. The same trick
-          can be used to read or delete whole tables.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">The fix: PDO prepared statements</h3>
-      <div class="Definitions">
-        <p>
-          With a prepared statement, the query and the data are sent separately to MySQL. The query contains
-          placeholders (<code>?</code> or <code>:name</code>) and the values are bound later, so they can never be
-          interpreted as SQL. Put the connection in a single file that every service includes.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/db.php - one shared connection for the whole project
-$config = require __DIR__ . '/../config.php'; // see section VII (secrets out of Git)
-
-$pdo = new PDO(
-    "mysql:host={$config['db_host']};dbname={$config['db_name']};charset=utf8mb4",
-    $config['db_user'],
-    $config['db_pass'],
-    [
-        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
-    ]
-);
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// login.php - SAFE
-require __DIR__ . '/includes/db.php';
-
-$email    = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
-
-$stmt = $pdo-&gt;prepare('SELECT id, name, role, password_hash FROM users WHERE email = ?');
-$stmt-&gt;execute([$email]);
-$user = $stmt-&gt;fetch();
-
-if ($user &amp;&amp; password_verify($password, $user['password_hash'])) {
-    // login succeeded (see section V for the session part)
-} else {
-    $error = 'Invalid email or password.';
-}
-
-// Named placeholders work too:
-$stmt = $pdo-&gt;prepare('UPDATE products SET name = :name, price = :price WHERE id = :id');
-$stmt-&gt;execute(['name' =&gt; $name, 'price' =&gt; $price, 'id' =&gt; $id]);
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> placeholders can only replace <em>values</em>, not table or column
-        names. If the user chooses a sort column (<code>?sort=price</code>), check it against a whitelist:
-        <code>$sort = in_array($_GET['sort'] ?? '', ['name', 'price', 'created_at'], true) ? $_GET['sort'] :
-          'name';</code>. If your project uses mysqli instead of PDO, use <code>mysqli_prepare()</code> and
-        <code>mysqli_stmt_bind_param()</code>; the principle is the same.</div>
-    </section>
-    <section id="XSS">
-      <h2 class="Section_Title">III. Cross-Site Scripting (XSS)</h2>
-      <div class="Definitions">
-        <p>
-          XSS happens when user data is inserted into a page as HTML, so the browser executes it. In a
-          <strong>reflected</strong> XSS, the payload comes from the current request (for example a search term in
-          the URL) and is echoed back. In a <strong>stored</strong> XSS, the payload is saved in the database (a
-          comment, a username, a product description) and executed for every visitor who views it. The injected
-          script runs with the victim's session: it can read the page, send requests in their name or redirect them.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">Find the problem</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// search.php - VULNERABLE (reflected XSS)
-echo "&lt;p&gt;Results for: " . $_GET['q'] . "&lt;/p&gt;";
-
-// product.php - VULNERABLE (stored XSS)
-foreach ($reviews as $review) {
-    echo "&lt;div class='review'&gt;&lt;b&gt;{$review['author']}&lt;/b&gt;: {$review['text']}&lt;/div&gt;";
-}
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          Test it locally: open <code>search.php?q=&lt;script&gt;alert(1)&lt;/script&gt;</code>, and post a review
-          whose text is <code>&lt;img src=x onerror="alert(document.cookie)"&gt;</code>. If an alert box appears,
-          the service is vulnerable.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">The fix in PHP: escape on output</h3>
-      <div class="Definitions">
-        <p>
-          Store the data as the user typed it, but <strong>escape it every time you print it</strong> in HTML with
-          <code>htmlspecialchars($value, ENT_QUOTES, 'UTF-8')</code>. This converts <code>&lt; &gt; &amp; " '</code>
-          into HTML entities, so the browser displays them as text. <code>ENT_QUOTES</code> is required to protect
-          attribute values written between single quotes. Define a short helper and use it everywhere.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/functions.php
-function e(?string $value): string
-{
-    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
-}
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php require __DIR__ . '/includes/functions.php'; ?&gt;
-&lt;p&gt;Results for: &lt;?= e($_GET['q'] ?? '') ?&gt;&lt;/p&gt;
-
-&lt;?php foreach ($reviews as $review): ?&gt;
-  &lt;div class="review"&gt;
-    &lt;b&gt;&lt;?= e($review['author']) ?&gt;&lt;/b&gt;: &lt;?= e($review['text']) ?&gt;
-  &lt;/div&gt;
-&lt;?php endforeach; ?&gt;
-
-&lt;input type="text" name="name" value="&lt;?= e($product['name']) ?&gt;"&gt;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">The fix in JavaScript: textContent instead of innerHTML</h3>
-      <div class="Definitions">
-        <p>
-          Your AJAX services return JSON, and the escaping must then happen in JavaScript. Never put user data in
-          <code>innerHTML</code> (or jQuery's <code>.html()</code>, or <code>insertAdjacentHTML</code>). Create the
-          elements and assign the data with <code>textContent</code> (or jQuery's <code>.text()</code>), which never
-          interprets HTML.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// VULNERABLE: the review text is parsed as HTML
-list.innerHTML += `&lt;li&gt;&lt;b&gt;${review.author}&lt;/b&gt;: ${review.text}&lt;/li&gt;`;
-
-// SAFE: the data is inserted as plain text
-const li = document.createElement('li');
-const author = document.createElement('b');
-author.textContent = review.author;
-li.append(author, ': ' + review.text); // append() with a string creates a text node
-list.appendChild(li);
-
-// SAFE with jQuery
-$('&lt;li&gt;').append($('&lt;b&gt;').text(review.author), document.createTextNode(': ' + review.text)).appendTo('#list');
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> escaping is also needed in URLs and in links. A user-supplied link such
-        as <code>javascript:alert(1)</code> is dangerous inside <code>href</code> even after
-        <code>htmlspecialchars</code>; accept only links that start with <code>https://</code> or
-        <code>http://</code>. The Content-Security-Policy header of section VII adds a second layer of protection.
-      </div>
-    </section>
-    <section id="CSRF">
-      <h2 class="Section_Title">IV. Cross-Site Request Forgery (CSRF)</h2>
-      <div class="Definitions">
-        <p>
-          The browser automatically sends your session cookie with every request to your site, even when the request
-          is triggered by another website. A malicious page can therefore contain a hidden form that posts to
-          <code>http://localhost/project/products/delete.php</code>: if an admin visits that page while logged in,
-          the product is deleted with the admin's rights. The defense is a secret token that the attacker's page
-          cannot know: it is stored in the session and must be sent back with every request that changes data.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">Generate one token per session</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/csrf.php (include it after session_start())
-function csrf_token(): string
-{
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // 64 hexadecimal characters
-    }
-    return $_SESSION['csrf_token'];
-}
-
-function csrf_check(): void
-{
-    $sent = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
-    if (!is_string($sent) || !hash_equals(csrf_token(), $sent)) {
-        http_response_code(403);
-        exit('Invalid CSRF token.');
-    }
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Add the token to every form and check it</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;form action="products/delete.php" method="post"&gt;
-  &lt;input type="hidden" name="csrf_token" value="&lt;?= e(csrf_token()) ?&gt;"&gt;
-  &lt;input type="hidden" name="id" value="&lt;?= (int) $product['id'] ?&gt;"&gt;
-  &lt;button type="submit"&gt;Delete&lt;/button&gt;
-&lt;/form&gt;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// products/delete.php
-session_start();
-require __DIR__ . '/../includes/csrf.php';
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit('Method not allowed.');
-}
-csrf_check();
-// ... authorization check (section V), then the DELETE query
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">AJAX requests</h3>
-      <div class="Definitions">
-        <p>
-          For AJAX, print the token once in a <code>&lt;meta&gt;</code> tag and send it in a custom header.
-          <code>csrf_check()</code> above already reads <code>$_SERVER['HTTP_X_CSRF_TOKEN']</code>.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// In the page head: &lt;meta name="csrf-token" content="&lt;?= e(csrf_token()) ?&gt;"&gt;
-const token = document.querySelector('meta[name="csrf-token"]').content;
-
-fetch('products/delete.php', {
-  method: 'POST',
-  headers: { 'X-CSRF-Token': token },
-  body: new URLSearchParams({ id: productId })
-})
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-        </pre>
-      </div>
-      <div class="Note"><strong>Rules:</strong> (1) actions that change data (create, update, delete, logout) must
-        never be done with a GET request or a simple link; (2) compare tokens with <code>hash_equals()</code>, not
-        <code>==</code>, to avoid timing attacks; (3) set the session cookie with <code>SameSite=Lax</code> (or
-        <code>Strict</code>, see section V): modern browsers then do not send it with cross-site POST requests,
-        which is a second layer of protection, not a replacement for the token.</div>
-    </section>
-    <section id="Authentication_Authorization">
-      <h2 class="Section_Title">V. Passwords, sessions and authorization</h2>
-      <h3 class="Sub_Section_Title">Password storage</h3>
-      <div class="Definitions">
-        <p>
-          Passwords must never be stored in clear text, nor with fast hashes such as <code>md5()</code> or
-          <code>sha1()</code>, which can be cracked by billions of guesses per second. Use
-          <code>password_hash()</code>, which applies a slow algorithm (bcrypt by default) with a random salt, and
-          <code>password_verify()</code> to check a login. The result is up to 255 characters long, so the column
-          should be <code>VARCHAR(255)</code>.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-sql">
-ALTER TABLE users CHANGE password password_hash VARCHAR(255) NOT NULL;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// register.php
-$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-$stmt = $pdo-&gt;prepare('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)');
-$stmt-&gt;execute([$name, $email, $hash]);
-
-// login.php (after fetching $user with a prepared statement)
-if ($user &amp;&amp; password_verify($_POST['password'], $user['password_hash'])) {
-    if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
-        $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $pdo-&gt;prepare('UPDATE users SET password_hash = ? WHERE id = ?')-&gt;execute([$newHash, $user['id']]);
-    }
-    // ... start the authenticated session (below)
-}
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> if your database already contains clear-text passwords, write a small
-        one-time script that replaces each of them with <code>password_hash()</code>, or simply recreate your test
-        accounts. Show the same message ("Invalid email or password") whether the email or the password is wrong.
-      </div>
-      <h3 class="Sub_Section_Title">Session security</h3>
-      <div class="Definitions">
-        <p>
-          The session cookie is the key to the account: if an attacker steals it, they are logged in. Configure the
-          cookie before <code>session_start()</code>, regenerate the session id at login (to prevent session
-          fixation), expire inactive sessions and destroy the session completely at logout. See the "Securing Session
-          INI Settings" part of the <a href="Security.html">Security</a> lecture for the meaning of each option.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/session.php - include this file at the top of EVERY page instead of calling session_start()
-ini_set('session.use_strict_mode', '1');
-ini_set('session.use_only_cookies', '1');
-
-session_set_cookie_params([
-    'lifetime' =&gt; 0,                                   // cookie deleted when the browser closes
-    'path'     =&gt; '/',
-    'secure'   =&gt; !empty($_SERVER['HTTPS']),           // true as soon as the site uses HTTPS
-    'httponly' =&gt; true,                                // not readable from JavaScript (document.cookie)
-    'samesite' =&gt; 'Lax',
-]);
-session_start();
-
-const SESSION_TIMEOUT = 1800; // 30 minutes of inactivity
-
-if (isset($_SESSION['last_activity']) &amp;&amp; time() - $_SESSION['last_activity'] &gt; SESSION_TIMEOUT) {
-    session_unset();
-    session_destroy();
-    header('Location: login.php?expired=1');
-    exit;
-}
-$_SESSION['last_activity'] = time();
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// login.php, after password_verify() succeeded
-session_regenerate_id(true); // new id, old session file deleted
-$_SESSION['user_id'] = $user['id'];
-$_SESSION['role']    = $user['role'];
-
-// logout.php (called with POST + CSRF token)
-$_SESSION = [];
-setcookie(session_name(), '', ['expires' =&gt; time() - 3600, 'path' =&gt; '/']);
-session_destroy();
-header('Location: index.php');
-exit;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Authorization on every action (IDOR)</h3>
-      <div class="Definitions">
-        <p>
-          Authentication answers "who are you?"; authorization answers "are you allowed to do <em>this</em>?". A very
-          common bug is the <strong>Insecure Direct Object Reference (IDOR)</strong>: the page
-          <code>edit_post.php?id=42</code> shows your post, but if you change the URL to <code>?id=43</code> you can
-          edit somebody else's post, because the server only checks that you are logged in. Hiding a button in the
-          interface is not a protection: the check must be done in PHP, in every service, both when the form is
-          displayed and when it is submitted.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/auth.php
-function require_login(): int
-{
-    if (empty($_SESSION['user_id'])) {
-        header('Location: login.php');
-        exit;
-    }
-    return (int) $_SESSION['user_id'];
-}
-
-function require_role(string $role): void
-{
-    require_login();
-    if (($_SESSION['role'] ?? '') !== $role) {
-        http_response_code(403);
-        exit('Access denied.');
-    }
-}
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// edit_post.php
-require __DIR__ . '/includes/session.php';
-require __DIR__ . '/includes/auth.php';
-require __DIR__ . '/includes/db.php';
-
-$userId = require_login();
-$postId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-// VULNERABLE: any logged-in user can open any post
-// $stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ?');
-// $stmt-&gt;execute([$postId]);
-
-// SAFE: the post must belong to the current user
-$stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ? AND user_id = ?');
-$stmt-&gt;execute([$postId, $userId]);
-$post = $stmt-&gt;fetch();
-
-if (!$post) {
-    http_response_code(404);
-    exit('Post not found.');
-}
-
-// The same condition must appear in the UPDATE / DELETE query:
-// UPDATE posts SET title = ?, body = ? WHERE id = ? AND user_id = ?
-        </pre>
-      </div>
-      <div class="Note"><strong>Test:</strong> create two test accounts, A and B. Log in as A, copy the URL or the
-        AJAX request (DevTools &gt; Network &gt; right click &gt; "Copy as fetch") of each edit or delete action,
-        log in as B and replay it. Every one of these attempts must fail.</div>
-    </section>
-    <section id="File_Upload">
-      <h2 class="Section_Title">VI. File upload hardening</h2>
-      <div class="Definitions">
-        <p>
-          If your project accepts files (profile pictures, product images, documents), an attacker may upload a file
-          named <code>shell.php</code> and then open it in the browser: Apache will execute it and the attacker
-          controls your server. Never trust the file name or the type sent by the browser
-          (<code>$_FILES['x']['type']</code>), both are chosen by the client. Instead: check the upload error and
-          the size, detect the real type from the content, generate a new random name with an extension you choose,
-          and forbid script execution in the upload folder.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// upload_avatar.php (session, CSRF and login checks done before)
-$allowed = [
-    'image/jpeg' =&gt; 'jpg',
-    'image/png'  =&gt; 'png',
-    'image/webp' =&gt; 'webp',
-];
-$maxSize = 2 * 1024 * 1024; // 2 MB
-
-$file = $_FILES['avatar'] ?? null;
-if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
-    exit('Upload failed.');
-}
-if ($file['size'] &gt; $maxSize) {
-    exit('File too large (2 MB maximum).');
-}
-
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$mime  = $finfo-&gt;file($file['tmp_name']); // real type, read from the file content
-if (!isset($allowed[$mime])) {
-    exit('Only JPEG, PNG and WebP images are accepted.');
-}
-
-$newName = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
-$target  = __DIR__ . '/uploads/' . $newName;
-
-if (!move_uploaded_file($file['tmp_name'], $target)) {
-    exit('Could not save the file.');
-}
-
-$stmt = $pdo-&gt;prepare('UPDATE users SET avatar = ? WHERE id = ?');
-$stmt-&gt;execute([$newName, $userId]);
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          Then add an <code>.htaccess</code> file inside the <code>uploads/</code> folder so that, even if a script
-          gets there, Apache refuses to serve it and does not list the folder content.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# uploads/.htaccess
-Options -Indexes
-&lt;FilesMatch "\.(php|phtml|phar|php\d)$"&gt;
-    Require all denied
-&lt;/FilesMatch&gt;
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> the <code>finfo</code> class comes from the <code>fileinfo</code>
-        extension. If you get "Class finfo not found", open <code>php.ini</code> from the XAMPP control panel
-        (Apache &gt; Config), remove the <code>;</code> in front of <code>extension=fileinfo</code> and restart
-        Apache. Also add a client-side check (<code>accept="image/*"</code>, size check in JS) for a better user
-        experience, but remember it is not a security measure.</div>
-    </section>
-    <section id="Configuration">
-      <h2 class="Section_Title">VII. Errors, security headers and secrets</h2>
-      <h3 class="Sub_Section_Title">Do not display errors in production</h3>
-      <div class="Definitions">
-        <p>
-          PHP error messages and uncaught PDO exceptions reveal file paths, SQL queries and sometimes credentials.
-          They are very useful during development, but on a deployed site they must be written to a log file only,
-          and the user must see a generic message.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-; php.ini on the production server
-display_errors = Off
-display_startup_errors = Off
-log_errors = On
-error_reporting = E_ALL
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/bootstrap.php - if you cannot edit php.ini on your hosting
-$isProduction = true; // read it from config.php in practice
-ini_set('display_errors', $isProduction ? '0' : '1');
-ini_set('log_errors', '1');
-error_reporting(E_ALL);
-
-// Around database operations:
-try {
-    $stmt = $pdo-&gt;prepare('INSERT INTO orders (user_id, total) VALUES (?, ?)');
-    $stmt-&gt;execute([$userId, $total]);
-} catch (PDOException $ex) {
-    error_log($ex-&gt;getMessage());          // details go to the log file
-    http_response_code(500);
-    echo json_encode(['error' =&gt; 'Server error, please try again later.']);
-    exit;
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Security headers</h3>
-      <div class="Definitions">
-        <p>
-          HTTP response headers tell the browser to enable extra protections:
+          During the semester each member worked on separate pages and services. Integration means checking that
+          these parts work <em>together</em>: shared navigation, shared CSS, one database connection file, one
+          session system and consistent naming. Merge all the finished branches into <code>main</code>, then go
+          through the following checklist together, on one machine, starting from a fresh clone.
         </p>
       </div>
       <table class="Table">
         <tr>
-          <th>Header</th>
-          <th>Protection</th>
+          <th>Area</th>
+          <th>What must work</th>
+          <th>Related labs and lectures</th>
         </tr>
         <tr>
-          <td>Content-Security-Policy</td>
-          <td>Lists the sources from which scripts, styles, images, etc. may be loaded. Inline scripts are blocked,
-            which stops most XSS payloads. <code>frame-ancestors 'none'</code> forbids other sites from embedding
-            your pages in an iframe (clickjacking).</td>
+          <td>Pages and layout</td>
+          <td>All pages are reachable from the navigation bar, share the same style and are responsive (test at
+            360px, 768px and 1280px wide with the DevTools device toolbar). No broken links or images.</td>
+          <td><a href="CSS_Layout.html">CSS Layout</a></td>
         </tr>
         <tr>
-          <td>X-Content-Type-Options: nosniff</td>
-          <td>Stops the browser from guessing the type of a file (for example executing an uploaded text file as
-            JavaScript).</td>
+          <td>Validation</td>
+          <td>Every form is validated in JavaScript (immediate feedback) <strong>and</strong> in PHP (security). Error
+            messages are clear and shown next to the field.</td>
+          <td><a href="JS_Form_Validation.html">JS Form Validation</a></td>
         </tr>
         <tr>
-          <td>X-Frame-Options: DENY</td>
-          <td>Older equivalent of <code>frame-ancestors 'none'</code>, still useful for old browsers.</td>
+          <td>Web services</td>
+          <td>At least 5 CRUD services work: create, read (list and detail), update and delete, with the results
+            visible in phpMyAdmin.</td>
+          <td><a href="PHP_MySQL.html">PHP and MySQL</a></td>
         </tr>
         <tr>
-          <td>Referrer-Policy: strict-origin-when-cross-origin</td>
-          <td>Avoids leaking full URLs (with their parameters) to other websites.</td>
+          <td>Authentication</td>
+          <td>Register, login, logout and session timeout work; pages reserved to logged-in users or admins redirect
+            the others.</td>
+          <td><a href="Sessions_Cookies.html">Sessions and Cookies</a></td>
+        </tr>
+        <tr>
+          <td>AJAX</td>
+          <td>The AJAX features (search, live update, pagination, ...) return valid JSON and update the page without
+            reloading; errors are handled and shown to the user.</td>
+          <td><a href="AJAX.html">AJAX</a></td>
+        </tr>
+        <tr>
+          <td>Security</td>
+          <td>All the issues of the Lab 10 audit are fixed and closed: prepared statements, output escaping, CSRF
+            tokens, password hashing, authorization checks, safe uploads, no secrets in Git.</td>
+          <td><a href="Lab_10.html">Lab 10</a>, <a href="Security.html">Security</a></td>
         </tr>
       </table>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/headers.php - include at the top of every page, before any output
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; "
-    . "style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; "
-    . "img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
-header('X-Content-Type-Options: nosniff');
-header('X-Frame-Options: DENY');
-header('Referrer-Policy: strict-origin-when-cross-origin');
-        </pre>
-      </div>
-      <div class="Definitions">
-        <p>
-          The same headers can be set for the whole project (including HTML, CSS and JS files) in an
-          <code>.htaccess</code> file at the root of the project (module <code>mod_headers</code>, enabled by default
-          in XAMPP):
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# .htaccess at the project root
-&lt;IfModule mod_headers.c&gt;
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-Frame-Options "DENY"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-&lt;/IfModule&gt;
-Options -Indexes
-        </pre>
-      </div>
-      <div class="Note"><strong>Warning:</strong> adapt the CSP to the CDNs your project really uses, then open every
-        page with the DevTools console open: blocked resources are reported there. With this policy,
-        <code>&lt;script&gt;...&lt;/script&gt;</code> blocks inside the HTML and attributes such as
-        <code>onclick="..."</code> stop working: move that code to external <code>.js</code> files and use
-        <code>addEventListener()</code>. Check the result with the Network tab (Response headers).</div>
-      <h3 class="Sub_Section_Title">Secrets out of the Git repository</h3>
-      <div class="Definitions">
-        <p>
-          Database passwords, API keys and SMTP passwords must not be committed: anyone with access to the
-          repository (or to a public fork) can read them, and they stay in the Git history forever. Put them in a
-          <code>config.php</code> file that is ignored by Git, and commit a <code>config.example.php</code> with fake
-          values so that your teammates know which keys to fill.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// config.example.php - committed. Copy it to config.php and fill in your own values.
-return [
-    'db_host' =&gt; 'localhost',
-    'db_name' =&gt; 'your_database',
-    'db_user' =&gt; 'root',
-    'db_pass' =&gt; '',
-    'production' =&gt; false,
-];
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# .gitignore
-config.php
-uploads/*
-!uploads/.htaccess
-*.log
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# If config.php was already committed: stop tracking it (the local file is kept)
-git rm --cached config.php
-git add .gitignore config.example.php
-git commit -m "Move database credentials to an ignored config.php"
-        </pre>
-      </div>
-      <div class="Note"><strong>Important:</strong> <code>git rm --cached</code> does not remove the file from the
-        previous commits. If a real password was ever pushed, consider it public and change it.</div>
+      <div class="Note"><strong>Tip:</strong> look for paths that only work on one machine, such as
+        <code>C:\xampp\htdocs\...</code> or <code>http://localhost/ahmed_project/</code>. Use relative paths
+        (<code>css/style.css</code>) in HTML and <code>__DIR__</code> in PHP includes
+        (<code>require __DIR__ . '/includes/db.php';</code>).</div>
     </section>
-    <section id="Audit_Checklist">
-      <h2 class="Section_Title">VIII. Audit checklist and peer review</h2>
-      <h3 class="Sub_Section_Title">Fill the checklist for each service</h3>
+    <section id="Git_Workflow">
+      <h2 class="Section_Title">II. Git workflow hygiene</h2>
       <div class="Definitions">
         <p>
-          Copy the table below into <code>SECURITY_AUDIT.md</code> once per web service. For each line, write
-          <strong>Pass</strong>, <strong>Fail</strong> or <strong>N/A</strong> (not applicable, with a reason). For
-          every <strong>Fail</strong>, open a GitHub issue, fix it on your <code>security-audit</code> branch, and
-          write the commit hash in the last column.
+          The repository is part of the evaluation: it shows how the team worked. A clean history has one branch per
+          feature, changes merged through pull requests reviewed by another member, small commits with meaningful
+          messages, and contributions from <strong>every</strong> member.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Feature branches and pull requests</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Start a feature from an up-to-date main
+git checkout main
+git pull
+git checkout -b feature/product-search
+
+# Work, then commit small logical steps
+git add products/search.php js/search.js
+git commit -m "Add AJAX product search by name"
+
+# Publish the branch and open a pull request on GitHub
+git push -u origin feature/product-search
+
+# Before merging, bring the latest main into your branch and fix conflicts locally
+git checkout feature/product-search
+git pull origin main
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          On GitHub, open the pull request from <code>feature/product-search</code> into <code>main</code>, describe
+          what it does and how to test it, and ask a teammate to review it. Merge it only once it works on the
+          reviewer's machine, then delete the branch.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Meaningful commit messages</h3>
+      <table class="Table">
+        <tr>
+          <th>Bad</th>
+          <th>Good</th>
+        </tr>
+        <tr>
+          <td>update</td>
+          <td>Add server-side validation to the registration form</td>
+        </tr>
+        <tr>
+          <td>fix</td>
+          <td>Fix IDOR in edit_post.php: check that the post belongs to the user</td>
+        </tr>
+        <tr>
+          <td>final version 2</td>
+          <td>Make the product grid responsive below 768px</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">Check that everyone contributes</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Number of commits per author on main
+git shortlog -sn main
+
+# Same, ignoring merge commits
+git shortlog -sn --no-merges main
+
+# A compact view of the history and its branches
+git log --oneline --graph --all -20
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> if the same person appears under two names (for example a laptop and a
+        lab computer configured differently), fix your identity with <code>git config --global user.name "First
+          Last"</code> and <code>git config --global user.email "you@example.com"</code>, using the email of your
+        GitHub account. Commits made from another member's computer are counted for that member.</div>
+    </section>
+    <section id="README">
+      <h2 class="Section_Title">III. Writing a good README.md</h2>
+      <div class="Definitions">
+        <p>
+          The <code>README.md</code> file is displayed on the home page of your GitHub repository. It is the first
+          thing a teacher, a classmate or a future employer reads. It must explain what the project does and, above
+          all, how to install it. Use the following template and replace every line between angle brackets.
+          Screenshots go in a folder of the repository (for example <code>docs/screenshots/</code>).
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# &lt;Project name&gt;
+
+&lt;One or two sentences: what the website does and for whom.&gt;
+
+## Team
+- &lt;Member 1&gt; - &lt;main responsibilities, e.g. products pages and product services&gt;
+- &lt;Member 2&gt; - &lt;...&gt;
+- &lt;Member 3&gt; - &lt;...&gt;
+
+## Features
+- User registration, login and logout
+- &lt;Service 1: e.g. create, edit and delete products (admin)&gt;
+- &lt;Service 2: e.g. live search of products with AJAX&gt;
+- &lt;...&gt;
+
+## Screenshots
+![Home page](docs/screenshots/home.png)
+![Product page](docs/screenshots/product.png)
+
+## Technologies
+HTML, CSS, JavaScript, PHP 8, MySQL (MariaDB), XAMPP
+
+## Installation
+1. Install XAMPP and start **Apache** and **MySQL** from the XAMPP control panel.
+2. Clone the repository into the `htdocs` folder:
+   `git clone https://github.com/&lt;organization&gt;/&lt;repository&gt;.git C:/xampp/htdocs/&lt;repository&gt;`
+3. Open http://localhost/phpmyadmin, click **Import**, choose `database/&lt;database&gt;.sql` and click **Import**
+   (the file creates the database and its tables).
+4. Copy `config.example.php` to `config.php` and fill in your database credentials.
+5. Open http://localhost/&lt;repository&gt;/ in your browser.
+
+## Test accounts
+| Role  | Email             | Password    |
+|-------|-------------------|-------------|
+| Admin | admin@test.local  | Admin1234!  |
+| User  | user@test.local   | User1234!   |
+
+## Project structure
+&lt;Short description of the main folders: css/, js/, includes/, products/, database/, ...&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> the test accounts must exist in the exported database, with their
+        passwords hashed by <code>password_hash()</code>. They are only for local testing: never reuse these
+        passwords, and change them on a deployed site.</div>
+    </section>
+    <section id="Database_Export">
+      <h2 class="Section_Title">IV. Exporting the database</h2>
+      <div class="Definitions">
+        <p>
+          Your PHP code is useless without the database. Export it into a <code>.sql</code> file and commit it in a
+          <code>database/</code> folder, so that anyone can recreate it. Export the final version, after all the
+          structure changes of the semester.
+        </p>
+        <ol>
+          <li>Open <code>http://localhost/phpmyadmin</code> and select your database in the left panel.</li>
+          <li>Click the <strong>Export</strong> tab and choose the <strong>Custom</strong> export method.</li>
+          <li>Keep the format <strong>SQL</strong>, select all the tables, and in "Object creation options" check
+            <strong>Add CREATE DATABASE / USE statement</strong> and <strong>Add DROP TABLE</strong>.</li>
+          <li>Click <strong>Export</strong> and save the file as <code>database/&lt;database&gt;.sql</code> in your
+            repository.</li>
+        </ol>
+      </div>
+      <div class="Definitions">
+        <p>
+          You can do the same from the command line with the tools shipped with XAMPP (in Git Bash):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Export (structure + data, with CREATE DATABASE)
+/c/xampp/mysql/bin/mysqldump -u root -p --databases shop &gt; database/shop.sql
+
+# Import on another machine
+/c/xampp/mysql/bin/mysql -u root -p &lt; database/shop.sql
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Before exporting, clean the data: remove personal information and junk test rows, and keep a small but
+          realistic data set (a few users, products, comments...) so the demo looks alive. To create the hash of a
+          test account password, run the following command and paste the result in the
+          <code>password_hash</code> column with phpMyAdmin:
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+/c/xampp/php/php -r "echo password_hash('Admin1234!', PASSWORD_DEFAULT), PHP_EOL;"
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+-- Or insert the test accounts directly (replace the hashes with the ones you generated)
+INSERT INTO users (name, email, password_hash, role) VALUES
+  ('Admin', 'admin@test.local', '$2y$10$...generated hash...', 'admin'),
+  ('Test User', 'user@test.local', '$2y$10$...generated hash...', 'user');
+        </pre>
+      </div>
+      <div class="Note"><strong>Test it:</strong> drop your local database (or use a teammate's computer), import the
+        <code>.sql</code> file, and check that the whole site works. If the import fails, the reviewers' import will
+        fail too.</div>
+    </section>
+    <section id="Testing">
+      <h2 class="Section_Title">V. End-to-end testing</h2>
+      <div class="Definitions">
+        <p>
+          End-to-end testing means using the application like a real user, from the browser to the database and
+          back. Write a short manual test plan (for example in <code>docs/TEST_PLAN.md</code>) with one line per
+          scenario, and run it on a fresh installation. Each member tests the services written by someone else.
         </p>
       </div>
       <table class="Table">
         <tr>
           <th>#</th>
-          <th>Check</th>
-          <th>How to verify</th>
-          <th>Status</th>
-          <th>Fix (commit)</th>
+          <th>Scenario</th>
+          <th>Steps</th>
+          <th>Expected result</th>
+          <th>Result</th>
         </tr>
         <tr>
           <td>1</td>
-          <td>All SQL queries use prepared statements</td>
-          <td>Search the code for <code>query(</code>, <code>mysqli_query</code> and variables inside SQL strings;
-            try <code>' OR '1'='1' -- </code></td>
-          <td></td>
-          <td></td>
+          <td>Register a new user</td>
+          <td>Open the register page, fill valid data, submit</td>
+          <td>Redirected to the home page, logged in; new row in the users table with a hashed password</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
           <td>2</td>
-          <td>All user data is escaped in HTML output</td>
-          <td>Every <code>echo</code> / <code>&lt;?=</code> of user data uses <code>e()</code>; try
-            <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> in each field</td>
-          <td></td>
-          <td></td>
+          <td>Invalid registration</td>
+          <td>Submit with an empty name and an invalid email; then disable JS and submit again</td>
+          <td>JS errors shown; with JS disabled, PHP rejects the data with a message</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
           <td>3</td>
-          <td>No user data in <code>innerHTML</code> / <code>.html()</code></td>
-          <td>Search the JS files; display an XSS payload through the AJAX service</td>
-          <td></td>
-          <td></td>
+          <td>Create / edit / delete an item</td>
+          <td>Log in as admin, create an item, edit it, delete it</td>
+          <td>Each change visible on the page and in phpMyAdmin</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
           <td>4</td>
-          <td>Data-changing actions use POST and check a CSRF token</td>
-          <td>Remove the hidden field in DevTools and submit: the server must answer 403</td>
-          <td></td>
-          <td></td>
+          <td>Access control</td>
+          <td>Log out and open an admin URL; log in as a user and open another user's edit URL</td>
+          <td>Redirected to login / "Access denied"</td>
+          <td>Pass / Fail</td>
         </tr>
         <tr>
           <td>5</td>
-          <td>Server-side validation of every parameter</td>
-          <td>Disable the JS validation (or send the request with "Copy as fetch") with empty, too long or invalid
-            values</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Login required where needed</td>
-          <td>Log out and open the service URL directly</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>Ownership / role checked (no IDOR)</td>
-          <td>Replay the request of user A while logged in as user B; change <code>?id=</code></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>Passwords hashed with <code>password_hash()</code></td>
-          <td>Look at the users table in phpMyAdmin: values start with <code>$2y$</code></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>Session cookie is HttpOnly and SameSite; id regenerated at login; timeout and logout work</td>
-          <td>DevTools &gt; Application &gt; Cookies; compare <code>PHPSESSID</code> before and after login</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>Uploads checked (size, real type, random name, no execution)</td>
-          <td>Upload a <code>.php</code> file renamed to <code>.jpg</code>; open the uploads folder in the browser</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>11</td>
-          <td>No error details shown to the user</td>
-          <td>Stop MySQL in XAMPP with <code>display_errors</code> off and use the service</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>12</td>
-          <td>Security headers present</td>
-          <td>DevTools &gt; Network &gt; select the request &gt; Response headers</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>13</td>
-          <td>No secrets in the repository</td>
-          <td><code>git log --all -p -- config.php</code>; search GitHub for "password"</td>
-          <td></td>
-          <td></td>
+          <td>AJAX search</td>
+          <td>Type in the search field</td>
+          <td>Results update without reloading; "no result" message when nothing matches</td>
+          <td>Pass / Fail</td>
         </tr>
       </table>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# Useful searches from the project root (Git Bash)
-grep -rn "mysqli_query\|-&gt;query(" --include=*.php .
-grep -rn "\$_GET\|\$_POST\|\$_REQUEST" --include=*.php .
-grep -rn "innerHTML\|\.html(\|insertAdjacentHTML" --include=*.js .
-grep -rn "md5(\|sha1(" --include=*.php .
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Peer review: audit another team's project</h3>
+      <h3 class="Sub_Section_Title">Browser DevTools</h3>
       <div class="Definitions">
         <p>
-          A fresh pair of eyes always finds problems the authors missed. Your teacher will pair the teams. Then:
+          Open the DevTools (F12) on every page while you test. The <strong>Console</strong> tab must show no red
+          errors (JavaScript errors, blocked resources, CSP violations). In the <strong>Network</strong> tab, no
+          request should fail (status 404 or 500), and AJAX responses should contain valid JSON, not PHP warnings
+          mixed with the data.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">HTML validation and Lighthouse</h3>
+      <div class="Definitions">
+        <p>
+          Check your HTML with the W3C validator at <a href="https://validator.w3.org/">https://validator.w3.org/</a>.
+          Since your pages are generated by PHP on localhost, open a page, view its source (Ctrl+U), copy it and use
+          the "Validate by Direct Input" tab. Fix the errors (unclosed tags, duplicate ids, missing
+          <code>alt</code> attributes...). Then run <strong>Lighthouse</strong> (DevTools &gt; Lighthouse tab, mode
+          "Navigation") on your main pages for mobile and desktop, and use the report to improve performance,
+          accessibility and best practices (image sizes, contrast, labels on form fields).
+        </p>
+      </div>
+      <div class="Note"><strong>Tip:</strong> test in at least two browsers (for example Chrome and Firefox) and on a
+        real phone connected to the same network, using your computer's IP address instead of
+        <code>localhost</code>.</div>
+    </section>
+    <section id="Deployment">
+      <h2 class="Section_Title">VI. Optional: deploying online</h2>
+      <div class="Definitions">
+        <p>
+          Deployment is not required, but a public URL is a great addition to your README and your CV. Any shared
+          hosting or free PHP hosting service with MySQL works the same way:
         </p>
         <ol>
-          <li>Each team gives the other team read access to its repository (or the URL if it is public) and the
-            <code>.sql</code> dump of its database.</li>
-          <li>Clone the other project, install it on your own XAMPP and make it work (this is also a test of their
-            README and setup instructions).</li>
-          <li>For about 45 minutes, go through the checklist above on their services. Use only your local copy.</li>
-          <li>For each problem found, open an issue on their repository with the label <code>security</code>: the
-            service, the steps to reproduce, the impact, and a suggested fix. Be precise and constructive; do not
-            publish working exploits outside the issue.</li>
-          <li>Each team then fixes the issues it received and closes them with a commit message such as
-            <code>Fix IDOR in edit_post.php (closes #12)</code>.</li>
+          <li>Create an account and a website on the hosting service; note the FTP credentials and the database
+            host, name, user and password it gives you.</li>
+          <li>Create the database in the hosting control panel, open its phpMyAdmin and import your
+            <code>.sql</code> file. If the import fails because of the <code>CREATE DATABASE</code> statement,
+            export again without it (shared hosting usually imposes the database name).</li>
+          <li>Upload your files (without the <code>.git</code> folder) into the public folder (often
+            <code>htdocs</code> or <code>public_html</code>) with the hosting file manager or an FTP client.</li>
+          <li>Create <code>config.php</code> on the server with the hosting database credentials and
+            <code>'production' =&gt; true</code>.</li>
+          <li>Turn off <code>display_errors</code>, enable HTTPS if the host offers it, then rerun your test plan on
+            the online version.</li>
         </ol>
       </div>
-      <div class="Note"><strong>Tip:</strong> classify each finding by severity to decide what to fix first:
-        <strong>High</strong> (SQL injection, missing authorization, executable uploads, leaked passwords),
-        <strong>Medium</strong> (XSS, CSRF, session issues), <strong>Low</strong> (missing headers, verbose
-        errors).</div>
+      <div class="Note"><strong>Warning:</strong> a public site will be visited by bots that try common attacks.
+        Deploy only after the Lab 10 fixes, never with the default test passwords, and never with real personal
+        data.</div>
+    </section>
+    <section id="Presentation">
+      <h2 class="Section_Title">VII. Final presentation</h2>
+      <div class="Definitions">
+        <p>
+          The final presentation is a 10 to 15 minute demonstration of your project followed by questions. Every
+          member must present the part they built and be able to explain its code: the evaluation is individual as
+          well as collective. A suggested structure:
+        </p>
+      </div>
+      <table class="Table">
+        <tr>
+          <th>Part</th>
+          <th>Duration</th>
+          <th>Content</th>
+        </tr>
+        <tr>
+          <td>Introduction</td>
+          <td>1-2 min</td>
+          <td>The problem, the target users, the team and who did what.</td>
+        </tr>
+        <tr>
+          <td>Architecture</td>
+          <td>2 min</td>
+          <td>Database schema (tables and relations), folder structure, list of the web services.</td>
+        </tr>
+        <tr>
+          <td>Live demo</td>
+          <td>5-8 min</td>
+          <td>A realistic user scenario that goes through the main CRUD services, authentication and AJAX. Each member
+            demonstrates their own features. Show the responsive layout on a small screen.</td>
+        </tr>
+        <tr>
+          <td>Security and quality</td>
+          <td>1-2 min</td>
+          <td>Main findings of the security audit and how they were fixed; testing done.</td>
+        </tr>
+        <tr>
+          <td>Conclusion</td>
+          <td>1 min</td>
+          <td>Difficulties met, what you learned, possible improvements.</td>
+        </tr>
+      </table>
+      <h3 class="Sub_Section_Title">Prepare the demo</h3>
+      <ul class="Checklist">
+        <li>Rehearse the full presentation at least once with a timer.</li>
+        <li>Prepare the demo data and the accounts in advance; log out of everything before you start.</li>
+        <li>Record a short <strong>backup video</strong> of the demo (screen recording) in case the network, the
+          laptop or XAMPP fails on the day.</li>
+        <li>Have the project working on two laptops, and keep the code open in your editor to answer questions.</li>
+        <li>Zoom the browser and the editor (Ctrl and +) so the audience can read.</li>
+      </ul>
+      <h3 class="Sub_Section_Title">Questions you should be ready to answer</h3>
+      <ul class="Checklist">
+        <li>Show the code of one of your services: what happens from the click in the browser to the database?</li>
+        <li>Why do you validate the data in PHP if JavaScript already validates it?</li>
+        <li>How do you protect this query against SQL injection? This page against XSS? This form against CSRF?</li>
+        <li>How are passwords stored? What happens to the session at login and logout?</li>
+        <li>What can a user do if they change the <code>id</code> in the URL?</li>
+        <li>What does this AJAX request send and receive? Show it in the Network tab.</li>
+        <li>How did you organize the work in Git? Show a pull request you reviewed.</li>
+        <li>What would you change if you had to start again?</li>
+      </ul>
+      <div class="Note"><strong>Further reading:</strong> documentation, tools and tutorials for going further are
+        collected on the <a href="Resources.html">Resources</a> page.</div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>A <code>SECURITY_AUDIT.md</code> file at the root of the repository with the inventory of your services
-          and one completed checklist table per service.</li>
-        <li>All the fixes committed on the <code>security-audit</code> branch and merged into <code>main</code>
-          through a pull request; each fix linked to its issue.</li>
-        <li>The issues opened on the other team's repository during the peer review, and the issues you received
-          fixed or answered.</li>
-        <li><code>config.php</code> ignored by Git and <code>config.example.php</code> committed.</li>
-        <li>This work counts toward the "PHP/AJAX: Finish the backend" milestone in the Deadlines table of the
-          <a href="Syllabus.html">Syllabus</a>.</li>
+        <li>The integrated project merged into <code>main</code> on GitHub, with all features of the integration
+          checklist working from a fresh clone.</li>
+        <li>A complete <code>README.md</code>: description, features, screenshots, installation steps and test
+          accounts.</li>
+        <li>The database dump in <code>database/</code>, importable with phpMyAdmin.</li>
+        <li>The manual test plan with its results, a console free of errors and the W3C validation errors fixed.
+        </li>
+        <li>A clean Git history: feature branches, pull requests, meaningful commits and contributions from every
+          member (<code>git shortlog -sn</code>).</li>
+        <li>The final presentation with a live demo and a backup video. It corresponds to the "Final project
+          presentation" row of the Deadlines table in the <a href="Syllabus.html">Syllabus</a>.</li>
       </ul>
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_9.html" class="Arrow">
+    <a href="Lab_10.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 9: AJAX and JSON</h1>
+      <h1>Lab 10: Security</h1>
     </a>
-    <a href="Lab_11.html" class="Arrow">
-      <h1>Lab 11: Final project</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Resources.html" class="Arrow">
+      <h1>Resources</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

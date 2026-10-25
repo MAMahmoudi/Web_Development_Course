@@ -10,785 +10,889 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 9: AJAX and JSON APIs</title>
+  <title>Lab 10: Securing your web application</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 9: AJAX and JSON APIs</h1>
+    <h1 class="Title">Lab 10: Securing your web application</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          Until now, every action of your website (add, search, delete...) submits a form and reloads the whole page.
-          In this lab you will make your pages talk to PHP <b>without reloading</b>. <br>
-          You will write PHP endpoints that return JSON, call them from JavaScript with <code>fetch()</code> and
-          <code>async</code>/<code>await</code>, send data as <code>FormData</code> and as JSON, handle errors, show
-          loading indicators, and build a live search and a delete-without-reload. <br>
-          This work counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines
-            table</a>. Review the lectures <a href="AJAX.html">Introduction to AJAX</a> and
-          <a href="jQuery.html">jQuery</a> (jQuery AJAX part), and make sure your PDO connection from Lab 5 works.
+          In this lab, your team performs a hands-on security audit of its own project. For every web service (each
+          CRUD operation), you will look for the most common web vulnerabilities: SQL injection, Cross-Site Scripting
+          (XSS), Cross-Site Request Forgery (CSRF), weak password storage, insecure sessions, missing authorization
+          checks, unsafe file uploads and leaked secrets. You will fix what you find, record everything in an audit
+          report, and finally audit another team's project. The theory behind this lab is covered in the lectures
+          <a href="Security.html">Security</a> and <a href="Sessions_Cookies.html">Sessions and Cookies</a>; read them
+          before you start.
         </p>
       </div>
     </section>
-    <section id="Big_Picture">
-      <h2 class="Section_Title">I. The big picture</h2>
+    <section id="Audit_Setup">
+      <h2 class="Section_Title">I. Preparing the audit</h2>
       <div class="Definitions">
         <p>
-          AJAX (Asynchronous JavaScript And XML) means: JavaScript sends an HTTP request in the background, the
-          server answers with <b>data</b> (today almost always JSON, not XML), and JavaScript updates only the part
-          of the page that changed. The flow of one request is: <br>
-          1. The user types, clicks or submits a form. <br>
-          2. JavaScript calls <code>fetch("api/products.php")</code>. The page stays on screen. <br>
-          3. Apache runs the PHP file, which queries MySQL with PDO. <br>
-          4. PHP answers with a status code (200, 404, 500...) and a JSON body, never with HTML. <br>
-          5. JavaScript reads the JSON and updates the DOM (Lab 4 techniques). <br><br>
-          In this lab we use a <code>products</code> service as an example. Replace it with the services of your own
-          project. A suggested structure:
+          A security audit is a systematic review: you do not just "look around", you list every entry point of your
+          application and check each one against the same list of attacks. An entry point is anything that receives
+          data from the user: a form, a URL parameter (<code>?id=</code>), a cookie, an uploaded file or an AJAX
+          request. Remember the golden rule from the lecture: <strong>never trust user input</strong>, and that
+          includes the data sent by your own JavaScript, because anyone can modify or replay a request with the
+          browser DevTools.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Step 1: list your services and entry points</h3>
+      <div class="Definitions">
+        <p>
+          Create a branch for the audit and a file <code>SECURITY_AUDIT.md</code> at the root of your repository.
+          In this file, list each of your (at least 5) web services, the PHP file(s) that implement it, the HTTP
+          method, the parameters it receives and who is allowed to use it (visitor, logged-in user, owner, admin).
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-none">
-your_project/
-├── config/
-│   └── db.php            (PDO connection, Lab 5)
-├── api/
-│   └── products.php      (JSON endpoint: list/search, create, delete)
-├── assets/JS/
-│   ├── api.js            (a reusable fetch helper)
-│   └── products.js       (the logic of the products page)
-└── products.php          (the page the user sees)
+        <pre class="prettyprint lang-bash">
+git checkout main
+git pull
+git checkout -b security-audit
+# create SECURITY_AUDIT.md, then commit it
+git add SECURITY_AUDIT.md
+git commit -m "Add security audit inventory of web services"
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# Security audit - Team X
+
+| Service           | File(s)                    | Method | Parameters              | Allowed users   |
+|-------------------|----------------------------|--------|-------------------------|-----------------|
+| Create a product  | products/create.php        | POST   | name, price, image      | admin           |
+| List products     | products/list.php (AJAX)   | GET    | q, page                 | everyone        |
+| Edit a product    | products/edit.php          | POST   | id, name, price         | admin           |
+| Delete a product  | products/delete.php        | POST   | id                      | admin           |
+| Post a review     | reviews/create.php         | POST   | product_id, text        | logged-in user  |
+        </pre>
+      </div>
+      <div class="Note"><strong>Important:</strong> all the attack examples of this lab must be tried <strong>only on
+          your own local copy</strong> (XAMPP on your machine) or on a copy of a classmate's project they agreed to
+        share with you. Attacking a real website without written permission is illegal.</div>
+    </section>
+    <section id="SQL_Injection">
+      <h2 class="Section_Title">II. SQL injection</h2>
+      <div class="Definitions">
+        <p>
+          SQL injection happens when user input is pasted directly into the text of an SQL query. The attacker then
+          writes SQL instead of data and changes the meaning of the query. Search your code for every query built
+          with string concatenation or variables inside a double-quoted string (<code>"... '$email' ..."</code>).
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">The vulnerable version</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// login.php - VULNERABLE, do not use
+$email    = $_POST['email'];
+$password = $_POST['password'];
+
+$conn = mysqli_connect('localhost', 'root', '', 'shop');
+$sql  = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+$result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) &gt; 0) {
+    echo 'Welcome!';
+}
         </pre>
       </div>
       <div class="Definitions">
-        <p>The examples use this table. Run it in the SQL tab of phpMyAdmin (Lab 5):</p>
+        <p>
+          Try it on your local copy: type <code>' OR '1'='1' -- </code> (with a space after the two dashes) in the
+          email field and anything in the password field. The query becomes
+          <code>SELECT * FROM users WHERE email = '' OR '1'='1' -- ' AND password = '...'</code>: the condition is
+          always true and the rest is a comment, so you are logged in without knowing any password. The same trick
+          can be used to read or delete whole tables.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">The fix: PDO prepared statements</h3>
+      <div class="Definitions">
+        <p>
+          With a prepared statement, the query and the data are sent separately to MySQL. The query contains
+          placeholders (<code>?</code> or <code>:name</code>) and the values are bound later, so they can never be
+          interpreted as SQL. Put the connection in a single file that every service includes.
+        </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-sql">
-CREATE TABLE products (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
-  stock INT NOT NULL DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/db.php - one shared connection for the whole project
+$config = require __DIR__ . '/../config.php'; // see section VII (secrets out of Git)
+
+$pdo = new PDO(
+    "mysql:host={$config['db_host']};dbname={$config['db_name']};charset=utf8mb4",
+    $config['db_user'],
+    $config['db_pass'],
+    [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
+    ]
 );
-
-INSERT INTO products (name, price, stock) VALUES
-  ('Keyboard', 2500.00, 12),
-  ('Mouse', 1200.00, 30),
-  ('Monitor', 32000.00, 5);
         </pre>
       </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// login.php - SAFE
+require __DIR__ . '/includes/db.php';
+
+$email    = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
+
+$stmt = $pdo-&gt;prepare('SELECT id, name, role, password_hash FROM users WHERE email = ?');
+$stmt-&gt;execute([$email]);
+$user = $stmt-&gt;fetch();
+
+if ($user &amp;&amp; password_verify($password, $user['password_hash'])) {
+    // login succeeded (see section V for the session part)
+} else {
+    $error = 'Invalid email or password.';
+}
+
+// Named placeholders work too:
+$stmt = $pdo-&gt;prepare('UPDATE products SET name = :name, price = :price WHERE id = :id');
+$stmt-&gt;execute(['name' =&gt; $name, 'price' =&gt; $price, 'id' =&gt; $id]);
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> placeholders can only replace <em>values</em>, not table or column
+        names. If the user chooses a sort column (<code>?sort=price</code>), check it against a whitelist:
+        <code>$sort = in_array($_GET['sort'] ?? '', ['name', 'price', 'created_at'], true) ? $_GET['sort'] :
+          'name';</code>. If your project uses mysqli instead of PDO, use <code>mysqli_prepare()</code> and
+        <code>mysqli_stmt_bind_param()</code>; the principle is the same.</div>
     </section>
-    <section id="JSON_Endpoint">
-      <h2 class="Section_Title">II. A PHP endpoint that returns JSON</h2>
+    <section id="XSS">
+      <h2 class="Section_Title">III. Cross-Site Scripting (XSS)</h2>
       <div class="Definitions">
         <p>
-          An endpoint is a PHP file that is called by JavaScript, not displayed to the user. It must: <br>
-          1. Say that it returns JSON: <code>header('Content-Type: application/json')</code>, before any output. <br>
-          2. Set the HTTP status code with <code>http_response_code()</code>: JavaScript uses it to know whether the
-          request succeeded. <br>
-          3. Convert PHP arrays to JSON with <code>json_encode()</code>: an associative array becomes a JSON object,
-          a list becomes a JSON array. <br>
-          4. Output <b>nothing else</b>: no HTML, no <code>echo "debug"</code>, no PHP warnings. A single extra
-          character makes the JSON invalid.
+          XSS happens when user data is inserted into a page as HTML, so the browser executes it. In a
+          <strong>reflected</strong> XSS, the payload comes from the current request (for example a search term in
+          the URL) and is echoed back. In a <strong>stored</strong> XSS, the payload is saved in the database (a
+          comment, a username, a product description) and executed for every visitor who views it. The injected
+          script runs with the victim's session: it can read the page, send requests in their name or redirect them.
         </p>
       </div>
-      <h3 class="Sub_Section_Title">The connection (from Lab 5)</h3>
+      <h3 class="Sub_Section_Title">Find the problem</h3>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
-// config/db.php
-$host = 'localhost';
-$db   = 'my_project';   // the name of YOUR database
-$user = 'root';
-$pass = '';             // XAMPP default: empty password
+// search.php - VULNERABLE (reflected XSS)
+echo "&lt;p&gt;Results for: " . $_GET['q'] . "&lt;/p&gt;";
 
-$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
-$options = [
-    PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,  // errors become exceptions
-    PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,        // rows as associative arrays
-    PDO::ATTR_EMULATE_PREPARES   =&gt; false,                   // real prepared statements
-];
-$pdo = new PDO($dsn, $user, $pass, $options);
+// product.php - VULNERABLE (stored XSS)
+foreach ($reviews as $review) {
+    echo "&lt;div class='review'&gt;&lt;b&gt;{$review['author']}&lt;/b&gt;: {$review['text']}&lt;/div&gt;";
+}
         </pre>
       </div>
-      <h3 class="Sub_Section_Title">The endpoint: GET (list and search)</h3>
+      <div class="Definitions">
+        <p>
+          Test it locally: open <code>search.php?q=&lt;script&gt;alert(1)&lt;/script&gt;</code>, and post a review
+          whose text is <code>&lt;img src=x onerror="alert(document.cookie)"&gt;</code>. If an alert box appears,
+          the service is vulnerable.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">The fix in PHP: escape on output</h3>
+      <div class="Definitions">
+        <p>
+          Store the data as the user typed it, but <strong>escape it every time you print it</strong> in HTML with
+          <code>htmlspecialchars($value, ENT_QUOTES, 'UTF-8')</code>. This converts <code>&lt; &gt; &amp; " '</code>
+          into HTML entities, so the browser displays them as text. <code>ENT_QUOTES</code> is required to protect
+          attribute values written between single quotes. Define a short helper and use it everywhere.
+        </p>
+      </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
-// api/products.php
-header('Content-Type: application/json; charset=utf-8');
-
-function send_json($data, int $status = 200): void
+// includes/functions.php
+function e(?string $value): string
 {
-    http_response_code($status);
-    echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    exit; // stop here: nothing else may be printed
-}
-
-try {
-    require __DIR__ . '/../config/db.php';
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    if ($method === 'GET') {
-        $q = trim($_GET['q'] ?? '');
-        if ($q === '') {
-            $stmt = $pdo-&gt;query('SELECT id, name, price, stock FROM products ORDER BY id DESC');
-        } else {
-            // NEVER put $q directly in the SQL string: use a placeholder
-            $stmt = $pdo-&gt;prepare(
-                'SELECT id, name, price, stock FROM products WHERE name LIKE ? ORDER BY name LIMIT 20'
-            );
-            $stmt-&gt;execute(['%' . $q . '%']);
-        }
-        send_json($stmt-&gt;fetchAll());
-    }
-
-    if ($method === 'POST') {
-        // section IV
-    }
-
-    if ($method === 'DELETE') {
-        // section VI
-    }
-
-    send_json(['error' =&gt; 'Method not allowed'], 405);
-} catch (PDOException $e) {
-    error_log($e-&gt;getMessage());              // details go to the Apache error log...
-    send_json(['error' =&gt; 'Database error'], 500); // ...not to the user
+    return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
         </pre>
       </div>
-      <div class="Definitions">
-        <p>
-          Test it directly in the browser: <code>http://localhost/your_project/api/products.php</code> and
-          <code>http://localhost/your_project/api/products.php?q=mo</code>. You should see something like:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-[
-  {"id": 3, "name": "Monitor", "price": "32000.00", "stock": 5},
-  {"id": 2, "name": "Mouse", "price": "1200.00", "stock": 30},
-  {"id": 1, "name": "Keyboard", "price": "2500.00", "stock": 12}
-]
-        </pre>
-      </div>
-      <div class="Note"><strong>Note:</strong> MySQL <code>DECIMAL</code> values arrive as strings
-        (<code>"2500.00"</code>) to keep their exact precision. Convert them in JavaScript with
-        <code>Number(product.price)</code> before computing with them. Also, do not write the closing
-        <code>?&gt;</code> tag in files that only contain PHP: a newline after it is sent to the browser and breaks
-        the JSON.</div>
-      <table>
-        <tr>
-          <th>Status code</th>
-          <th>Meaning</th>
-          <th>Example</th>
-        </tr>
-        <tr>
-          <td>200 OK</td>
-          <td>Success</td>
-          <td>List of products returned</td>
-        </tr>
-        <tr>
-          <td>201 Created</td>
-          <td>A new resource was created</td>
-          <td>Product inserted</td>
-        </tr>
-        <tr>
-          <td>400 Bad Request</td>
-          <td>The request is malformed</td>
-          <td>Invalid JSON, missing id</td>
-        </tr>
-        <tr>
-          <td>401 / 403</td>
-          <td>Not logged in / not allowed</td>
-          <td>A visitor tries to delete</td>
-        </tr>
-        <tr>
-          <td>404 Not Found</td>
-          <td>The resource does not exist</td>
-          <td>Delete an id that is not in the table</td>
-        </tr>
-        <tr>
-          <td>405 Method Not Allowed</td>
-          <td>The endpoint does not support this method</td>
-          <td>PUT on our endpoint</td>
-        </tr>
-        <tr>
-          <td>422 Unprocessable Content</td>
-          <td>Validation failed</td>
-          <td>Empty name, negative price</td>
-        </tr>
-        <tr>
-          <td>500 Internal Server Error</td>
-          <td>Bug or database problem</td>
-          <td>MySQL is stopped</td>
-        </tr>
-      </table>
-    </section>
-    <section id="Fetch_GET">
-      <h2 class="Section_Title">III. fetch() GET with async/await, errors and loading</h2>
-      <div class="Definitions">
-        <p>
-          <code>fetch(url, options)</code> returns a Promise of a <code>Response</code>. With
-          <code>await</code> we wait for it without blocking the page (only inside an <code>async</code> function or
-          a module). Two things are essential: <br>
-          1. <code>fetch()</code> only <b>rejects</b> on network problems (server unreachable, request cancelled).
-          A 404 or 500 response is <b>not</b> an exception: you must check <code>response.ok</code> (true for status
-          200-299). <br>
-          2. <code>response.json()</code> is also asynchronous and must be awaited. <br>
-          Instead of repeating these checks in every call, write one helper and reuse it everywhere:
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/api.js
-export async function apiFetch(url, options = {}) {
-  let response;
-  try {
-    response = await fetch(url, options);
-  } catch (error) {
-    if (error.name === "AbortError") throw error; // cancelled on purpose (section V)
-    throw new Error("Cannot reach the server. Is Apache running?");
-  }
-
-  // Our PHP always answers JSON, even for errors
-  let data = null;
-  const type = response.headers.get("Content-Type") || "";
-  if (type.includes("application/json")) {
-    data = await response.json(); // throws a SyntaxError if PHP printed a warning
-  }
-
-  if (!response.ok) {
-    const error = new Error(data?.error || `HTTP error ${response.status}`);
-    error.status = response.status;
-    error.details = data;
-    throw error;
-  }
-  return data;
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">The page</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;!-- products.php (inside &lt;main&gt;) --&gt;
-&lt;input type="search" id="Search_Input" placeholder="Search products..." autocomplete="off" /&gt;
-&lt;p id="Products_Status" class="Status" role="status" aria-live="polite"&gt;&lt;/p&gt;
-&lt;table class="Products_Table"&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Price (DA)&lt;/th&gt;&lt;th&gt;Stock&lt;/th&gt;&lt;th&gt;Actions&lt;/th&gt;&lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody id="Products_Body"&gt;&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;script src="assets/JS/products.js" type="module"&gt;&lt;/script&gt;
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-css">
-.Status.loading::before {
-  content: "";
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5em;
-  vertical-align: middle;
-  border: 3px solid #cccccc;
-  border-top-color: #8c1515;
-  border-radius: 50%;
-  animation: Spin 0.8s linear infinite;
-}
-
-.Status.error { color: #b00020; }
-.Status.success { color: #1b7f3a; }
-
-tbody[aria-busy="true"] { opacity: 0.5; }
-tr.Removing { opacity: 0.4; }
-
-@keyframes Spin {
-  to { transform: rotate(360deg); }
-}
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Loading and displaying the data</h3>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js
-import { apiFetch } from "./api.js";
-
-const API = "api/products.php";
-const tbody = document.getElementById("Products_Body");
-const statusBox = document.getElementById("Products_Status");
-
-function setStatus(message, type = "info") {
-  statusBox.textContent = message;
-  statusBox.className = `Status ${type}`;
-}
-
-function renderProducts(products) {
-  tbody.replaceChildren(); // empty the table body
-  if (products.length === 0) {
-    const cell = tbody.insertRow().insertCell();
-    cell.colSpan = 4;
-    cell.textContent = "No products found.";
-    return;
-  }
-  for (const product of products) {
-    const row = tbody.insertRow();
-    row.dataset.id = product.id; // &lt;tr data-id="3"&gt;
-    row.insertCell().textContent = product.name; // textContent, never innerHTML, for data
-    row.insertCell().textContent = Number(product.price).toFixed(2);
-    row.insertCell().textContent = product.stock;
-    const deleteBtn = document.createElement("button");
-    deleteBtn.type = "button";
-    deleteBtn.className = "Delete_Btn";
-    deleteBtn.textContent = "Delete";
-    row.insertCell().appendChild(deleteBtn);
-  }
-}
-
-async function loadProducts(query = "", signal) {
-  setStatus("Loading...", "loading");
-  tbody.setAttribute("aria-busy", "true");
-  try {
-    const url = query ? `${API}?q=${encodeURIComponent(query)}` : API;
-    const products = await apiFetch(url, { signal });
-    renderProducts(products);
-    setStatus(`${products.length} product(s)`);
-  } catch (error) {
-    if (error.name === "AbortError") return; // a newer search replaced this one
-    setStatus(error.message, "error");
-  } finally {
-    tbody.removeAttribute("aria-busy");
-  }
-}
-
-loadProducts();
-        </pre>
-      </div>
-      <div class="Note"><strong>Security:</strong> the product names come from users. Putting them in
-        <code>innerHTML</code> would let someone save <code>&lt;img src=x onerror=alert(1)&gt;</code> as a name and
-        run JavaScript in other users' browsers (XSS). <code>textContent</code> always displays text. See
-        <a href="Lab_10.html">Lab 10</a> and the <a href="Security.html">Security</a> lecture.</div>
-      <div class="Definitions">
-        <p>For comparison, the same request written with <code>.then()</code> instead of <code>await</code>:</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-fetch("api/products.php")
-  .then((response) =&gt; {
-    if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-    return response.json();
-  })
-  .then((products) =&gt; renderProducts(products))
-  .catch((error) =&gt; setStatus(error.message, "error"));
-        </pre>
-      </div>
-    </section>
-    <section id="POST">
-      <h2 class="Section_Title">IV. Sending data with POST: FormData and JSON</h2>
-      <div class="Definitions">
-        <p>
-          There are two common ways to send data to PHP: <br>
-          1. <b>FormData</b>: <code>new FormData(form)</code> collects all the fields of a form (using their
-          <code>name</code> attributes), including files. PHP reads it with <code>$_POST</code> (and
-          <code>$_FILES</code>) exactly like a normal form. Do <b>not</b> set the <code>Content-Type</code> header
-          yourself: the browser does it. <br>
-          2. <b>JSON body</b>: <code>JSON.stringify(object)</code> with the header
-          <code>Content-Type: application/json</code>. PHP does <b>not</b> fill <code>$_POST</code> in this case: it
-          must read the raw body with <code>file_get_contents('php://input')</code> and decode it with
-          <code>json_decode(..., true)</code> (the <code>true</code> gives an associative array).
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">PHP: the POST branch</h3>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-if ($method === 'POST') {
-    // Accept both a JSON body and a classic form body
-    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-    if (str_contains($contentType, 'application/json')) {
-        $input = json_decode(file_get_contents('php://input'), true);
-        if (!is_array($input)) {
-            send_json(['error' =&gt; 'Invalid JSON'], 400);
-        }
-    } else {
-        $input = $_POST; // FormData or normal form
-    }
+&lt;?php require __DIR__ . '/includes/functions.php'; ?&gt;
+&lt;p&gt;Results for: &lt;?= e($_GET['q'] ?? '') ?&gt;&lt;/p&gt;
 
-    // Always validate on the server, even if JavaScript already did (Lab 4)
-    $name  = trim($input['name'] ?? '');
-    $price = filter_var($input['price'] ?? null, FILTER_VALIDATE_FLOAT);
-    $stock = filter_var($input['stock'] ?? null, FILTER_VALIDATE_INT);
+&lt;?php foreach ($reviews as $review): ?&gt;
+  &lt;div class="review"&gt;
+    &lt;b&gt;&lt;?= e($review['author']) ?&gt;&lt;/b&gt;: &lt;?= e($review['text']) ?&gt;
+  &lt;/div&gt;
+&lt;?php endforeach; ?&gt;
 
-    $errors = [];
-    if ($name === '' || mb_strlen($name) &gt; 100) {
-        $errors['name'] = 'Name is required (100 characters max).';
-    }
-    if ($price === false || $price &lt; 0) {
-        $errors['price'] = 'Price must be a positive number.';
-    }
-    if ($stock === false || $stock &lt; 0) {
-        $errors['stock'] = 'Stock must be a positive integer.';
-    }
-    if ($errors) {
-        send_json(['error' =&gt; 'Validation failed', 'errors' =&gt; $errors], 422);
-    }
+&lt;input type="text" name="name" value="&lt;?= e($product['name']) ?&gt;"&gt;
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">The fix in JavaScript: textContent instead of innerHTML</h3>
+      <div class="Definitions">
+        <p>
+          Your AJAX services return JSON, and the escaping must then happen in JavaScript. Never put user data in
+          <code>innerHTML</code> (or jQuery's <code>.html()</code>, or <code>insertAdjacentHTML</code>). Create the
+          elements and assign the data with <code>textContent</code> (or jQuery's <code>.text()</code>), which never
+          interprets HTML.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// VULNERABLE: the review text is parsed as HTML
+list.innerHTML += `&lt;li&gt;&lt;b&gt;${review.author}&lt;/b&gt;: ${review.text}&lt;/li&gt;`;
 
-    $stmt = $pdo-&gt;prepare('INSERT INTO products (name, price, stock) VALUES (:name, :price, :stock)');
-    $stmt-&gt;execute([':name' =&gt; $name, ':price' =&gt; $price, ':stock' =&gt; $stock]);
+// SAFE: the data is inserted as plain text
+const li = document.createElement('li');
+const author = document.createElement('b');
+author.textContent = review.author;
+li.append(author, ': ' + review.text); // append() with a string creates a text node
+list.appendChild(li);
 
-    send_json([
-        'id'    =&gt; (int) $pdo-&gt;lastInsertId(),
-        'name'  =&gt; $name,
-        'price' =&gt; $price,
-        'stock' =&gt; $stock,
-    ], 201);
+// SAFE with jQuery
+$('&lt;li&gt;').append($('&lt;b&gt;').text(review.author), document.createTextNode(': ' + review.text)).appendTo('#list');
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> escaping is also needed in URLs and in links. A user-supplied link such
+        as <code>javascript:alert(1)</code> is dangerous inside <code>href</code> even after
+        <code>htmlspecialchars</code>; accept only links that start with <code>https://</code> or
+        <code>http://</code>. The Content-Security-Policy header of section VII adds a second layer of protection.
+      </div>
+    </section>
+    <section id="CSRF">
+      <h2 class="Section_Title">IV. Cross-Site Request Forgery (CSRF)</h2>
+      <div class="Definitions">
+        <p>
+          The browser automatically sends your session cookie with every request to your site, even when the request
+          is triggered by another website. A malicious page can therefore contain a hidden form that posts to
+          <code>http://localhost/project/products/delete.php</code>: if an admin visits that page while logged in,
+          the product is deleted with the admin's rights. The defense is a secret token that the attacker's page
+          cannot know: it is stored in the session and must be sent back with every request that changes data.
+        </p>
+      </div>
+      <h3 class="Sub_Section_Title">Generate one token per session</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/csrf.php (include it after session_start())
+function csrf_token(): string
+{
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // 64 hexadecimal characters
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function csrf_check(): void
+{
+    $sent = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (!is_string($sent) || !hash_equals(csrf_token(), $sent)) {
+        http_response_code(403);
+        exit('Invalid CSRF token.');
+    }
 }
         </pre>
       </div>
-      <h3 class="Sub_Section_Title">JavaScript: sending a form with FormData</h3>
+      <h3 class="Sub_Section_Title">Add the token to every form and check it</h3>
       <div class="Code_Block">
-        <pre class="prettyprint lang-html">
-&lt;form id="Add_Product_Form" novalidate&gt;
-  &lt;input type="text" name="name" placeholder="Name" required /&gt;
-  &lt;input type="number" name="price" placeholder="Price" step="0.01" min="0" required /&gt;
-  &lt;input type="number" name="stock" placeholder="Stock" min="0" required /&gt;
-  &lt;button type="submit"&gt;Add&lt;/button&gt;
-  &lt;p id="Form_Errors" class="Status error" aria-live="polite"&gt;&lt;/p&gt;
+        <pre class="prettyprint lang-php">
+&lt;form action="products/delete.php" method="post"&gt;
+  &lt;input type="hidden" name="csrf_token" value="&lt;?= e(csrf_token()) ?&gt;"&gt;
+  &lt;input type="hidden" name="id" value="&lt;?= (int) $product['id'] ?&gt;"&gt;
+  &lt;button type="submit"&gt;Delete&lt;/button&gt;
 &lt;/form&gt;
         </pre>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-const form = document.getElementById("Add_Product_Form");
-const formErrors = document.getElementById("Form_Errors");
+        <pre class="prettyprint lang-php">
+&lt;?php
+// products/delete.php
+session_start();
+require __DIR__ . '/../includes/csrf.php';
 
-form.addEventListener("submit", async (event) =&gt; {
-  event.preventDefault(); // stop the normal submit and page reload
-  const submitBtn = form.querySelector("button[type=submit]");
-  submitBtn.disabled = true; // avoid double submissions
-  submitBtn.textContent = "Saving...";
-  formErrors.textContent = "";
-
-  try {
-    const created = await apiFetch(API, {
-      method: "POST",
-      body: new FormData(form), // no Content-Type header here!
-    });
-    form.reset();
-    setStatus(`"${created.name}" added.`, "success");
-    loadProducts();
-  } catch (error) {
-    if (error.status === 422 &amp;&amp; error.details?.errors) {
-      formErrors.textContent = Object.values(error.details.errors).join(" ");
-    } else {
-      formErrors.textContent = error.message;
-    }
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Add";
-  }
-});
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">JavaScript: sending a JSON body</h3>
-      <div class="Definitions">
-        <p>Use JSON when the data does not come from a form, for example an object built by your code:</p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-const newProduct = { name: "Webcam", price: 4500, stock: 8 };
-
-const created = await apiFetch(API, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(newProduct),
-});
-console.log("New id:", created.id);
-        </pre>
-      </div>
-      <table>
-        <tr>
-          <th></th>
-          <th>FormData</th>
-          <th>JSON body</th>
-        </tr>
-        <tr>
-          <td>Build it with</td>
-          <td><code>new FormData(form)</code></td>
-          <td><code>JSON.stringify(object)</code></td>
-        </tr>
-        <tr>
-          <td>Content-Type</td>
-          <td>Set automatically by the browser</td>
-          <td><code>application/json</code> (set it yourself)</td>
-        </tr>
-        <tr>
-          <td>Read in PHP with</td>
-          <td><code>$_POST</code>, <code>$_FILES</code></td>
-          <td><code>json_decode(file_get_contents('php://input'), true)</code></td>
-        </tr>
-        <tr>
-          <td>Best for</td>
-          <td>Existing forms, file uploads</td>
-          <td>Data built in JavaScript, nested data, DELETE/PUT requests</td>
-        </tr>
-      </table>
-      <div class="Note"><strong>Common mistake:</strong> sending JSON and reading <code>$_POST</code> in PHP. The
-        array is empty and every field looks "missing". Look at the request in DevTools &gt; Network &gt; Payload
-        to check what was really sent.</div>
-    </section>
-    <section id="Live_Search">
-      <h2 class="Section_Title">V. A live search box with debounce</h2>
-      <div class="Definitions">
-        <p>
-          A live search updates the results while the user types. Listening to the <code>input</code> event and
-          calling the server for every key would send 5 requests for the word "mouse". <b>Debouncing</b> waits until
-          the user stops typing for a short delay (here 300 ms) and then sends a single request: each new key press
-          cancels the previous timer. <br>
-          Requests can also come back in the wrong order (the answer for "mo" arriving after the answer for
-          "mouse"). An <code>AbortController</code> cancels the previous request when a new one starts.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-function debounce(fn, delay = 300) {
-  let timerId;
-  return (...args) =&gt; {
-    clearTimeout(timerId);
-    timerId = setTimeout(() =&gt; fn(...args), delay);
-  };
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit('Method not allowed.');
 }
-
-const searchInput = document.getElementById("Search_Input");
-let searchController = null;
-
-const runSearch = debounce((query) =&gt; {
-  searchController?.abort(); // cancel the previous, now useless, request
-  searchController = new AbortController();
-  loadProducts(query, searchController.signal);
-}, 300);
-
-searchInput.addEventListener("input", () =&gt; {
-  runSearch(searchInput.value.trim());
-});
+csrf_check();
+// ... authorization check (section V), then the DELETE query
         </pre>
       </div>
+      <h3 class="Sub_Section_Title">AJAX requests</h3>
       <div class="Definitions">
         <p>
-          The PHP side is the GET branch of section II: the search term is sent as <code>?q=...</code>
-          (encoded with <code>encodeURIComponent</code>) and used in a <b>prepared statement</b> with
-          <code>LIKE ?</code>. The <code>LIMIT 20</code> keeps the answer small and fast.
+          For AJAX, print the token once in a <code>&lt;meta&gt;</code> tag and send it in a custom header.
+          <code>csrf_check()</code> above already reads <code>$_SERVER['HTTP_X_CSRF_TOKEN']</code>.
         </p>
       </div>
-      <div class="Note"><strong>Tip:</strong> open DevTools &gt; Network, type quickly in the search box and watch:
-        only one request should be sent after you stop typing, and older requests are shown as "canceled".</div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// In the page head: &lt;meta name="csrf-token" content="&lt;?= e(csrf_token()) ?&gt;"&gt;
+const token = document.querySelector('meta[name="csrf-token"]').content;
+
+fetch('products/delete.php', {
+  method: 'POST',
+  headers: { 'X-CSRF-Token': token },
+  body: new URLSearchParams({ id: productId })
+})
+  .then(response =&gt; response.json())
+  .then(data =&gt; console.log(data));
+        </pre>
+      </div>
+      <div class="Note"><strong>Rules:</strong> (1) actions that change data (create, update, delete, logout) must
+        never be done with a GET request or a simple link; (2) compare tokens with <code>hash_equals()</code>, not
+        <code>==</code>, to avoid timing attacks; (3) set the session cookie with <code>SameSite=Lax</code> (or
+        <code>Strict</code>, see section V): modern browsers then do not send it with cross-site POST requests,
+        which is a second layer of protection, not a replacement for the token.</div>
     </section>
-    <section id="Delete_Row">
-      <h2 class="Section_Title">VI. Deleting a row without reloading</h2>
+    <section id="Authentication_Authorization">
+      <h2 class="Section_Title">V. Passwords, sessions and authorization</h2>
+      <h3 class="Sub_Section_Title">Password storage</h3>
       <div class="Definitions">
         <p>
-          The rows are created by JavaScript and replaced after every search, so adding a listener to each button
-          would be lost. Instead we use <b>event delegation</b>: one listener on the <code>&lt;tbody&gt;</code>, and
-          <code>event.target.closest(".Delete_Btn")</code> to find which button was clicked. The id of the product is
-          stored in the <code>data-id</code> attribute of the row. <br>
-          We send the request with the HTTP method <code>DELETE</code> and a JSON body. The row is removed from the
-          DOM <b>only after</b> the server confirms.
+          Passwords must never be stored in clear text, nor with fast hashes such as <code>md5()</code> or
+          <code>sha1()</code>, which can be cracked by billions of guesses per second. Use
+          <code>password_hash()</code>, which applies a slow algorithm (bcrypt by default) with a random salt, and
+          <code>password_verify()</code> to check a login. The result is up to 255 characters long, so the column
+          should be <code>VARCHAR(255)</code>.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-sql">
+ALTER TABLE users CHANGE password password_hash VARCHAR(255) NOT NULL;
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// register.php
+$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$stmt = $pdo-&gt;prepare('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)');
+$stmt-&gt;execute([$name, $email, $hash]);
+
+// login.php (after fetching $user with a prepared statement)
+if ($user &amp;&amp; password_verify($_POST['password'], $user['password_hash'])) {
+    if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
+        $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $pdo-&gt;prepare('UPDATE users SET password_hash = ? WHERE id = ?')-&gt;execute([$newHash, $user['id']]);
+    }
+    // ... start the authenticated session (below)
+}
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> if your database already contains clear-text passwords, write a small
+        one-time script that replaces each of them with <code>password_hash()</code>, or simply recreate your test
+        accounts. Show the same message ("Invalid email or password") whether the email or the password is wrong.
+      </div>
+      <h3 class="Sub_Section_Title">Session security</h3>
+      <div class="Definitions">
+        <p>
+          The session cookie is the key to the account: if an attacker steals it, they are logged in. Configure the
+          cookie before <code>session_start()</code>, regenerate the session id at login (to prevent session
+          fixation), expire inactive sessions and destroy the session completely at logout. See the "Securing Session
+          INI Settings" part of the <a href="Security.html">Security</a> lecture for the meaning of each option.
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-if ($method === 'DELETE') {
-    // (In your project, check here that the user is logged in and allowed to delete,
-    //  e.g. with $_SESSION, and answer 401/403 otherwise. See Lab 10.)
-    $input = json_decode(file_get_contents('php://input'), true);
-    $id = is_array($input) ? filter_var($input['id'] ?? null, FILTER_VALIDATE_INT) : false;
-    if ($id === false) {
-        send_json(['error' =&gt; 'A valid id is required'], 400);
-    }
+&lt;?php
+// includes/session.php - include this file at the top of EVERY page instead of calling session_start()
+ini_set('session.use_strict_mode', '1');
+ini_set('session.use_only_cookies', '1');
 
-    $stmt = $pdo-&gt;prepare('DELETE FROM products WHERE id = ?');
-    $stmt-&gt;execute([$id]);
+session_set_cookie_params([
+    'lifetime' =&gt; 0,                                   // cookie deleted when the browser closes
+    'path'     =&gt; '/',
+    'secure'   =&gt; !empty($_SERVER['HTTPS']),           // true as soon as the site uses HTTPS
+    'httponly' =&gt; true,                                // not readable from JavaScript (document.cookie)
+    'samesite' =&gt; 'Lax',
+]);
+session_start();
 
-    if ($stmt-&gt;rowCount() === 0) {
-        send_json(['error' =&gt; 'Product not found'], 404);
+const SESSION_TIMEOUT = 1800; // 30 minutes of inactivity
+
+if (isset($_SESSION['last_activity']) &amp;&amp; time() - $_SESSION['last_activity'] &gt; SESSION_TIMEOUT) {
+    session_unset();
+    session_destroy();
+    header('Location: login.php?expired=1');
+    exit;
+}
+$_SESSION['last_activity'] = time();
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// login.php, after password_verify() succeeded
+session_regenerate_id(true); // new id, old session file deleted
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['role']    = $user['role'];
+
+// logout.php (called with POST + CSRF token)
+$_SESSION = [];
+setcookie(session_name(), '', ['expires' =&gt; time() - 3600, 'path' =&gt; '/']);
+session_destroy();
+header('Location: index.php');
+exit;
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">Authorization on every action (IDOR)</h3>
+      <div class="Definitions">
+        <p>
+          Authentication answers "who are you?"; authorization answers "are you allowed to do <em>this</em>?". A very
+          common bug is the <strong>Insecure Direct Object Reference (IDOR)</strong>: the page
+          <code>edit_post.php?id=42</code> shows your post, but if you change the URL to <code>?id=43</code> you can
+          edit somebody else's post, because the server only checks that you are logged in. Hiding a button in the
+          interface is not a protection: the check must be done in PHP, in every service, both when the form is
+          displayed and when it is submitted.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/auth.php
+function require_login(): int
+{
+    if (empty($_SESSION['user_id'])) {
+        header('Location: login.php');
+        exit;
     }
-    send_json(['deleted' =&gt; $id]);
+    return (int) $_SESSION['user_id'];
+}
+
+function require_role(string $role): void
+{
+    require_login();
+    if (($_SESSION['role'] ?? '') !== $role) {
+        http_response_code(403);
+        exit('Access denied.');
+    }
 }
         </pre>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// assets/JS/products.js (continued)
-tbody.addEventListener("click", async (event) =&gt; {
-  const btn = event.target.closest(".Delete_Btn");
-  if (!btn) return; // the click was not on a delete button
+        <pre class="prettyprint lang-php">
+&lt;?php
+// edit_post.php
+require __DIR__ . '/includes/session.php';
+require __DIR__ . '/includes/auth.php';
+require __DIR__ . '/includes/db.php';
 
-  const row = btn.closest("tr");
-  const name = row.cells[0].textContent;
-  if (!confirm(`Delete "${name}"?`)) return; // or use the &lt;dialog&gt; of Lab 4
+$userId = require_login();
+$postId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-  btn.disabled = true;
-  row.classList.add("Removing"); // visual feedback while waiting
-  try {
-    await apiFetch(API, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: Number(row.dataset.id) }),
-    });
-    row.remove();
-    setStatus(`"${name}" deleted.`, "success");
-  } catch (error) {
-    row.classList.remove("Removing");
-    btn.disabled = false;
-    setStatus(error.message, "error");
-  }
-});
+// VULNERABLE: any logged-in user can open any post
+// $stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ?');
+// $stmt-&gt;execute([$postId]);
+
+// SAFE: the post must belong to the current user
+$stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ? AND user_id = ?');
+$stmt-&gt;execute([$postId, $userId]);
+$post = $stmt-&gt;fetch();
+
+if (!$post) {
+    http_response_code(404);
+    exit('Post not found.');
+}
+
+// The same condition must appear in the UPDATE / DELETE query:
+// UPDATE posts SET title = ?, body = ? WHERE id = ? AND user_id = ?
         </pre>
       </div>
-      <div class="Note"><strong>Note:</strong> a <code>GET</code> request must never modify data (browsers,
-        link previews and search engines may call GET links on their own). Use <code>POST</code> or
-        <code>DELETE</code> for any action that changes the database.</div>
+      <div class="Note"><strong>Test:</strong> create two test accounts, A and B. Log in as A, copy the URL or the
+        AJAX request (DevTools &gt; Network &gt; right click &gt; "Copy as fetch") of each edit or delete action,
+        log in as B and replay it. Every one of these attempts must fail.</div>
     </section>
-    <section id="Comparison">
-      <h2 class="Section_Title">VII. fetch vs XMLHttpRequest vs jQuery $.ajax</h2>
+    <section id="File_Upload">
+      <h2 class="Section_Title">VI. File upload hardening</h2>
       <div class="Definitions">
         <p>
-          The <a href="AJAX.html">AJAX lecture</a> and <code>SRC/JS/AJAX.js</code> use <code>XMLHttpRequest</code>,
-          the original AJAX API, with an <code>onreadystatechange</code> callback. The
-          <a href="jQuery.html">jQuery lecture</a> uses <code>$.ajax()</code>, <code>$.get()</code> and
-          <code>$.post()</code>. Here is the same "load the products" request with both:
+          If your project accepts files (profile pictures, product images, documents), an attacker may upload a file
+          named <code>shell.php</code> and then open it in the browser: Apache will execute it and the attacker
+          controls your server. Never trust the file name or the type sent by the browser
+          (<code>$_FILES['x']['type']</code>), both are chosen by the client. Instead: check the upload error and
+          the size, detect the real type from the content, generate a new random name with an extension you choose,
+          and forbid script execution in the upload folder.
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// XMLHttpRequest (style of SRC/JS/AJAX.js)
-const xhr = new XMLHttpRequest();
-xhr.open("GET", "api/products.php");
-xhr.responseType = "json";
-xhr.onload = function () {
-  if (xhr.status === 200) {
-    renderProducts(xhr.response);
-  } else {
-    setStatus(`HTTP error ${xhr.status}`, "error");
-  }
-};
-xhr.onerror = () =&gt; setStatus("Network error", "error");
-xhr.send();
+        <pre class="prettyprint lang-php">
+&lt;?php
+// upload_avatar.php (session, CSRF and login checks done before)
+$allowed = [
+    'image/jpeg' =&gt; 'jpg',
+    'image/png'  =&gt; 'png',
+    'image/webp' =&gt; 'webp',
+];
+$maxSize = 2 * 1024 * 1024; // 2 MB
+
+$file = $_FILES['avatar'] ?? null;
+if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
+    exit('Upload failed.');
+}
+if ($file['size'] &gt; $maxSize) {
+    exit('File too large (2 MB maximum).');
+}
+
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$mime  = $finfo-&gt;file($file['tmp_name']); // real type, read from the file content
+if (!isset($allowed[$mime])) {
+    exit('Only JPEG, PNG and WebP images are accepted.');
+}
+
+$newName = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
+$target  = __DIR__ . '/uploads/' . $newName;
+
+if (!move_uploaded_file($file['tmp_name'], $target)) {
+    exit('Could not save the file.');
+}
+
+$stmt = $pdo-&gt;prepare('UPDATE users SET avatar = ? WHERE id = ?');
+$stmt-&gt;execute([$newName, $userId]);
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Then add an <code>.htaccess</code> file inside the <code>uploads/</code> folder so that, even if a script
+          gets there, Apache refuses to serve it and does not list the folder content.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# uploads/.htaccess
+Options -Indexes
+&lt;FilesMatch "\.(php|phtml|phar|php\d)$"&gt;
+    Require all denied
+&lt;/FilesMatch&gt;
+        </pre>
+      </div>
+      <div class="Note"><strong>Tip:</strong> the <code>finfo</code> class comes from the <code>fileinfo</code>
+        extension. If you get "Class finfo not found", open <code>php.ini</code> from the XAMPP control panel
+        (Apache &gt; Config), remove the <code>;</code> in front of <code>extension=fileinfo</code> and restart
+        Apache. Also add a client-side check (<code>accept="image/*"</code>, size check in JS) for a better user
+        experience, but remember it is not a security measure.</div>
+    </section>
+    <section id="Configuration">
+      <h2 class="Section_Title">VII. Errors, security headers and secrets</h2>
+      <h3 class="Sub_Section_Title">Do not display errors in production</h3>
+      <div class="Definitions">
+        <p>
+          PHP error messages and uncaught PDO exceptions reveal file paths, SQL queries and sometimes credentials.
+          They are very useful during development, but on a deployed site they must be written to a log file only,
+          and the user must see a generic message.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+; php.ini on the production server
+display_errors = Off
+display_startup_errors = Off
+log_errors = On
+error_reporting = E_ALL
         </pre>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// jQuery
-$.ajax({
-  url: "api/products.php",
-  method: "GET",
-  dataType: "json",
-})
-  .done((products) =&gt; renderProducts(products))
-  .fail((jqXHR) =&gt; setStatus(jqXHR.responseJSON?.error || "Request failed", "error"));
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/bootstrap.php - if you cannot edit php.ini on your hosting
+$isProduction = true; // read it from config.php in practice
+ini_set('display_errors', $isProduction ? '0' : '1');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
 
-// $.post with a serialized form (PHP reads it with $_POST)
-$.post("api/products.php", $("#Add_Product_Form").serialize()).done(() =&gt; loadProducts());
+// Around database operations:
+try {
+    $stmt = $pdo-&gt;prepare('INSERT INTO orders (user_id, total) VALUES (?, ?)');
+    $stmt-&gt;execute([$userId, $total]);
+} catch (PDOException $ex) {
+    error_log($ex-&gt;getMessage());          // details go to the log file
+    http_response_code(500);
+    echo json_encode(['error' =&gt; 'Server error, please try again later.']);
+    exit;
+}
         </pre>
       </div>
-      <table>
+      <h3 class="Sub_Section_Title">Security headers</h3>
+      <div class="Definitions">
+        <p>
+          HTTP response headers tell the browser to enable extra protections:
+        </p>
+      </div>
+      <table class="Table">
         <tr>
-          <th></th>
-          <th>XMLHttpRequest</th>
-          <th>fetch()</th>
-          <th>jQuery $.ajax</th>
+          <th>Header</th>
+          <th>Protection</th>
         </tr>
         <tr>
-          <td>Style</td>
-          <td>Events and callbacks</td>
-          <td>Promises, works with <code>async</code>/<code>await</code></td>
-          <td>Callbacks or <code>.done()</code>/<code>.fail()</code> (also awaitable)</td>
+          <td>Content-Security-Policy</td>
+          <td>Lists the sources from which scripts, styles, images, etc. may be loaded. Inline scripts are blocked,
+            which stops most XSS payloads. <code>frame-ancestors 'none'</code> forbids other sites from embedding
+            your pages in an iframe (clickjacking).</td>
         </tr>
         <tr>
-          <td>Needs a library</td>
-          <td>No</td>
-          <td>No</td>
-          <td>Yes, jQuery</td>
+          <td>X-Content-Type-Options: nosniff</td>
+          <td>Stops the browser from guessing the type of a file (for example executing an uploaded text file as
+            JavaScript).</td>
         </tr>
         <tr>
-          <td>HTTP errors (404, 500)</td>
-          <td>Check <code>xhr.status</code></td>
-          <td>Not an exception: check <code>response.ok</code></td>
-          <td>Calls <code>.fail()</code></td>
+          <td>X-Frame-Options: DENY</td>
+          <td>Older equivalent of <code>frame-ancestors 'none'</code>, still useful for old browsers.</td>
         </tr>
         <tr>
-          <td>Cancel a request</td>
-          <td><code>xhr.abort()</code></td>
-          <td><code>AbortController</code></td>
-          <td><code>jqXHR.abort()</code></td>
-        </tr>
-        <tr>
-          <td>Upload progress</td>
-          <td>Yes, <code>xhr.upload.onprogress</code></td>
-          <td>Not directly</td>
-          <td>Yes, through the <code>xhr</code> option</td>
+          <td>Referrer-Policy: strict-origin-when-cross-origin</td>
+          <td>Avoids leaking full URLs (with their parameters) to other websites.</td>
         </tr>
       </table>
-      <div class="Note"><strong>Recommendation:</strong> use <code>fetch()</code> for new code in your project. If
-        your team already uses jQuery on the pages (jQuery lecture), <code>$.ajax</code> is acceptable, but do not
-        mix several styles for the same service. Whatever the client, the PHP endpoint stays exactly the same.</div>
-    </section>
-    <section id="Your_Turn">
-      <h2 class="Section_Title">VIII. Your turn</h2>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// includes/headers.php - include at the top of every page, before any output
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; "
+    . "style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; "
+    . "img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+        </pre>
+      </div>
       <div class="Definitions">
-        <p>Apply this lab to your team project. Each member can take one service.</p>
+        <p>
+          The same headers can be set for the whole project (including HTML, CSS and JS files) in an
+          <code>.htaccess</code> file at the root of the project (module <code>mod_headers</code>, enabled by default
+          in XAMPP):
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# .htaccess at the project root
+&lt;IfModule mod_headers.c&gt;
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+&lt;/IfModule&gt;
+Options -Indexes
+        </pre>
+      </div>
+      <div class="Note"><strong>Warning:</strong> adapt the CSP to the CDNs your project really uses, then open every
+        page with the DevTools console open: blocked resources are reported there. With this policy,
+        <code>&lt;script&gt;...&lt;/script&gt;</code> blocks inside the HTML and attributes such as
+        <code>onclick="..."</code> stop working: move that code to external <code>.js</code> files and use
+        <code>addEventListener()</code>. Check the result with the Network tab (Response headers).</div>
+      <h3 class="Sub_Section_Title">Secrets out of the Git repository</h3>
+      <div class="Definitions">
+        <p>
+          Database passwords, API keys and SMTP passwords must not be committed: anyone with access to the
+          repository (or to a public fork) can read them, and they stay in the Git history forever. Put them in a
+          <code>config.php</code> file that is ignored by Git, and commit a <code>config.example.php</code> with fake
+          values so that your teammates know which keys to fill.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// config.example.php - committed. Copy it to config.php and fill in your own values.
+return [
+    'db_host' =&gt; 'localhost',
+    'db_name' =&gt; 'your_database',
+    'db_user' =&gt; 'root',
+    'db_pass' =&gt; '',
+    'production' =&gt; false,
+];
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# .gitignore
+config.php
+uploads/*
+!uploads/.htaccess
+*.log
+        </pre>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# If config.php was already committed: stop tracking it (the local file is kept)
+git rm --cached config.php
+git add .gitignore config.example.php
+git commit -m "Move database credentials to an ignored config.php"
+        </pre>
+      </div>
+      <div class="Note"><strong>Important:</strong> <code>git rm --cached</code> does not remove the file from the
+        previous commits. If a real password was ever pushed, consider it public and change it.</div>
+    </section>
+    <section id="Audit_Checklist">
+      <h2 class="Section_Title">VIII. Audit checklist and peer review</h2>
+      <h3 class="Sub_Section_Title">Fill the checklist for each service</h3>
+      <div class="Definitions">
+        <p>
+          Copy the table below into <code>SECURITY_AUDIT.md</code> once per web service. For each line, write
+          <strong>Pass</strong>, <strong>Fail</strong> or <strong>N/A</strong> (not applicable, with a reason). For
+          every <strong>Fail</strong>, open a GitHub issue, fix it on your <code>security-audit</code> branch, and
+          write the commit hash in the last column.
+        </p>
+      </div>
+      <table class="Table">
+        <tr>
+          <th>#</th>
+          <th>Check</th>
+          <th>How to verify</th>
+          <th>Status</th>
+          <th>Fix (commit)</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>All SQL queries use prepared statements</td>
+          <td>Search the code for <code>query(</code>, <code>mysqli_query</code> and variables inside SQL strings;
+            try <code>' OR '1'='1' -- </code></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>All user data is escaped in HTML output</td>
+          <td>Every <code>echo</code> / <code>&lt;?=</code> of user data uses <code>e()</code>; try
+            <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> in each field</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>No user data in <code>innerHTML</code> / <code>.html()</code></td>
+          <td>Search the JS files; display an XSS payload through the AJAX service</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Data-changing actions use POST and check a CSRF token</td>
+          <td>Remove the hidden field in DevTools and submit: the server must answer 403</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Server-side validation of every parameter</td>
+          <td>Disable the JS validation (or send the request with "Copy as fetch") with empty, too long or invalid
+            values</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Login required where needed</td>
+          <td>Log out and open the service URL directly</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Ownership / role checked (no IDOR)</td>
+          <td>Replay the request of user A while logged in as user B; change <code>?id=</code></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Passwords hashed with <code>password_hash()</code></td>
+          <td>Look at the users table in phpMyAdmin: values start with <code>$2y$</code></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Session cookie is HttpOnly and SameSite; id regenerated at login; timeout and logout work</td>
+          <td>DevTools &gt; Application &gt; Cookies; compare <code>PHPSESSID</code> before and after login</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Uploads checked (size, real type, random name, no execution)</td>
+          <td>Upload a <code>.php</code> file renamed to <code>.jpg</code>; open the uploads folder in the browser</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>No error details shown to the user</td>
+          <td>Stop MySQL in XAMPP with <code>display_errors</code> off and use the service</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>Security headers present</td>
+          <td>DevTools &gt; Network &gt; select the request &gt; Response headers</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>No secrets in the repository</td>
+          <td><code>git log --all -p -- config.php</code>; search GitHub for "password"</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-bash">
+# Useful searches from the project root (Git Bash)
+grep -rn "mysqli_query\|-&gt;query(" --include=*.php .
+grep -rn "\$_GET\|\$_POST\|\$_REQUEST" --include=*.php .
+grep -rn "innerHTML\|\.html(\|insertAdjacentHTML" --include=*.js .
+grep -rn "md5(\|sha1(" --include=*.php .
+        </pre>
+      </div>
+      <h3 class="Sub_Section_Title">Peer review: audit another team's project</h3>
+      <div class="Definitions">
+        <p>
+          A fresh pair of eyes always finds problems the authors missed. Your teacher will pair the teams. Then:
+        </p>
         <ol>
-          <li>Choose at least <b>two</b> of the CRUD services of your project (<a href="Lab_0.html">Lab 0</a>), for
-            example the listing/search of your main items and the delete or add of another one.</li>
-          <li>Create the <code>api/</code> folder and one endpoint per service, based on section II. Use only PDO
-            prepared statements for queries that contain user data.</li>
-          <li>Test each endpoint in the browser (GET) and check in DevTools &gt; Network &gt; Response that the
-            answer is valid JSON with the correct status code.</li>
-          <li>Create <code>assets/JS/api.js</code> with the <code>apiFetch()</code> helper and import it in the
-            scripts of your pages (<code>type="module"</code>).</li>
-          <li>Load and display a list with <code>fetch()</code>, with a loading indicator and an error message.</li>
-          <li>Convert one form to AJAX (FormData or JSON). Validate on the server and show the 422 errors next to
-            the form.</li>
-          <li>Add a live search with debounce on one of your lists.</li>
-          <li>Add a delete (or update) without reload, with a confirmation (the <code>&lt;dialog&gt;</code> of
-            <a href="Lab_4.html">Lab 4</a> is a good choice).</li>
-          <li>Test the failure cases: stop MySQL in the XAMPP control panel (you must see your error message, not
-            a frozen page), and use the "Slow 3G" throttling of DevTools to see your loading indicators.</li>
-          <li>Commit and push: <code>git commit -m "Lab 9: AJAX services"</code> then <code>git push</code>.</li>
+          <li>Each team gives the other team read access to its repository (or the URL if it is public) and the
+            <code>.sql</code> dump of its database.</li>
+          <li>Clone the other project, install it on your own XAMPP and make it work (this is also a test of their
+            README and setup instructions).</li>
+          <li>For about 45 minutes, go through the checklist above on their services. Use only your local copy.</li>
+          <li>For each problem found, open an issue on their repository with the label <code>security</code>: the
+            service, the steps to reproduce, the impact, and a suggested fix. Be precise and constructive; do not
+            publish working exploits outside the issue.</li>
+          <li>Each team then fixes the issues it received and closes them with a commit message such as
+            <code>Fix IDOR in edit_post.php (closes #12)</code>.</li>
         </ol>
       </div>
+      <div class="Note"><strong>Tip:</strong> classify each finding by severity to decide what to fix first:
+        <strong>High</strong> (SQL injection, missing authorization, executable uploads, leaked passwords),
+        <strong>Medium</strong> (XSS, CSRF, session issues), <strong>Low</strong> (missing headers, verbose
+        errors).</div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>At least two services of the project use AJAX (no page reload).</li>
-        <li>PHP endpoints that return only JSON, with <code>Content-Type: application/json</code> and correct
-          status codes (<code>http_response_code</code>).</li>
-        <li>All SQL queries with user data use PDO prepared statements.</li>
-        <li>At least one GET with <code>fetch()</code> and <code>async</code>/<code>await</code>, and at least one
-          POST (FormData or JSON body).</li>
-        <li>Error handling (<code>response.ok</code>, <code>try</code>/<code>catch</code>) with messages visible to
-          the user, and loading indicators.</li>
-        <li>A live search with debounce and a delete (or update) without reload.</li>
-        <li>Data displayed with <code>textContent</code> (or escaped), never raw <code>innerHTML</code>.</li>
-        <li>All the code pushed to your team repository before the "PHP/AJAX" milestone of the
-          <a href="Syllabus.html#Deadlines">Deadlines table</a>.</li>
+        <li>A <code>SECURITY_AUDIT.md</code> file at the root of the repository with the inventory of your services
+          and one completed checklist table per service.</li>
+        <li>All the fixes committed on the <code>security-audit</code> branch and merged into <code>main</code>
+          through a pull request; each fix linked to its issue.</li>
+        <li>The issues opened on the other team's repository during the peer review, and the issues you received
+          fixed or answered.</li>
+        <li><code>config.php</code> ignored by Git and <code>config.example.php</code> committed.</li>
+        <li>This work counts toward the "PHP/AJAX: Finish the backend" milestone in the Deadlines table of the
+          <a href="Syllabus.html">Syllabus</a>.</li>
       </ul>
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_8.html" class="Arrow">
+    <a href="Lab_9.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 8: OOP PHP and MVC</h1>
+      <h1>Lab 9: AJAX and JSON</h1>
     </a>
-    <a href="Lab_10.html" class="Arrow">
-      <h1>Lab 10: Security</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_11.html" class="Arrow">
+      <h1>Lab 11: Final project</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>
