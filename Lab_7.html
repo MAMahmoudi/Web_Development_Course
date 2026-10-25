@@ -148,7 +148,7 @@ $_SESSION['last_activity'] = time();
       </div>
       <div class="Definitions">
         <div>
-          <ul><li><code>session_name()</code>: a name of our own instead of <code>PHPSESSID</code>, which tells everyone that the site uses PHP.</li><li><code>use_strict_mode</code>: PHP refuses a session id that it did not create. Without it an attacker can choose an id, make the victim use it (<em>session fixation</em>), and share the session after the login.</li><li>The options of the cookie: <code>HttpOnly</code> keeps it away from JavaScript, so an XSS cannot steal it; <code>SameSite=Lax</code> stops the browser from sending it with a form posted by another website (a first protection against CSRF, see <a href="Lab_10.html">Lab 10</a>); <code>Secure</code> keeps it on HTTPS.</li><li><strong>Idle timeout</strong>: a session left open on a shared computer is closed after 30 minutes without activity. The time of the last request is kept in the session itself.</li><li><code>session_status()</code>: the file can be included twice without starting the session twice.</li></ul>
+          <ul><li><code>session_name()</code>: a name of our own instead of <code>PHPSESSID</code>, which tells everyone that the site uses PHP.</li><li><code>use_strict_mode</code>: PHP refuses a session id that it did not create. Without it an attacker can choose an id, make the victim use it (<em>session fixation</em>), and share the session after the login.</li><li>The options of the cookie: <code>HttpOnly</code> keeps it away from JavaScript, so an XSS cannot steal it; <code>SameSite=Lax</code> stops the browser from sending it with a form posted by another website (a first protection against CSRF, see <a href="Lab_9.html">Lab 9</a>); <code>Secure</code> keeps it on HTTPS.</li><li><strong>Idle timeout</strong>: a session left open on a shared computer is closed after 30 minutes without activity. The time of the last request is kept in the session itself.</li><li><code>session_status()</code>: the file can be included twice without starting the session twice.</li></ul>
         </div>
       </div>
       <div class="Definitions">
@@ -946,7 +946,7 @@ curl -i -b jar.txt http://localhost/&lt;project folder&gt;/SRC/Labs/Lab_7/logout
       <h1>Lab 6: PHP forms</h1>
     </a>
     <a href="Lab_8.html" class="Arrow">
-      <h1>Lab 8: OOP PHP and MVC</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
+      <h1>Lab 8: AJAX and JSON</h1><i class="fa-solid fa-angles-right fa-beat fa-2xl"></i>
     </a>
   </footer>
   <script src="SRC/JS/Script.js" type="module"></script>

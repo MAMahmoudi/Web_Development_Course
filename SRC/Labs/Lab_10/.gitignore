@@ -1,0 +1,4 @@
+# the settings and secrets of each computer (Lab 9)
+includes/config.local.php
+# the logs of PHP, if you write them in the project
+*.log

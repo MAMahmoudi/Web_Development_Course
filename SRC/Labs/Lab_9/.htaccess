@@ -1,0 +1,9 @@
+# Apache settings of the Syaha website (Lab 9)
+
+# no list of files when a folder has no index.php
+Options -Indexes
+
+# the version of PHP is nobody's business
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+</IfModule>

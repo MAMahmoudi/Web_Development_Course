@@ -1,0 +1,3 @@
+# The files of this folder are included by the pages, never opened directly (Lab 9).
+# Apache refuses every request: config.local.php, queries.php... cannot be requested with a URL.
+Require all denied

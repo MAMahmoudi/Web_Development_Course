@@ -7,7 +7,11 @@
       "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/check.py)",
       "Bash(rm -f _l7phone.html _l7post.html)",
       "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/check.py .)",
-      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/Mahmoudi/AppData/Local/Temp/claude/d--My-Projects-Web-Development-Course/0420caad-e796-4acb-99a3-c8725f7bb25a/scratchpad/check.py\" .)"
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/Mahmoudi/AppData/Local/Temp/claude/d--My-Projects-Web-Development-Course/0420caad-e796-4acb-99a3-c8725f7bb25a/scratchpad/check.py\" .)",
+      "Bash(PYTHONIOENCODING=utf-8 python \"C:/Users/Mahmoudi/AppData/Local/Temp/claude/d--My-Projects-Web-Development-Course/0420caad-e796-4acb-99a3-c8725f7bb25a/scratchpad/renumber2.py\")",
+      "Bash(grep -o 'Lab[_ ][0-9]*[^<]\\\\{0,40\\\\}')",
+      "Bash(sed -i 's/\\\\[\"git\", \"rm\", \"-q\", \"Lab_10.html\"\\\\]/[\"git\", \"rm\", \"-q\", \"-f\", \"Lab_10.html\"]/' __TRACKED_VAR__/delete_lab10.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python __TRACKED_VAR__/delete_lab10.py)"
     ]
   }
 }

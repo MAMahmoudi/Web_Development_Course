@@ -1,0 +1,368 @@
+/* Admin area of Syaha: a side menu and a content area */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Cairo", sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  color: #2a2a2a;
+  background-color: #f2f4f5;
+}
+
+/* --- side menu --- */
+.Admin_Side {
+  width: 240px;
+  flex-shrink: 0;
+  padding: 1.5rem 1rem;
+  color: white;
+  background-color: #1a1a1a;
+}
+
+.Admin_Side h1 {
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.Admin_Side small {
+  font-size: 0.9rem;
+  color: #79fad5;
+}
+
+.Admin_Side nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.Admin_Side a {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  color: #ddd;
+  text-decoration: none;
+}
+
+.Admin_Side a i {
+  width: 1.5rem;
+}
+
+.Admin_Side a:hover,
+.Admin_Side a.Active {
+  color: white;
+  background-color: #01959a;
+}
+
+/* --- content --- */
+.Admin_Main {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+}
+
+.Admin_Title {
+  margin: 1rem 0 1.5rem;
+}
+
+.Flash {
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+}
+
+.Flash ul {
+  padding-right: 1.5rem;
+}
+
+.Flash_Success {
+  color: #1b7a3a;
+  background-color: #e6f6ec;
+}
+
+.Flash_Error {
+  color: #a93226;
+  background-color: #fdf1f0;
+}
+
+/* --- dashboard --- */
+.Stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.Stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  background-color: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.Stat i {
+  font-size: 1.6rem;
+  color: #01959a;
+}
+
+.Stat strong {
+  font-size: 2rem;
+}
+
+/* --- tables --- */
+.Admin_Table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.Admin_Table th,
+.Admin_Table td {
+  padding: 0.8rem 1rem;
+  text-align: right;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+}
+
+.Admin_Table th {
+  color: white;
+  background-color: #027b92;
+}
+
+.Thumbnail {
+  width: 80px;
+  height: 55px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.Actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.Inline_Form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* --- buttons --- */
+.Button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  background-color: #01959a;
+  cursor: pointer;
+}
+
+.Button.Small {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.Button.Danger {
+  background-color: #c0392b;
+}
+
+.Button.Secondary {
+  color: #2a2a2a;
+  background-color: #ddd;
+}
+
+/* --- forms --- */
+.Admin_Form {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  padding: 2rem;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.Admin_Form label {
+  margin: 1rem 0 0.3rem;
+  font-weight: 600;
+}
+
+.Admin_Form input,
+.Admin_Form select,
+.Admin_Form textarea,
+.Inline_Form select {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.Admin_Form .Row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.Admin_Form .Row > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.Admin_Form .Checkbox {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.Status_pending {
+  background-color: #fff4d6;
+}
+
+.Status_confirmed {
+  background-color: #e6f6ec;
+}
+
+.Status_cancelled {
+  background-color: #fdf1f0;
+}
+
+/* --- messages --- */
+.Message {
+  margin-bottom: 1rem;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.Message.Unread {
+  border-right: 5px solid #01959a;
+}
+
+.Message header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.Message time {
+  margin-right: auto;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.Message p {
+  margin-bottom: 0.8rem;
+  line-height: 1.8;
+}
+
+.Tag {
+  padding: 0.1rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background-color: #e0f4f4;
+}
+
+/* --- Lab 6: errors under the fields, photo upload --- */
+.Field_Error {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  color: #c0392b;
+}
+
+.Admin_Form .Invalid {
+  border-color: #c0392b;
+  background-color: #fdf1f0;
+}
+
+.Image_Choice {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.Image_Choice > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.Image_Choice .Thumbnail {
+  width: 120px;
+  height: 85px;
+}
+
+.Admin_Form .Small_Label {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+@media screen and (max-width: 850px) {
+  body {
+    flex-direction: column;
+  }
+
+  .Admin_Side {
+    width: 100%;
+  }
+
+  .Admin_Side nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .Admin_Main {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+}
+
+/* --- Lab 7: the logged-in admin and the logout button --- */
+.Admin_User {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  font-size: 0.95rem;
+  color: #79fad5;
+}
+
+.Admin_User form {
+  margin-top: 0.6rem;
+}
+
+.Admin_User button {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #ddd;
+  background: none;
+  cursor: pointer;
+}
+
+.Admin_User button:hover {
+  color: white;
+  background-color: #c0392b;
+}
